@@ -2,6 +2,7 @@ package icbm.classic;
 
 import icbm.classic.api.EnumTier;
 import icbm.classic.api.ICBMClassicAPI;
+import icbm.classic.client.ClientProxy;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.api.reg.events.ExplosiveRegistryEvent;
 import icbm.classic.api.reg.events.ExplosiveContentRegistryEvent;
@@ -45,7 +46,14 @@ import net.minecraft.loot.LootTables;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -54,6 +62,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Mod class for ICBM Classic, contains all loading code and references to objects crated by the mod.
@@ -69,14 +78,11 @@ public final class ICBMClassic
 
     public static final boolean runningAsDev = System.getProperty("development") != null && System.getProperty("development").equalsIgnoreCase("true");
 
-    @Mod.Instance(ICBMConstants.DOMAIN)
-    public static ICBMClassic INSTANCE;
+    //@Mod.Instance(ICBMConstants.DOMAIN)
+    //public static ICBMClassic INSTANCE;
 
-    @Mod.Metadata(ICBMConstants.DOMAIN)
-    public static ModMetadata metadata;
-
-    @SidedProxy(clientSide = "icbm.classic.client.ClientProxy", serverSide = "icbm.classic.CommonProxy")
-    public static CommonProxy proxy;
+    // Clever hack found in Mekanism source, not the proper way to do this.
+    public static CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
     public static final String MAJOR_VERSION = "@MAJOR@";
     public static final String MINOR_VERSION = "@MINOR@";
@@ -89,7 +95,7 @@ public final class ICBMClassic
     public static final int MAP_HEIGHT = 255;
 
     protected static Logger logger = LogManager.getLogger(ICBMConstants.DOMAIN);
-
+    public static Logger logger() { return logger; }
 
     public static final PacketManager packetHandler = new PacketManager(ICBMConstants.DOMAIN);
 
@@ -101,31 +107,39 @@ public final class ICBMClassic
 
     public static final ICBMCreativeTab CREATIVE_TAB = new ICBMCreativeTab(ICBMConstants.DOMAIN);
 
-    public static ModFixs modFixs;
+    //public static ModFixs modFixs;
 
+    public ICBMClassic() {
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    /*
     @SubscribeEvent
-    public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
+    public void registerRecipes(RegistryEvent.Register<IRecipe> event)
     {
         if (ConfigItems.ENABLE_CRAFTING_ITEMS)
         {
             if (ConfigItems.ENABLE_INGOTS_ITEMS)
             {
                 //Steel clump -> Steel ingot
-                GameRegistry.addSmelting(new ItemStack(ItemReg.itemIngotClump, 1, 0), new ItemStack(ItemReg.itemIngot, 1, 0), 0.1f);
+                //GameRegistry.addSmelting(new ItemStack(ItemReg.itemIngotClump, 1, 0), new ItemStack(ItemReg.itemIngot, 1, 0), 0.1f);
             }
 
             if (ConfigItems.ENABLE_PLATES_ITEMS)
             {
                 //Fix for removing recipe of plate
-                GameRegistry.addSmelting(ItemReg.itemPlate.getStack("iron", 1), new ItemStack(Items.IRON_INGOT), 0f);
+                //GameRegistry.addSmelting(ItemReg.itemPlate.getStack("iron", 1), new ItemStack(Items.IRON_INGOT), 0f);
             }
         }
     }
+    */
 
+    // TODO replace all of this with modern technique https://mcforge.readthedocs.io/en/1.16.x/items/globallootmodifiers/
     @SubscribeEvent
-    public static void registerLoot(LootTableLoadEvent event)
+    public void registerLoot(LootTableLoadEvent event)
     {
         ///setblock ~ ~ ~ minecraft:chest 0 replace {LootTable:"minecraft:chests/simple_dungeon"}
+        /*
         final String VANILLA_LOOT_POOL_ID = "main";
         if (event.getName().equals(LootTables.CHESTS_ABANDONED_MINESHAFT) || event.getName().equals(LootTables.CHESTS_SIMPLE_DUNGEON))
         {
@@ -134,6 +148,7 @@ public final class ICBMClassic
                 LootPool lootPool = event.getTable().getPool(VANILLA_LOOT_POOL_ID);
                 if (lootPool != null && ConfigItems.ENABLE_CRAFTING_ITEMS)
                 {
+
                     if (ConfigItems.ENABLE_INGOTS_ITEMS)
                     {
                         lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "ingot.copper", ItemReg.itemIngot.getStack("copper", 10), 15, 5));
@@ -168,10 +183,11 @@ public final class ICBMClassic
                 }
             }
         }
+        */
     }
 
-
-    @Mod.EventHandler
+    /* //TODO Rework to match new Forge lifecycle
+    @SubscribeEvent
     public void preInit(FMLPreInitializationEvent event)
     {
         //Verify that our nbt tag strings are distinct. If this fails then this will crash Minecraft!
@@ -198,6 +214,7 @@ public final class ICBMClassic
 
         handleExRegistry(event.getModConfigurationDirectory());
     }
+    */
 
     private void handleExRegistry(File configMainFolder)
     {
@@ -220,7 +237,7 @@ public final class ICBMClassic
         explosiveRegistry.registerContentRegistry(ICBMClassicAPI.EX_MINECART_REGISTRY);
 
         //Fire registry events for content types
-        MinecraftForge.EVENT_BUS.post(new ExplosiveContentRegistryEvent(explosiveRegistry));
+        //TODO//MinecraftForge.EVENT_BUS.post(new ExplosiveContentRegistryEvent(explosiveRegistry));
 
         //Lock content types, done to prevent errors with adding content
         explosiveRegistry.lockNewContentTypes();
@@ -229,7 +246,7 @@ public final class ICBMClassic
         ExplosiveInit.init();
 
         //Fire registry event for explosives
-        MinecraftForge.EVENT_BUS.post(new ExplosiveRegistryEvent(explosiveRegistry));
+        //TODO//MinecraftForge.EVENT_BUS.post(new ExplosiveRegistryEvent(explosiveRegistry));
         explosiveRegistry.lockNewExplosives();
 
         //Do default content types per explosive
@@ -247,8 +264,25 @@ public final class ICBMClassic
         explosiveRegistry.saveReg();
     }
 
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
+    /**
+     * This is the first of four commonly called events during mod initialization.
+     *
+     * Called before {@link FMLClientSetupEvent} or {@link FMLDedicatedServerSetupEvent} during mod startup.
+     *
+     * Called after {@link net.minecraftforge.event.RegistryEvent.Register} events have been fired.
+     *
+     * Either register your listener using {@link net.minecraftforge.fml.AutomaticEventSubscriber} and
+     * {@link net.minecraftforge.eventbus.api.SubscribeEvent} or
+     * {@link net.minecraftforge.eventbus.api.IEventBus#addListener(Consumer)} in your constructor.
+     *
+     * Most non-specific mod setup will be performed here. Note that this is a parallel dispatched event - you cannot
+     * interact with game state in this event.
+     *
+     * @see net.minecraftforge.fml.DeferredWorkQueue to enqueue work to run on the main game thread after this event has
+     * completed dispatch
+     */
+    @SubscribeEvent
+    public void init(FMLCommonSetupEvent event)
     {
         proxy.init();
         packetHandler.init();
@@ -277,36 +311,39 @@ public final class ICBMClassic
             }
         }
 
-        OreDictionary.registerOre("dustSulfur", new ItemStack(ItemReg.itemSulfurDust));
-        OreDictionary.registerOre("dustSaltpeter", new ItemStack(ItemReg.itemSaltpeterDust));
+        //TODO//OreDictionary.registerOre("dustSulfur", new ItemStack(ItemReg.itemSulfurDust));
+        //TODO//OreDictionary.registerOre("dustSaltpeter", new ItemStack(ItemReg.itemSaltpeterDust));
 
         /** Potion Effects */ //TODO move to effect system
-        PoisonToxin.INSTANCE = Effects.POISON;//new PoisonToxin(true, 5149489, "toxin");
-        PoisonContagion.INSTANCE = Effects.POISON;//new PoisonContagion(false, 5149489, "virus");
-        PoisonFrostBite.INSTANCE = Effects.POISON;//new PoisonFrostBite(false, 5149489, "frostBite");
+        //TODO//PoisonToxin.INSTANCE = Effects.POISON;//new PoisonToxin(true, 5149489, "toxin");
+        //TODO//PoisonContagion.INSTANCE = Effects.POISON;//new PoisonContagion(false, 5149489, "virus");
+        //TODO//PoisonFrostBite.INSTANCE = Effects.POISON;//new PoisonFrostBite(false, 5149489, "frostBite");
 
         /** Dispenser Handler */
         if (ItemReg.itemGrenade != null)
         {
-            DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemReg.itemGrenade, new GrenadeDispenseBehavior());
+            DispenserBlock.registerDispenseBehavior(ItemReg.itemGrenade, new GrenadeDispenseBehavior());
         }
 
         if (ItemReg.itemBombCart != null)
         {
-            DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemReg.itemBombCart, new BombCartDispenseBehavior());
+            DispenserBlock.registerDispenseBehavior(ItemReg.itemBombCart, new BombCartDispenseBehavior());
         }
         proxy.init();
     }
 
-    @Mod.EventHandler
+    /*
+    @SubscribeEvent
     public void postInit(FMLPostInitializationEvent event)
     {
         proxy.postInit();
     }
+    */
 
-    @Mod.EventHandler
+    @SubscribeEvent
     public void serverStarting(FMLServerStartingEvent event)
     {
+        /*
         //Get command manager
         ICommandManager commandManager = FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager();
         ServerCommandManager serverCommandManager = ((ServerCommandManager) commandManager);
@@ -316,34 +353,16 @@ public final class ICBMClassic
 
         //Register main command
         serverCommandManager.registerCommand(new CommandEntryPoint("icbm", ICBMCommands.ICBM_COMMAND));
+        */
 
         WorkerThreadManager.INSTANCE = new WorkerThreadManager(ConfigThread.THREAD_COUNT);
         WorkerThreadManager.INSTANCE.startThreads();
     }
 
-    @Mod.EventHandler
+    @SubscribeEvent
     public void serverStopping(FMLServerStoppingEvent event)
     {
         WorkerThreadManager.INSTANCE.killThreads();
     }
 
-    public static Logger logger()
-    {
-        return logger;
-    }
-
-    public static boolean isJUnitTest()
-    {
-        //TODO do boolean flag from VoltzTestRunner to simplify solution
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        List<StackTraceElement> list = Arrays.asList(stackTrace);
-        for (StackTraceElement element : list)
-        {
-            if (element.getClassName().startsWith("org.junit.") || element.getClassName().startsWith("com.builtbroken.mc.testing.junit.VoltzTestRunner"))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 }

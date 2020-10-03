@@ -12,6 +12,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecartTNT;
+import net.minecraft.entity.item.minecart.TNTMinecartEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -25,7 +26,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityBombCart extends EntityMinecartTNT implements IEntityAdditionalSpawnData
+public class EntityBombCart extends TNTMinecartEntity implements IEntityAdditionalSpawnData
 {
     public int explosive = -1; //TODO move to capability
     public NBTTagCompound data; //TODO move to capability
