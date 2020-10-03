@@ -1,40 +1,28 @@
-!*.*
-/bin
-/run
-/out
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
 
-*.classpath
-*.project
-.gradle/
-.settings/
-build/
-eclipse/
-
-
-*.iml
-*.iws
+# idea
+out
 *.ipr
-*.idea/
-*.ini
-ICBM-classic.txt
-CompiledWith.txt
-output
-changelog.html
-.okhttpcache/
-.DS_Store
+*.iws
+*.iml
+.idea
 
-raw_audio/
+# gradle
+build
+.gradle
 
-logs/
+# other
+eclipse
+run
 
-run_tests/
+# Files from Forge MDK
+forge*changelog.txt
 
-banned-ips.json
-
-banned-players.json
-
-ops.json
-
-whitelist.json
-
-output_tests/
+# custom
+logs
