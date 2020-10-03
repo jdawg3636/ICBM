@@ -4,17 +4,15 @@ import icbm.classic.prefab.tile.IGuiTile;
 import icbm.classic.content.entity.missile.EntityMissile;
 import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class CommonProxy implements IGuiHandler
+public class CommonProxy //implements IGuiHandler
 {
     public static final int GUI_ITEM = 10002;
     public static final int GUI_ENTITY = 10001;
@@ -44,8 +42,8 @@ public class CommonProxy implements IGuiHandler
 
     }
 
-    @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    //TODO//IGuiHandler// @Override
+    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
     {
         if (ID == GUI_ITEM)
         {
@@ -58,7 +56,7 @@ public class CommonProxy implements IGuiHandler
         return getServerGuiElement(ID, player, world.getTileEntity(new BlockPos(x, y, z)));
     }
 
-    public Object getServerGuiElement(int ID, EntityPlayer player, int slot)
+    public Object getServerGuiElement(int ID, PlayerEntity player, int slot)
     {
         ItemStack stack = player.inventory.getStackInSlot(slot);
         if (stack != null && stack.getItem() instanceof IGuiTile)
@@ -68,7 +66,7 @@ public class CommonProxy implements IGuiHandler
         return null;
     }
 
-    public Object getServerGuiElement(int ID, EntityPlayer player, TileEntity tile)
+    public Object getServerGuiElement(int ID, PlayerEntity player, TileEntity tile)
     {
         if (tile instanceof IGuiTile)
         {
@@ -77,7 +75,7 @@ public class CommonProxy implements IGuiHandler
         return null;
     }
 
-    public Object getServerGuiElement(int ID, EntityPlayer player, Entity entity)
+    public Object getServerGuiElement(int ID, PlayerEntity player, Entity entity)
     {
         if (entity instanceof IGuiTile)
         {
@@ -86,8 +84,8 @@ public class CommonProxy implements IGuiHandler
         return null;
     }
 
-    @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    //TODO//IGuiHandler// @Override
+    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
     {
         if (ID == GUI_ITEM)
         {
@@ -100,7 +98,7 @@ public class CommonProxy implements IGuiHandler
         return getClientGuiElement(ID, player, world.getTileEntity(new BlockPos(x, y, z)));
     }
 
-    public Object getClientGuiElement(int ID, EntityPlayer player, int slot)
+    public Object getClientGuiElement(int ID, PlayerEntity player, int slot)
     {
         ItemStack stack = player.inventory.getStackInSlot(slot);
         if (stack != null && stack.getItem() instanceof IGuiTile)
@@ -110,7 +108,7 @@ public class CommonProxy implements IGuiHandler
         return null;
     }
 
-    public Object getClientGuiElement(int ID, EntityPlayer player, TileEntity tile)
+    public Object getClientGuiElement(int ID, PlayerEntity player, TileEntity tile)
     {
         if (tile instanceof IGuiTile)
         {
@@ -119,7 +117,7 @@ public class CommonProxy implements IGuiHandler
         return null;
     }
 
-    public Object getClientGuiElement(int ID, EntityPlayer player, Entity entity)
+    public Object getClientGuiElement(int ID, PlayerEntity player, Entity entity)
     {
         if (entity instanceof IGuiTile)
         {
@@ -128,10 +126,11 @@ public class CommonProxy implements IGuiHandler
         return null;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public boolean isShiftHeld()
     {
-        return Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+        //TODO//return Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+        return false;
     }
 
     public void spawnSmoke(World world, Pos position, double v, double v1, double v2, float red, float green, float blue, float scale, int age)
