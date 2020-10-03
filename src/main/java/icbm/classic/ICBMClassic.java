@@ -34,27 +34,20 @@ import icbm.classic.lib.radio.RadioRegistry;
 import icbm.classic.lib.thread.WorkerThreadManager;
 import icbm.classic.prefab.item.LootEntryItemStack;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.command.ICommandManager;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
+import net.minecraft.potion.Effects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.datafix.FixTypes;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTables;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,7 +62,7 @@ import java.util.List;
  * <p>
  * Orginal author and creator of the mod: Calclavia
  */
-@Mod(modid = ICBMConstants.DOMAIN, name = "ICBM-Classic", version = ICBMClassic.VERSION, dependencies = ICBMClassic.DEPENDENCIES)
+@Mod(ICBMConstants.DOMAIN)
 @Mod.EventBusSubscriber
 public final class ICBMClassic
 {
@@ -134,7 +127,7 @@ public final class ICBMClassic
     {
         ///setblock ~ ~ ~ minecraft:chest 0 replace {LootTable:"minecraft:chests/simple_dungeon"}
         final String VANILLA_LOOT_POOL_ID = "main";
-        if (event.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT) || event.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON))
+        if (event.getName().equals(LootTables.CHESTS_ABANDONED_MINESHAFT) || event.getName().equals(LootTables.CHESTS_SIMPLE_DUNGEON))
         {
             if (ConfigItems.ENABLE_LOOT_DROPS)
             {
@@ -164,7 +157,7 @@ public final class ICBMClassic
                 }
             }
         }
-        else if (event.getName().equals(LootTableList.ENTITIES_CREEPER))
+        else if (event.getName().equals(LootTables.ENTITIES_CREEPER))
         {
             if (ConfigItems.ENABLE_SULFUR_LOOT_DROPS)
             {
@@ -261,8 +254,6 @@ public final class ICBMClassic
         packetHandler.init();
         CREATIVE_TAB.init();
 
-        setModMetadata(ICBMConstants.DOMAIN, "ICBM-Classic", metadata);
-
         if (ConfigItems.ENABLE_CRAFTING_ITEMS)
         {
             if (ConfigItems.ENABLE_INGOTS_ITEMS)
@@ -290,19 +281,19 @@ public final class ICBMClassic
         OreDictionary.registerOre("dustSaltpeter", new ItemStack(ItemReg.itemSaltpeterDust));
 
         /** Potion Effects */ //TODO move to effect system
-        PoisonToxin.INSTANCE = MobEffects.POISON;//new PoisonToxin(true, 5149489, "toxin");
-        PoisonContagion.INSTANCE = MobEffects.POISON;//new PoisonContagion(false, 5149489, "virus");
-        PoisonFrostBite.INSTANCE = MobEffects.POISON;//new PoisonFrostBite(false, 5149489, "frostBite");
+        PoisonToxin.INSTANCE = Effects.POISON;//new PoisonToxin(true, 5149489, "toxin");
+        PoisonContagion.INSTANCE = Effects.POISON;//new PoisonContagion(false, 5149489, "virus");
+        PoisonFrostBite.INSTANCE = Effects.POISON;//new PoisonFrostBite(false, 5149489, "frostBite");
 
         /** Dispenser Handler */
         if (ItemReg.itemGrenade != null)
         {
-            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemReg.itemGrenade, new GrenadeDispenseBehavior());
+            DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemReg.itemGrenade, new GrenadeDispenseBehavior());
         }
 
         if (ItemReg.itemBombCart != null)
         {
-            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemReg.itemBombCart, new BombCartDispenseBehavior());
+            DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemReg.itemBombCart, new BombCartDispenseBehavior());
         }
         proxy.init();
     }
@@ -311,23 +302,6 @@ public final class ICBMClassic
     public void postInit(FMLPostInitializationEvent event)
     {
         proxy.postInit();
-    }
-
-
-    public void setModMetadata(String id, String name, ModMetadata metadata)
-    {
-        metadata.modId = id;
-        metadata.name = name;
-        metadata.description = "ICBM is a Minecraft Mod that introduces intercontinental ballistic missiles to Minecraft. " +
-                "But the fun doesn't end there! This mod also features many different explosives, missiles and machines " +
-                "classified in three different tiers. If strategic warfare, carefully coordinated airstrikes, messing " +
-                "with matter and general destruction are up your alley, then this mod is for you!";
-        metadata.url = "http://www.builtbroken.com/";
-        metadata.logoFile = "/icbm_logo.png";
-        metadata.version = ICBMClassic.VERSION;
-        metadata.authorList = Arrays.asList("Calclavia", "DarkGuardsman aka Darkcow");
-        metadata.credits = "Please visit the website.";
-        metadata.autogenerated = false;
     }
 
     @Mod.EventHandler

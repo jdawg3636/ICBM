@@ -1,0 +1,54 @@
+# The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
+modLoader="javafml" #mandatory
+
+# A version range to match for said mod loader - for regular FML @Mod it will be the forge version
+loaderVersion="[34,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+
+# The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
+# Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
+license="MIT License"
+
+# A URL to refer people to when problems occur with this mod
+issueTrackerURL="https://github.com/jdawg3636/BleachMod/issues" #optional
+
+# A list of mods - how many allowed here is determined by the individual mod loader
+[[mods]] #mandatory
+
+# The modid of the mod
+modId="icbm" #mandatory
+
+# The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
+version="${file.jarVersion}" #mandatory
+
+ # A display name for the mod
+displayName="ICBM" #mandatory
+
+# A URL for the "homepage" for this mod, displayed in the mod UI
+displayURL="https://icbm.jdawg3636.com/" #optional
+
+# A file name (in the root of the mod JAR) containing a logo for display
+logoFile="icbm_logo.png" #optional
+
+# A text field displayed in the mod UI (#optional)
+credits='''
+Calcalvia (Author ICBM)
+DarkGuardsman (Author ICBM Classic)
+AFlyingCar
+bl4ckscor3
+Dmod
+GHXX
+Graugger
+M1W3st
+Tgame14
+'''
+
+# A text field displayed in the mod UI
+authors="jdawg3636" #optional
+
+# The description text for the mod (multi line!) (#mandatory)
+description='''
+ICBM is a Minecraft Mod that introduces intercontinental ballistic missiles to Minecraft.
+But the fun doesn't end there! This mod also features many different explosives, missiles and machines
+classified in three different tiers. If strategic warfare, carefully coordinated airstrikes, messing
+with matter and general destruction are up your alley, then this mod is for you!
+'''
