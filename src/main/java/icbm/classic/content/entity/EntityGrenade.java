@@ -4,37 +4,39 @@ import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.capability.ex.CapabilityExplosiveEntity;
 import icbm.classic.lib.explosive.ExplosiveHandler;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
 {
     /** Entity that created the grenade and set it into motion */
-    private EntityLivingBase thrower;
+    private LivingEntity thrower;
 
     /** Explosive capability */
     public final CapabilityExplosiveEntity explosive = new CapabilityExplosiveEntity(this);
 
-    public EntityGrenade(World par1World)
-    {
-        super(par1World);
-        this.setSize(0.25F, 0.25F);
-        //this.renderDistanceWeight = 8;
+    // TODO redo entity registration, reference net.minecraft.entity.EntityType
+    public EntityGrenade(EntityType<?> entityTypeIn, World worldIn) {
+        super(entityTypeIn, worldIn);
     }
 
     /**
@@ -43,8 +45,7 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
      * @param stack - explosive stack
      * @return this
      */
-    public EntityGrenade setItemStack(ItemStack stack)
-    {
+    public EntityGrenade setItemStack(ItemStack stack) {
         explosive.setStack(stack);
         return this;
     }
@@ -55,13 +56,12 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
      * @param thrower - entity that threw the grenade
      * @return this
      */
-    public EntityGrenade setThrower(EntityLivingBase thrower)
-    {
+    public EntityGrenade setThrower(LivingEntity thrower) {
         this.thrower = thrower;
         return this;
     }
 
-    public EntityLivingBase getThrower() {
+    public LivingEntity getThrower() {
         return thrower;
     }
 
@@ -70,16 +70,16 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
      *
      * @return this
      */
-    public EntityGrenade aimFromThrower() //TODO figure out which hand threw the grenade so we can spawn over shoulder
-    {
-        this.setLocationAndAngles(thrower.posX, thrower.posY + thrower.getEyeHeight(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch);
+    public EntityGrenade aimFromThrower() {
+        this.setLocationAndAngles(thrower.getPosX(), thrower.getPosY() + thrower.getEyeHeight(), thrower.getPosZ(), thrower.rotationYaw, thrower.rotationPitch);
 
         //Set position
         final float horizontalOffset = 0.16F;
-        this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * horizontalOffset;
-        this.posY -= 0.10000000149011612D;
-        this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * horizontalOffset;
-        this.setPosition(this.posX, this.posY, this.posZ);
+        this.setPosition(
+            getPosX() - MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * horizontalOffset,
+            getPosY() - 0.10000000149011612D,
+            getPosZ() - MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * horizontalOffset
+        );
 
         return this;
     }
@@ -89,9 +89,8 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
      *
      * @return this
      */
-    public EntityGrenade spawn()
-    {
-        world.spawnEntity(this);
+    public EntityGrenade spawn() {
+        world.addEntity(this);
         return this;
     }
 
@@ -101,33 +100,31 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
      * @param energy - energy to scale the motion
      * @return this
      */
-    public EntityGrenade setThrowMotion(float energy)
-    {
+    public EntityGrenade setThrowMotion(float energy) {
         //Set velocity
         final float powerScale = 0.4F;
-        this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * powerScale;
-        this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * powerScale;
-        this.motionY = -MathHelper.sin((this.rotationPitch) / 180.0F * (float) Math.PI) * powerScale;
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, 1.8f * energy, 1.0F); //TODO see what this 1.8 is and change to be 1 * energy
+        this.setMotion(
+                -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * powerScale,
+                -MathHelper.sin((this.rotationPitch) / 180.0F * (float) Math.PI) * powerScale,
+                +MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * powerScale
+        );
+        this.setThrowableHeading(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ(), 1.8f * energy, 1.0F); //TODO see what this 1.8 is and change to be 1 * energy
         return this;
     }
 
     @Override
-    public String getName()
-    {
-        return "icbm.grenade." + explosive.getExplosiveData().getRegistryName();
+    public ITextComponent getName() {
+        return new StringTextComponent( "icbm.grenade." + explosive.getExplosiveData().getRegistryName());
     }
 
     @Override
-    public void writeSpawnData(ByteBuf data)
-    {
-        ByteBufUtils.writeTag(data, explosive.serializeNBT());
+    public void writeSpawnData(PacketBuffer buffer) {
+        buffer.writeCompoundTag(explosive.serializeNBT());
     }
 
     @Override
-    public void readSpawnData(ByteBuf data)
-    {
-        explosive.deserializeNBT(Optional.ofNullable(ByteBufUtils.readTag(data)).orElseGet(NBTTagCompound::new));
+    public void readSpawnData(PacketBuffer additionalData) {
+        explosive.deserializeNBT(Optional.ofNullable(additionalData.readCompoundTag()).orElseGet(CompoundNBT::new));
     }
 
     /**
@@ -139,8 +136,7 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
      * @param scale  - amount to scale the vector by
      * @param random - amount to randomize the vector
      */
-    public void setThrowableHeading(double vx, double vy, double vz, float scale, float random)
-    {
+    public void setThrowableHeading(double vx, double vy, double vz, float scale, float random) {
         //normalize
         float power = MathHelper.sqrt(vx * vx + vy * vy + vz * vz);
         vx /= power;
@@ -163,11 +159,8 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
 
     /** Sets the velocity to the args. Args: x, y, z */
     @Override
-    public void setVelocity(double vx, double vy, double vz)
-    {
-        this.motionX = vx;
-        this.motionY = vy;
-        this.motionZ = vz;
+    public void setVelocity(double vx, double vy, double vz) {
+        this.setMotion(vx, vy, vz);
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
@@ -196,17 +189,17 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
     @Override
     public void onUpdate()
     {
-        this.lastTickPosX = this.posX;
-        this.lastTickPosY = this.posY;
-        this.lastTickPosZ = this.posZ;
+        this.lastTickPosX = this.getPosX();
+        this.lastTickPosY = this.getPosY();
+        this.lastTickPosZ = this.getPosZ();
         super.onUpdate();
 
-        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.getMotion());
 
-        final float horizontalMag = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-        this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+        final float horizontalMag = MathHelper.sqrt(this.getMotion().getX() * this.getMotion().getX() + this.getMotion().getZ() * this.getMotion().getZ());
+        this.rotationYaw = (float) (Math.atan2(this.getMotion().getX(), this.getMotion().getZ()) * 180.0D / Math.PI);
 
-        for (this.rotationPitch = (float) (Math.atan2(this.motionY, horizontalMag) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+        for (this.rotationPitch = (float) (Math.atan2(this.getMotion().getY(), horizontalMag) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
             ;
         }
@@ -231,30 +224,22 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
         float var17 = 0.98F;
         float gravity = 0.03F;
 
-        if (this.isInWater())
-        {
-            for (int var7 = 0; var7 < 4; ++var7)
-            {
+        if (this.isInWater()) {
+            for (int var7 = 0; var7 < 4; ++var7) {
                 float var19 = 0.25F;
-                this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * var19, this.posY - this.motionY * var19, this.posZ - this.motionZ * var19, this.motionX, this.motionY, this.motionZ);
+                this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() - this.getMotion().getX() * var19, this.getPosY() - this.getMotion().getY() * var19, this.getPosZ() - this.getMotion().getZ() * var19, this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ());
             }
 
             var17 = 0.8F;
         }
 
-        this.motionX *= var17;
-        this.motionY *= var17;
-        this.motionZ *= var17;
+        this.setMotion(this.getMotion().getX() * var17, this.getMotion().getY() * var17, this.getMotion().getZ() * var17);
 
-        if (this.onGround)
-        {
-            this.motionX *= 0.5;
-            this.motionZ *= 0.5;
-            this.motionY *= 0.5;
+        if (this.onGround) {
+            this.setMotion(this.getMotion().getX() * 0.5, this.getMotion().getY() * 0.5, this.getMotion().getZ() * 0.5);
         }
-        else
-        {
-            this.motionY -= gravity;
+        else {
+            this.setMotion(this.getMotion().getX(), this.getMotion().getY() - gravity, this.getMotion().getZ());
             //this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
         }
 
@@ -277,15 +262,15 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
     /** Triggers the explosion of the grenade */
     protected void triggerExplosion()
     {
-        this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-        ExplosiveHandler.createExplosion(this, this.world, this.posX, this.posY + 0.3f, this.posZ, explosive.getExplosiveData().getRegistryID(), 1, explosive.getCustomBlastData());
-        this.setDead();
+        this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+        ExplosiveHandler.createExplosion(this, this.world, this.getPosX(), this.getPosY() + 0.3f, this.getPosZ(), explosive.getExplosiveData().getRegistryID(), 1, explosive.getCustomBlastData());
+        this.remove();
     }
 
     @Override
     public boolean handleWaterMovement()
     {
-        return this.world.handleMaterialAcceleration(this.getEntityBoundingBox(), Material.WATER, this);
+        return this.world.handleMaterialAcceleration(this.getBoundingBox(), Material.WATER, this);
     }
 
     @Override
@@ -301,34 +286,26 @@ public class EntityGrenade extends Entity implements IEntityAdditionalSpawnData
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
-    {
-        if (nbt.hasKey(NBTConstants.EXPLOSIVE))
-        {
-            explosive.deserializeNBT(nbt.getCompoundTag(NBTConstants.EXPLOSIVE));
+    protected void readEntityFromNBT(CompoundNBT nbt) {
+        if (nbt.contains(NBTConstants.EXPLOSIVE)) {
+            explosive.deserializeNBT(nbt.getCompound(NBTConstants.EXPLOSIVE));
         }
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
-    {
-        nbt.setTag(NBTConstants.EXPLOSIVE, explosive.serializeNBT());
+    protected void writeEntityToNBT(CompoundNBT nbt) {
+        nbt.put(NBTConstants.EXPLOSIVE, explosive.serializeNBT());
     }
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY || super.hasCapability(capability, facing);
-    }
-
-    @Override
     @Nullable
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY)
-        {
-            return ICBMClassicAPI.EXPLOSIVE_CAPABILITY.cast(explosive);
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
+        if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY) {
+            // Official documentation is not yet updated, porting file-by-file for the time being so hoping this works
+            // https://forums.minecraftforge.net/topic/69813-lazyoptional/
+            return LazyOptional.of(() -> ICBMClassicAPI.EXPLOSIVE_CAPABILITY).cast();
         }
-        return super.getCapability(capability, facing);
+        return null;
     }
+
 }

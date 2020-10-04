@@ -126,13 +126,6 @@ public class CommonProxy //implements IGuiHandler
         return null;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public boolean isShiftHeld()
-    {
-        //TODO//return Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-        return false;
-    }
-
     public void spawnSmoke(World world, Pos position, double v, double v1, double v2, float red, float green, float blue, float scale, int age)
     {
 

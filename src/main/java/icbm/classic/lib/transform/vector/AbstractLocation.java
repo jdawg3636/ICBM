@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.vector.Vector3d;
@@ -20,6 +21,7 @@ import net.minecraft.world.Dimension;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.DimensionManager;
 
@@ -195,26 +197,20 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
      * @return Block or null if the chunk is not loaded
      */
     @Deprecated //Use getBlockState()
-    public Block getBlock()
-    {
-        if (world != null && world.getChunkProvider().isChunkGeneratedAt(xi() / 16, zi() / 16))
-        {
+    public Block getBlock() {
+        if (world != null && world.getChunkProvider().chunkExists(xi() / 16, zi() / 16)) {
             return super.getBlock(world);
         }
-        else
-        {
+        else {
             return null;
         }
     }
 
-    public BlockState getBlockState()
-    {
-        if (world != null && world.getChunkProvider().isChunkGeneratedAt(xi() / 16, zi() / 16))
-        {
+    public BlockState getBlockState() {
+        if (world != null && world.getChunkProvider().chunkExists(xi() / 16, zi() / 16)) {
             return super.getBlockState(world);
         }
-        else
-        {
+        else {
             return null;
         }
     }
@@ -355,12 +351,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
      */
     public boolean isChunkLoaded()
     {
-        //For some reason the server has it's own chunk provider that actually checks if the chunk exists
-        if (world instanceof ServerWorld)
-        {
-            return ((ServerWorld) world).getChunkProvider().chunkExists(xi() >> 4, zi() >> 4) && getChunk().isLoaded();
-        }
-        return world.getChunkProvider().isChunkGeneratedAt(xi() >> 4, zi() >> 4) && getChunk().isLoaded();
+        return world.getChunkProvider().isChunkLoaded(new ChunkPos(new BlockPos(xi(), 0, zi())));
     }
 
     /**
@@ -368,7 +359,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
      *
      * @return chunk the location is in
      */
-    public Chunk getChunk()
+    public IChunk getChunk()
     {
         return world.getChunk(toBlockPos());
     }

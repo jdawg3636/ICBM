@@ -1,18 +1,23 @@
 package icbm.classic.prefab.item;
 
 import icbm.classic.ICBMConstants;
+import icbm.classic.lib.IOUtil;
 import icbm.classic.lib.LanguageUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.List;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 
 /**
  * Generic prefab to use in all items providing common implementation
@@ -23,37 +28,40 @@ import java.util.List;
 public class ItemBase extends Item
 {
 
+    public ItemBase(Item.Properties properties) {
+        super(properties);
+    }
+
     public ItemBase setName(String name)
     {
-        this.setTranslationKey(ICBMConstants.PREFIX + name);
         this.setRegistryName(ICBMConstants.PREFIX + name);
         return this;
     }
 
     //Make sure to mirror all changes to other abstract class
     @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag)
+    @OnlyIn(Dist.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        EntityPlayer player = Minecraft.getMinecraft().player;
+        PlayerEntity player = Minecraft.getInstance().player;
 
         //Generic info, shared by item group
-        splitAdd(getTranslationKey() + ".info", list, false, true);
+        splitAdd(getTranslationKey() + ".info", tooltip, false, true);
 
         if (hasDetailedInfo(stack, player))
         {
-            getDetailedInfo(stack, player, list);
+            getDetailedInfo(stack, player, tooltip);
         }
 
         if (hasShiftInfo(stack, player))
         {
-            if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+            if (IOUtil.isKeyPressed(GLFW_KEY_LEFT_SHIFT))
             {
-                list.add(LanguageUtility.getLocal("info.voltzengine:tooltip.noShift").replace("#0", "\u00a7b").replace("#1", "\u00a77"));
+                tooltip.add(new StringTextComponent(LanguageUtility.getLocal("info.voltzengine:tooltip.noShift").replace("#0", "\u00a7b").replace("#1", "\u00a77")));
             }
             else
             {
-                getShiftDetailedInfo(stack, player, list);
+                getShiftDetailedInfo(stack, player, tooltip);
             }
         }
     }
@@ -64,12 +72,12 @@ public class ItemBase extends Item
      *
      * @param stack
      * @param player
-     * @param list
+     * @param tooltip
      */
-    protected void getDetailedInfo(ItemStack stack, EntityPlayer player, List<String> list)
+    protected void getDetailedInfo(ItemStack stack, PlayerEntity player, List<ITextComponent> tooltip)
     {
         //Per item detailed info
-        splitAdd(getTranslationKey(stack) + ".info", list, true, true);
+        splitAdd(getTranslationKey(stack) + ".info", tooltip, true, true);
     }
 
     /**
@@ -80,20 +88,20 @@ public class ItemBase extends Item
      *
      * @param stack
      * @param player
-     * @param list
+     * @param tooltip
      */
-    protected void getShiftDetailedInfo(ItemStack stack, EntityPlayer player, List<String> list)
+    protected void getShiftDetailedInfo(ItemStack stack, PlayerEntity player, List<ITextComponent> tooltip)
     {
         //Per item detailed info
-        splitAdd(getTranslationKey(stack) + ".info.detailed", list, true, true);
+        splitAdd(getTranslationKey(stack) + ".info.detailed", tooltip, true, true);
     }
 
-    protected void splitAdd(String translationKey, List<String> list, boolean addKeyIfEmpty, boolean translate)
+    protected void splitAdd(String translationKey, List<ITextComponent> tooltip, boolean addKeyIfEmpty, boolean translate)
     {
         String translation = translate ? LanguageUtility.getLocal(translationKey) : translationKey;
         if (!translate || !translation.isEmpty() && !translation.equals(translationKey))
         {
-            list.addAll(LanguageUtility.splitByLine(translation));
+            LanguageUtility.splitByLine(translation).forEach(line -> tooltip.add(new StringTextComponent(line)));
         }
     }
 
@@ -104,7 +112,7 @@ public class ItemBase extends Item
      * @param player
      * @return
      */
-    protected boolean hasDetailedInfo(ItemStack stack, EntityPlayer player)
+    protected boolean hasDetailedInfo(ItemStack stack, PlayerEntity player)
     {
         return false;
     }
@@ -117,7 +125,7 @@ public class ItemBase extends Item
      * @param player
      * @return
      */
-    protected boolean hasShiftInfo(ItemStack stack, EntityPlayer player)
+    protected boolean hasShiftInfo(ItemStack stack, PlayerEntity player)
     {
         return false;
     }
