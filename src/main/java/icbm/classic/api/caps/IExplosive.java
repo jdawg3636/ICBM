@@ -2,7 +2,7 @@ package icbm.classic.api.caps;
 
 import icbm.classic.api.reg.IExplosiveData;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 import javax.annotation.Nullable;
 
@@ -28,7 +28,7 @@ public interface IExplosive
      * @return nbt
      */
     @Nullable
-    NBTTagCompound getCustomBlastData();
+    CompoundNBT getCustomBlastData();
 
     /**
      * Gets the stack version of the explosive

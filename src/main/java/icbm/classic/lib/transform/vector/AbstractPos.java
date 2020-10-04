@@ -8,18 +8,18 @@ import icbm.classic.lib.NBTConstants;
 import icbm.classic.lib.transform.rotation.EulerAngle;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.*;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 /**
  * Abstract version of Pos3D for interaction with the minecraft world
@@ -54,7 +54,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 
     public AbstractPos(Entity entity)
     {
-        this(entity.posX, entity.posY, entity.posZ);
+        this(entity.getPosX(), entity.getPosY(), entity.getPosZ());
     }
 
     public AbstractPos(IPos3D vec)
@@ -62,7 +62,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         this(vec.x(), vec.y(), vec.z());
     }
 
-    public AbstractPos(NBTTagCompound nbt)
+    public AbstractPos(CompoundNBT nbt)
     {
         this(nbt.getDouble(NBTConstants.X), nbt.getDouble(NBTConstants.Y), nbt.getDouble(NBTConstants.Z));
     }
@@ -77,12 +77,12 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         this(par1.getX(), par1.getY(), par1.getZ());
     }
 
-    public AbstractPos(EnumFacing dir)
+    public AbstractPos(Direction dir)
     {
         this(dir.getXOffset(), dir.getYOffset(), dir.getZOffset());
     }
 
-    public AbstractPos(Vec3d vec)
+    public AbstractPos(Vector3d vec)
     {
         this(vec.x, vec.y, vec.z);
     }
@@ -101,9 +101,9 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
     //========Converters=======
     //=========================
 
-    public Vec3d toVec3d()
+    public Vector3d toVector3d()
     {
-        return new Vec3d(x(), y(), z());
+        return new Vector3d(x(), y(), z());
     }
 
     public Point toVector2()
@@ -111,10 +111,10 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         return new Point(x(), z());
     }
 
-    public EnumFacing toDirection()
+    public Direction toDirection()
     {
         //TODO maybe add a way to convert convert any vector into a direction from origin
-        for (EnumFacing dir : EnumFacing.values())
+        for (Direction dir : Direction.values())
         {
             if (xi() == dir.getXOffset() && yi() == dir.getYOffset() && zi() == dir.getZOffset())
             {
@@ -162,57 +162,57 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         return add(other.getX(), other.getY(), other.getZ());
     }
 
-    public R add(EnumFacing face)
+    public R add(Direction face)
     {
         return add(face.getXOffset(), face.getYOffset(), face.getZOffset());
     }
 
-    public R add(Vec3d vec)
+    public R add(Vector3d vec)
     {
         return add(vec.x, vec.y, vec.z);
     }
 
-    public R sub(EnumFacing face)
+    public R sub(Direction face)
     {
         return sub(face.getXOffset(), face.getYOffset(), face.getZOffset());
     }
 
-    public R sub(Vec3d vec)
+    public R sub(Vector3d vec)
     {
         return add(vec.x, vec.y, vec.z);
     }
 
-    public double distance(Vec3i vec)
+    public double distance(Vector3i vec)
     {
         return distance(vec.getX() + 0.5, vec.getY() + 0.5, vec.getZ() + 0.5);
     }
 
-    public double distance(Vec3d vec)
+    public double distance(Vector3d vec)
     {
         return distance(vec.x, vec.y, vec.z);
     }
 
     public double distance(Entity entity)
     {
-        return distance(entity.posX, entity.posY, entity.posZ);
+        return distance(entity.getPosX(), entity.getPosY(), entity.getPosZ());
     }
 
-    public R multiply(EnumFacing face)
+    public R multiply(Direction face)
     {
         return multiply(face.getXOffset(), face.getYOffset(), face.getZOffset());
     }
 
-    public R multiply(Vec3d vec)
+    public R multiply(Vector3d vec)
     {
         return multiply(vec.x, vec.y, vec.z);
     }
 
-    public R divide(EnumFacing face)
+    public R divide(Direction face)
     {
         return divide(face.getXOffset(), face.getYOffset(), face.getZOffset());
     }
 
-    public R divide(Vec3d vec)
+    public R divide(Vector3d vec)
     {
         return divide(vec.x, vec.y, vec.z);
     }
@@ -227,30 +227,30 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
     //========NBT==============
     //=========================
 
-    public NBTTagCompound toNBT()
+    public CompoundNBT toNBT()
     {
-        return writeNBT(new NBTTagCompound());
+        return writeNBT(new CompoundNBT());
     }
 
-    public NBTTagCompound toIntNBT()
+    public CompoundNBT toIntNBT()
     {
-        return writeIntNBT(new NBTTagCompound());
+        return writeIntNBT(new CompoundNBT());
     }
 
-    public NBTTagCompound writeNBT(NBTTagCompound nbt)
+    public CompoundNBT writeNBT(CompoundNBT nbt)
     {
-        nbt.setDouble(NBTConstants.X, x());
-        nbt.setDouble(NBTConstants.Y, y());
-        nbt.setDouble(NBTConstants.Z, z());
+        nbt.putDouble(NBTConstants.X, x());
+        nbt.putDouble(NBTConstants.Y, y());
+        nbt.putDouble(NBTConstants.Z, z());
         return nbt;
     }
 
 
-    public NBTTagCompound writeIntNBT(NBTTagCompound nbt)
+    public CompoundNBT writeIntNBT(CompoundNBT nbt)
     {
-        nbt.setInteger(NBTConstants.X, xi());
-        nbt.setInteger(NBTConstants.Y, yi());
-        nbt.setInteger(NBTConstants.Z, zi());
+        nbt.putInt(NBTConstants.X, xi());
+        nbt.putInt(NBTConstants.Y, yi());
+        nbt.putInt(NBTConstants.Z, zi());
         return nbt;
     }
 
@@ -262,11 +262,11 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         return data;
     }
 
+    /*
     public RayTraceResult rayTrace(World world, IPos3D dir, double dist)
     {
         return rayTrace(world, new Pos(x() + dir.x() * dist, y() + dir.y() * dist, z() + dir.z() * dist));
     }
-
 
     public RayTraceResult rayTrace(World world, IPos3D end)
     {
@@ -279,81 +279,57 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         RayTraceResult entity = rayTraceEntities(world, end);
 
         if (block == null)
-        {
             return entity;
-        }
         if (entity == null)
-        {
             return block;
-        }
 
-        if (distance(new Pos(block.hitVec)) < distance(new Pos(entity.hitVec)))
-        {
+        if (distance(new Pos(block.getHitVec())) < distance(new Pos(entity.getHitVec())))
             return block;
-        }
 
         return entity;
     }
 
 
-    public RayTraceResult rayTraceBlocks(World world, IPos3D end)
+    public BlockRayTraceResult rayTraceBlocks(World world, IPos3D end)
     {
         return rayTraceBlocks(world, end, false, false, false);
     }
 
-    public RayTraceResult rayTraceBlocks(World world, IPos3D end, boolean b1, boolean b2, boolean b3)
+    public BlockRayTraceResult rayTraceBlocks(World world, IPos3D end, boolean b1, boolean b2, boolean b3)
     {
-        return world.rayTraceBlocks(toVec3d(), new Vec3d(end.x(), end.y(), end.z()), b1, b2, b3);
+        return world.rayTraceBlocks(new RayTraceContext(toVector3d(), new Vector3d(end.x(), end.y(), end.z()), b1, b2, b3));
     }
+    */
 
-    public RayTraceResult rayTraceEntities(World world, IPos3D end)
-    {
-        RayTraceResult closestEntityMOP = null;
+    public EntityRayTraceResult rayTraceEntities(World world, IPos3D end) {
+
+        EntityRayTraceResult closestEntity = null;
         double closetDistance = 0D;
 
         double checkDistance = distance(end);
         AxisAlignedBB scanRegion = new AxisAlignedBB(-checkDistance, -checkDistance, -checkDistance, checkDistance, checkDistance, checkDistance).offset(x(), y(), z());
+        for (Entity entity : world.getEntitiesWithinAABB(Entity.class, scanRegion)) {
 
-        List checkEntities = world.getEntitiesWithinAABB(Entity.class, scanRegion);
+            if (entity != null && entity.canBeCollidedWith() && entity.getBoundingBox() != null) {
 
-        for (Object obj : checkEntities)
-        {
-            Entity entity = (Entity) obj;
-            if (entity != null && entity.canBeCollidedWith() && entity.getEntityBoundingBox() != null)
-            {
                 float border = entity.getCollisionBorderSize();
-                AxisAlignedBB bounds = entity.getEntityBoundingBox().expand(border, border, border);
-                RayTraceResult hit = bounds.calculateIntercept(toVec3d(), new Vec3d(end.x(), end.y(), end.z()));
+                AxisAlignedBB bounds = entity.getBoundingBox().expand(border, border, border);
 
-                if (hit != null)
-                {
-                    if (bounds.contains(toVec3d()))
-                    {
-                        if (0 < closetDistance || closetDistance == 0)
-                        {
-                            closestEntityMOP = new RayTraceResult(entity);
+                Vector3d hit = bounds.rayTrace(toVector3d(), new Vector3d(end.x(), end.y(), end.z())).orElse(null);
 
-                            closestEntityMOP.hitVec = hit.hitVec;
-                            closetDistance = 0;
-                        }
-                    }
-                    else
-                    {
-                        double dist = distance(new Pos(hit.hitVec));
-
-                        if (dist < closetDistance || closetDistance == 0)
-                        {
-                            closestEntityMOP = new RayTraceResult(entity);
-                            closestEntityMOP.hitVec = hit.hitVec;
-
-                            closetDistance = dist;
-                        }
+                if (hit != null) {
+                    double dist = 0;
+                    if(!bounds.contains(toVector3d()))
+                        dist = distance(new Pos(hit));
+                    if (dist <= closetDistance) {
+                        closestEntity = new EntityRayTraceResult(entity);
+                        closetDistance = dist;
                     }
                 }
             }
         }
 
-        return closestEntityMOP;
+        return closestEntity;
     }
 
     //===================
@@ -364,12 +340,12 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         return setBlock(world, block.getDefaultState());
     }
 
-    public boolean setBlock(World world, IBlockState state)
+    public boolean setBlock(World world, BlockState state)
     {
         return setBlock(world, state, 3);
     }
 
-    public boolean setBlock(World world, IBlockState block, int notify)
+    public boolean setBlock(World world, BlockState block, int notify)
     {
         if (world != null && block != null)
         {
@@ -383,7 +359,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 
     public boolean setBlockToAir(World world)
     {
-        return world.setBlockToAir(toBlockPos());
+        return world.setBlockState(toBlockPos(), Blocks.AIR.getDefaultState(), 1+2 /* cause a block update & send change to clients */);
     }
 
     public BlockPos toBlockPos()
@@ -413,8 +389,8 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
     public boolean isReplaceable(World world)
     {
         BlockPos pos = toBlockPos();
-        IBlockState block = world.getBlockState(pos);
-        return block == null || block.getBlock().isAir(block, world, pos) || block.getBlock().isAir(block, world, toBlockPos()) || block.getBlock().isReplaceable(world, toBlockPos());
+        BlockState block = world.getBlockState(pos);
+        return block.getBlock().isAir(block, world, pos) || block.getBlock().isAir(block, world, toBlockPos()) || world.getBlockState(toBlockPos()).getMaterial().isReplaceable();
     }
 
     /**
@@ -427,15 +403,15 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         return world.canSeeSky(toBlockPos());
     }
 
-    public boolean isBlockEqual(World world, Block block)
+    public boolean isBlockEqual(IBlockReader world, Block block)
     {
         Block b = getBlock(world);
         return b != null && b == block;
     }
 
-    public Block getBlock(IBlockAccess world)
+    public Block getBlock(IBlockReader world)
     {
-        IBlockState state = getBlockState(world);
+        BlockState state = getBlockState(world);
         if (world != null && state != null) //TODO check if chunk is loaded
         {
             return state.getBlock();
@@ -446,7 +422,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         }
     }
 
-    public IBlockState getBlockState(IBlockAccess world)
+    public BlockState getBlockState(IBlockReader world)
     {
         if (world != null) //TODO check if chunk is loaded
         {
@@ -458,7 +434,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
         }
     }
 
-    public TileEntity getTileEntity(IBlockAccess world)
+    public TileEntity getTileEntity(IBlockReader world)
     {
         if (world != null) //TODO check if chunk is loaded
         {
@@ -469,10 +445,10 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
 
     public float getHardness(World world)
     {
-        IBlockState state = getBlockState(world);
+        BlockState state = getBlockState(world);
         if (state != null && !state.getBlock().isAir(state, world, toBlockPos()))
         {
-            return state.getBlock().getBlockHardness(state, world, toBlockPos());
+            return state.getBlockHardness(world, toBlockPos());
         }
         else
         {
@@ -481,58 +457,32 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
     }
 
     /**
-     * Gets the resistance of a block using block.getResistance method
-     *
-     * @param cause - entity that triggered/is the explosion
-     */
-    public float getResistance(Entity cause)
-    {
-        return getResistance(cause.world, cause, x(), y(), z());
-    }
-
-    /**
-     * Gets the resistance of a block using block.getResistance method
-     *
-     * @param cause - entity that triggered/is the explosion
+     * Gets the resistance of a block using block.getExplosionResistance method
      */
     public float getResistanceToEntity(Entity cause)
     {
-        return getBlock(cause.world).getExplosionResistance(cause);
+        return getBlock(cause.world).getExplosionResistance();
     }
 
     /**
-     * Gets the resistance of a block using block.getResistance method
-     *
-     * @param cause - entity that triggered/is the explosion
+     * Gets the resistance of a block using block.getExplosionResistance method
      */
-    public float getResistanceToEntity(World world, Entity cause)
+    public float getResistanceToEntity(IBlockReader world)
     {
-        return getBlock(world).getExplosionResistance(cause);
-    }
-
-    /**
-     * Gets the resistance of a block using block.getResistance method
-     *
-     * @param world - world to check in
-     * @param cause - entity that triggered/is the explosion
-     */
-    public float getResistance(World world, Entity cause)
-    {
-        return getResistance(world, cause, cause.posX, cause.posY, cause.posZ);
+        return getBlock(world).getExplosionResistance();
     }
 
     /**
      * Gets the resistance of a block using block.getResistance method
      *
      * @param world - world to check in
-     * @param cause - entity that triggered/is the explosion
-     * @param xx    - xPos location of the explosion
-     * @param yy    - xPos location of the explosion
-     * @param zz    - xPos location of the explosion
      */
-    public float getResistance(World world, Entity cause, double xx, double yy, double zz)
+    public float getResistance(World world)
     {
-        return getBlock(world).getExplosionResistance(world, toBlockPos(), cause, new Explosion(world, cause, xx, yy, zz, 1, false, false));
+        // The original ICBM-Classic implementation had many more parameters and overloads
+        // As of 1.16.3, the implementation in net.minecraftforge.common.extensions.IForgeBlock ignores them
+        // It ignored them in 1.12.2 as well, but divided the field by 5.0F rather than directly returning.
+        return getBlock(world).getExplosionResistance();
     }
 
     public boolean isAboveBedrock()
@@ -553,7 +503,7 @@ public abstract class AbstractPos<R extends AbstractPos> extends Pos3D<R> implem
     public void markForUpdate(World world)
     {
         BlockPos pos = toBlockPos();
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         if (state != null && !state.getBlock().isAir(state, world, toBlockPos()))
         {
             world.notifyBlockUpdate(pos, state, state, 3);

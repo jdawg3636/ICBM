@@ -5,17 +5,22 @@ import icbm.classic.api.data.IWorldPosition;
 import icbm.classic.lib.NBTConstants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.dispenser.ILocation;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.Dimension;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.DimensionManager;
 
 /**
@@ -44,9 +49,9 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
      *
      * @param nbt - valid data, can't be null
      */
-    public AbstractLocation(NBTTagCompound nbt)
+    public AbstractLocation(CompoundNBT nbt)
     {
-        this(DimensionManager.getWorld(nbt.getInteger(NBTConstants.DIMENSION)), nbt.getDouble(NBTConstants.X), nbt.getDouble(NBTConstants.Y), nbt.getDouble(NBTConstants.Z));
+        this(DimensionManager.getWorld(nbt.getInt(NBTConstants.DIMENSION)), nbt.getDouble(NBTConstants.X), nbt.getDouble(NBTConstants.Y), nbt.getDouble(NBTConstants.Z));
     }
 
     /**
@@ -66,7 +71,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
      */
     public AbstractLocation(Entity entity)
     {
-        this(entity.world, entity.posX, entity.posY, entity.posZ);
+        this(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ());
     }
 
     /**
@@ -101,12 +106,12 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
     }
 
     /**
-     * Creates a location from a world and {@link Vec3d} combo
+     * Creates a location from a world and {@link Vector3d} combo
      *
      * @param world - valid world, can be null but not recommended
      * @param vec   - minecraft vector
      */
-    public AbstractLocation(World world, Vec3d vec)
+    public AbstractLocation(World world, Vector3d vec)
     {
         this(world, vec.x, vec.y, vec.z);
     }
@@ -119,7 +124,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
      */
     public AbstractLocation(World world, RayTraceResult target)
     {
-        this(world, target.hitVec);
+        this(world, target.getHitVec());
     }
 
     /**
@@ -146,12 +151,12 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
      * Conversions
      */
     @Override
-    public NBTTagCompound writeNBT(NBTTagCompound nbt)
+    public CompoundNBT writeNBT(CompoundNBT nbt)
     {
-        nbt.setInteger(NBTConstants.DIMENSION, world != null && world.provider != null ? world.provider.getDimension() : 0);
-        nbt.setDouble(NBTConstants.X, x());
-        nbt.setDouble(NBTConstants.Y, y());
-        nbt.setDouble(NBTConstants.Z, z());
+        nbt.putInt(NBTConstants.DIMENSION, world != null && world.provider != null ? world.provider.getDimension() : 0);
+        nbt.putDouble(NBTConstants.X, x());
+        nbt.putDouble(NBTConstants.Y, y());
+        nbt.putDouble(NBTConstants.Z, z());
         return nbt;
     }
 
@@ -202,7 +207,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
         }
     }
 
-    public IBlockState getBlockState()
+    public BlockState getBlockState()
     {
         if (world != null && world.getChunkProvider().isChunkGeneratedAt(xi() / 16, zi() / 16))
         {
@@ -242,15 +247,11 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
     /**
      * Gets the resistance value of the block to explosives
      *
-     * @param cause - sources of the explosive
-     * @param xx    - location of the explosion
-     * @param yy    - location of the explosion
-     * @param zz    - location of the explosion
      * @return value of resistance to the explosion
      */
-    public float getResistance(Entity cause, double xx, double yy, double zz)
+    public float getResistance()
     {
-        return super.getResistance(world, cause, xx, yy, zz);
+        return super.getResistance(world);
     }
 
     /**
@@ -260,7 +261,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
      * @param notify   - notification level to use when placing the block
      * @return true if it was repalced
      */
-    public boolean setBlock(IBlockState block, int notify)
+    public boolean setBlock(BlockState block, int notify)
     {
         return super.setBlock(world, block, notify);
     }
@@ -270,7 +271,7 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
      *
      * @return true if it was repalced
      */
-    public boolean setBlock(IBlockState state)
+    public boolean setBlock(BlockState state)
     {
         return super.setBlock(world, state, 3);
     }
@@ -355,9 +356,9 @@ public abstract class AbstractLocation<R extends AbstractLocation> extends Abstr
     public boolean isChunkLoaded()
     {
         //For some reason the server has it's own chunk provider that actually checks if the chunk exists
-        if (world instanceof WorldServer)
+        if (world instanceof ServerWorld)
         {
-            return ((WorldServer) world).getChunkProvider().chunkExists(xi() >> 4, zi() >> 4) && getChunk().isLoaded();
+            return ((ServerWorld) world).getChunkProvider().chunkExists(xi() >> 4, zi() >> 4) && getChunk().isLoaded();
         }
         return world.getChunkProvider().isChunkGeneratedAt(xi() >> 4, zi() >> 4) && getChunk().isLoaded();
     }

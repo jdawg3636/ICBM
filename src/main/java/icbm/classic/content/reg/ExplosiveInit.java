@@ -30,16 +30,16 @@ import icbm.classic.content.blast.threaded.BlastNuclear;
 import icbm.classic.lib.explosive.reg.ExplosiveRegistry;
 import icbm.classic.lib.transform.vector.Location;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 /**
@@ -69,7 +69,7 @@ public class ExplosiveInit
 
         ICBMExplosives.INCENDIARY = newEx(2, "incendiary", EnumTier.ONE, () -> new BlastFire().setBlastSize(14));
         ICBMClassicAPI.EX_BLOCK_REGISTRY.setFuseTickListener(ICBMExplosives.INCENDIARY.getRegistryName(),
-                (world, x, y, z, tick) -> world.spawnParticle(EnumParticleTypes.LAVA, x, y + 0.5D, z, 0.0D, 0.0D, 0.0D)
+                (world, x, y, z, tick) -> world.addParticle(ParticleTypes.LAVA, x, y + 0.5D, z, 0.0D, 0.0D, 0.0D)
                 );
         ICBMClassicAPI.EX_BLOCK_REGISTRY.setFuseSupplier(ICBMExplosives.INCENDIARY.getRegistryName(), (world, x, y, z) -> ConfigBlast.FUSE_TIMES.EXPLOSIVES.INCENDIARY);
         ICBMClassicAPI.EX_GRENADE_REGISTRY.setFuseSupplier(ICBMExplosives.INCENDIARY.getRegistryName(), (entity) -> ConfigBlast.FUSE_TIMES.GRENADES.INCENDIARY);
@@ -168,7 +168,7 @@ public class ExplosiveInit
 
         ICBMExplosives.EXOTHERMIC = newEx(17, "exothermic", EnumTier.THREE, () -> new BlastExothermic().setBlastSize(30));
         ICBMClassicAPI.EX_BLOCK_REGISTRY.setFuseTickListener(ICBMExplosives.EXOTHERMIC.getRegistryName(),
-                (world, x, y, z, tick) -> world.spawnParticle(EnumParticleTypes.LAVA, x, y + 0.5D, z, 0.0D, 0.0D, 0.0D));
+                (world, x, y, z, tick) -> world.addParticle(ParticleTypes.LAVA, x, y + 0.5D, z, 0.0D, 0.0D, 0.0D));
         ICBMClassicAPI.EX_BLOCK_REGISTRY.setFuseSupplier(ICBMExplosives.EXOTHERMIC.getRegistryName(), (world, x, y, z) -> ConfigBlast.FUSE_TIMES.EXPLOSIVES.EXOTHERMIC);
         ICBMClassicAPI.EX_MINECART_REGISTRY.setFuseSupplier(ICBMExplosives.EXOTHERMIC.getRegistryName(), (entity) -> ConfigBlast.FUSE_TIMES.BOMB_CARTS.EXOTHERMIC);
 
@@ -231,12 +231,12 @@ public class ExplosiveInit
         return ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation(ICBMConstants.DOMAIN, name), tier, factory);
     }
 
-    private static boolean enderMissileCoordSet(Entity entity, EntityPlayer player, EnumHand hand)
+    private static boolean enderMissileCoordSet(Entity entity, PlayerEntity player, Hand hand)
     {
         if (entity.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null))
         {
             final IExplosive provider = entity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null);
-            final NBTTagCompound tag = provider.getCustomBlastData();
+            final CompoundNBT tag = provider.getCustomBlastData();
             if (tag != null)
             {
                 final ItemStack heldItem = player.getHeldItem(hand);
@@ -250,7 +250,7 @@ public class ExplosiveInit
                         ((Location) link).writeIntNBT(tag);
                         if (!entity.world.isRemote)
                         {
-                            player.sendMessage(new TextComponentString("Coordinates encoded into entity")); //TODO translate
+                            //player.sendMessage(new StringTextComponent("Coordinates encoded into entity"), null); //TODO translate
                         }
                         return true;
                     }
@@ -261,7 +261,7 @@ public class ExplosiveInit
         return false;
     }
 
-    private static boolean enderBlockCoordSet(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    private static boolean enderBlockCoordSet(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, Direction facing, float hitX, float hitY, float hitZ)
     {
         final ItemStack heldItem = entityPlayer.getHeldItem(hand);
         if (heldItem.getItem() instanceof IWorldPosItem)
@@ -275,12 +275,12 @@ public class ExplosiveInit
 
                 if (tileEntity.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, facing))
                 {
-                    IExplosive explosive = tileEntity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, facing);
+                    IExplosive explosive = tileEntity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, facing).orElse(null);
                     if (explosive != null)
                     {
-                        NBTTagCompound tag = new NBTTagCompound();
+                        CompoundNBT tag = new CompoundNBT();
                         ((Location) link).writeIntNBT(tag);
-                        explosive.getCustomBlastData().setTag("", tag);
+                        explosive.getCustomBlastData().put("", tag);
 
                         if (!world.isRemote)
                         {
