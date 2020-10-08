@@ -2,7 +2,7 @@ package icbm.classic.api.explosion;
 
 import icbm.classic.api.reg.IExplosiveData;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -13,8 +13,7 @@ import javax.annotation.Nonnull;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 1/3/19.
  */
-public interface IBlastInit extends IBlast
-{
+public interface IBlastInit extends IBlast {
 
     /**
      * Sets the size of the blast
@@ -64,7 +63,7 @@ public interface IBlastInit extends IBlast
      * @param customData - nbt save data
      * @return this
      */
-    IBlastInit setCustomData(@Nonnull NBTTagCompound customData);
+    IBlastInit setCustomData(@Nonnull CompoundNBT customData);
 
     /**
      * Sets the entity that will control this blast.
@@ -94,4 +93,5 @@ public interface IBlastInit extends IBlast
      * @return this
      */
     IBlastInit buildBlast();
+
 }
