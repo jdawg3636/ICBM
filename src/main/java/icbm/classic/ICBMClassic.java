@@ -73,8 +73,7 @@ import java.util.function.Consumer;
  */
 @Mod(ICBMConstants.DOMAIN)
 @Mod.EventBusSubscriber
-public final class ICBMClassic
-{
+public final class ICBMClassic {
 
     public static final boolean runningAsDev = System.getProperty("development") != null && System.getProperty("development").equalsIgnoreCase("true");
 
@@ -115,70 +114,57 @@ public final class ICBMClassic
 
     /*
     @SubscribeEvent
-    public void registerRecipes(RegistryEvent.Register<IRecipe> event)
-    {
-        if (ConfigItems.ENABLE_CRAFTING_ITEMS)
-        {
+    public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        if (ConfigItems.ENABLE_CRAFTING_ITEMS) {
+
+            //Steel clump -> Steel ingot
             if (ConfigItems.ENABLE_INGOTS_ITEMS)
-            {
-                //Steel clump -> Steel ingot
-                //GameRegistry.addSmelting(new ItemStack(ItemReg.itemIngotClump, 1, 0), new ItemStack(ItemReg.itemIngot, 1, 0), 0.1f);
+                GameRegistry.addSmelting(new ItemStack(ItemReg.itemIngotClump, 1, 0), new ItemStack(ItemReg.itemIngot, 1, 0), 0.1f);
+
+            //Fix for removing recipe of plate
+            if (ConfigItems.ENABLE_PLATES_ITEMS) {
+                GameRegistry.addSmelting(ItemReg.itemPlate.getStack("iron", 1), new ItemStack(Items.IRON_INGOT), 0f);
             }
 
-            if (ConfigItems.ENABLE_PLATES_ITEMS)
-            {
-                //Fix for removing recipe of plate
-                //GameRegistry.addSmelting(ItemReg.itemPlate.getStack("iron", 1), new ItemStack(Items.IRON_INGOT), 0f);
-            }
         }
     }
     */
 
     // TODO replace all of this with modern technique https://mcforge.readthedocs.io/en/1.16.x/items/globallootmodifiers/
     @SubscribeEvent
-    public void registerLoot(LootTableLoadEvent event)
-    {
+    public void registerLoot(LootTableLoadEvent event) {
         ///setblock ~ ~ ~ minecraft:chest 0 replace {LootTable:"minecraft:chests/simple_dungeon"}
         /*
         final String VANILLA_LOOT_POOL_ID = "main";
-        if (event.getName().equals(LootTables.CHESTS_ABANDONED_MINESHAFT) || event.getName().equals(LootTables.CHESTS_SIMPLE_DUNGEON))
-        {
-            if (ConfigItems.ENABLE_LOOT_DROPS)
-            {
+        if (event.getName().equals(LootTables.CHESTS_ABANDONED_MINESHAFT) || event.getName().equals(LootTables.CHESTS_SIMPLE_DUNGEON)) {
+            if (ConfigItems.ENABLE_LOOT_DROPS) {
                 LootPool lootPool = event.getTable().getPool(VANILLA_LOOT_POOL_ID);
-                if (lootPool != null && ConfigItems.ENABLE_CRAFTING_ITEMS)
-                {
+                if (lootPool != null && ConfigItems.ENABLE_CRAFTING_ITEMS) {
 
-                    if (ConfigItems.ENABLE_INGOTS_ITEMS)
-                    {
+                    if (ConfigItems.ENABLE_INGOTS_ITEMS) {
                         lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "ingot.copper", ItemReg.itemIngot.getStack("copper", 10), 15, 5));
                         lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "ingot.steel", ItemReg.itemIngot.getStack("steel", 10), 20, 3));
                     }
-                    if (ConfigItems.ENABLE_PLATES_ITEMS)
-                    {
+                    if (ConfigItems.ENABLE_PLATES_ITEMS) {
                         lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "plate.steel", ItemReg.itemPlate.getStack("steel", 5), 30, 3));
                     }
-                    if (ConfigItems.ENABLE_WIRES_ITEMS)
-                    {
+                    if (ConfigItems.ENABLE_WIRES_ITEMS) {
                         lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "wire.copper", ItemReg.itemWire.getStack("copper", 20), 15, 5));
                         lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "wire.gold", ItemReg.itemWire.getStack("gold", 15), 30, 3));
                     }
-                    if (ConfigItems.ENABLE_CIRCUIT_ITEMS)
-                    {
+                    if (ConfigItems.ENABLE_CIRCUIT_ITEMS) {
                         lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "circuit.basic", ItemReg.itemCircuit.getStack("basic", 15), 15, 5));
                         lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "circuit.advanced", ItemReg.itemCircuit.getStack("advanced", 11), 30, 3));
                         lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "circuit.elite", ItemReg.itemCircuit.getStack("elite", 8), 30, 3));
                     }
+
                 }
             }
         }
-        else if (event.getName().equals(LootTables.ENTITIES_CREEPER))
-        {
-            if (ConfigItems.ENABLE_SULFUR_LOOT_DROPS)
-            {
+        else if (event.getName().equals(LootTables.ENTITIES_CREEPER)) {
+            if (ConfigItems.ENABLE_SULFUR_LOOT_DROPS) {
                 LootPool lootPool = event.getTable().getPool(VANILLA_LOOT_POOL_ID);
-                if (lootPool != null)
-                {
+                if (lootPool != null) {
                     lootPool.addEntry(new LootEntryItemStack(ICBMConstants.PREFIX + "sulfur", new ItemStack(ItemReg.itemSulfurDust, 10, 0), 2, 0));
                 }
             }
@@ -188,8 +174,7 @@ public final class ICBMClassic
 
     /* //TODO Rework to match new Forge lifecycle
     @SubscribeEvent
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         //Verify that our nbt tag strings are distinct. If this fails then this will crash Minecraft!
         NBTConstants.ensureThatAllTagNamesAreDistinct();
 
@@ -202,6 +187,9 @@ public final class ICBMClassic
         CapabilityExplosive.register();
 
         //Register data fixers
+        // TODO switch to new data fixer system (net.minecraft.util.datafix)
+        // https://www.reddit.com/r/feedthebeast/comments/7fbqfw/psa_modders_are_you_calling_datafixers_on_your/
+        // https://github.com/sinkillerj/ProjectE/commit/46005c9054fe8386497856a2558d0bde3ee75dce#diff-cf9efddd30b4c8c205baed6f33906532R121
         modFixs = FMLCommonHandler.instance().getDataFixer().init(ICBMConstants.DOMAIN, 1);
         modFixs.registerFix(FixTypes.ENTITY, new EntityExplosiveDataFixer());
         modFixs.registerFix(FixTypes.ENTITY, new EntityGrenadeDataFixer());
@@ -216,8 +204,7 @@ public final class ICBMClassic
     }
     */
 
-    private void handleExRegistry(File configMainFolder)
-    {
+    private void handleExRegistry(File configMainFolder) {
         //Init registry
         final ExplosiveRegistry explosiveRegistry = new ExplosiveRegistry();
         ICBMClassicAPI.EXPLOSIVE_REGISTRY = explosiveRegistry;
@@ -282,33 +269,23 @@ public final class ICBMClassic
      * completed dispatch
      */
     @SubscribeEvent
-    public void init(FMLCommonSetupEvent event)
-    {
+    public void init(FMLCommonSetupEvent event) {
         proxy.init();
         packetHandler.init();
         CREATIVE_TAB.init();
 
-        if (ConfigItems.ENABLE_CRAFTING_ITEMS)
-        {
+        if (ConfigItems.ENABLE_CRAFTING_ITEMS) {
             if (ConfigItems.ENABLE_INGOTS_ITEMS)
-            {
                 ItemReg.itemIngot.registerOreNames();
-            }
 
             if (ConfigItems.ENABLE_PLATES_ITEMS)
-            {
                 ItemReg.itemPlate.registerOreNames("iron");
-            }
 
             if (ConfigItems.ENABLE_CIRCUIT_ITEMS)
-            {
                 ItemReg.itemCircuit.registerOreNames();
-            }
 
             if (ConfigItems.ENABLE_WIRES_ITEMS)
-            {
                 ItemReg.itemWire.registerOreNames();
-            }
         }
 
         //TODO//OreDictionary.registerOre("dustSulfur", new ItemStack(ItemReg.itemSulfurDust));
@@ -321,28 +298,23 @@ public final class ICBMClassic
 
         /** Dispenser Handler */
         if (ItemReg.itemGrenade != null)
-        {
             DispenserBlock.registerDispenseBehavior(ItemReg.itemGrenade, new GrenadeDispenseBehavior());
-        }
 
         if (ItemReg.itemBombCart != null)
-        {
             DispenserBlock.registerDispenseBehavior(ItemReg.itemBombCart, new BombCartDispenseBehavior());
-        }
+
         proxy.init();
     }
 
     /*
     @SubscribeEvent
-    public void postInit(FMLPostInitializationEvent event)
-    {
+    public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit();
     }
     */
 
     @SubscribeEvent
-    public void serverStarting(FMLServerStartingEvent event)
-    {
+    public void serverStarting(FMLServerStartingEvent event) {
         /*
         //Get command manager
         ICommandManager commandManager = FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager();
@@ -360,8 +332,7 @@ public final class ICBMClassic
     }
 
     @SubscribeEvent
-    public void serverStopping(FMLServerStoppingEvent event)
-    {
+    public void serverStopping(FMLServerStoppingEvent event) {
         WorkerThreadManager.INSTANCE.killThreads();
     }
 
