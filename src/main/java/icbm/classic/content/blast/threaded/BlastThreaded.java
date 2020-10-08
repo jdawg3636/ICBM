@@ -99,9 +99,8 @@ public abstract class BlastThreaded extends Blast {
     public void destroyBlock(BlockPos pos) {
         BlockState state = this.world().getBlockState(pos);
         if (!state.getBlock().isAir(state, world(), pos)) {
-            MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(this.world, pos,
-                    () -> state.getBlock().onBlockExploded(this.world(), pos, this)
-            ));
+            // Using "null" for onBlockExploded's BlockState parameter as Forge's current implementation (MC 1.16.3) ignores it
+            MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(this.world, pos, () -> state.getBlock().onBlockExploded(null, this.world(), pos, this)));
         }
     }
 

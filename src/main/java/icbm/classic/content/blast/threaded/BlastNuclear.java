@@ -137,7 +137,7 @@ public class BlastNuclear extends BlastThreaded {
         if (state.getMaterial().isLiquid())
             return 0.25f;
         else
-            return block.getExplosionResistance(world, pos, getExplosivePlacedBy(), this);
+            return block.getExplosionResistance();
     }
 
 
@@ -167,7 +167,7 @@ public class BlastNuclear extends BlastThreaded {
                                 Location spawnPosition = location.add(new Pos(x * 2, (y - 2) * 2, z * 2));
                                 float xDiff = (float) (spawnPosition.x() - location.x());
                                 float zDiff = (float) (spawnPosition.z() - location.z());
-                                world.spawnParticle(ParticleTypes.SMOKE, spawnPosition.x(), spawnPosition.y(), spawnPosition.z(),
+                                world.addParticle(ParticleTypes.SMOKE, spawnPosition.x(), spawnPosition.y(), spawnPosition.z(),
                                         xDiff * 0.3 * world().rand.nextFloat(), -world().rand.nextFloat(), zDiff * 0.3 * world().rand.nextFloat()); //(float) (distance / this.getRadius()) * oldWorld().rand.nextFloat(), 0, //0, 8F, 1.2F);
                             }
 
@@ -201,7 +201,7 @@ public class BlastNuclear extends BlastThreaded {
                         Location targetPosition = this.location.add(new Pos(x, 0, z));
 
                         if (this.world().rand.nextFloat() < Math.max(0.001 * r, 0.05)) {
-                            world.spawnParticle(ParticleTypes.SMOKE, targetPosition.x(), targetPosition.y(), targetPosition.z(), 0, 0, 0); //5F, 1F);
+                            world.addParticle(ParticleTypes.SMOKE, targetPosition.x(), targetPosition.y(), targetPosition.z(), 0, 0, 0); //5F, 1F);
                         }
 
                     }

@@ -1,9 +1,9 @@
 package icbm.classic.api.events;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 import javax.annotation.Nullable;
 
@@ -12,11 +12,11 @@ import javax.annotation.Nullable;
  *
  * Created by AFlyingCar on 5/5/20
  */
-public class BlastBlockModifyEvent extends Event
-{
+public class BlastBlockModifyEvent extends Event {
+
     private World world = null;
     private BlockPos position = null;
-    private IBlockState newState = null;
+    private BlockState newState = null;
     private int flags = 0;
     private Runnable callback = null;
 
@@ -28,8 +28,7 @@ public class BlastBlockModifyEvent extends Event
      * @param world The world the modification takes place in.
      * @param position The position of the block to modify.
      */
-    public BlastBlockModifyEvent(World world, BlockPos position)
-    {
+    public BlastBlockModifyEvent(World world, BlockPos position) {
         this.world = world;
         this.position = position;
         this.newState = null;
@@ -44,8 +43,7 @@ public class BlastBlockModifyEvent extends Event
      * @param position The position of the block to modify.
      * @param newState The new state of the modified block.
      */
-    public BlastBlockModifyEvent(World world, BlockPos position, IBlockState newState)
-    {
+    public BlastBlockModifyEvent(World world, BlockPos position, BlockState newState) {
         this.world = world;
         this.position = position;
         this.newState = newState;
@@ -60,8 +58,7 @@ public class BlastBlockModifyEvent extends Event
      * @param newState The new state of the modified block.
      * @param flags The flags to pass to setBlockState().
      */
-    public BlastBlockModifyEvent(World world, BlockPos position, IBlockState newState, int flags)
-    {
+    public BlastBlockModifyEvent(World world, BlockPos position, BlockState newState, int flags) {
         this.world = world;
         this.position = position;
         this.newState = newState;
@@ -76,8 +73,7 @@ public class BlastBlockModifyEvent extends Event
      * @param position The position of the block to modify.
      * @param callback The callback to run on modification.
      */
-    public BlastBlockModifyEvent(World world, BlockPos position, Runnable callback)
-    {
+    public BlastBlockModifyEvent(World world, BlockPos position, Runnable callback) {
         this.modificationType = BlastBlockModifyEventType.USE_CALLBACK;
         this.callback = callback;
         this.world = world;
@@ -107,7 +103,7 @@ public class BlastBlockModifyEvent extends Event
      * @return The new IBlockState if one exists, or null.
      */
     @Nullable
-    public IBlockState getNewState() {
+    public BlockState getNewState() {
         return newState;
     }
 
