@@ -1,10 +1,10 @@
 package icbm.classic.api.events;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 
 /**
  * Called on the server side when the player rightclicks
@@ -13,16 +13,16 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * the affected launcher.
  */
 @Cancelable
-public class LaserRemoteTriggerEvent extends Event
-{
+public class LaserRemoteTriggerEvent extends Event {
+
     public final World world;
-    public final EntityPlayer player;
+    public final PlayerEntity player;
     public BlockPos pos;
 
-    public LaserRemoteTriggerEvent(World world, BlockPos pos, EntityPlayer player)
-    {
+    public LaserRemoteTriggerEvent(World world, BlockPos pos, PlayerEntity player) {
         this.world = world;
         this.pos = pos;
         this.player = player;
     }
+
 }

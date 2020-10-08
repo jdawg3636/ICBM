@@ -18,39 +18,36 @@ public enum EnumTier implements IStringSerializable
 
     private TextFormatting tooltipColor;
 
-    EnumTier(TextFormatting tooltipColor)
-    {
+    EnumTier(TextFormatting tooltipColor) {
         this.tooltipColor = tooltipColor;
     }
 
-    public TextFormatting getTooltipColor()
-    {
+    public TextFormatting getTooltipColor() {
         return tooltipColor;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.getName();
     }
 
-    public String getLocalizedName()
-    {
+    public String getLocalizedName() {
         return LanguageUtility.getLocal("tier.icbmclassic." + getName());
     }
 
     @Override
-    public String getName()
-    {
+    public String func_176610_l() {
         return name().toLowerCase();
     }
 
-    public static EnumTier get(int itemDamage)
-    {
+    public String getName() {
+        return func_176610_l();
+    }
+
+    public static EnumTier get(int itemDamage) {
         if (itemDamage > 0 && itemDamage < values().length)
-        {
             return values()[itemDamage];
-        }
         return ONE;
     }
+
 }

@@ -13,8 +13,7 @@ import net.minecraft.item.ItemStack;
  * it may do additional checks to ensure the missile is supported
  * Created by Dark(DarkGuardsman, Robert) on 1/9/19.
  */
-public interface IMissileHolder
-{
+public interface IMissileHolder {
 
     /**
      * Access the missile as an itemstack
@@ -49,4 +48,5 @@ public interface IMissileHolder
      * @return true if supported
      */
     boolean canSupportMissile(ItemStack stack);
+
 }

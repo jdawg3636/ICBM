@@ -16,8 +16,8 @@ import java.util.Optional;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 1/4/19.
  */
-public interface IExplosiveData extends Comparable<IExplosiveData>
-{
+public interface IExplosiveData extends Comparable<IExplosiveData> {
+
     static IBlastFactory EMPTY = () -> null;
 
     /**
@@ -49,8 +49,7 @@ public interface IExplosiveData extends Comparable<IExplosiveData>
      *
      * @return
      */
-    default IBlastInit create()
-    {
+    default IBlastInit create() {
         return Optional.ofNullable(getBlastFactory()).orElseGet(() -> EMPTY).create();
     }
 
@@ -88,4 +87,5 @@ public interface IExplosiveData extends Comparable<IExplosiveData>
      * @return true to allow, false to block
      */
     boolean onEnableContent(ResourceLocation contentID, IExplosiveContentRegistry registry);
+
 }

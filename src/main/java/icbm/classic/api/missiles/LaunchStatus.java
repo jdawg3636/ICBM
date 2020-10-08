@@ -4,8 +4,8 @@ package icbm.classic.api.missiles;
  * Launcher status codes
  * Created by Dark(DarkGuardsman, Robert) on 1/9/19.
  */
-public enum LaunchStatus
-{
+public enum LaunchStatus {
+
     /** Missile was fired */
     LAUNCHED(false),
     /** Missile can fire */
@@ -24,8 +24,8 @@ public enum LaunchStatus
     /** True if the code is an error type */
     public final boolean isError;
 
-    LaunchStatus(boolean isError)
-    {
+    LaunchStatus(boolean isError) {
         this.isError = isError;
     }
+
 }

@@ -3,8 +3,8 @@ package icbm.classic.api.reg.content;
 import icbm.classic.api.data.EntityInteractionFunction;
 import icbm.classic.api.caps.IMissile;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.function.Consumer;
@@ -13,8 +13,7 @@ import java.util.function.Consumer;
  *
  * Created by Dark(DarkGuardsman, Robert) on 1/4/19.
  */
-public interface IExMissileRegistry extends IExplosiveContentRegistry
-{
+public interface IExMissileRegistry extends IExplosiveContentRegistry {
 
     /**
      * Adds a simple callback for when a missile launches
@@ -58,5 +57,6 @@ public interface IExMissileRegistry extends IExplosiveContentRegistry
 
     void triggerFlightUpdate(IMissile missile);
 
-    boolean onInteraction(Entity entity, EntityPlayer player, EnumHand hand);
+    boolean onInteraction(Entity entity, PlayerEntity player, Hand hand);
+
 }

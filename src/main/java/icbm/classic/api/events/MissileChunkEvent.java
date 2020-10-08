@@ -1,18 +1,16 @@
 package icbm.classic.api.events;
 
 import icbm.classic.content.entity.missile.LoadedChunkPair;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraft.world.server.Ticket;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 
-public class MissileChunkEvent extends Event
-{
+public class MissileChunkEvent extends Event {
+
     public final LoadedChunkPair pair;
-    public final ForgeChunkManager.Ticket ticket;
+    public final Ticket ticket;
 
-    public MissileChunkEvent(LoadedChunkPair pair, ForgeChunkManager.Ticket ticket)
-    {
+    public MissileChunkEvent(LoadedChunkPair pair, Ticket ticket) {
         this.pair = pair;
         this.ticket = ticket;
     }
@@ -24,10 +22,8 @@ public class MissileChunkEvent extends Event
      * to not load the chunk.
      */
     @Cancelable
-    public static class Load extends MissileChunkEvent
-    {
-        public Load(LoadedChunkPair pair, Ticket ticket)
-        {
+    public static class Load extends MissileChunkEvent {
+        public Load(LoadedChunkPair pair, Ticket ticket) {
             super(pair, ticket);
         }
     }
@@ -40,11 +36,11 @@ public class MissileChunkEvent extends Event
      * will be made in the next world tick.
      */
     @Cancelable
-    public static class Unload extends MissileChunkEvent
-    {
+    public static class Unload extends MissileChunkEvent {
         public Unload(LoadedChunkPair pair, Ticket ticket)
         {
             super(pair, ticket);
         }
     }
+
 }

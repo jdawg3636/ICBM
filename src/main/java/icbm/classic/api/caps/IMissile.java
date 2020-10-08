@@ -4,7 +4,7 @@ package icbm.classic.api.caps;
 import icbm.classic.api.data.IWorldPosition;
 import icbm.classic.api.explosion.BlastState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
@@ -14,8 +14,7 @@ import javax.annotation.Nullable;
  *
  * @author DarkGuardsman
  */
-public interface IMissile extends IWorldPosition
-{
+public interface IMissile extends IWorldPosition {
 
     /**
      * Called to trigger the missile's explosion logic
@@ -36,25 +35,19 @@ public interface IMissile extends IWorldPosition
      *                      True will trigger a the missile's normal explosion
      *                      False will trigger a TNT explosion
      */
-    default void destroyMissile(boolean fullExplosion) //TODO add reason as input data
-    {
+    default void destroyMissile(boolean fullExplosion) /* TODO add reason as input data */ {
         if (!hasExploded() && !doExplosion().good)
-        {
             dropMissileAsItem();
-        }
         //TODO trigger destroy event
     }
 
     /**
      * Drops the specified missile as an item.
      */
-    default void dropMissileAsItem()
-    {
+    default void dropMissileAsItem() {
         ItemStack stack = toStack();
         if (stack != null && !stack.isEmpty() && world() != null)
-        {
-            world().spawnEntity(new EntityItem(world(), x(), y(), z(), stack));
-        }
+            world().addEntity(new ItemEntity(world(), x(), y(), z(), stack));
     }
 
     @Nullable
@@ -91,4 +84,5 @@ public interface IMissile extends IWorldPosition
      * Called to launch without a target and fly strait from rotation data
      */
     void launchNoTarget(); //TODO add results
+
 }

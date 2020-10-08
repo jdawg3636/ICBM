@@ -11,8 +11,7 @@ import javax.annotation.Nullable;
  *
  * @author Calclavia, Darkguardsman
  */
-public interface IBlast extends IWorldPosition
-{
+public interface IBlast extends IWorldPosition {
 
     /**
      * Gets the radius size of the effect of the blast.
@@ -38,8 +37,7 @@ public interface IBlast extends IWorldPosition
      * @param scale
      * @return this
      */
-    default IBlast scaleBlast(double scale)
-    {
+    default IBlast scaleBlast(double scale) {
         return this;
     }
 
@@ -90,4 +88,5 @@ public interface IBlast extends IWorldPosition
     //TODO expose blast state (init, blocks, entity, done)
     //TODO expose threaded state if used
     //TODO expose tick settings and tick progress
+
 }

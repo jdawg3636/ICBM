@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 9/7/2019.
  */
-public interface IExFuseBlockRegistry
-{
+public interface IExFuseBlockRegistry {
+
     /**
      * Called to set a supplier that will be used to define the fuse time
      * of the explosive.
@@ -46,4 +46,5 @@ public interface IExFuseBlockRegistry
     void tickFuse(World world, double posX, double posY, double posZ, int ticksExisted, int explosiveID);
 
     int getFuseTime(World world, double posX, double posY, double posZ, int explosiveID);
+
 }

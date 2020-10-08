@@ -9,8 +9,8 @@ import java.util.Set;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/4/19.
  */
-public interface IExplosiveContentRegistry
-{
+public interface IExplosiveContentRegistry {
+
     /**
      * Unique name of the content registry
      *
@@ -89,8 +89,7 @@ public interface IExplosiveContentRegistry
      * @param explosiveData - explosive data
      * @return true if enabled, can also be false if the registry is not setup yet
      */
-    default boolean isEnabled(IExplosiveData explosiveData)
-    {
+    default boolean isEnabled(IExplosiveData explosiveData) {
         return getExplosivesIDs() != null && getExplosivesIDs().contains(explosiveData.getRegistryID());
     }
 
@@ -100,8 +99,7 @@ public interface IExplosiveContentRegistry
      * @param exName - explosive data name
      * @return true if enabled, can also be false if the registry is not setup yet
      */
-    default boolean isEnabled(ResourceLocation exName)
-    {
+    default boolean isEnabled(ResourceLocation exName) {
         return getExplosiveNames() != null && getExplosiveNames().contains(exName);
     }
 
@@ -111,8 +109,7 @@ public interface IExplosiveContentRegistry
      * @param exID - explosive data ID
      * @return true if enabled, can also be false if the registry is not setup yet
      */
-    default boolean isEnabled(int exID)
-    {
+    default boolean isEnabled(int exID) {
         return getExplosivesIDs() != null && getExplosivesIDs().contains(exID);
     }
 

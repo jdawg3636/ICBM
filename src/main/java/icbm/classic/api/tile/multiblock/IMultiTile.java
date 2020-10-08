@@ -4,8 +4,8 @@ package icbm.classic.api.tile.multiblock;
  * Created by Dark on 8/9/2015.
  */
 @Deprecated //Will be turned into a capability
-public interface IMultiTile
-{
+public interface IMultiTile {
+
     /** @return the tile that hosts the functionality of the multi block structure */
     IMultiTileHost getHost();
 
@@ -26,4 +26,5 @@ public interface IMultiTile
      * @return
      */
     boolean isHost(IMultiTileHost host);
+
 }

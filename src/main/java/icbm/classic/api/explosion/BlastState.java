@@ -3,8 +3,8 @@ package icbm.classic.api.explosion;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/3/19.
  */
-public enum BlastState
-{
+public enum BlastState {
+
     /**
      * Triggered in main thread
      */
@@ -32,8 +32,8 @@ public enum BlastState
 
     public final boolean good;
 
-    BlastState(boolean good)
-    {
+    BlastState(boolean good) {
         this.good = good;
     }
+
 }

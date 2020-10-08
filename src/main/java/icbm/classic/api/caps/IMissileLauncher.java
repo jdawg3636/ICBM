@@ -11,8 +11,7 @@ import javax.annotation.Nullable;
  * Capability for accessing data about a launcher
  * Created by Dark(DarkGuardsman, Robert) on 1/9/19.
  */
-public interface IMissileLauncher
-{
+public interface IMissileLauncher {
 
     /**
      * Wrapper to the missile holder
@@ -59,4 +58,5 @@ public interface IMissileLauncher
     double getTargetY();
 
     double getTargetZ();
+
 }

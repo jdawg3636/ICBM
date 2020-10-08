@@ -7,8 +7,7 @@ package icbm.classic.api.explosion;
  * Created by Dark(DarkGuardsman, Robert) on 1/3/19.
  */
 @FunctionalInterface
-public interface IBlastFactory
-{
+public interface IBlastFactory {
     /**
      * Creates a new blast
      * @return

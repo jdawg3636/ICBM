@@ -14,8 +14,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 3/12/2018.
  */
-public final class ICBMClassicAPI
-{
+public final class ICBMClassicAPI {
 
     //=========================
     //=== Registry ============
@@ -68,7 +67,7 @@ public final class ICBMClassicAPI
 
     /**
      * Called to register an EMP handler for the {@link Block}
-     * and related {@link net.minecraft.block.state.IBlockState}
+     * and related {@link net.minecraft.block.BlockState}
      * <p>
      * Allows several receiver to be registered per block.
      *
@@ -76,8 +75,7 @@ public final class ICBMClassicAPI
      * @param receiver - receiver
      */
     @Deprecated //Will be placed in a registry/handler
-    public void registerBlockEmpHandler(Block block, IEMPReceiver receiver)
-    {
+    public void registerBlockEmpHandler(Block block, IEMPReceiver receiver) {
         //TODO implement
     }
 

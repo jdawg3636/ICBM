@@ -8,8 +8,8 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 9/7/2019.
  */
-public interface IExFuseEntityRegistry
-{
+public interface IExFuseEntityRegistry {
+
     /**
      * Called to set a supplier that will be used to define the fuse time
      * of the explosive.
@@ -51,4 +51,5 @@ public interface IExFuseEntityRegistry
      * @return ticks
      */
     int getFuseTime(Entity entity, int explosiveID);
+
 }

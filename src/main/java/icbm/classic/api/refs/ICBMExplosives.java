@@ -6,8 +6,8 @@ import icbm.classic.api.reg.IExplosiveData;
  *
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
  */
-public final class ICBMExplosives
-{
+public final class ICBMExplosives {
+
     //=================== Tier 1
     public static IExplosiveData CONDENSED;
     public static IExplosiveData SHRAPNEL;
@@ -41,4 +41,5 @@ public final class ICBMExplosives
     //=================== No content, only blast
     public static IExplosiveData MUTATION;
     public static IExplosiveData ROT;
+
 }

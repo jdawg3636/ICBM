@@ -10,8 +10,8 @@ import icbm.classic.lib.transform.region.Cube;
  * Created by Dark(DarkGuardsman, Robert) on 4/20/2016.
  */
 @Deprecated //Will be completely replaced by new system
-public interface IRadioWaveReceiver extends IWorldPosition
-{
+public interface IRadioWaveReceiver extends IWorldPosition {
+
     /**
      * Called when a message is received
      *
@@ -42,4 +42,5 @@ public interface IRadioWaveReceiver extends IWorldPosition
      * @return cube
      */
     Cube getRadioReceiverRange();
+
 }

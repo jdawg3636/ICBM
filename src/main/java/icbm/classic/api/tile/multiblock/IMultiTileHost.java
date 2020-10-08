@@ -1,9 +1,9 @@
 package icbm.classic.api.tile.multiblock;
 
 import icbm.classic.api.data.IWorldPosition;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Collection;
@@ -13,8 +13,8 @@ import java.util.Collection;
  * Created by Dark on 8/9/2015.
  */
 @Deprecated //Will be turned into a capability
-public interface IMultiTileHost extends IWorldPosition
-{
+public interface IMultiTileHost extends IWorldPosition {
+
     /**
      * Called when a peace of the structure has been added to the world
      *
@@ -46,7 +46,7 @@ public interface IMultiTileHost extends IWorldPosition
      * @param player - person who clicked the tile
      * @param side   - side clicked
      */
-    boolean onMultiTileActivated(IMultiTile tile, EntityPlayer player, EnumHand hand, EnumFacing side, float xHit, float yHit, float zHit);
+    boolean onMultiTileActivated(IMultiTile tile, PlayerEntity player, Hand hand, Direction side, float xHit, float yHit, float zHit);
 
     /**
      * Called when the player left clicks a tile. No additional data is provided beyond
@@ -55,7 +55,7 @@ public interface IMultiTileHost extends IWorldPosition
      * @param tile   - tile that was clicked
      * @param player - player
      */
-    void onMultiTileClicked(IMultiTile tile, EntityPlayer player);
+    void onMultiTileClicked(IMultiTile tile, PlayerEntity player);
 
     /**
      * Grabs that raw data of the layout of the structure. This data will be used to generate
@@ -64,4 +64,5 @@ public interface IMultiTileHost extends IWorldPosition
      * @return map of positions to multiTile
      */
     Collection<BlockPos> getLayoutOfMultiBlock();
+
 }

@@ -11,8 +11,7 @@ import java.util.Set;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/4/19.
  */
-public interface IExplosiveRegistry
-{
+public interface IExplosiveRegistry {
 
     /**
      * Registers a new blast factory and explosion data instance
@@ -61,8 +60,7 @@ public interface IExplosiveRegistry
      *
      * @param registry - handler for registering
      */
-    default void registerContentRegistry(IExplosiveContentRegistry registry)
-    {
+    default void registerContentRegistry(IExplosiveContentRegistry registry) {
         registerContentRegistry(registry.getRegistryName(), registry);
     }
 
@@ -80,4 +78,5 @@ public interface IExplosiveRegistry
      * @return
      */
     Set<IExplosiveData> getExplosives();
+
 }

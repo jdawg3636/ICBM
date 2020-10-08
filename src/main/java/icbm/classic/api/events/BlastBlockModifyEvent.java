@@ -134,4 +134,5 @@ public class BlastBlockModifyEvent extends Event {
     public Runnable getCallback() {
         return callback;
     }
+
 }

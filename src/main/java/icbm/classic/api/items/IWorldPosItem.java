@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
  * Created by robert on 4/15/2015.
  */
 @Deprecated //Will be turned into a capability
-public interface IWorldPosItem
-{
+public interface IWorldPosItem {
+
     /**
      * Retrieves the location from the NBT,
      * Creates a new object each method call
@@ -33,4 +33,5 @@ public interface IWorldPosItem
      * @return true if the data can be accessed
      */
     boolean canAccessLocation(ItemStack stack, Object obj);
+
 }

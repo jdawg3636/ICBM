@@ -10,8 +10,7 @@ import javax.annotation.Nullable;
  * Used in capabilities to provide an explosive for usage
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
  */
-public interface IExplosive
-{
+public interface IExplosive {
 
     /**
      * Gets the explosive provided
@@ -41,8 +40,8 @@ public interface IExplosive
     /**
      * Called when the explosive is defused
      */
-    default void onDefuse() //TODO add args on who defused and how
-    {
+    default void onDefuse() /* TODO add args on who defused and how */ {
 
     }
+
 }

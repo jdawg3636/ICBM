@@ -10,8 +10,8 @@ import icbm.classic.lib.transform.region.Cube;
  * Created by Dark(DarkGuardsman, Robert) on 4/20/2016.
  */
 @Deprecated //Will be completely replaced by new system
-public interface IRadioWaveSender extends IWorldPosition
-{
+public interface IRadioWaveSender extends IWorldPosition {
+
     /**
      * Confirmation that the wave was received, only
      * used for code logic.
@@ -29,8 +29,7 @@ public interface IRadioWaveSender extends IWorldPosition
      * @param header   - description of the data
      * @param data     - data that was sent
      */
-    default void onMessageReceived(IRadioWaveReceiver receiver, float hz, String header, Object[] data)
-    {
+    default void onMessageReceived(IRadioWaveReceiver receiver, float hz, String header, Object[] data) {
         //Optional, not really used by most tiles, only exists for special use cases
     }
 
@@ -58,4 +57,5 @@ public interface IRadioWaveSender extends IWorldPosition
      * @return cube
      */
     Cube getRadioSenderRange();
+
 }

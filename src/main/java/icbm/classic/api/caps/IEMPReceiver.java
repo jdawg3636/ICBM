@@ -11,8 +11,8 @@ import net.minecraft.world.World;
  *
  * Created by Dark(DarkGuardsman, Robert) on 3/12/2018.
  */
-public interface IEMPReceiver
-{
+public interface IEMPReceiver {
+
     /**
      * Called when an EMP goes off and triggers an action on the object at the given location.
      * <p>
@@ -29,8 +29,7 @@ public interface IEMPReceiver
      * @param doAction  - set to try to apply effects to the world, false to simulate actions.
      * @return power to apply on the other side of the entity, any value under zero will be ignored
      */
-    default float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, float power, boolean doAction)
-    {
+    default float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, float power, boolean doAction) {
         //At the moment power is not used, check back later - 3/12/2018 Dark
 
         //Do something to your object
@@ -60,8 +59,7 @@ public interface IEMPReceiver
      *
      * @param container - object containing this sub-object
      */
-    default float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, Object container, float power, boolean doAction)
-    {
+    default float applyEmpAction(World world, double x, double y, double z, IBlast emp_blast, Object container, float power, boolean doAction) {
         return applyEmpAction(world, x, y, z, emp_blast, power, doAction);
     }
 
@@ -76,8 +74,7 @@ public interface IEMPReceiver
      * @param power - power input into the object
      * @return value between 0 to 1 to note resistance level
      */
-    default float getEmpResistance(World world, double x, double y, double z, float power)
-    {
+    default float getEmpResistance(World world, double x, double y, double z, float power) {
         return 0;
     }
 
@@ -92,8 +89,7 @@ public interface IEMPReceiver
      * @param power - power input into the object
      * @return true if the reduction is flat (power - constant) or ratio (power * reduction or power / ratio)
      */
-    default boolean isEmpResistanceFlat(World world, double x, double y, double z, float power)
-    {
+    default boolean isEmpResistanceFlat(World world, double x, double y, double z, float power) {
         return true;
     }
 
@@ -106,8 +102,8 @@ public interface IEMPReceiver
      * @param z     - this object's z position
      * @return true to allow code to run on sub-objects
      */
-    default boolean shouldEmpSubObjects(World world, double x, double y, double z)
-    {
+    default boolean shouldEmpSubObjects(World world, double x, double y, double z) {
         return true;
     }
+
 }
