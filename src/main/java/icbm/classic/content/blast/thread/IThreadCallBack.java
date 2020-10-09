@@ -7,7 +7,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 @Deprecated
-public interface IThreadCallBack
-{
+public interface IThreadCallBack {
     float getResistance(World world, IPos3D blastCenter, BlockPos pos, Entity source, Block block);
 }
