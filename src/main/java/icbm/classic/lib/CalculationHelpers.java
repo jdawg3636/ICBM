@@ -7,12 +7,9 @@ import java.util.Random;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 3/1/2020.
  */
-public final class CalculationHelpers
-{
-    private CalculationHelpers()
-    {
-        //Empty to prevent creating this class
-    }
+public final class CalculationHelpers {
+
+    private CalculationHelpers() {}
 
     /**
      * Generates a random float inside the range defined by -scale to +scale
@@ -21,8 +18,7 @@ public final class CalculationHelpers
      * @param scale plus minus scale to use for the range
      * @return random float
      */
-    public static float randFloatRange(Random rand, float scale)
-    {
+    public static float randFloatRange(Random rand, float scale) {
         return randFloatRange(rand, -scale, scale);
     }
 
@@ -34,8 +30,7 @@ public final class CalculationHelpers
      * @param max  upper bound
      * @return random float
      */
-    public static float randFloatRange(Random rand, float min, float max)
-    {
+    public static float randFloatRange(Random rand, float min, float max) {
         return (rand.nextFloat() * (max - min)) + min;
     }
 
@@ -46,8 +41,7 @@ public final class CalculationHelpers
      * @param scale plus minus scale to use for the range
      * @return random double
      */
-    public static double randDoubleRange(Random rand, double scale)
-    {
+    public static double randDoubleRange(Random rand, double scale) {
         return randDoubleRange(rand, -scale, scale);
     }
 
@@ -59,8 +53,8 @@ public final class CalculationHelpers
      * @param max  upper bound
      * @return random double
      */
-    public static double randDoubleRange(Random rand, double min, double max)
-    {
+    public static double randDoubleRange(Random rand, double min, double max) {
         return (rand.nextDouble() * (max - min)) + min;
     }
+
 }

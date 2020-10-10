@@ -2,8 +2,9 @@ package icbm.classic.content.blast;
 
 import icbm.classic.ICBMConstants;
 import icbm.classic.api.events.BlastBlockModifyEvent;
+import net.minecraft.block.Blocks;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Objects;
 
@@ -12,11 +13,13 @@ import java.util.Objects;
  */
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
 public class BlastBlockModifyHandler {
+
     @SubscribeEvent
     public static void onBlastBlockModify(BlastBlockModifyEvent event) {
+
         switch(event.getModificationType()) {
             case SET_TO_AIR:
-                event.getWorld().setBlockToAir(event.getPosition());
+                event.getWorld().setBlockState(event.getPosition(), Blocks.AIR.getDefaultState());
                 break;
             case SET_STATE:
                 event.getWorld().setBlockState(event.getPosition(), Objects.requireNonNull(event.getNewState()));
@@ -28,5 +31,7 @@ public class BlastBlockModifyHandler {
                 Objects.requireNonNull(event.getCallback()).run();
                 break;
         }
+
     }
+
 }

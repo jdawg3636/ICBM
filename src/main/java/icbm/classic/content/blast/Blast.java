@@ -332,7 +332,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
                 xDifference /= var35;
                 yDifference /= var35;
                 zDifference /= var35;
-                double var34 = world().getBlockDensity(var31, entity.getEntityBoundingBox());
+                double var34 = world().getDensity(var31, entity.getBoundingBox());
                 double var36 = (1.0D - distance) * var34;
                 int damage = 0;
 
@@ -363,7 +363,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
         this.size = nbt.getFloat(NBTConstants.EXPLOSION_SIZE);
 
         if (world instanceof ServerWorld)
-            exploder = ((ServerWorld) world).getEntityFromUuid(nbt.getUniqueId(NBTConstants.BLAST_EXPLODER_ENT_ID));
+            exploder = ((ServerWorld) world).getEntityByUuid(nbt.getUniqueId(NBTConstants.BLAST_EXPLODER_ENT_ID));
 
     }
 
@@ -374,7 +374,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
         nbt.putFloat(NBTConstants.EXPLOSION_SIZE, this.size);
 
         if (world instanceof ServerWorld)
-            nbt.setUniqueId(NBTConstants.BLAST_EXPLODER_ENT_ID, this.exploder.getUniqueID());
+            nbt.putUniqueId(NBTConstants.BLAST_EXPLODER_ENT_ID, this.exploder.getUniqueID());
 
     }
 
@@ -561,5 +561,7 @@ public abstract class Blast extends Explosion implements IBlastInit, IBlastResto
             controller.remove();
 
         isAlive = false;
+
     }
+
 }

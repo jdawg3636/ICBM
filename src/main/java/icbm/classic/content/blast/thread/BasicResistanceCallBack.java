@@ -3,6 +3,7 @@ package icbm.classic.content.blast.thread;
 import com.builtbroken.jlib.data.vector.IPos3D;
 import icbm.classic.content.blast.Blast;
 import net.minecraft.block.Block;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -19,7 +20,7 @@ public class BasicResistanceCallBack implements IThreadCallBack {
 
     @Override
     public float getResistance(World world, IPos3D blastCenter, BlockPos pos, Entity source, Block block) {
-        if (block instanceof IFluidBlock)
+        if (block instanceof FlowingFluidBlock || block instanceof IFluidBlock)
             return 0.25f;
         else
             return block.getExplosionResistance();
