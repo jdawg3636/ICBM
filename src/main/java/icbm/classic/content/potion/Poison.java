@@ -3,8 +3,8 @@ package icbm.classic.content.potion;
 import icbm.classic.lib.transform.vector.Pos;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -14,48 +14,41 @@ import java.util.HashMap;
  *
  * @author Calclavia
  */
-public abstract class Poison
-{
+public abstract class Poison {
+
     static HashMap<String, Poison> poisons = new HashMap();
     static BiMap<String, Integer> poisonIDs = HashBiMap.create();
     private static int maxID = 0;
 
     protected String name;
 
-    public static Poison getPoison(String name)
-    {
+    public static Poison getPoison(String name) {
         return poisons.get(name);
     }
 
-    public static Poison getPoison(int id)
-    {
+    public static Poison getPoison(int id) {
         return poisons.get(getName(id));
     }
 
-    public static String getName(int fluidID)
-    {
+    public static String getName(int fluidID) {
         return poisonIDs.inverse().get(fluidID);
     }
 
-    public static int getID(String name)
-    {
+    public static int getID(String name) {
         return poisonIDs.get(name);
     }
 
-    public Poison(String name)
-    {
+    public Poison(String name) {
         this.name = name;
         poisons.put(name, this);
         poisonIDs.put(name, ++maxID);
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
-    public final int getID()
-    {
+    public final int getID() {
         return getID(this.getName());
     }
 
@@ -66,25 +59,19 @@ public abstract class Poison
      * @amiplifier - The amplification value.
      * @armorRequired - The amount of pieces of armor required to be protected.
      */
-    public void poisonEntity(Pos emitPosition, EntityLivingBase entity, int amplifier)
-    {
+    public void poisonEntity(Pos emitPosition, LivingEntity entity, int amplifier) {
         if (!isEntityProtected(emitPosition, entity, amplifier))
-        {
             doPoisonEntity(emitPosition, entity, amplifier);
-        }
     }
 
-    public void poisonEntity(Pos emitPosition, EntityLivingBase entity)
-    {
+    public void poisonEntity(Pos emitPosition, LivingEntity entity) {
         this.poisonEntity(emitPosition, entity, 0);
     }
 
-    public boolean isEntityProtected(Pos emitPosition, EntityLivingBase entity, int amplifier)
-    {
-        if(entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)
-        {
+    public boolean isEntityProtected(Pos emitPosition, LivingEntity entity, int amplifier) {
+
+        if(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative())
             return true;
-        }
         /* EnumSet<ArmorType> armorWorn = EnumSet.noneOf(ArmorType.class);
 
         if (entity instanceof EntityPlayer)
@@ -111,12 +98,15 @@ public abstract class Poison
         }
 
         return armorWorn.containsAll(this.armorRequired);
-         */
+
+        */
+
         return false;
+
     }
 
-    public int getAntiPoisonBlockCount(World world, Pos startingPosition, Pos endingPosition)
-    {
+    public int getAntiPoisonBlockCount(World world, Pos startingPosition, Pos endingPosition) {
+
         /* Pos delta = endingPosition.clone().subtract(startingPosition).normalize();
         Pos targetPosition = startingPosition.clone();
         double totalDistance = startingPosition.distance(endingPosition);
@@ -145,9 +135,13 @@ public abstract class Poison
         }
 
         return count;
+
         */
+
         return 0;
+
     }
 
-    protected abstract void doPoisonEntity(Pos emitPosition, EntityLivingBase entity, int amplifier);
+    protected abstract void doPoisonEntity(Pos emitPosition, LivingEntity entity, int amplifier);
+
 }

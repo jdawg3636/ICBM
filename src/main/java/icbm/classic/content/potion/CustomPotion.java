@@ -3,9 +3,10 @@ package icbm.classic.content.potion;
 import icbm.classic.ICBMConstants;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 
-public abstract class CustomPotion extends Potion
-{
+public abstract class CustomPotion extends Potion {
+
     /**
      * Creates a new type of potion
      *
@@ -13,24 +14,10 @@ public abstract class CustomPotion extends Potion
      * @param color       - The color of this potion.
      * @param name        - The name of this potion.
      */
-    public CustomPotion(boolean isBadEffect, int color, int id, String name)
-    {
+    public CustomPotion(boolean isBadEffect, int color, int id, String name) {
         super(isBadEffect, color);
-        this.setPotionName("potion." + name);
-        REGISTRY.register(id, new ResourceLocation(ICBMConstants.PREFIX + name), this);
+        this.setRegistryName("potion." + name);
+        Registry.POTION.register(Registry.POTION, new ResourceLocation(ICBMConstants.PREFIX + name), this);
     }
 
-    @Override
-    public Potion setIconIndex(int par1, int par2)
-    {
-        super.setIconIndex(par1, par2);
-        return this;
-    }
-
-    @Override
-    protected Potion setEffectiveness(double par1)
-    {
-        super.setEffectiveness(par1);
-        return this;
-    }
 }

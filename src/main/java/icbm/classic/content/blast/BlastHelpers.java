@@ -9,10 +9,9 @@ import java.util.function.BooleanSupplier;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 2019-08-27.
  */
-public final class BlastHelpers
-{
-    private BlastHelpers()
-    {
+public final class BlastHelpers {
+
+    private BlastHelpers() {
         //Empty as this is a helper class only
     }
 
@@ -22,8 +21,7 @@ public final class BlastHelpers
      * @param radius   - xyz size, will ceil then ignore outside
      * @param consumer - callback for the xyz
      */
-    public static void forEachPosInRadius(double radius, Int3Consumer consumer)
-    {
+    public static void forEachPosInRadius(double radius, Int3Consumer consumer) {
         forEachPosInRadiusUntil(radius, (x, y, z) -> {
             consumer.apply(x, y, z);
             return true;
@@ -37,11 +35,11 @@ public final class BlastHelpers
      * @param consumer - callback for the xyz, return false to stop looping
      * @param stopper - callback to check if we should stop early (true to stop)
      */
-    public static void forEachPosInRadiusUntil(double radius, Int3Looper consumer, BooleanSupplier stopper)
-    {
+    public static void forEachPosInRadiusUntil(double radius, Int3Looper consumer, BooleanSupplier stopper) {
+
         final int size = (int) Math.ceil(radius);
-        forEachPosInCube(size, size, size, (x, y, z) ->
-        {
+
+        forEachPosInCube(size, size, size, (x, y, z) -> {
             //Check if we should stop
             if (stopper.getAsBoolean())
             {
@@ -56,6 +54,7 @@ public final class BlastHelpers
             }
             return true;
         });
+
     }
 
     /**
@@ -69,20 +68,17 @@ public final class BlastHelpers
      * @param zSize    - size to loop in the z
      * @param consumer - callback for the xyz, returning false in the callback will cancel the loop
      */
-    public static void forEachPosInCube(int xSize, int ySize, int zSize, @Nonnull Int3Looper consumer)
-    {
-        for (int x = -xSize; x <= xSize; x++)
-        {
-            for (int y = -ySize; y <= ySize; y++)
-            {
-                for (int z = -zSize; z <= zSize; z++)
-                {
+    public static void forEachPosInCube(int xSize, int ySize, int zSize, @Nonnull Int3Looper consumer) {
+
+        for (int x = -xSize; x <= xSize; x++) {
+            for (int y = -ySize; y <= ySize; y++) {
+                for (int z = -zSize; z <= zSize; z++) {
                     if (!consumer.apply(x, y, z))
-                    {
                         return;
-                    }
                 }
             }
         }
+
     }
+
 }
