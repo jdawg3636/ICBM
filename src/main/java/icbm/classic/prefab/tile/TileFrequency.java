@@ -1,7 +1,7 @@
 package icbm.classic.prefab.tile;
 
 import icbm.classic.lib.NBTConstants;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 /**
  * Prefab for tiles that need to receive or send a signal at a Hz value
@@ -35,17 +35,17 @@ public abstract class TileFrequency extends TilePoweredMachine
 
     /** Reads a tile entity from NBT. */
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.frequency = nbt.getInteger(NBTConstants.FREQUENCY);
+        this.frequency = nbt.getInt(NBTConstants.FREQUENCY);
     }
 
     /** Writes a tile entity to NBT. */
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
-        nbt.setInteger(NBTConstants.FREQUENCY, this.frequency);
+        nbt.putInt(NBTConstants.FREQUENCY, this.frequency);
         return super.writeToNBT(nbt);
     }
 }

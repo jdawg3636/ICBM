@@ -12,8 +12,8 @@ import java.util.Collection;
  *
  * @author DarkGuardsman
  */
-public interface IExternalInventory extends IInventory
-{
+public interface IExternalInventory extends IInventory {
+
     /**
      * Gets the inventory array. ForgeDirection.UNKOWN must return all sides
      */
@@ -29,8 +29,7 @@ public interface IExternalInventory extends IInventory
      *
      * @return true if no items are contained
      */
-    default boolean isEmpty()
-    {
+    default boolean isEmpty() {
         return getContainedItems().size() == 0;
     }
 
@@ -39,21 +38,24 @@ public interface IExternalInventory extends IInventory
      *
      * @return true if all slots are filled
      */
-    default boolean isFull()
-    {
-        if (getContainedItems().size() >= getSizeInventory())
-        {
-            for (int i = 0; i < getSizeInventory(); i++)
-            {
+    default boolean isFull() {
+
+        if (getContainedItems().size() >= getSizeInventory()) {
+
+            for (int i = 0; i < getSizeInventory(); i++) {
+
                 int maxSpace = Math.min(getStackInSlot(i).getMaxStackSize(), getInventoryStackLimit());
                 int space = maxSpace - getStackInSlot(i).getCount();
+
                 if (space > 0)
-                {
                     return false;
-                }
+
             }
+
         }
+
         return false;
+
     }
 
     /**
@@ -79,4 +81,5 @@ public interface IExternalInventory extends IInventory
      * @return list of slots
      */
     ArrayList<Integer> getSlotsWithSpace();
+
 }

@@ -5,8 +5,8 @@ import net.minecraft.entity.player.PlayerEntity;
 /**
  * Created by robert on 1/8/2015.
  */
-public interface IGuiTile
-{
+public interface IGuiTile {
+
     /**
      * Returns a Server side Container to be displayed to the user.
      *
@@ -14,8 +14,7 @@ public interface IGuiTile
      * @param player The player viewing the Gui
      * @return A GuiScreen/Container to be displayed to the user, null if none.
      */
-    default Object getServerGuiElement(int ID, PlayerEntity player)
-    {
+    default Object getServerGuiElement(int ID, PlayerEntity player) {
         return null;
     }
 
@@ -28,8 +27,7 @@ public interface IGuiTile
      * @param player The player viewing the Gui
      * @return A GuiScreen/Container to be displayed to the user, null if none.
      */
-    default Object getClientGuiElement(int ID, PlayerEntity player)
-    {
+    default Object getClientGuiElement(int ID, PlayerEntity player) {
         return null;
     }
 
@@ -43,8 +41,7 @@ public interface IGuiTile
      * @param player - who is trying to open the GUI, in rare cases can be null
      * @return true if should open
      */
-    default boolean shouldOpenOnRightClick(PlayerEntity player)
-    {
+    default boolean shouldOpenOnRightClick(PlayerEntity player) {
         return true;
     }
 
@@ -54,8 +51,8 @@ public interface IGuiTile
      * @param player - who is trying to open the GUI, in rare cases can be null
      * @return ID of the GUI
      */
-    default int getDefaultGuiID(PlayerEntity player)
-    {
+    default int getDefaultGuiID(PlayerEntity player) {
         return 0;
     }
+
 }

@@ -2,7 +2,7 @@ package icbm.classic.prefab.inventory;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 /**
  * Used with IExternalInventory to move the inventory functionality
@@ -14,37 +14,33 @@ import net.minecraft.util.EnumFacing;
  * @author Darkguardsman
  */
 @Deprecated //being replaced with IItemContainer
-public interface IInventoryProvider<I extends IInventory>
-{
+public interface IInventoryProvider<I extends IInventory> {
+
     /** External inventory object */
     I getInventory();
 
     /** Call back for IExternalInventory to check if the item can be stored */
-    default boolean canStore(ItemStack stack, int slot, EnumFacing side)
-    {
+    default boolean canStore(ItemStack stack, int slot, Direction side) {
         return canStore(stack, side);
     }
 
     /** Call back for IExternalInventory to check if the item can be removed */
-    default boolean canRemove(ItemStack stack, int slot, EnumFacing side)
-    {
+    default boolean canRemove(ItemStack stack, int slot, Direction side) {
         return canRemove(stack, side);
     }
 
     /** Call back for IExternalInventory to check if the item can be stored */
-    default boolean canStore(ItemStack stack, EnumFacing side)
-    {
+    default boolean canStore(ItemStack stack, Direction side) {
         return false;
     }
 
     /** Call back for IExternalInventory to check if the item can be removed */
-    default boolean canRemove(ItemStack stack, EnumFacing side)
-    {
+    default boolean canRemove(ItemStack stack, Direction side) {
         return false;
     }
 
     /** Called when the inventory changes */
-    default void onInventoryChanged(int slot, ItemStack prev, ItemStack item)
-    {
+    default void onInventoryChanged(int slot, ItemStack prev, ItemStack item) {
     }
+
 }
