@@ -13,8 +13,8 @@ ICBM (Original): https://www.minecraftforum.net/forums/mapping-and-modding-java-
 * bl4ckscor3
 * GHXX
 * dmodoomsirius
-* clienthax
 * AFlyingCar
+* clienthax
 * kmecpp
 * Quant1um
 * suoliangao
