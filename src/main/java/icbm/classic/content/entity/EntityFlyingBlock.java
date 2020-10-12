@@ -5,17 +5,12 @@ import icbm.classic.lib.NBTConstants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -57,8 +52,7 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
         this.gravity = gravity;
     }
 
-    public void restoreGravity()
-    {
+    public void restoreGravity() {
         gravity = GRAVITY_DEFAULT;
     }
 
@@ -98,9 +92,9 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
     public void onUpdate() {
 
         //Death state handling
-        if (!world.isRemote)
-        {
-            if (_blockState == null || ticksExisted > 20 * 60) //1 min despawn timer{
+        if (!world.isRemote) {
+
+            if (_blockState == null || ticksExisted > 20 * 60) /* 1 min despawn timer */ {
                 this.setBlock();
                 return;
             }
@@ -115,6 +109,7 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
                 this.setBlock();
                 return;
             }
+
         }
 
         //Apply gravity acceleration
@@ -155,9 +150,11 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
 
             final BlockState currentState = world.getBlockState(pos);
 
-            if (currentState.getBlock().isReplaceable(this.world, pos))
+            if (currentState.getMaterial().isReplaceable())
                 MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(this.world, pos, getBlockState(), 3));
+
             //TODO find first block if not replaceable
+
         }
 
         this.remove();
@@ -167,33 +164,40 @@ public class EntityFlyingBlock extends Entity implements IEntityAdditionalSpawnD
     /** Checks to see if and entity is touching the missile. If so, blow up! */
 
     @Override
-    public AxisAlignedBB getCollisionBox(Entity par1Entity) {
+    public void applyEntityCollision(Entity par1Entity) {
 
         // Make sure the entity is not an item
-        if (par1Entity instanceof LivingEntity) {
-            if (getBlockState() != null) {
+        if (par1Entity instanceof LivingEntity)
+            if (getBlockState() != null)
                 if (!(getBlockState().getBlock() instanceof IFluidBlock) && (this.getMotion().getX() > 2 || this.getMotion().getY() > 2 || this.getMotion().getZ() > 2)) {
                     int damage = (int) (1.2 * (Math.abs(this.getMotion().getX()) + Math.abs(this.getMotion().getY()) + Math.abs(this.getMotion().getZ())));
-                    (par1Entity.attackEntityFrom(DamageSource.FALLING_BLOCK, damage);
+                    par1Entity.attackEntityFrom(DamageSource.FALLING_BLOCK, damage);
                 }
-            }
-        }
-        return null;
 
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT nbttagcompound) {
+    public CompoundNBT writeWithoutTypeId(CompoundNBT compound) {
+
+        super.writeWithoutTypeId(compound);
+
         if (_blockState != null)
-            nbttagcompound.put(NBTConstants.BLOCK_STATE, NBTUtil.writeBlockState(new CompoundNBT(), _blockState));
-        nbttagcompound.putFloat(NBTConstants.GRAVITY, this.gravity);
+            compound.put(NBTConstants.BLOCK_STATE, NBTUtil.writeBlockState(_blockState));
+        compound.putFloat(NBTConstants.GRAVITY, this.gravity);
+
+        return compound;
+
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT nbttagcompound) {
+    public void read(CompoundNBT nbttagcompound) {
+
+        super.read(nbttagcompound);
+
         if (nbttagcompound.contains(NBTConstants.BLOCK_STATE))
             _blockState = NBTUtil.readBlockState(nbttagcompound.getCompound(NBTConstants.BLOCK_STATE));
         this.gravity = nbttagcompound.getFloat(NBTConstants.GRAVITY);
+
     }
 
     @Override
