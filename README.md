@@ -19,6 +19,7 @@ ICBM (Original): https://www.minecraftforum.net/forums/mapping-and-modding-java-
 * Quant1um
 * suoliangao
 * CraftalotReloaded
+* michasrutek
 * gravityfox
 * Vexatos
 * Hennamann
