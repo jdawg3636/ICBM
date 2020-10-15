@@ -134,6 +134,6 @@ public class ItemBombCart extends ItemBase
     protected void getDetailedInfo(ItemStack stack, EntityPlayer player, List list)
     {
         //TODO change over to a hook
-        ((ItemBlockExplosive) Item.getItemFromBlock(BlockReg.blockExplosive)).getDetailedInfo(stack, player, list);
+        ((ItemBlockExplosive) Item.getItemFromBlock(BlockReg.EXPLOSIVES)).getDetailedInfo(stack, player, list);
     }
 }

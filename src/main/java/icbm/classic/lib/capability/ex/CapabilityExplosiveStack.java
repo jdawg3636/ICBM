@@ -66,7 +66,7 @@ public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializ
     {
         if (stack == null)
         {
-            return new ItemStack(BlockReg.blockExplosive, 1, 0);
+            return new ItemStack(BlockReg.EXPLOSIVES, 1, 0);
         }
         final ItemStack re = stack.copy();
         re.setCount(1);

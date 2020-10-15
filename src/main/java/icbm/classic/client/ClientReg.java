@@ -81,21 +81,21 @@ public class ClientReg
         clearModelCache();
 
         //Glass
-        newBlockModel(BlockReg.blockReinforcedGlass, 0, "inventory", "");
-        newBlockModel(BlockReg.blockGlassPlate, 0, "inventory", "");
-        newBlockModel(BlockReg.blockGlassButton, 0, "inventory", "");
+        newBlockModel(BlockReg.REINFORCED_GLASS, 0, "inventory", "");
+        newBlockModel(BlockReg.GLASS_PRESSURE_PLATE, 0, "inventory", "");
+        newBlockModel(BlockReg.GLASS_BUTTON, 0, "inventory", "");
 
         //Spikes
-        newBlockModel(BlockReg.blockSpikes, 0, "inventory", "");
-        newBlockModel(BlockReg.blockSpikes, 1, "inventory", "_poison");
-        newBlockModel(BlockReg.blockSpikes, 2, "inventory", "_fire");
+        newBlockModel(BlockReg.SPIKES, 0, "inventory", "");
+        newBlockModel(BlockReg.SPIKES, 1, "inventory", "_poison");
+        newBlockModel(BlockReg.SPIKES, 2, "inventory", "_fire");
 
         //Concrete
-        newBlockModel(BlockReg.blockConcrete, 0, "inventory", "");
-        newBlockModel(BlockReg.blockConcrete, 1, "inventory", "_compact");
-        newBlockModel(BlockReg.blockConcrete, 2, "inventory", "_reinforced");
+        newBlockModel(BlockReg.CONCRETE, 0, "inventory", "");
+        newBlockModel(BlockReg.CONCRETE, 1, "inventory", "_compact");
+        newBlockModel(BlockReg.CONCRETE, 2, "inventory", "_reinforced");
 
-        newBlockModel(BlockReg.blockCruiseLauncher, 0, "inventory", "");
+        newBlockModel(BlockReg.CRUISE_LAUNCHER, 0, "inventory", "");
 
         //Explosives
         registerExBlockRenders();
@@ -104,12 +104,12 @@ public class ClientReg
         registerMissileRenders();
 
         //Machines
-        newBlockModel(BlockReg.blockEmpTower, 0, "inventory", "");
-        newBlockModel(BlockReg.blockRadarStation, 0, "inventory", "");
+        newBlockModel(BlockReg.EMP_TOWER, 0, "inventory", "");
+        newBlockModel(BlockReg.RADAR_STATION, 0, "inventory", "");
 
-        registerLauncherPart(BlockReg.blockLaunchBase);
-        registerLauncherPart(BlockReg.blockLaunchSupport);
-        registerLauncherPart(BlockReg.blockLaunchScreen);
+        registerLauncherPart(BlockReg.LAUNCHER_BASE);
+        registerLauncherPart(BlockReg.LAUNCHER_FRAME);
+        registerLauncherPart(BlockReg.LAUNCHER_SCREEN);
 
         registerMultiBlockRenders();
 
@@ -177,8 +177,8 @@ public class ClientReg
     protected static void registerMultiBlockRenders()
     {
         //Disable rendering of the block, Fixes JSON errors as well
-        ModelLoader.setCustomStateMapper(BlockReg.multiBlock, block -> Collections.emptyMap());
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.multiBlock));
+        ModelLoader.setCustomStateMapper(BlockReg.MULTIBLOCK, block -> Collections.emptyMap());
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.MULTIBLOCK));
     }
 
     protected static void registerExBlockRenders()
@@ -202,10 +202,10 @@ public class ClientReg
             itemBlockModelMap.put(data, new ModelResourceLocation(resourcePath, "inventory"));
         }
         //Block state mapper
-        ModelLoader.setCustomStateMapper(BlockReg.blockExplosive, new BlockModelMapperExplosive(blockModelMap, blockModelMap.get(ICBMExplosives.CONDENSED).get(EnumFacing.UP)));
+        ModelLoader.setCustomStateMapper(BlockReg.EXPLOSIVES, new BlockModelMapperExplosive(blockModelMap, blockModelMap.get(ICBMExplosives.CONDENSED).get(EnumFacing.UP)));
         //Item state mapper
-        ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(BlockReg.blockExplosive), new ItemModelMapperExplosive(itemBlockModelMap, itemBlockModelMap.get(ICBMExplosives.CONDENSED)));
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.blockExplosive), itemBlockModelMap.values()
+        ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(BlockReg.EXPLOSIVES), new ItemModelMapperExplosive(itemBlockModelMap, itemBlockModelMap.get(ICBMExplosives.CONDENSED)));
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.EXPLOSIVES), itemBlockModelMap.values()
                 .stream()
                 .map(mrl -> new ResourceLocation(mrl.getNamespace(), mrl.getPath()))
                 .collect(Collectors.toList())

@@ -107,7 +107,7 @@ public class BlastSonic extends Blast implements IBlastTickable {
                             if (!block.isAir(blockState, world, targetPosition) && blockState.getBlockHardness(world, targetPosition) >= 0) {
 
                                 //Trigger explosions
-                                if (block == BlockReg.blockExplosive)
+                                if (block == BlockReg.EXPLOSIVES)
                                     ((TileEntityExplosive) this.world().getTileEntity(targetPosition)).trigger(false);
 
                                 // Note that we still want to trigger the explosives as above no matter what

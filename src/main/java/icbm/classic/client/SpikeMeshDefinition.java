@@ -22,15 +22,15 @@ public class SpikeMeshDefinition implements ItemMeshDefinition
 
     private SpikeMeshDefinition()
     {
-        base = new ModelResourceLocation(BlockReg.blockSpikes.getRegistryName(), "inventory");
-        fire = new ModelResourceLocation(BlockReg.blockSpikes.getRegistryName() + "_fire", "inventory");
-        poison = new ModelResourceLocation(BlockReg.blockSpikes.getRegistryName() + "_poison", "inventory");
+        base = new ModelResourceLocation(BlockReg.SPIKES.getRegistryName(), "inventory");
+        fire = new ModelResourceLocation(BlockReg.SPIKES.getRegistryName() + "_fire", "inventory");
+        poison = new ModelResourceLocation(BlockReg.SPIKES.getRegistryName() + "_poison", "inventory");
 
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.blockSpikes), base);
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.blockSpikes), base);
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.blockSpikes), fire);
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.blockSpikes), poison);
-        ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(BlockReg.blockSpikes), this);
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.SPIKES), base);
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.SPIKES), base);
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.SPIKES), fire);
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.SPIKES), poison);
+        ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(BlockReg.SPIKES), this);
     }
 
     public static void init()

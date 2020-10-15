@@ -38,7 +38,7 @@ public class RenderExBlock extends Render<EntityExplosive>
 
     public void renderBlock(EntityExplosive entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        final IBlockState blockState = BlockReg.blockExplosive.getDefaultState()
+        final IBlockState blockState = BlockReg.EXPLOSIVES.getDefaultState()
                 .withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP) //TODO get direction from rotation
                 .withProperty(BlockExplosive.EX_PROP, entity.getExplosiveData());
         final BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
@@ -72,7 +72,7 @@ public class RenderExBlock extends Render<EntityExplosive>
             GlStateManager.color(1.0F, 1.0F, 1.0F, (1.0F - ((float)entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F);
             GlStateManager.doPolygonOffset(-3.0F, -3.0F);
             GlStateManager.enablePolygonOffset();
-            blockrendererdispatcher.renderBlockBrightness(BlockReg.blockExplosive.getDefaultState(), 1.0F);
+            blockrendererdispatcher.renderBlockBrightness(BlockReg.EXPLOSIVES.getDefaultState(), 1.0F);
             GlStateManager.doPolygonOffset(0.0F, 0.0F);
             GlStateManager.disablePolygonOffset();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

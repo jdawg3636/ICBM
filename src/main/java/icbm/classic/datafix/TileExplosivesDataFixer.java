@@ -24,7 +24,7 @@ public class TileExplosivesDataFixer implements IFixableData
             else if(explosiveID > 14) //since it was removed, all the IDs need to move down by one
                 explosiveID--;
 
-            newNbt.setTag(NBTConstants.EXPLOSIVE_STACK, new ItemStack(BlockReg.blockExplosive, 1, explosiveID).serializeNBT());
+            newNbt.setTag(NBTConstants.EXPLOSIVE_STACK, new ItemStack(BlockReg.EXPLOSIVES, 1, explosiveID).serializeNBT());
             newNbt.setInteger(NBTConstants.X, nbt.getInteger(NBTConstants.X));
             newNbt.setInteger(NBTConstants.Y, nbt.getInteger(NBTConstants.Y));
             newNbt.setInteger(NBTConstants.Z, nbt.getInteger(NBTConstants.Z));

@@ -43,7 +43,7 @@ public class MultiBlockHelper
             return;
         }
         //Multi-block should be registered but just in case a dev forgot
-        if (BlockReg.multiBlock != null)
+        if (BlockReg.MULTIBLOCK != null)
         {
             //Get layout of multi-block for it's current state
             Collection<BlockPos> placementList = hostTile.getLayoutOfMultiBlock();
@@ -71,7 +71,7 @@ public class MultiBlockHelper
                     TileEntity tile = world.getTileEntity(location);
                     if (!validate || tile == null)
                     {
-                        if (!world.setBlockState(location, BlockReg.multiBlock.getDefaultState(), 3))
+                        if (!world.setBlockState(location, BlockReg.MULTIBLOCK.getDefaultState(), 3))
                         {
                             logger.error("MultiBlockHelper:  error block was not placed ");
                         }
@@ -103,7 +103,7 @@ public class MultiBlockHelper
 
     public static boolean canBuild(World world, IMultiTileHost tile, boolean offset)
     {
-        if (world != null && tile != null && BlockReg.multiBlock != null)
+        if (world != null && tile != null && BlockReg.MULTIBLOCK != null)
         {
             return canBuild(world, ((TileEntity) tile).getPos(), tile.getLayoutOfMultiBlock(), offset);
         }
@@ -112,7 +112,7 @@ public class MultiBlockHelper
 
     public static boolean canBuild(World world, BlockPos pos, Collection<BlockPos> map, boolean offset)
     {
-        if (world != null && BlockReg.multiBlock != null)
+        if (world != null && BlockReg.MULTIBLOCK != null)
         {
             //Ensure the map is not null or empty in case there is no structure to generate
             if (map != null && !map.isEmpty())
@@ -140,7 +140,7 @@ public class MultiBlockHelper
                     {
                         return false;
                     }
-                    else if (block.getBlock() == BlockReg.multiBlock)
+                    else if (block.getBlock() == BlockReg.MULTIBLOCK)
                     {
                         TileEntity tileEntity = world.getTileEntity(location);
                         if (tileEntity instanceof IMultiTile && ((IMultiTile) tileEntity).getHost() != null)

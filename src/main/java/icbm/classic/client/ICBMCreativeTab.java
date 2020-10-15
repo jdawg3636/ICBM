@@ -37,15 +37,15 @@ public class ICBMCreativeTab extends CreativeTabs
     {
         definedTabItemsInOrder.clear();
         //define items in order
-        orderItem(BlockReg.blockLaunchBase);
-        orderItem(BlockReg.blockLaunchScreen);
-        orderItem(BlockReg.blockLaunchSupport);
-        orderItem(BlockReg.blockEmpTower);
-        orderItem(BlockReg.blockRadarStation);
+        orderItem(BlockReg.LAUNCHER_BASE);
+        orderItem(BlockReg.LAUNCHER_SCREEN);
+        orderItem(BlockReg.LAUNCHER_FRAME);
+        orderItem(BlockReg.EMP_TOWER);
+        orderItem(BlockReg.RADAR_STATION);
 
-        orderItem(BlockReg.blockConcrete);
-        orderItem(BlockReg.blockReinforcedGlass);
-        orderItem(BlockReg.blockSpikes);
+        orderItem(BlockReg.CONCRETE);
+        orderItem(BlockReg.REINFORCED_GLASS);
+        orderItem(BlockReg.SPIKES);
 
         orderItem(ItemReg.itemRocketLauncher);
         orderItem(ItemReg.itemRadarGun);
@@ -56,7 +56,7 @@ public class ICBMCreativeTab extends CreativeTabs
         orderItem(ItemReg.itemDefuser);
         orderItem(ItemReg.itemBattery);
 
-        orderItem(BlockReg.blockExplosive);
+        orderItem(BlockReg.EXPLOSIVES);
         orderItem(ItemReg.itemMissile);
         orderItem(ItemReg.itemGrenade);
         orderItem(ItemReg.itemBombCart);

@@ -159,7 +159,7 @@ public class TileRadarStation extends TileFrequency implements IPacketIDReceiver
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
     {
-        return !(oldState.getBlock() == BlockReg.blockRadarStation && newState.getBlock() == BlockReg.blockRadarStation); //Don't kill tile if the radar station is still there
+        return !(oldState.getBlock() == BlockReg.RADAR_STATION && newState.getBlock() == BlockReg.RADAR_STATION); //Don't kill tile if the radar station is still there
     }
 
     private void doScan() //TODO document and thread

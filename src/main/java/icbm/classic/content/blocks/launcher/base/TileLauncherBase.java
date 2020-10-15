@@ -414,7 +414,7 @@ public class TileLauncherBase extends TileMachine implements IMultiTileHost, IIn
 
         if (!tryInsertMissile(player, hand, heldItem) && launchScreen != null)
         {
-            return BlockReg.blockLaunchScreen.onBlockActivated(world, launchScreen.getPos(), world.getBlockState(launchScreen.getPos()), player, hand, EnumFacing.NORTH, 0, 0, 0);
+            return BlockReg.LAUNCHER_SCREEN.onBlockActivated(world, launchScreen.getPos(), world.getBlockState(launchScreen.getPos()), player, hand, EnumFacing.NORTH, 0, 0, 0);
             //return launchScreen.onPlayerActivated(player, side, hit);
         }
 

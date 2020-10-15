@@ -38,7 +38,7 @@ public class ExBlockContentReg extends ExplosiveContentRegistry implements IExBl
         IExplosiveData ex = getExplosive(regName);
         if(ex != null)
         {
-            return new ItemStack(BlockReg.blockExplosive, 1, ex.getRegistryID());
+            return new ItemStack(BlockReg.EXPLOSIVES, 1, ex.getRegistryID());
         }
         return null;
     }

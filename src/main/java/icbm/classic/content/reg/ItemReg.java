@@ -103,18 +103,18 @@ public class ItemReg
         event.getRegistry().register(new ItemMissile());
 
         //Block items
-        event.getRegistry().register(new ItemBlock(BlockReg.blockGlassPlate).setRegistryName(BlockReg.blockGlassPlate.getRegistryName()));
-        event.getRegistry().register(new ItemBlock(BlockReg.blockGlassButton).setRegistryName(BlockReg.blockGlassButton.getRegistryName()));
-        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.blockSpikes));
-        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.blockConcrete));
-        event.getRegistry().register(new ItemBlock(BlockReg.blockReinforcedGlass).setRegistryName(BlockReg.blockReinforcedGlass.getRegistryName()));
-        event.getRegistry().register(new ItemBlockExplosive(BlockReg.blockExplosive).setRegistryName(BlockReg.blockExplosive.getRegistryName()));
-        event.getRegistry().register(new ItemBlock(BlockReg.blockEmpTower).setRegistryName(BlockReg.blockEmpTower.getRegistryName()));
-        event.getRegistry().register(new ItemBlock(BlockReg.blockRadarStation).setRegistryName(BlockReg.blockRadarStation.getRegistryName()));
-        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.blockLaunchSupport));
-        event.getRegistry().register(new ItemBlockRotatedMultiTile(BlockReg.blockLaunchBase, e -> TileLauncherBase.getLayoutOfMultiBlock(e)));
-        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.blockLaunchScreen));
-        event.getRegistry().register(new ItemBlock(BlockReg.blockCruiseLauncher).setRegistryName(BlockReg.blockCruiseLauncher.getRegistryName()));
+        event.getRegistry().register(new ItemBlock(BlockReg.GLASS_PRESSURE_PLATE).setRegistryName(BlockReg.GLASS_PRESSURE_PLATE.getRegistryName()));
+        event.getRegistry().register(new ItemBlock(BlockReg.GLASS_BUTTON).setRegistryName(BlockReg.GLASS_BUTTON.getRegistryName()));
+        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.SPIKES));
+        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.CONCRETE));
+        event.getRegistry().register(new ItemBlock(BlockReg.REINFORCED_GLASS).setRegistryName(BlockReg.REINFORCED_GLASS.getRegistryName()));
+        event.getRegistry().register(new ItemBlockExplosive(BlockReg.EXPLOSIVES).setRegistryName(BlockReg.EXPLOSIVES.getRegistryName()));
+        event.getRegistry().register(new ItemBlock(BlockReg.EMP_TOWER).setRegistryName(BlockReg.EMP_TOWER.getRegistryName()));
+        event.getRegistry().register(new ItemBlock(BlockReg.RADAR_STATION).setRegistryName(BlockReg.RADAR_STATION.getRegistryName()));
+        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.LAUNCHER_FRAME));
+        event.getRegistry().register(new ItemBlockRotatedMultiTile(BlockReg.LAUNCHER_BASE, e -> TileLauncherBase.getLayoutOfMultiBlock(e)));
+        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.LAUNCHER_SCREEN));
+        event.getRegistry().register(new ItemBlock(BlockReg.CRUISE_LAUNCHER).setRegistryName(BlockReg.CRUISE_LAUNCHER.getRegistryName()));
 
         //Crafting resources
         if (ConfigItems.ENABLE_CRAFTING_ITEMS)

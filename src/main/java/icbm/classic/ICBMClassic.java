@@ -113,6 +113,7 @@ public final class ICBMClassic {
     public ICBMClassic() {
         MinecraftForge.EVENT_BUS.register(this);
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        BlockReg.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     /*

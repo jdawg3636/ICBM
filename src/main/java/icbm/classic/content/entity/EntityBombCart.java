@@ -142,7 +142,7 @@ public class EntityBombCart extends TNTMinecartEntity implements IEntityAddition
     @Override
     public IBlockState getDefaultDisplayTile()
     {
-        return BlockReg.blockExplosive.getDefaultState()
+        return BlockReg.EXPLOSIVES.getDefaultState()
                 .withProperty(BlockExplosive.EX_PROP, ICBMClassicHelpers.getExplosive(explosive, false))
                 .withProperty(BlockICBM.ROTATION_PROP, EnumFacing.UP);
     }

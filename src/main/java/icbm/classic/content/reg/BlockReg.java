@@ -19,86 +19,71 @@ import icbm.classic.content.blocks.multiblock.TileMulti;
 import icbm.classic.content.blocks.radarstation.BlockRadarStation;
 import icbm.classic.content.blocks.radarstation.TileRadarStation;
 import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ObjectHolder;
 
-/**
- * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
- */
-@Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
 public class BlockReg {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ICBMConstants.DOMAIN);
 
-    public static final RegistryObject<Block> blockGlassPlate = BLOCKS.register("glassPressurePlate", () -> new BlockGlassPressurePlate());
+    public static final RegistryObject<Block> CONCRETE              = BLOCKS.register("concrete",           BlockConcrete::new);
+    public static final RegistryObject<Block> GLASS_BUTTON          = BLOCKS.register("glassButton",        BlockGlassButton::new);
+    public static final RegistryObject<Block> GLASS_PRESSURE_PLATE  = BLOCKS.register("glassPressurePlate", BlockGlassPressurePlate::new);
+    public static final RegistryObject<Block> REINFORCED_GLASS      = BLOCKS.register("reinforcedGlass",    BlockReinforcedGlass::new);
+    public static final RegistryObject<Block> SPIKES                = BLOCKS.register("spikes",             BlockSpikes::new);
 
-    @ObjectHolder(ICBMConstants.PREFIX + "glassButton")
-    public static Block blockGlassButton;
-    @ObjectHolder(ICBMConstants.PREFIX + "spikes")
-    public static Block blockSpikes;
-    public static Block blockCamo; //TODO re-implement
-    @ObjectHolder(ICBMConstants.PREFIX + "concrete")
-    public static Block blockConcrete;
-    @ObjectHolder(ICBMConstants.PREFIX + "reinforcedGlass")
-    public static Block blockReinforcedGlass;
-    @ObjectHolder(ICBMConstants.PREFIX + "explosives")
-    public static Block blockExplosive;
-    @ObjectHolder(ICBMConstants.PREFIX + "launcherbase")
-    public static Block blockLaunchBase;
-    @ObjectHolder(ICBMConstants.PREFIX + "launcherscreen")
-    public static Block blockLaunchScreen;
-    @ObjectHolder(ICBMConstants.PREFIX + "launcherframe")
-    public static Block blockLaunchSupport;
-    @ObjectHolder(ICBMConstants.PREFIX + "radarStation")
-    public static Block blockRadarStation;
-    @ObjectHolder(ICBMConstants.PREFIX + "emptower")
-    public static Block blockEmpTower;
-    @ObjectHolder(ICBMConstants.PREFIX + "cruiseLauncher")
-    public static Block blockCruiseLauncher;
-    public static Block blockMissileCoordinator; //TODO re-implement
-    @ObjectHolder(ICBMConstants.PREFIX + "multiblock")
-    public static Block multiBlock;
+    public static final RegistryObject<Block> CRUISE_LAUNCHER       = BLOCKS.register("cruiseLauncher",     BlockCruiseLauncher::new);
+    public static final RegistryObject<Block> EMP_TOWER             = BLOCKS.register("emptower",           BlockEmpTower::new);
+    public static final RegistryObject<Block> EXPLOSIVES            = BLOCKS.register("explosives",         BlockExplosive::new);
+    public static final RegistryObject<Block> LAUNCHER_BASE         = BLOCKS.register("launcherbase",       BlockLauncherBase::new);
+    public static final RegistryObject<Block> LAUNCHER_SCREEN       = BLOCKS.register("launcherscreen",     BlockLaunchScreen::new);
+    public static final RegistryObject<Block> LAUNCHER_FRAME        = BLOCKS.register("launcherframe",      BlockLaunchFrame::new);
+    public static final RegistryObject<Block> MULTIBLOCK            = BLOCKS.register("multiblock",         BlockMultiblock::new);
+    public static final RegistryObject<Block> RADAR_STATION         = BLOCKS.register("radarStation",       BlockRadarStation::new);
 
-    @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+    //public static Block blockCamo; //TODO re-implement
+    //public static Block blockMissileCoordinator; //TODO re-implement
+    //event.getRegistry().register(blockCombatRail = new BlockReinforcedRail());
+    //blockCamo = manager.newBlock("icbmCCamouflage", TileCamouflage.class);
+    //ICBMClassic.blockMissileCoordinator = ICBMClassic.INSTANCE.getManager().newBlock("icbmCMissileCoordinator", new TileMissileCoordinator());
 
-        // DONE // event.getRegistry().register(new BlockGlassPressurePlate());
-        event.getRegistry().register(new BlockGlassButton());
-        event.getRegistry().register(new BlockSpikes());
-        event.getRegistry().register(new BlockConcrete());
-        event.getRegistry().register(new BlockReinforcedGlass());
-        //event.getRegistry().register(blockCombatRail = new BlockReinforcedRail());
-        event.getRegistry().register(new BlockExplosive());
+    public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, ICBMConstants.DOMAIN);
 
-        event.getRegistry().register(new BlockEmpTower());
-        event.getRegistry().register(new BlockRadarStation());
-        event.getRegistry().register(new BlockLaunchFrame());
-        event.getRegistry().register(new BlockLauncherBase());
-        event.getRegistry().register(new BlockLaunchScreen());
-        event.getRegistry().register(new BlockMultiblock());
-
-        event.getRegistry().register(new BlockCruiseLauncher());
-
-        /*
-        blockCamo = manager.newBlock("icbmCCamouflage", TileCamouflage.class);
-        ICBMClassic.blockMissileCoordinator = ICBMClassic.INSTANCE.getManager().newBlock("icbmCMissileCoordinator", new TileMissileCoordinator());
-         */
-
-        GameRegistry.registerTileEntity(TileEntityExplosive.class, new ResourceLocation(ICBMConstants.DOMAIN, "explosive"));
-        GameRegistry.registerTileEntity(TileEMPTower.class, new ResourceLocation(ICBMConstants.DOMAIN, "emptower"));
-        GameRegistry.registerTileEntity(TileRadarStation.class, new ResourceLocation(ICBMConstants.DOMAIN, "radarstation"));
-        GameRegistry.registerTileEntity(TileLauncherFrame.class, new ResourceLocation(ICBMConstants.DOMAIN, "launcherframe"));
-        GameRegistry.registerTileEntity(TileLauncherBase.class, new ResourceLocation(ICBMConstants.DOMAIN, "launcherbase"));
-        GameRegistry.registerTileEntity(TileLauncherScreen.class, new ResourceLocation(ICBMConstants.DOMAIN, "launcherscreen"));
-        GameRegistry.registerTileEntity(TileMulti.class, new ResourceLocation(ICBMConstants.DOMAIN, "multiblock"));
-        GameRegistry.registerTileEntity(TileCruiseLauncher.class, new ResourceLocation(ICBMConstants.DOMAIN, "cruiseLauncher"));
-    }
+    public static final RegistryObject<TileEntityType<TileCruiseLauncher>> CRUISE_LAUNCHER_TILE = TILES.register(
+            "cruiseLauncher",
+            () -> TileEntityType.Builder.create(TileCruiseLauncher::new, CRUISE_LAUNCHER.get()).build(null)
+    );
+    public static final RegistryObject<TileEntityType<TileEMPTower>> EMP_TOWER_TILE = TILES.register(
+            "emptower",
+            () -> TileEntityType.Builder.create(TileEMPTower::new, EMP_TOWER.get()).build(null)
+    );
+    // TODO Implement Data Fixer
+    public static final RegistryObject<TileEntityType<TileEntityExplosive>> EXPLOSIVES_TILE = TILES.register(
+            "explosives",
+            () -> TileEntityType.Builder.create(TileEntityExplosive::new, EXPLOSIVES.get()).build(null)
+    );
+    public static final RegistryObject<TileEntityType<TileLauncherBase>> LAUNCHER_BASE_TILE = TILES.register(
+            "launcherbase",
+            () -> TileEntityType.Builder.create(TileLauncherBase::new, LAUNCHER_BASE.get()).build(null)
+    );
+    public static final RegistryObject<TileEntityType<TileLauncherScreen>> LAUNCHER_SCREEN_TILE = TILES.register(
+            "launcherscreen",
+            () -> TileEntityType.Builder.create(TileLauncherScreen::new, LAUNCHER_SCREEN.get()).build(null)
+    );
+    public static final RegistryObject<TileEntityType<TileLauncherFrame>> LAUNCHER_FRAME_TILE = TILES.register(
+            "launcherframe",
+            () -> TileEntityType.Builder.create(TileLauncherFrame::new, LAUNCHER_FRAME.get()).build(null)
+    );
+    public static final RegistryObject<TileEntityType<TileMulti>> MULTIBLOCK_TILE = TILES.register(
+            "multiblock",
+            () -> TileEntityType.Builder.create(TileMulti::new, MULTIBLOCK.get()).build(null)
+    );
+    // TODO Implement Data Fixer
+    public static final RegistryObject<TileEntityType<TileRadarStation>> RADAR_STATION_TILE = TILES.register(
+            "radarStation",
+            () -> TileEntityType.Builder.create(TileRadarStation::new, RADAR_STATION.get()).build(null)
+    );
 
 }

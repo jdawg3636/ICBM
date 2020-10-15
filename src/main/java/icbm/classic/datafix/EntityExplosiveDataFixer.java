@@ -24,7 +24,7 @@ public class EntityExplosiveDataFixer implements IFixableData
                 int id = compound.getInteger(NBTConstants.EXPLOSIVE_ID);
 
                 //Generate stack so we can serialize off it
-                final ItemStack stack = new ItemStack(BlockReg.blockExplosive, 1, id);
+                final ItemStack stack = new ItemStack(BlockReg.EXPLOSIVES, 1, id);
 
                 //Handle custom explosive data
                 final IExplosive ex = stack.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null);
