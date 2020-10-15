@@ -3,6 +3,7 @@ package icbm.classic;
 import icbm.classic.api.EnumTier;
 import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.client.ClientProxy;
+import icbm.classic.content.reg.BlockReg;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.api.reg.events.ExplosiveRegistryEvent;
 import icbm.classic.api.reg.events.ExplosiveContentRegistryEvent;
@@ -54,6 +55,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -110,6 +112,7 @@ public final class ICBMClassic {
 
     public ICBMClassic() {
         MinecraftForge.EVENT_BUS.register(this);
+        BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     /*

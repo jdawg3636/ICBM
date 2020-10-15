@@ -21,19 +21,24 @@ import icbm.classic.content.blocks.radarstation.TileRadarStation;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ObjectHolder;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
  */
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
-public class BlockReg
-{
-    @ObjectHolder(ICBMConstants.PREFIX + "glassPressurePlate")
-    public static Block blockGlassPlate;
+public class BlockReg {
+
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ICBMConstants.DOMAIN);
+
+    public static final RegistryObject<Block> blockGlassPlate = BLOCKS.register("glassPressurePlate", () -> new BlockGlassPressurePlate());
+
     @ObjectHolder(ICBMConstants.PREFIX + "glassButton")
     public static Block blockGlassButton;
     @ObjectHolder(ICBMConstants.PREFIX + "spikes")
@@ -62,9 +67,9 @@ public class BlockReg
     public static Block multiBlock;
 
     @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event)
-    {
-        event.getRegistry().register(new BlockGlassPressurePlate());
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+
+        // DONE // event.getRegistry().register(new BlockGlassPressurePlate());
         event.getRegistry().register(new BlockGlassButton());
         event.getRegistry().register(new BlockSpikes());
         event.getRegistry().register(new BlockConcrete());
@@ -95,4 +100,5 @@ public class BlockReg
         GameRegistry.registerTileEntity(TileMulti.class, new ResourceLocation(ICBMConstants.DOMAIN, "multiblock"));
         GameRegistry.registerTileEntity(TileCruiseLauncher.class, new ResourceLocation(ICBMConstants.DOMAIN, "cruiseLauncher"));
     }
+
 }
