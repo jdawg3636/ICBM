@@ -21,10 +21,6 @@ import icbm.classic.content.potion.PoisonContagion;
 import icbm.classic.content.potion.PoisonFrostBite;
 import icbm.classic.content.potion.PoisonToxin;
 import icbm.classic.content.reg.ItemReg;
-import icbm.classic.datafix.EntityExplosiveDataFixer;
-import icbm.classic.datafix.EntityGrenadeDataFixer;
-import icbm.classic.datafix.TileExplosivesDataFixer;
-import icbm.classic.datafix.TileRadarStationDataFixer;
 import icbm.classic.lib.capability.emp.CapabilityEMP;
 import icbm.classic.lib.capability.ex.CapabilityExplosive;
 import icbm.classic.lib.energy.system.EnergySystem;
@@ -108,8 +104,6 @@ public final class ICBMClassic {
 
     public static final ICBMCreativeTab CREATIVE_TAB = new ICBMCreativeTab(ICBMConstants.DOMAIN);
 
-    //public static ModFixs modFixs;
-
     public ICBMClassic() {
         MinecraftForge.EVENT_BUS.register(this);
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
@@ -190,15 +184,9 @@ public final class ICBMClassic {
         CapabilityMissile.register();
         CapabilityExplosive.register();
 
-        //Register data fixers
-        // TODO switch to new data fixer system (net.minecraft.util.datafix)
+        // TODO implement (new) data fixer system (net.minecraft.util.datafix)
         // https://www.reddit.com/r/feedthebeast/comments/7fbqfw/psa_modders_are_you_calling_datafixers_on_your/
         // https://github.com/sinkillerj/ProjectE/commit/46005c9054fe8386497856a2558d0bde3ee75dce#diff-cf9efddd30b4c8c205baed6f33906532R121
-        modFixs = FMLCommonHandler.instance().getDataFixer().init(ICBMConstants.DOMAIN, 1);
-        modFixs.registerFix(FixTypes.ENTITY, new EntityExplosiveDataFixer());
-        modFixs.registerFix(FixTypes.ENTITY, new EntityGrenadeDataFixer());
-        modFixs.registerFix(FixTypes.BLOCK_ENTITY, new TileExplosivesDataFixer());
-        modFixs.registerFix(FixTypes.BLOCK_ENTITY, new TileRadarStationDataFixer());
 
         MinecraftForge.EVENT_BUS.register(RadarRegistry.INSTANCE);
         MinecraftForge.EVENT_BUS.register(RadioRegistry.INSTANCE);
