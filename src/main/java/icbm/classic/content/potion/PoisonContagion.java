@@ -49,7 +49,7 @@ public class PoisonContagion extends CustomPotion {
                         ZombifiedPiglinEntity newEntity = new ZombifiedPiglinEntity(EntityType.field_233592_ba_, entity.world);
                         newEntity.setLocationAndAngles(entity.getPosX(), entity.getPosY(), entity.getPosZ(), entity.rotationYaw, entity.rotationPitch);
 
-                        if (!entity.world.isRemote
+                        if (!entity.world.isRemote)
                             entity.world.addEntity(newEntity);
 
                         entity.remove();
@@ -92,7 +92,7 @@ public class PoisonContagion extends CustomPotion {
     @Override
     public boolean isReady(int duration, int amplifier) {
 
-        if (duration % (20 * 2) == 0
+        if (duration % (20 * 2) == 0)
             return true;
 
         return false;

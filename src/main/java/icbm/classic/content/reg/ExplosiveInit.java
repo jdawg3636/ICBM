@@ -39,21 +39,20 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
  */
-public class ExplosiveInit
-{
+public class ExplosiveInit {
+
     //TODO use a datafixer to flatten missiles into (ex, homing, anti, cluster)
     //https://github.com/RS485/LogisticsPipes/blob/dev-mc1122/common/logisticspipes/datafixer/DataFixerSolidBlockItems.java
     //https://github.com/RS485/LogisticsPipes/blob/dev-mc1122/common/logisticspipes/datafixer/LPDataFixer.java#L17-L19
 
     //the fuse suppliers all return 100 (default in ExBlockContentReg#getFuseTime) when an unknown enum value is given as a type
-    public static void init()
-    {
+    public static void init() {
+
         //=================== Tier 1
         ICBMExplosives.CONDENSED = newEx(0, "condensed", EnumTier.ONE, () -> new BlastTNT().setBlastSize(6));
         ICBMClassicAPI.EX_BLOCK_REGISTRY.setFuseSupplier(ICBMExplosives.CONDENSED.getRegistryName(), (world, x, y, z) -> ConfigBlast.FUSE_TIMES.EXPLOSIVES.CONDENSED);
@@ -219,80 +218,98 @@ public class ExplosiveInit
         ///* 26 */MISSILE_ANTI(new MissileAnti());
         ///* 27 */MISSILE_CLUSTER(new MissileCluster("cluster", EnumTier.TWO));
         ///* 28 */MISSILE_CLUSTER_NUKE(new MissileNuclearCluster())
+
     }
 
-    private static IExplosiveData newEx(int id, String name, EnumTier tier, IBlastFactory factory)
-    {
-        if (id != -1)
-        {
+    private static IExplosiveData newEx(int id, String name, EnumTier tier, IBlastFactory factory) {
+
+        if (id != -1) {
             //Setup old IDs so saves work
             ((ExplosiveRegistry) ICBMClassicAPI.EXPLOSIVE_REGISTRY).forceID(new ResourceLocation(ICBMConstants.DOMAIN, name), id);
         }
+
         return ICBMClassicAPI.EXPLOSIVE_REGISTRY.register(new ResourceLocation(ICBMConstants.DOMAIN, name), tier, factory);
+
     }
 
-    private static boolean enderMissileCoordSet(Entity entity, PlayerEntity player, Hand hand)
-    {
-        if (entity.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null))
-        {
-            final IExplosive provider = entity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null);
+    private static boolean enderMissileCoordSet(Entity entity, PlayerEntity player, Hand hand) {
+
+        if (entity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null).isPresent()) {
+
+            final IExplosive provider = entity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, null).orElse(null);
             final CompoundNBT tag = provider.getCustomBlastData();
-            if (tag != null)
-            {
+
+            if (tag != null) {
+
                 final ItemStack heldItem = player.getHeldItem(hand);
-                if (heldItem.getItem() instanceof IWorldPosItem)
-                {
+
+                if (heldItem.getItem() instanceof IWorldPosItem) {
+
                     final IWorldPosItem posItem = ((IWorldPosItem) heldItem.getItem());
                     final IWorldPosition link = posItem.getLocation(heldItem);
 
-                    if (link instanceof Location)
-                    {
+                    if (link instanceof Location) {
+
                         ((Location) link).writeIntNBT(tag);
-                        if (!entity.world.isRemote)
-                        {
+
+                        if (!entity.world.isRemote) {
                             //player.sendMessage(new StringTextComponent("Coordinates encoded into entity"), null); //TODO translate
                         }
+
                         return true;
+
                     }
+
                 }
+
             }
+
         }
 
         return false;
+
     }
 
-    private static boolean enderBlockCoordSet(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, Direction facing, float hitX, float hitY, float hitZ)
-    {
+    private static boolean enderBlockCoordSet(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
+
         final ItemStack heldItem = entityPlayer.getHeldItem(hand);
-        if (heldItem.getItem() instanceof IWorldPosItem)
-        {
+
+        if (heldItem.getItem() instanceof IWorldPosItem) {
+
             final IWorldPosItem posItem = ((IWorldPosItem) heldItem.getItem());
             final IWorldPosition link = posItem.getLocation(heldItem);
 
-            if (link instanceof Location)
-            {
+            if (link instanceof Location) {
+
                 TileEntity tileEntity = world.getTileEntity(pos);
 
-                if (tileEntity.hasCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, facing))
-                {
+                if (tileEntity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, facing).isPresent()) {
+
                     IExplosive explosive = tileEntity.getCapability(ICBMClassicAPI.EXPLOSIVE_CAPABILITY, facing).orElse(null);
-                    if (explosive != null)
-                    {
+
+                    if (explosive != null) {
+
                         CompoundNBT tag = new CompoundNBT();
+
                         ((Location) link).writeIntNBT(tag);
                         explosive.getCustomBlastData().put("", tag);
 
-                        if (!world.isRemote)
-                        {
+                        if (!world.isRemote) {
                             //entityPlayer.sendMessage(new TextComponentString("Synced coordinate with " + this.getExplosiveName())); //TODO translate
                         }
 
                         return true;
+
                     }
+
                 }
+
             }
+
         }
 
         return false;
+
     }
+
 }

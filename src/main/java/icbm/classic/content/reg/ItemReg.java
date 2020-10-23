@@ -21,20 +21,19 @@ import icbm.classic.content.items.ItemTracker;
 import icbm.classic.prefab.item.ItemBase;
 import icbm.classic.prefab.item.ItemBlockRotatedMultiTile;
 import icbm.classic.prefab.item.ItemBlockSubTypes;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.ObjectHolder;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
  */
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
-public class ItemReg
-{
+public class ItemReg {
+
     @ObjectHolder(ICBMConstants.PREFIX + "antidote")
     public static Item itemAntidote;
     @ObjectHolder(ICBMConstants.PREFIX + "signalDisrupter")
@@ -77,8 +76,8 @@ public class ItemReg
     public static ItemCrafting itemWire;
 
     @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event)
-    {
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+
         //Items
         event.getRegistry().register(new ItemGrenade().setName("grenade").setCreativeTab(ICBMClassic.CREATIVE_TAB));
         event.getRegistry().register(new ItemBombCart().setName("bombcart").setCreativeTab(ICBMClassic.CREATIVE_TAB));
@@ -103,46 +102,39 @@ public class ItemReg
         event.getRegistry().register(new ItemMissile());
 
         //Block items
-        event.getRegistry().register(new ItemBlock(BlockReg.GLASS_PRESSURE_PLATE).setRegistryName(BlockReg.GLASS_PRESSURE_PLATE.getRegistryName()));
-        event.getRegistry().register(new ItemBlock(BlockReg.GLASS_BUTTON).setRegistryName(BlockReg.GLASS_BUTTON.getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.GLASS_PRESSURE_PLATE).setRegistryName(BlockReg.GLASS_PRESSURE_PLATE.getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.GLASS_BUTTON).setRegistryName(BlockReg.GLASS_BUTTON.getRegistryName()));
         event.getRegistry().register(new ItemBlockSubTypes(BlockReg.SPIKES));
         event.getRegistry().register(new ItemBlockSubTypes(BlockReg.CONCRETE));
-        event.getRegistry().register(new ItemBlock(BlockReg.REINFORCED_GLASS).setRegistryName(BlockReg.REINFORCED_GLASS.getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.REINFORCED_GLASS).setRegistryName(BlockReg.REINFORCED_GLASS.getRegistryName()));
         event.getRegistry().register(new ItemBlockExplosive(BlockReg.EXPLOSIVES).setRegistryName(BlockReg.EXPLOSIVES.getRegistryName()));
-        event.getRegistry().register(new ItemBlock(BlockReg.EMP_TOWER).setRegistryName(BlockReg.EMP_TOWER.getRegistryName()));
-        event.getRegistry().register(new ItemBlock(BlockReg.RADAR_STATION).setRegistryName(BlockReg.RADAR_STATION.getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.EMP_TOWER).setRegistryName(BlockReg.EMP_TOWER.getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.RADAR_STATION).setRegistryName(BlockReg.RADAR_STATION.getRegistryName()));
         event.getRegistry().register(new ItemBlockSubTypes(BlockReg.LAUNCHER_FRAME));
         event.getRegistry().register(new ItemBlockRotatedMultiTile(BlockReg.LAUNCHER_BASE, e -> TileLauncherBase.getLayoutOfMultiBlock(e)));
         event.getRegistry().register(new ItemBlockSubTypes(BlockReg.LAUNCHER_SCREEN));
-        event.getRegistry().register(new ItemBlock(BlockReg.CRUISE_LAUNCHER).setRegistryName(BlockReg.CRUISE_LAUNCHER.getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.CRUISE_LAUNCHER).setRegistryName(BlockReg.CRUISE_LAUNCHER.getRegistryName()));
 
         //Crafting resources
-        if (ConfigItems.ENABLE_CRAFTING_ITEMS)
-        {
-            if (ConfigItems.ENABLE_INGOTS_ITEMS)
-            {
+        if (ConfigItems.ENABLE_CRAFTING_ITEMS) {
+
+            if (ConfigItems.ENABLE_INGOTS_ITEMS) {
                 event.getRegistry().register(new ItemCrafting("ingot", "steel", "copper"));
                 event.getRegistry().register(new ItemCrafting("clump", "steel"));
             }
             if (ConfigItems.ENABLE_PLATES_ITEMS)
-            {
                 event.getRegistry().register(new ItemCrafting("plate", "steel", "iron"));
-            }
             if (ConfigItems.ENABLE_CIRCUIT_ITEMS)
-            {
                 event.getRegistry().register(new ItemCrafting("circuit", "basic", "advanced", "elite"));
-            }
             if (ConfigItems.ENABLE_WIRES_ITEMS)
-            {
                 event.getRegistry().register(new ItemCrafting("wire", "copper", "gold"));
-            }
+
         }
 
         //Optional items
         if (ConfigItems.ENABLE_BATTERY)
-        {
             event.getRegistry().register(new ItemBattery());
-        }
 
     }
+
 }
