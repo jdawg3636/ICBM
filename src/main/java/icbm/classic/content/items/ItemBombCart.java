@@ -1,5 +1,6 @@
 package icbm.classic.content.items;
 
+import icbm.classic.ICBMClassic;
 import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.content.blocks.explosive.BlockItemExplosive;
@@ -27,7 +28,7 @@ import java.util.List;
 public class ItemBombCart extends ItemBase {
 
     public ItemBombCart() {
-        super(new Item.Properties().maxStackSize(3));
+        super(new Item.Properties().maxStackSize(3).group(ICBMClassic.CREATIVE_TAB));
     }
 
     @Override

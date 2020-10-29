@@ -3,6 +3,7 @@ package icbm.classic.prefab.item;
 import icbm.classic.lib.LanguageUtility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -13,8 +14,8 @@ import net.minecraft.item.ItemStack;
  */
 public class BlockItemSubTypes extends BlockItemAbstract {
 
-    public BlockItemSubTypes(Block block) {
-        super(block);
+    public BlockItemSubTypes(Block block, Item.Properties properties) {
+        super(block, properties);
         setHasSubtypes(true);
         setRegistryName(block.getRegistryName());
     }

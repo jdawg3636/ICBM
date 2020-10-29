@@ -31,11 +31,9 @@ public class BlockConcrete extends Block {
     public static final PropertyType TYPE_PROP = new PropertyType();
 
     public BlockConcrete() {
-        super(new Block.Properties(Material.ROCK));
+        super(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F));
         this.setRegistryName(ICBMConstants.PREFIX + "concrete");
-        this.setTranslationKey(ICBMConstants.PREFIX + "concrete");
         this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
-        this.setHardness(10);
     }
 
     @Override

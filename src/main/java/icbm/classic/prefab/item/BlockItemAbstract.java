@@ -41,8 +41,8 @@ import java.util.List;
 public class BlockItemAbstract extends BlockItem {
 
     //Make sure to mirror all changes to other abstract class
-    public BlockItemAbstract(Block p_i45328_1_) {
-        super(p_i45328_1_, new Item.Properties());
+    public BlockItemAbstract(Block block, Item.Properties properties) {
+        super(block, properties);
     }
 
     @Override

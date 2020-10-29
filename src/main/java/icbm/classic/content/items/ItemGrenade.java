@@ -1,5 +1,6 @@
 package icbm.classic.content.items;
 
+import icbm.classic.ICBMClassic;
 import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.content.entity.EntityGrenade;
@@ -27,6 +28,7 @@ public class ItemGrenade extends ItemBase
         super(new Item.Properties()
             .maxStackSize(16)
             .maxDamage(16)
+            .group(ICBMClassic.CREATIVE_TAB)
         );
         //this.setHasSubtypes(true);
     }

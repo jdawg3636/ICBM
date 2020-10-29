@@ -79,14 +79,14 @@ public class ItemReg {
     public static void registerItems(RegistryEvent.Register<Item> event) {
 
         //Items
-        event.getRegistry().register(new ItemGrenade().setName("grenade").setCreativeTab(ICBMClassic.CREATIVE_TAB));
-        event.getRegistry().register(new ItemBombCart().setName("bombcart").setCreativeTab(ICBMClassic.CREATIVE_TAB));
-        event.getRegistry().register(new ItemBase().setName("poisonPowder").setCreativeTab(ICBMClassic.CREATIVE_TAB)); //TODO fix name _
-        Item sulfurItem = new ItemBase().setName("sulfurDust").setCreativeTab(ICBMClassic.CREATIVE_TAB);
+        event.getRegistry().register(new ItemGrenade().setName("grenade"));
+        event.getRegistry().register(new ItemBombCart().setName("bombcart"));
+        event.getRegistry().register(new ItemBase(new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setName("poisonPowder")); //TODO fix name _
+        Item sulfurItem = new ItemBase(new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setName("sulfurDust");
         event.getRegistry().register(sulfurItem); //TODO fix name _
         OreDictionary.registerOre("dustSulfur", sulfurItem);
 
-        Item saltpeterItem = new ItemBase().setName("saltpeter").setCreativeTab(ICBMClassic.CREATIVE_TAB);
+        Item saltpeterItem = new ItemBase(new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setName("saltpeter");
         event.getRegistry().register(saltpeterItem);
         OreDictionary.registerOre("dustSaltpeter", saltpeterItem);
 
@@ -102,18 +102,18 @@ public class ItemReg {
         event.getRegistry().register(new ItemMissile());
 
         //Block items
-        event.getRegistry().register(new BlockItem(BlockReg.GLASS_PRESSURE_PLATE).setRegistryName(BlockReg.GLASS_PRESSURE_PLATE.get().getRegistryName()));
-        event.getRegistry().register(new BlockItem(BlockReg.GLASS_BUTTON).setRegistryName(BlockReg.GLASS_BUTTON.get().getRegistryName()));
-        event.getRegistry().register(new BlockItemSubTypes(BlockReg.SPIKES));
-        event.getRegistry().register(new BlockItemSubTypes(BlockReg.CONCRETE));
-        event.getRegistry().register(new BlockItem(BlockReg.REINFORCED_GLASS).setRegistryName(BlockReg.REINFORCED_GLASS.get().getRegistryName()));
-        event.getRegistry().register(new BlockItemExplosive(BlockReg.EXPLOSIVES).setRegistryName(BlockReg.EXPLOSIVES.get().getRegistryName()));
-        event.getRegistry().register(new BlockItem(BlockReg.EMP_TOWER).setRegistryName(BlockReg.EMP_TOWER.get().getRegistryName()));
-        event.getRegistry().register(new BlockItem(BlockReg.RADAR_STATION).setRegistryName(BlockReg.RADAR_STATION.get().getRegistryName()));
-        event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_FRAME));
+        event.getRegistry().register(new BlockItem(BlockReg.GLASS_PRESSURE_PLATE.get(), new Item.Properties()).setRegistryName(BlockReg.GLASS_PRESSURE_PLATE.get().getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.GLASS_BUTTON.get(), new Item.Properties()).setRegistryName(BlockReg.GLASS_BUTTON.get().getRegistryName()));
+        event.getRegistry().register(new BlockItemSubTypes(BlockReg.SPIKES.get()));
+        event.getRegistry().register(new BlockItemSubTypes(BlockReg.CONCRETE.get()));
+        event.getRegistry().register(new BlockItem(BlockReg.REINFORCED_GLASS.get(), new Item.Properties()).setRegistryName(BlockReg.REINFORCED_GLASS.get().getRegistryName()));
+        event.getRegistry().register(new BlockItemExplosive(BlockReg.EXPLOSIVES.get(), new Item.Properties()).setRegistryName(BlockReg.EXPLOSIVES.get().getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.EMP_TOWER.get(), new Item.Properties()).setRegistryName(BlockReg.EMP_TOWER.get().getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.RADAR_STATION.get(), new Item.Properties()).setRegistryName(BlockReg.RADAR_STATION.get().getRegistryName()));
+        event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_FRAME.get()));
         event.getRegistry().register(new BlockItemRotatedMultiTile(BlockReg.LAUNCHER_BASE, e -> TileLauncherBase.getLayoutOfMultiBlock(e)));
         event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_SCREEN.get()));
-        event.getRegistry().register(new BlockItem(BlockReg.CRUISE_LAUNCHER).setRegistryName(BlockReg.CRUISE_LAUNCHER.get().getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.CRUISE_LAUNCHER.get(), new Item.Properties()).setRegistryName(BlockReg.CRUISE_LAUNCHER.get().getRegistryName()));
 
         //Crafting resources
         if (ConfigItems.ENABLE_CRAFTING_ITEMS) {
