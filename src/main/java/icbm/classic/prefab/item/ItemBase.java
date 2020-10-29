@@ -25,15 +25,17 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
  * <p>
  * Created by Dark(DarkGuardsman, Robert) on 12/20/2016.
  */
-public class ItemBase extends Item
-{
+public class ItemBase extends Item {
+
+    public ItemBase() {
+        super(new Item.Properties());
+    }
 
     public ItemBase(Item.Properties properties) {
         super(properties);
     }
 
-    public ItemBase setName(String name)
-    {
+    public ItemBase setName(String name) {
         this.setRegistryName(ICBMConstants.PREFIX + name);
         return this;
     }
@@ -41,29 +43,23 @@ public class ItemBase extends Item
     //Make sure to mirror all changes to other abstract class
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
-    {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+
         PlayerEntity player = Minecraft.getInstance().player;
 
         //Generic info, shared by item group
         splitAdd(getTranslationKey() + ".info", tooltip, false, true);
 
         if (hasDetailedInfo(stack, player))
-        {
             getDetailedInfo(stack, player, tooltip);
+
+        if (hasShiftInfo(stack, player)) {
+            if (IOUtil.isKeyPressed(GLFW_KEY_LEFT_SHIFT))
+                tooltip.add(new StringTextComponent(LanguageUtility.getLocal("info.voltzengine:tooltip.noShift").replace("#0", "\u00a7b").replace("#1", "\u00a77")));
+            else
+                getShiftDetailedInfo(stack, player, tooltip);
         }
 
-        if (hasShiftInfo(stack, player))
-        {
-            if (IOUtil.isKeyPressed(GLFW_KEY_LEFT_SHIFT))
-            {
-                tooltip.add(new StringTextComponent(LanguageUtility.getLocal("info.voltzengine:tooltip.noShift").replace("#0", "\u00a7b").replace("#1", "\u00a77")));
-            }
-            else
-            {
-                getShiftDetailedInfo(stack, player, tooltip);
-            }
-        }
     }
 
     /**
@@ -74,8 +70,7 @@ public class ItemBase extends Item
      * @param player
      * @param tooltip
      */
-    protected void getDetailedInfo(ItemStack stack, PlayerEntity player, List<ITextComponent> tooltip)
-    {
+    protected void getDetailedInfo(ItemStack stack, PlayerEntity player, List<ITextComponent> tooltip) {
         //Per item detailed info
         splitAdd(getTranslationKey(stack) + ".info", tooltip, true, true);
     }
@@ -90,19 +85,15 @@ public class ItemBase extends Item
      * @param player
      * @param tooltip
      */
-    protected void getShiftDetailedInfo(ItemStack stack, PlayerEntity player, List<ITextComponent> tooltip)
-    {
+    protected void getShiftDetailedInfo(ItemStack stack, PlayerEntity player, List<ITextComponent> tooltip) {
         //Per item detailed info
         splitAdd(getTranslationKey(stack) + ".info.detailed", tooltip, true, true);
     }
 
-    protected void splitAdd(String translationKey, List<ITextComponent> tooltip, boolean addKeyIfEmpty, boolean translate)
-    {
+    protected void splitAdd(String translationKey, List<ITextComponent> tooltip, boolean addKeyIfEmpty, boolean translate) {
         String translation = translate ? LanguageUtility.getLocal(translationKey) : translationKey;
         if (!translate || !translation.isEmpty() && !translation.equals(translationKey))
-        {
             LanguageUtility.splitByLine(translation).forEach(line -> tooltip.add(new StringTextComponent(line)));
-        }
     }
 
     /**
@@ -112,8 +103,7 @@ public class ItemBase extends Item
      * @param player
      * @return
      */
-    protected boolean hasDetailedInfo(ItemStack stack, PlayerEntity player)
-    {
+    protected boolean hasDetailedInfo(ItemStack stack, PlayerEntity player) {
         return false;
     }
 
@@ -125,8 +115,8 @@ public class ItemBase extends Item
      * @param player
      * @return
      */
-    protected boolean hasShiftInfo(ItemStack stack, PlayerEntity player)
-    {
+    protected boolean hasShiftInfo(ItemStack stack, PlayerEntity player) {
         return false;
     }
+
 }

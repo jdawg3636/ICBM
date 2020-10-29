@@ -7,12 +7,12 @@ import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.content.reg.BlockReg;
 import icbm.classic.content.reg.ItemReg;
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +23,16 @@ import java.util.Optional;
  * need to make a more complex tab
  * Created by robert on 11/25/2014.
  */
-public class ICBMCreativeTab extends CreativeTabs
-{
+public class ICBMCreativeTab extends ItemGroup {
+
     private final List<Item> definedTabItemsInOrder = new ArrayList();
 
-    public ICBMCreativeTab(String name)
-    {
+    public ICBMCreativeTab(String name) {
         super(name);
     }
 
     //call during FMLInitializationEvent as registries need to be frozen for this
-    public void init()
-    {
+    public void init() {
         definedTabItemsInOrder.clear();
         //define items in order
         orderItem(BlockReg.LAUNCHER_BASE);
@@ -62,41 +60,31 @@ public class ICBMCreativeTab extends CreativeTabs
         orderItem(ItemReg.itemBombCart);
 
         //Collect any non-defined items
-        for (Item item : Item.REGISTRY) //registries are frozen during FMLInitializationEvent, can safely iterate
-        {
+        for (Item item : Item.REGISTRY) /* registries are frozen during FMLInitializationEvent, can safely iterate */ {
             if (item != null)
-            {
-                for (CreativeTabs tab : item.getCreativeTabs())
-                {
+                for (ItemGroup tab : item.getCreativeTabs())
                     if (tab == this && !definedTabItemsInOrder.contains(item))
-                    {
                         orderItem(item);
-                    }
-                }
-            }
-        }
+
     }
 
-    private void orderItem(Block item)
-    {
+    private void orderItem(Block item) {
         orderItem(Item.getItemFromBlock(item));
     }
 
-    private void orderItem(Item item)
-    {
+    private void orderItem(Item item) {
         definedTabItemsInOrder.add(item);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void displayAllRelevantItems(final NonNullList<ItemStack> list)
-    {
+    @OnlyIn(Dist.CLIENT)
+    public void displayAllRelevantItems(final NonNullList<ItemStack> list) {
         //Insert items in order
         definedTabItemsInOrder.forEach(item -> collectSubItems(item, list));
     }
 
-    protected void collectSubItems(final Item item, final NonNullList<ItemStack> masterList)
-    {
+    protected void collectSubItems(final Item item, final NonNullList<ItemStack> masterList) {
+
         //Collect stacks
         final NonNullList<ItemStack> collectedItemStacks = NonNullList.create();
         item.getSubItems(this, collectedItemStacks);
@@ -106,21 +94,23 @@ public class ICBMCreativeTab extends CreativeTabs
 
         //Merge into list with null check
         masterList.addAll(collectedItemStacks);
+
     }
 
-    private int compareExplosives(ItemStack itemA, ItemStack itemB)
-    {
+    private int compareExplosives(ItemStack itemA, ItemStack itemB) {
+
         final IExplosive explosiveA = ICBMClassicHelpers.getExplosive(itemA);
         final IExplosive explosiveB = ICBMClassicHelpers.getExplosive(itemB);
+
         if (explosiveA != null && explosiveB != null)
-        {
             return compareExplosives(explosiveA, explosiveB);
-        }
+
         return 0;
+
     }
 
-    private int compareExplosives(IExplosive explosiveA, IExplosive explosiveB)
-    {
+    private int compareExplosives(IExplosive explosiveA, IExplosive explosiveB) {
+
         final IExplosiveData dataA = Optional.ofNullable(explosiveA.getExplosiveData()).orElse(ICBMExplosives.CONDENSED);
         final IExplosiveData dataB = Optional.ofNullable(explosiveB.getExplosiveData()).orElse(ICBMExplosives.CONDENSED);
         final int tierA = dataA.getTier().ordinal();
@@ -128,15 +118,15 @@ public class ICBMCreativeTab extends CreativeTabs
 
         //If tiers are the same move to sorting by explosive registry index
         if (tierA == tierB)
-        {
             return dataA.getRegistryID() - dataB.getRegistryID();
-        }
+
         return tierA - tierB;
+
     }
 
     @Override
-    public ItemStack createIcon()
-    {
+    public ItemStack createIcon() {
         return new ItemStack(ItemReg.itemMissile);
     }
+
 }

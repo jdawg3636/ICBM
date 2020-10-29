@@ -4,7 +4,7 @@ import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.lib.NBTConstants;
 import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.content.reg.BlockReg;
-import icbm.classic.content.blocks.explosive.ItemBlockExplosive;
+import icbm.classic.content.blocks.explosive.BlockItemExplosive;
 import icbm.classic.lib.capability.ex.CapabilityExplosiveStack;
 import icbm.classic.prefab.item.ItemICBMBase;
 import icbm.classic.prefab.item.ItemStackCapProvider;
@@ -84,6 +84,6 @@ public class ItemMissile extends ItemICBMBase
     protected void getDetailedInfo(ItemStack stack, EntityPlayer player, List list)
     {
         //TODO add hook
-        ((ItemBlockExplosive) Item.getItemFromBlock(BlockReg.EXPLOSIVES)).getDetailedInfo(stack, player, list);
+        ((BlockItemExplosive) Item.getItemFromBlock(BlockReg.EXPLOSIVES)).getDetailedInfo(stack, player, list);
     }
 }

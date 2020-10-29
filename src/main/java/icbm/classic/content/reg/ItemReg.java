@@ -3,7 +3,7 @@ package icbm.classic.content.reg;
 import icbm.classic.ICBMClassic;
 import icbm.classic.ICBMConstants;
 import icbm.classic.config.ConfigItems;
-import icbm.classic.content.blocks.explosive.ItemBlockExplosive;
+import icbm.classic.content.blocks.explosive.BlockItemExplosive;
 import icbm.classic.content.blocks.launcher.base.TileLauncherBase;
 import icbm.classic.content.items.ItemAntidote;
 import icbm.classic.content.items.ItemBattery;
@@ -19,8 +19,8 @@ import icbm.classic.content.items.ItemRocketLauncher;
 import icbm.classic.content.items.ItemSignalDisrupter;
 import icbm.classic.content.items.ItemTracker;
 import icbm.classic.prefab.item.ItemBase;
-import icbm.classic.prefab.item.ItemBlockRotatedMultiTile;
-import icbm.classic.prefab.item.ItemBlockSubTypes;
+import icbm.classic.prefab.item.BlockItemRotatedMultiTile;
+import icbm.classic.prefab.item.BlockItemSubTypes;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -102,18 +102,18 @@ public class ItemReg {
         event.getRegistry().register(new ItemMissile());
 
         //Block items
-        event.getRegistry().register(new BlockItem(BlockReg.GLASS_PRESSURE_PLATE).setRegistryName(BlockReg.GLASS_PRESSURE_PLATE.getRegistryName()));
-        event.getRegistry().register(new BlockItem(BlockReg.GLASS_BUTTON).setRegistryName(BlockReg.GLASS_BUTTON.getRegistryName()));
-        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.SPIKES));
-        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.CONCRETE));
-        event.getRegistry().register(new BlockItem(BlockReg.REINFORCED_GLASS).setRegistryName(BlockReg.REINFORCED_GLASS.getRegistryName()));
-        event.getRegistry().register(new ItemBlockExplosive(BlockReg.EXPLOSIVES).setRegistryName(BlockReg.EXPLOSIVES.getRegistryName()));
-        event.getRegistry().register(new BlockItem(BlockReg.EMP_TOWER).setRegistryName(BlockReg.EMP_TOWER.getRegistryName()));
-        event.getRegistry().register(new BlockItem(BlockReg.RADAR_STATION).setRegistryName(BlockReg.RADAR_STATION.getRegistryName()));
-        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.LAUNCHER_FRAME));
-        event.getRegistry().register(new ItemBlockRotatedMultiTile(BlockReg.LAUNCHER_BASE, e -> TileLauncherBase.getLayoutOfMultiBlock(e)));
-        event.getRegistry().register(new ItemBlockSubTypes(BlockReg.LAUNCHER_SCREEN));
-        event.getRegistry().register(new BlockItem(BlockReg.CRUISE_LAUNCHER).setRegistryName(BlockReg.CRUISE_LAUNCHER.getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.GLASS_PRESSURE_PLATE).setRegistryName(BlockReg.GLASS_PRESSURE_PLATE.get().getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.GLASS_BUTTON).setRegistryName(BlockReg.GLASS_BUTTON.get().getRegistryName()));
+        event.getRegistry().register(new BlockItemSubTypes(BlockReg.SPIKES));
+        event.getRegistry().register(new BlockItemSubTypes(BlockReg.CONCRETE));
+        event.getRegistry().register(new BlockItem(BlockReg.REINFORCED_GLASS).setRegistryName(BlockReg.REINFORCED_GLASS.get().getRegistryName()));
+        event.getRegistry().register(new BlockItemExplosive(BlockReg.EXPLOSIVES).setRegistryName(BlockReg.EXPLOSIVES.get().getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.EMP_TOWER).setRegistryName(BlockReg.EMP_TOWER.get().getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.RADAR_STATION).setRegistryName(BlockReg.RADAR_STATION.get().getRegistryName()));
+        event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_FRAME));
+        event.getRegistry().register(new BlockItemRotatedMultiTile(BlockReg.LAUNCHER_BASE, e -> TileLauncherBase.getLayoutOfMultiBlock(e)));
+        event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_SCREEN.get()));
+        event.getRegistry().register(new BlockItem(BlockReg.CRUISE_LAUNCHER).setRegistryName(BlockReg.CRUISE_LAUNCHER.get().getRegistryName()));
 
         //Crafting resources
         if (ConfigItems.ENABLE_CRAFTING_ITEMS) {

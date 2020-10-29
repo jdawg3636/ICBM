@@ -6,10 +6,13 @@ import icbm.classic.api.caps.IExplosive;
 import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.content.reg.BlockReg;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -46,68 +49,63 @@ public class CapabilityExplosiveStack implements IExplosive, ICapabilitySerializ
 
     @Nullable
     @Override
-    public NBTTagCompound getCustomBlastData()
+    public CompoundNBT getCustomBlastData()
     {
         if (custom_ex_data == null)
         {
-            custom_ex_data = new NBTTagCompound();
+            custom_ex_data = new CompoundNBT();
         }
         return custom_ex_data;
     }
 
-    public void setCustomData(NBTTagCompound data)
+    public void setCustomData(CompoundNBT data)
     {
         this.custom_ex_data = data;
     }
 
     @Nullable
     @Override
-    public ItemStack toStack()
-    {
+    public ItemStack toStack() {
+
         if (stack == null)
-        {
             return new ItemStack(BlockReg.EXPLOSIVES, 1, 0);
-        }
+
         final ItemStack re = stack.copy();
         re.setCount(1);
         return re;
+
     }
 
     @Override
-    public NBTTagCompound serializeNBT()
+    public CompoundNBT serializeNBT()
     {
         //Do not save the stack itself as we are saving to its NBT
-        NBTTagCompound save = new NBTTagCompound();
+        CompoundNBT save = new CompoundNBT();
         if (!getCustomBlastData().isEmpty())
         {
-            save.setTag(NBTConstants.CUSTOM_EX_DATA, getCustomBlastData());
+            save.put(NBTConstants.CUSTOM_EX_DATA, getCustomBlastData());
         }
         return save;
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt)
-    {
-        if (nbt.hasKey(NBTConstants.CUSTOM_EX_DATA))
-        {
-            custom_ex_data = nbt.getCompoundTag(NBTConstants.CUSTOM_EX_DATA);
-        }
-    }
-
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY;
+    public void deserializeNBT(CompoundNBT nbt) {
+        if (nbt.contains(NBTConstants.CUSTOM_EX_DATA))
+            custom_ex_data = nbt.getCompound(NBTConstants.CUSTOM_EX_DATA);
     }
 
     @Nullable
     @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-    {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+
+        LazyOptional<Capability> toReturn = new LazyOptional<>();
+
         if (capability == ICBMClassicAPI.EXPLOSIVE_CAPABILITY)
-        {
+            ICBMClassicAPI.EXPLOSIVE_CAPABILITY.orEmpty(capability)
             return (T) this;
-        }
+
         return null;
+
     }
+
 }

@@ -17,12 +17,12 @@ import java.util.function.Function;
  *
  * Created by Dark(DarkGuardsman, Robert) on 3/16/2018.
  */
-public class ItemBlockRotatedMultiTile extends ItemBlockSubTypes
+public class BlockItemRotatedMultiTile extends BlockItemSubTypes
 {
     //Wrapper for getting the multi-block data for the rotation
     protected final Function<EnumFacing, List<BlockPos>> multiBlockGetter;
 
-    public ItemBlockRotatedMultiTile(Block block, Function<EnumFacing, List<BlockPos>> multiBlockGetter)
+    public BlockItemRotatedMultiTile(Block block, Function<EnumFacing, List<BlockPos>> multiBlockGetter)
     {
         super(block);
         this.multiBlockGetter = multiBlockGetter;

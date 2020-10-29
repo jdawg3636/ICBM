@@ -5,8 +5,8 @@ import org.apache.logging.log4j.Level;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 
-public class NBTConstants
-{
+public class NBTConstants {
+
     /* Verifies that the nbt tag constants are distinct (only exist once).
      * This ensures that save files don't get corrupted. (Imagine writing a byte-array and an integer with the
      * same name and then trying to load that again)
@@ -14,26 +14,32 @@ public class NBTConstants
      * FAILING THIS CHECK WILL RESULT IN A CRASH!
      *
      */
-    public static void ensureThatAllTagNamesAreDistinct()
-    {
+    public static void ensureThatAllTagNamesAreDistinct() {
+
         Field[] fields = NBTConstants.class.getDeclaredFields(); // grab all fields
         LinkedList<String> alreadySeen = new LinkedList<>(); // keep track of all already seen fields
+
         for (Field field : fields) { // iterate the fields
+
             try {
+
                 String value = (String)field.get(null); // get the field's value
+
                 if (alreadySeen.contains(value)) { // check if an equal value was seen before
                     // crash the game to prevent save corruptions
                     ICBMClassic.logger().log(Level.FATAL, "FAILED AND NBT INIT CHECK! This is a severe problem as it can cause save data to get messed up. Because of this the game is going to crash now. Please report this! Conflicting value: " + value);
                     throw new RuntimeException( "ICBM Classic failed an nbt init check! Fatal conflict: " + value);
                 }
-                else
-                {
+                else {
                     alreadySeen.add(value); // add value to check against it later
                 }
+
             } catch (IllegalAccessException ex) {
                 ICBMClassic.logger().log(Level.ERROR, "Illegal access exception thrown while checking nbt tags! Please report this!" + ex.toString());
             }
+
         }
+
     }
 
     public static final String ACCELERATION = "acceleration";
@@ -129,4 +135,5 @@ public class NBTConstants
     @Deprecated //legacy
     public static final String Z_TILE = "zTile";
     public static final String Z_TILE_POS = "zTilePos";
+
 }

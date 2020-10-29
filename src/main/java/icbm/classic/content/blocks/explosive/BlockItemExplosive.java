@@ -7,7 +7,7 @@ import icbm.classic.api.ICBMClassicHelpers;
 import icbm.classic.api.reg.IExplosiveData;
 import icbm.classic.lib.LanguageUtility;
 import icbm.classic.lib.capability.ex.CapabilityExplosiveStack;
-import icbm.classic.prefab.item.ItemBlockAbstract;
+import icbm.classic.prefab.item.BlockItemAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +20,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemBlockExplosive extends ItemBlockAbstract
+public class BlockItemExplosive extends BlockItemAbstract
 {
     private final String count_key = "icbm.explosive.redMatter.info.count";
 
@@ -31,7 +31,7 @@ public class ItemBlockExplosive extends ItemBlockAbstract
 
     private static int changeOverDelay = 1000 * 60;
 
-    public ItemBlockExplosive(Block block)
+    public BlockItemExplosive(Block block)
     {
         super(block);
         this.setMaxDamage(0);
