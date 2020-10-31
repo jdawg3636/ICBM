@@ -81,23 +81,12 @@ public final class ICBMClassic {
     // Clever hack found in Mekanism source, not the proper way to do this.
     public static CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
-    public static final String MAJOR_VERSION = "@MAJOR@";
-    public static final String MINOR_VERSION = "@MINOR@";
-    public static final String REVISION_VERSION = "@REVIS@";
-    public static final String BUILD_VERSION = "@BUILD@";
-    public static final String MC_VERSION = "@MC@";
-    public static final String VERSION = MC_VERSION + "-" + MAJOR_VERSION + "." + MINOR_VERSION + "." + REVISION_VERSION + "." + BUILD_VERSION;
-    public static final String DEPENDENCIES = "";
-
     public static final int MAP_HEIGHT = 255;
 
     protected static Logger logger = LogManager.getLogger(ICBMConstants.DOMAIN);
     public static Logger logger() { return logger; }
 
     public static final PacketManager packetHandler = new PacketManager(ICBMConstants.DOMAIN);
-
-    //Mod support
-    public static Block blockRadioactive = Blocks.MYCELIUM; //TODO implement
 
     public static final ContagiousPoison poisonous_potion = new ContagiousPoison("Chemical", 0, false);
     public static final ContagiousPoison contagios_potion = new ContagiousPoison("Contagious", 1, true);

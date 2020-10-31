@@ -1,7 +1,7 @@
 package icbm.classic.client.models.mobs;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
@@ -9,8 +9,8 @@ import net.minecraft.util.math.MathHelper;
  * ModelCreeper - Either Mojang or a mod author
  * Created using Tabula 7.0.0
  */
-public class ModelCreeperXmas extends ModelBase
-{
+public class ModelCreeperXmas extends Model {
+
     public ModelRenderer head;
     public ModelRenderer body;
 
@@ -48,8 +48,7 @@ public class ModelCreeperXmas extends ModelBase
     public ModelRenderer shape14;
     public ModelRenderer shape15;
 
-    public ModelCreeperXmas()
-    {
+    public ModelCreeperXmas() {
         this.textureWidth = 64;
         this.textureHeight = 100;
         this.MinigunBody = new ModelRenderer(this, 0, 32);
@@ -192,8 +191,7 @@ public class ModelCreeperXmas extends ModelBase
     }
 
     @Override
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
-    {
+    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
         render(scale);
     }

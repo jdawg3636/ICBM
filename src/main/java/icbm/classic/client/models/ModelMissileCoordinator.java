@@ -1,8 +1,9 @@
 package icbm.classic.client.models;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.model.Model;
 
-public class ModelMissileCoordinator extends ModelICBM
+public class ModelMissileCoordinator extends Model
 {
     // fields
     ModelRenderer Stand2;

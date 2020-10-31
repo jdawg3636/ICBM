@@ -4,6 +4,8 @@ import icbm.classic.content.reg.BlockReg;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.model.ModelBakery;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
@@ -22,9 +24,9 @@ public class SpikeMeshDefinition implements ItemMeshDefinition
 
     private SpikeMeshDefinition()
     {
-        base = new ModelResourceLocation(BlockReg.SPIKES.getRegistryName(), "inventory");
-        fire = new ModelResourceLocation(BlockReg.SPIKES.getRegistryName() + "_fire", "inventory");
-        poison = new ModelResourceLocation(BlockReg.SPIKES.getRegistryName() + "_poison", "inventory");
+        base = new ModelResourceLocation(BlockReg.SPIKES.get().getRegistryName(), "inventory");
+        fire = new ModelResourceLocation(BlockReg.SPIKES.get().getRegistryName() + "_fire", "inventory");
+        poison = new ModelResourceLocation(BlockReg.SPIKES.get().getRegistryName() + "_poison", "inventory");
 
         ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.SPIKES), base);
         ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockReg.SPIKES), base);

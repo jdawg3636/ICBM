@@ -1,13 +1,14 @@
 package icbm.classic.client.models;
 
 import icbm.classic.ICBMConstants;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraftforge.fml.relauncher.Side;import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class ModelSMine extends ModelICBM
+public class ModelSMine extends Model
 {
     public static final ModelSMine INSTANCE = new ModelSMine();
     public static final ResourceLocation TEXTURE = new ResourceLocation(ICBMConstants.DOMAIN, "textures/models/" + "s-mine.png");

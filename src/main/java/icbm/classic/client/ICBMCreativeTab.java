@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -35,15 +36,15 @@ public class ICBMCreativeTab extends ItemGroup {
     public void init() {
         definedTabItemsInOrder.clear();
         //define items in order
-        orderItem(BlockReg.LAUNCHER_BASE);
-        orderItem(BlockReg.LAUNCHER_SCREEN);
-        orderItem(BlockReg.LAUNCHER_FRAME);
-        orderItem(BlockReg.EMP_TOWER);
-        orderItem(BlockReg.RADAR_STATION);
+        orderItem(BlockReg.LAUNCHER_BASE.get());
+        orderItem(BlockReg.LAUNCHER_SCREEN.get());
+        orderItem(BlockReg.LAUNCHER_FRAME.get());
+        orderItem(BlockReg.EMP_TOWER.get());
+        orderItem(BlockReg.RADAR_STATION.get());
 
-        orderItem(BlockReg.CONCRETE);
-        orderItem(BlockReg.REINFORCED_GLASS);
-        orderItem(BlockReg.SPIKES);
+        orderItem(BlockReg.CONCRETE.get());
+        orderItem(BlockReg.REINFORCED_GLASS.get());
+        orderItem(BlockReg.SPIKES.get());
 
         orderItem(ItemReg.itemRocketLauncher);
         orderItem(ItemReg.itemRadarGun);
@@ -54,13 +55,13 @@ public class ICBMCreativeTab extends ItemGroup {
         orderItem(ItemReg.itemDefuser);
         orderItem(ItemReg.itemBattery);
 
-        orderItem(BlockReg.EXPLOSIVES);
+        orderItem(BlockReg.EXPLOSIVES.get());
         orderItem(ItemReg.itemMissile);
         orderItem(ItemReg.itemGrenade);
         orderItem(ItemReg.itemBombCart);
 
         //Collect any non-defined items
-        for (Item item : Item.REGISTRY) /* registries are frozen during FMLInitializationEvent, can safely iterate */ {
+        for (Item item : Registry.ITEM) // registries are frozen during FMLInitializationEvent, can safely iterate
             if (item != null)
                 for (ItemGroup tab : item.getCreativeTabs())
                     if (tab == this && !definedTabItemsInOrder.contains(item))

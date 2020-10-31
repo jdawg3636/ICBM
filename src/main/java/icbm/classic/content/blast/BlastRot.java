@@ -22,6 +22,9 @@ import java.util.function.Consumer;
  */
 public class BlastRot extends BlastThreaded implements IBlastTickable {
 
+    // Moved here from main mod class, originally labeled with TODO implement
+    public static Block blockRadioactive = Blocks.MYCELIUM;
+
     @Override
     public boolean doRun(int loops, Consumer<BlockPos> edits) {
         BlastHelpers.forEachPosInRadius(this.getBlastRadius(), (x, y, z) ->
@@ -39,16 +42,16 @@ public class BlastRot extends BlastThreaded implements IBlastTickable {
 
         if (block == Blocks.GRASS || block == Blocks.SAND)
             if (this.world().rand.nextFloat() > 0.96)
-                MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(world, targetPosition, ICBMClassic.blockRadioactive.getDefaultState(), 3));
+                MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(world, targetPosition, blockRadioactive.getDefaultState(), 3));
 
         if (block == Blocks.STONE)
             if (this.world().rand.nextFloat() > 0.99)
-                MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(world, targetPosition, ICBMClassic.blockRadioactive.getDefaultState(), 3));
+                MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(world, targetPosition, blockRadioactive.getDefaultState(), 3));
 
         else if (blockState.getMaterial() == Material.LEAVES || blockState.getMaterial() == Material.PLANTS)
             MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(world, targetPosition));
         else if (block == Blocks.FARMLAND)
-            MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(world, targetPosition, ICBMClassic.blockRadioactive.getDefaultState(), 3));
+            MinecraftForge.EVENT_BUS.post(new BlastBlockModifyEvent(world, targetPosition, blockRadioactive.getDefaultState(), 3));
         else if (blockState.getMaterial() == Material.WATER){
 
             if (Registry.FLUID.func_241873_b(new ResourceLocation("toxicwaste")).isPresent()) {
