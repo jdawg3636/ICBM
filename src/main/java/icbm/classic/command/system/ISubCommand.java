@@ -1,10 +1,11 @@
 package icbm.classic.command.system;
 
+import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,27 +14,24 @@ import java.util.List;
 /**
  * Created by Robert Seifert on 1/6/20.
  */
-public interface ISubCommand
-{
+public interface ISubCommand {
 
     /**
      * Called to run the command
      *
-     * @param server - server handling the command
-     * @param sender - user triggering the command
-     * @param args   - arguments for the command
+     * @param context - composite param containing calling entity/source, arguments, etc.
      * @throws CommandException - failed to run the command
+     * @return exit code (0 = successful)
      */
-    void handleCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException;
+    int handleCommand(CommandContext<CommandSource> context) throws CommandException;
 
     /**
      * Sends all help text to the sender
      *
      * @param sender
      */
-    default void displayHelp(ICommandSender sender)
-    {
-        sender.sendMessage(new TextComponentString(getUsage(sender)));
+    default void displayHelp(CommandSource sender) {
+        sender.sendFeedback(new StringTextComponent(getUsage(sender)), true);
     }
 
     /**
@@ -45,7 +43,7 @@ public interface ISubCommand
      * @param targetPos - block position for the command
      * @return empty list or list containing suggestions
      */
-    List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos);
+    List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args, @Nullable BlockPos targetPos);
 
 
     /**
@@ -61,7 +59,7 @@ public interface ISubCommand
      * @param sender - sender of the command
      * @return usage string (/parent + name)
      */
-    String getUsage(ICommandSender sender);
+    String getUsage(CommandSource sender);
 
     /**
      * Sets the parent of the command
@@ -69,4 +67,5 @@ public interface ISubCommand
      * @param parent - command's parent
      */
     void setParent(ICommandGroup parent);
+
 }

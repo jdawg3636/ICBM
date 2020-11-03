@@ -6,13 +6,11 @@ import icbm.classic.content.entity.EntityFlyingBlock;
 import icbm.classic.content.entity.EntityFragments;
 import icbm.classic.content.entity.EntityGrenade;
 import icbm.classic.content.entity.missile.EntityMissile;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Robert Seifert on 1/2/20.
  */
-public class CommandUtils
-{
+public class CommandUtils {
 
     /**
      * Removes the first entry in the array and returns a sub array
@@ -31,12 +28,9 @@ public class CommandUtils
      * @param args - array
      * @return sub array or empty array
      */
-    public static String[] removeFront(String[] args)
-    {
+    public static String[] removeFront(String[] args) {
         if (args.length == 0 || args.length == 1)
-        {
             return new String[0];
-        }
         return Arrays.copyOfRange(args, 1, args.length);
     }
 
@@ -46,8 +40,7 @@ public class CommandUtils
      * @param entity - entity to check
      * @return true if the entity is from the mod ICBM
      */
-    public static boolean isICBMEntity(Entity entity)
-    {
+    public static boolean isICBMEntity(Entity entity) {
         return entity instanceof EntityFragments
                 || entity instanceof EntityFlyingBlock
                 || isMissile(entity)
@@ -62,8 +55,7 @@ public class CommandUtils
      * @param entity - entity to check
      * @return true if the entity is a missile
      */
-    public static boolean isMissile(Entity entity)
-    {
+    public static boolean isMissile(Entity entity) {
         return entity instanceof EntityMissile;
     }
 
@@ -77,18 +69,19 @@ public class CommandUtils
      * @param range - range to check, -1 will return all entities in the world
      * @return entities found
      */
-    public static List<Entity> getEntities(World world, double x, double y, double z, double range, Predicate<Entity> filter)
-    {
-        if (range > 0)
-        {
+    public static List<Entity> getEntities(World world, double x, double y, double z, double range, Predicate<Entity> filter) {
+
+        if (range > 0) {
             AxisAlignedBB bb = new AxisAlignedBB(
                     x - range, y - range, z - range,
                     x + range, y + range, z + range);
 
             return world.getEntitiesWithinAABB(Entity.class, bb, filter::test);
         }
+
         //Copy list to avoid modification while we are using said list
         return world.loadedEntityList.stream().filter(filter).collect(Collectors.toList());
+
     }
 
     /**
@@ -98,20 +91,17 @@ public class CommandUtils
      * @return numeric radius
      * @throws WrongUsageException
      */
-    public static int parseRadius(String input) throws WrongUsageException
-    {
-        try
-        {
+    public static int parseRadius(String input) throws WrongUsageException {
+
+        try {
             int radius = Integer.parseInt(input);
             if (radius <= 0)
-            {
                 throw new WrongUsageException("Radius must be greater than zero!");
-            }
             return radius;
-        } catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             throw new WrongUsageException("Invalid radius!");
         }
+
     }
 
     /**
@@ -123,28 +113,22 @@ public class CommandUtils
      * @return numeric value
      * @throws WrongUsageException - if ~ is used from the server console
      */
-    public static double getNumber(ICommandSender sender, String value, double alt) throws WrongUsageException
-    {
-        if (value.equals("~"))
-        {
+    public static double getNumber(CommandSource sender, String value, double alt) throws WrongUsageException {
+
+        if (value.equals("~")) {
             if (!(sender instanceof MinecraftServer))
-            {
                 return alt;
-            }
             throw new WrongUsageException("'~' can't be used from console");
         }
-        else if (value.startsWith("~"))
-        {
+        else if (value.startsWith("~")) {
             if (!(sender instanceof MinecraftServer))
-            {
                 return alt + Double.parseDouble(value.substring(1));
-            }
             throw new WrongUsageException("'~' can't be used from console");
         }
-        else
-        {
+        else {
             return Double.parseDouble(value);
         }
+
     }
 
     /**
@@ -156,31 +140,28 @@ public class CommandUtils
      * @return world if found
      * @throws WrongUsageException - if input is invalid or world was not found
      */
-    public static World getWorld(ICommandSender sender, String value, World alt) throws WrongUsageException
-    {
-        if (value.equals("~"))
-        {
+    public static World getWorld(CommandSource sender, String value, World alt) throws WrongUsageException {
+
+        if (value.equals("~")) {
             if (!(sender instanceof MinecraftServer))
-            {
                 return alt;
-            }
             throw new WrongUsageException("'~' can't be used from console");
         }
-        try
-        {
+        try {
+
             //Parse dim ID from user input
             final int dim = Integer.parseInt(value);
 
             //Get world using ID
             final World world = DimensionManager.getWorld(dim);
             if (world == null)
-            {
                 throw new WrongUsageException("Dimension with ID[" + value + "] was not found!");
-            }
             return world;
-        } catch (NumberFormatException e)
-        {
+
+        } catch (NumberFormatException e) {
             throw new WrongUsageException("Invalid dimension ID[" + value + "]!");
         }
+
     }
+
 }

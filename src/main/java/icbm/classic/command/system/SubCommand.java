@@ -1,9 +1,9 @@
 package icbm.classic.command.system;
 
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,53 +14,42 @@ import java.util.function.Consumer;
 /**
  * Created by Dark(DarkGuardsman, Robert) on 4/13/2018.
  */
-public abstract class SubCommand implements ISubCommand
-{
+public abstract class SubCommand implements ISubCommand {
 
     private final String name;
     protected ICommandGroup parent;
 
-    public SubCommand(String name)
-    {
+    public SubCommand(String name) {
         this.name = name;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @Override
-    public String getUsage(ICommandSender sender)
-    {
+    public String getUsage(CommandSource sender) {
         if (parent == null)
-        {
             return "/" + getName();
-        }
         return parent.getUsage(sender) + " " + getName();
     }
 
     @Override
-    public void displayHelp(ICommandSender sender)
-    {
+    public void displayHelp(CommandSource sender) {
+
         collectHelpForAll((string) -> sendHelpMessage(sender, string));
 
         //If we have a command sender entity then we can run world based commands
-        if (sender.getCommandSenderEntity() != null)
-        {
+        if (sender.getEntity() != null)
             collectHelpWorldOnly((string) -> sendHelpMessage(sender, string));
-        }
-
-        if (sender instanceof MinecraftServer)
-        {
+        else
             collectHelpServerOnly((string) -> sendHelpMessage(sender, string));
-        }
+
     }
 
-    private void sendHelpMessage(ICommandSender sender, String message)
-    {
-        sender.sendMessage(new TextComponentString((getUsage(sender) + " " + message).trim()));
+    private void sendHelpMessage(CommandSource sender, String message) {
+        sender.sendFeedback(new StringTextComponent((getUsage(sender) + " " + message).trim()), true);
     }
 
     /**
@@ -68,8 +57,7 @@ public abstract class SubCommand implements ISubCommand
      *
      * @param consumer - collector
      */
-    protected void collectHelpForAll(Consumer<String> consumer)
-    {
+    protected void collectHelpForAll(Consumer<String> consumer) {
         consumer.accept("");
     }
 
@@ -78,29 +66,22 @@ public abstract class SubCommand implements ISubCommand
      *
      * @param consumer - collector
      */
-    protected void collectHelpWorldOnly(Consumer<String> consumer)
-    {
-
-    }
+    protected void collectHelpWorldOnly(Consumer<String> consumer) {}
 
     /**
      * Collect commands that can only run in the several console
      *
      * @param consumer - collector
      */
-    protected void collectHelpServerOnly(Consumer<String> consumer)
-    {
-
-    }
+    protected void collectHelpServerOnly(Consumer<String> consumer) {}
 
     @Override
-    public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args, @Nullable BlockPos targetPos)
-    {
+    public List<String> getTabSuggestions(@Nonnull MinecraftServer server, @Nonnull CommandSource sender, @Nonnull String[] args, @Nullable BlockPos targetPos) {
         return Collections.<String>emptyList();
     }
 
-    public void setParent(ICommandGroup parent)
-    {
+    public void setParent(ICommandGroup parent) {
         this.parent = parent;
     }
+
 }
