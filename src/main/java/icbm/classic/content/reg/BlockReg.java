@@ -19,6 +19,7 @@ import icbm.classic.content.blocks.*;
 //TODO//import icbm.classic.content.blocks.radarstation.BlockRadarStation;
 //TODO//import icbm.classic.content.blocks.radarstation.TileRadarStation;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -28,11 +29,13 @@ public class BlockReg {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ICBMConstants.DOMAIN);
 
-    public static final RegistryObject<Block> CONCRETE              = BLOCKS.register("concrete",           BlockConcrete::new);
-    public static final RegistryObject<Block> GLASS_BUTTON          = BLOCKS.register("glass_button",        BlockGlassButton::new);
+    public static final RegistryObject<Block> CONCRETE              = BLOCKS.register("concrete", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 28)));
+    public static final RegistryObject<Block> CONCRETE_COMPACT      = BLOCKS.register("concrete_compact", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 280)));
+    public static final RegistryObject<Block> CONCRETE_REINFORCED   = BLOCKS.register("concrete_reinforced", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 2800)));
+    public static final RegistryObject<Block> GLASS_BUTTON          = BLOCKS.register("glass_button", BlockGlassButton::new);
     public static final RegistryObject<Block> GLASS_PRESSURE_PLATE  = BLOCKS.register("glass_pressure_plate", BlockGlassPressurePlate::new);
-    public static final RegistryObject<Block> REINFORCED_GLASS      = BLOCKS.register("reinforced_glass",    BlockReinforcedGlass::new);
-    public static final RegistryObject<Block> SPIKES                = BLOCKS.register("spikes",             BlockSpikes::new);
+    public static final RegistryObject<Block> REINFORCED_GLASS      = BLOCKS.register("reinforced_glass", BlockReinforcedGlass::new);
+    public static final RegistryObject<Block> SPIKES                = BLOCKS.register("spikes", BlockSpikes::new);
 
     //TODO//public static final RegistryObject<Block> CRUISE_LAUNCHER       = BLOCKS.register("cruise_launcher",     BlockCruiseLauncher::new);
     //TODO//public static final RegistryObject<Block> EMP_TOWER             = BLOCKS.register("emp_tower",           BlockEmpTower::new);

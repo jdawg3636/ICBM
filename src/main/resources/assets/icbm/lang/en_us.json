@@ -1,0 +1,462 @@
+{
+  # Master language file
+  "itemGroup.icbm": "ICBM-Classic",
+
+  # Config
+  "config.icbm.main.title": "General",
+  "config.icbm.launcher.title": "Launcher",
+  "config.icbm.blast.title": "Blast",
+  "config.icbm.blast.fusetimes.title": "Fuse Times",
+  "config.icbm.blast.fusetimes.bombcarts.title": "Bomb Carts",
+  "config.icbm.blast.fusetimes.explosives.title": "Explosives",
+  "config.icbm.blast.fusetimes.grenades.title": "Grenades",
+  "config.icbm.emp.title": "EMP",
+  "config.icbm.missile.title": "Missile",
+  "config.icbm.battery.title": "Battery",
+  "config.icbm.thread.title": "Thread",
+  "config.icbm.item.title": "Item",
+  "config.icbm.ic2.title": "Industrial Craft 2",
+  "config.icbm.debug.title": "Debug",
+
+  # Chat commands
+
+
+  # Blast Trigger Command: Good outputs - shared by blast spread command
+  "command.icbm.icbm.blast.triggered": "Blast triggered with explosive %1$s and scale %2$f at [%3$s@%4$d, %5$d, %6$d, %7$d].",
+  "command.icbm.icbm.blast.threaded": "Blast sent queue with explosive %1$s and scale %2$f. When done processing it will trigger at [%3$s@%4$d, %5$d, %6$d, %7$d].",
+
+  # Blast Trigger Command: Errors Blast Triggering - shared by blast spread command
+  "command.icbm.icbm.blast.error": "Unexpect error creating blast, see console for details.",
+  "command.icbm.icbm.blast.error.blocked": "Blast was blocked by a forge event, see console for details.",
+  "command.icbm.icbm.blast.error.null": "BlastFactory did not generate a blast, see console for details.",
+  "command.icbm.icbm.blast.error.triggered": "Blast was already triggered, this should never happen and is a bug.",
+  "command.icbm.icbm.blast.error.unknown": "Command received an unknown blast status code, see console for details.",
+
+  # Blast Trigger Command: Errors Input data - shared by blast spread command
+  "command.icbm.icbm.blast.error.explosive.id": "Explosive with ID '%1$s' could not be found",
+  "command.icbm.icbm.blast.error.scale.zero": "Scale must be greater than zero!",
+
+  # Blast Spread Command: Good outputs
+  "command.icbm.icbm.spread.started": "Triggering %10$d blasts with explosive %1$s and scale %2$f at [%3$s@%4$d, %5$d, %6$d, %7$d] with a spread of %8$d over a distance %9$d.",
+
+  # Lag Command
+  "command.icbm.icbm.lag.remove": "Removed %1$d blast and %2$d entities within %3$d meters",
+
+  # Remove Command
+  "command.icbm.icbm.remove": "Removed %1%d entities within %2$d meters",
+
+  # Generic errors
+  "command.icbm.icbm.error.unknown.command": "Unknown command. See %s help for more info.",
+
+  # Potions
+  "potion.toxin": "Toxin",
+  "potion.virus": "Virus",
+  "potion.frostBite": "Frost Bite",
+  "potion.radiation": "Radiation",
+
+  # Items
+  "item.icbm.battery": "Battery",
+  "item.icbm.battery.info": "Used to store and transport power",
+
+  "item.icbm.sulfurDust": "Sulfur",
+  "item.icbm.sulfurDust.info": "Used in the creation of gunpowder",
+
+  "item.icbm.saltpeter": "Saltpeter",
+  "item.icbm.saltpeter.info": "Used in the creation of gunpowder",
+
+  "item.icbm.poisonPowder": "Poison Powder",
+  "item.icbm.poisonPowder.info": "Used in the creation of explosives",
+
+  "item.icbm.antidote": "Antidote",
+  "item.icbm.antidote.info": "Cures all effects",
+
+  "item.icbm.radarGun": "Radar Gun",
+  "item.icbm.radarGun.info": "Stores GPS data",
+
+  "item.icbm.remoteDetonator": "Remote Detonator",
+  "item.icbm.radarGun.info.info": "Remotely fire a missile",
+
+  "item.icbm.defuser": "Defuser",
+  "item.icbm.defuser.info": "Remove explosives safely, even after they have gone off",
+
+  "item.icbm.laserDetonator": "Laser Designator",
+  "item.icbm.laserDetonator.info.info": "Remotely fire a missile",
+
+  "item.icbm.tracker": "Tracker",
+  "item.icbm.tracker.info": "Track entities and set homing missiles",
+
+  "item.icbm.signalDisrupter": "Signal Disrupter",
+  "item.icbm.signalDisrupter.info": "Jam frequencies to prevent detection or missile launches",
+
+  "item.icbm.rocketLauncher": "Rocket Launcher",
+  "item.icbm.rocketLauncher.info": "This rocket launcher can fire up to Tier %s rockets",
+  "item.icbm.rocketLauncher.info.creative": "Creative: Bypasses tier restriction",
+
+  # Crafting items
+  "item.icbm.ingot.steel": "Steel Ingot",
+  "item.icbm.ingot.copper": "Copper Ingot",
+
+  "item.icbm.clump.steel": "Steel Clump",
+
+  "item.icbm.plate.iron": "Iron Plate",
+  "item.icbm.plate.steel": "Steel Plate",
+
+  "item.icbm.wire.copper": "Copper Wire",
+  "item.icbm.wire.gold": "Gold Wire",
+
+  "item.icbm.circuit.basic": "Basic Circuit",
+  "item.icbm.circuit.advanced": "Advanced Circuit",
+  "item.icbm.circuit.elite": "Elite Circuit",
+
+  # ICBM Machines
+  "block.icbm.launcherbase.0": "Launcher Platform T1",
+  "block.icbm.launcherbase.1": "Launcher Platform T2",
+  "block.icbm.launcherbase.2": "Launcher Platform T3",
+  "block.icbm.launcherbase.info": "Hold missiles in place before launch",
+
+  "block.icbm.launcherscreen.0": "Launcher Control Panel T1",
+  "block.icbm.launcherscreen.1": "Launcher Control Panel T2",
+  "block.icbm.launcherscreen.2": "Launcher Control Panel T3",
+  "block.icbm.launcherscreen.info": "Used to fire missiles from launchers",
+
+  "block.icbm.launcherframe.0": "Launcher Support Frame T1",
+  "block.icbm.launcherframe.1": "Launcher Support Frame T2",
+  "block.icbm.launcherframe.2": "Launcher Support Frame T3",
+  "block.icbm.launcherframe.info": "Improves accuracy of missiles",
+
+  "block.icbm.radarstation": "Radar Station",
+  "block.icbm.radarstation.info": "Detects missiles in flight",
+
+  "block.icbm.emptower": "EMP Tower",
+  "block.icbm.emptower.info": "Drains energy from blocks, entities and devices",
+
+  "block.icbm.cruiselauncher": "Cruise Launcher",
+  "block.icbm.cruiselauncher.info": "Dummy-fires a missile without target data",
+
+  "block.icbm.missilecoordinator": "Missile Coordinator",
+  "block.icbm.missilecoordinator.info": "Oversized calculator. Calculates flight paths",
+
+  # Blocks
+  "block.icbm.reinforcedRail": "Reinforced Rail",
+  "block.icbm.reinforcedRail.info": "Hardened against explosives",
+
+  "block.icbm.redmatter.ore": "Redmatter Ore",
+  "block.icbm.redmatter.ore.info": "Oh shiz, how did you get that? Put it down, it could explode!",
+
+  # ICBM Explosives
+
+  # Tiers
+  "tier.icbm.one": "One",
+  "tier.icbm.two": "Two",
+  "tier.icbm.three": "Three",
+  "tier.icbm.four": "Four",
+
+  # Block Form
+  "explosive.icbm.condensed": "Condensed Explosives",
+  "explosive.icbm.shrapnel": "Shrapnel Explosives",
+  "explosive.icbm.incendiary": "Incendiary Explosives",
+  "explosive.icbm.debilitation": "Debilitation Explosives",
+  "explosive.icbm.chemical": "Chemical Explosives",
+  "explosive.icbm.anvil": "Anvil Explosives",
+  "explosive.icbm.repulsive": "Repulsive Explosives",
+  "explosive.icbm.attractive": "Attractive Explosives",
+  "explosive.icbm.nightmare": "Nightmare Explosives",
+
+  "explosive.icbm.fragmentation": "Fragmentation Explosives",
+  "explosive.icbm.contagious": "Contagious Explosives",
+  "explosive.icbm.sonic": "Sonic Explosives",
+  "explosive.icbm.breaching": "Breaching Explosives",
+  "explosive.icbm.thermobaric": "Thermobaric Explosives",
+
+  "explosive.icbm.nuclear": "Nuclear Explosives",
+  "explosive.icbm.emp": "EMP Explosives",
+  "explosive.icbm.exothermic": "Exothermic Explosives",
+  "explosive.icbm.endothermic": "Endothermic Explosives",
+  "explosive.icbm.antigravitational": "Anti-Gravitational Explosives",
+  "explosive.icbm.ender": "Ender Explosives",
+  "explosive.icbm.hypersonic": "Hypersonic Explosives",
+
+  "explosive.icbm.antimatter": "Antimatter Explosives",
+  "explosive.icbm.redmatter": "Red Matter Explosives",
+
+  # Missile Form
+  "missile.icbm.condensed": "Conventional Missile",
+  "missile.icbm.shrapnel": "Shrapnel Missile",
+  "missile.icbm.incendiary": "Incendiary Missile",
+  "missile.icbm.debilitation": "Debilitation Missile",
+  "missile.icbm.chemical": "Chemical Missile",
+  "missile.icbm.anvil": "Anvil Missile",
+  "missile.icbm.repulsive": "Repulsive Missile",
+  "missile.icbm.attractive": "Attractive Missile",
+
+  "missile.icbm.fragmentation": "Fragmentation Missile",
+  "missile.icbm.contagious": "Contagious Missile",
+  "missile.icbm.sonic": "Sonic Missile",
+  "missile.icbm.breaching": "Breaching Missile",
+  "missile.icbm.thermobaric": "Thermobaric Missile",
+
+  "missile.icbm.nuclear": "Nuclear Missile",
+  "missile.icbm.emp": "EMP Missile",
+  "missile.icbm.exothermic": "Exothermic Missile",
+  "missile.icbm.endothermic": "Endothermic Missile",
+  "missile.icbm.antigravitational": "Anti-Gravitational Missile",
+  "missile.icbm.ender": "Ender Missile",
+  "missile.icbm.hypersonic": "Hypersonic Missile",
+
+  "missile.icbm.antimatter": "Antimatter Missile",
+  "missile.icbm.redmatter": "Red Matter Missile",
+
+  # Explosive Minecarts
+  "bombcart.icbm.condensed": "Explosive Cart",
+  "bombcart.icbm.shrapnel": "Shrapnel Minecart",
+  "bombcart.icbm.incendiary": "Incendiary Minecart",
+  "bombcart.icbm.debilitation": "Debilitation Minecart",
+  "bombcart.icbm.chemical": "Chemical Minecart",
+  "bombcart.icbm.anvil": "Anvil Minecart",
+  "bombcart.icbm.repulsive": "Repulsive Minecart",
+  "bombcart.icbm.attractive": "Attractive Minecart",
+  "bombcart.icbm.nightmare": "Nightmare Minecart",
+
+  "bombcart.icbm.fragmentation": "Fragmentation Minecart",
+  "bombcart.icbm.contagious": "Contagious Minecart",
+  "bombcart.icbm.sonic": "Sonic Minecart",
+  "bombcart.icbm.breaching": "Breaching Minecart",
+  "bombcart.icbm.thermobaric": "Thermobaric Minecart",
+
+  "bombcart.icbm.nuclear": "Nuclear Minecart",
+  "bombcart.icbm.emp": "EMP Minecart",
+  "bombcart.icbm.exothermic": "Exothermic Minecart",
+  "bombcart.icbm.endothermic": "Endothermic Minecart",
+  "bombcart.icbm.antigravitational": "Anti-Gravitational Minecart",
+  "bombcart.icbm.ender": "Ender Minecart",
+  "bombcart.icbm.hypersonic": "Hypersonic Minecart",
+
+  "bombcart.icbm.antimatter": "Antimatter Minecart",
+  "bombcart.icbm.redmatter": "Red Matter Minecart",
+
+  # Explosive Info
+  "explosive.icbm.condensed.info": "Slightly more destructive version of TNT",
+  "explosive.icbm.shrapnel.info": "Erupts in a barrage of metal fragments",
+  "explosive.icbm.incendiary.info": "Catches the place on fire",
+  "explosive.icbm.debilitation.info": "Confusion and disorientation for all around",
+  "explosive.icbm.chemical.info": "Can't fight if you can't breathe",
+  "explosive.icbm.anvil.info": "What's up doc",
+  "explosive.icbm.repulsive.info": "Pushes everyone away",
+  "explosive.icbm.attractive.info": "Pulls everyone in",
+
+  "explosive.icbm.fragmentation.info": "Devastates the landscape with high velocity fragments",
+  "explosive.icbm.contagious.info": "Have you ever heard of the plague?",
+  "explosive.icbm.sonic.info": "Who needs to be a ninja to sneak in after that much noise?",
+  "explosive.icbm.breaching.info": "When you need a door",
+  "explosive.icbm.thermobaric.info": "Mini-nuke in a can. Or at least as close as the North can get",
+
+  "explosive.icbm.nuclear.info": "Hi! I'm a nuclearholic..",
+  "explosive.icbm.emp.info": "Over 9000? Not anymore",
+  "explosive.icbm.exothermic.info": "You thought the sun was hot",
+  "explosive.icbm.endothermic.info": "They call me Mr. Freeze",
+  "explosive.icbm.antigravitational.info": "I think your base looks better floating",
+  "explosive.icbm.ender.info": "Let's relocate that base of yours",
+  "explosive.icbm.hypersonic.info": "I feel bad for your ears",
+
+  "explosive.icbm.antimatter.info:Matter + antimatter ": " No matter",
+
+  "#Some extra messages just to honor the great Yogscast https://www.youtube.com/watch?v": "F2ohslGivm8",
+  "explosive.icbm.redMatter.info.count": "11",
+  "explosive.icbm.redMatter.info.0": "Yogscast? Diggy diggy hole",
+  "explosive.icbm.redMatter.info.1": "Be a shame if your base was compacted into nothing",
+  "explosive.icbm.redMatter.info.2": "Voltz special... The Bomb",
+  "explosive.icbm.redMatter.info.3": "The wheels on the bus go round and round",
+  "explosive.icbm.redMatter.info.4": "Did a cow just fly by the window?",
+  "explosive.icbm.redMatter.info.5": "Oh god it's sucking me in",
+  "explosive.icbm.redMatter.info.6": "There is no escape",
+  "explosive.icbm.redMatter.info.7": "Not even light....",
+  "explosive.icbm.redMatter.info.8": "Into the void",
+  "explosive.icbm.redMatter.info.9": "Oh? You think you can escape",
+  "explosive.icbm.redMatter.info.10": "Oh baby come back",
+
+  # Special Missiles
+  "missile": "Missile Module",
+  "missile.icbm.antiBallistic": "Anti-ballistic Missile",
+  "missile.icbm.cluster": "Cluster Missile",
+  "missile.icbm.nuclearCluster": "Nuclear Cluster Missile",
+  "missile.icbm.homing": "Homing Missile",
+
+  # Grenades
+  "grenade.icbm.condensed": "Conventional Grenade",
+  "grenade.icbm.shrapnel": "Shrapnel Grenade",
+  "grenade.icbm.incendiary": "Incendiary Grenade",
+  "grenade.icbm.debilitation": "Debilitation Grenade",
+  "grenade.icbm.chemical": "Chemical Grenade",
+  "grenade.icbm.anvil": "Anvil Grenade",
+  "grenade.icbm.repulsive": "Repulsive Grenade",
+  "grenade.icbm.attractive": "Attractive Grenade",
+
+
+  # ICBM Misc Blocks
+  "block.icbm.concrete": "Concrete",
+  "block.icbm.concrete_compact": "Compact Concrete",
+  "block.icbm.concrete_reinforced": "Reinforced Concrete",
+
+  "block.icbm.reinforced_glass": "Reinforced Glass",
+  "block.icbm.glass_pressure_plate": "Glass Pressure Plate",
+  "block.icbm.glass_button": "Glass Button",
+  "block.icbm.camouflage": "Camouflage",
+  "block.icbm.proximity_detector": "Proximity Detector",
+
+  "block.icbm.spikes": "Spikes",
+  "block.icbm.spikes_poison": "Poison Spikes",
+  "block.icbm.spikes_flammable": "Flammable Spikes",
+
+  "block.icbm.batterybox": "Battery Box",
+
+  # Chat messages
+  "message.tracker.nowtrack": "Now tracking:",
+  "message.tracker.nopower": "Tracker out of electricity!",
+  "message.tracker.banned": "Tracker is banned in this area!",
+
+  "message.defuser.nopower": "Defuser out of electricity!",
+
+  "message.designator.callTime": "Calling air strike in:",
+  "message.designator.blast": "Incoming air strike!",
+  "message.designator.setFreq": "Laser Designator frequency set:",
+  "message.designator.failFreq": "Frequency must be greater than zero.",
+  "message.designator.callBlast": "Calling air strike into designated position!",
+  "message.designator.nopower": "Laser designator out of electricity!",
+  "message.designator.noFreq": "Laser designator frequency not set!",
+
+  "message.radarGun.scanned": "Scanned coordinates: X:%x Y:%y Z:%z - Distance: %d",
+  "message.radarGun.nopower": "Radar Gun out of electricity!",
+  "message.radarGun.transfer": "Coordinate information transferred!",
+  "message.radarGun.noCoords": "You must scan a coordinate!",
+  "message.launcher.protected": "Region is being protected.",
+  "message.detonator.locked": "Remote locked to: X:%x Y:%y Z:%z",
+  "message.detonator.nopower": "Remote out of electricity!",
+  "message.radar.redstone.on": "Radar set to emit redstone",
+  "message.radar.redstone.off": "Radar set to not emit redstone",
+
+  # GUI stuff
+  "gui.misc.nopower": "Insufficient electricity!",
+  "gui.misc.idle": "Idle",
+  "gui.misc.freq": "Frequency:",
+  "gui.misc.XCoord": "X-Coord:",
+  "gui.misc.YCoord": "Y-Coord:",
+  "gui.misc.ZCoord": "Z-Coord:",
+  "gui.misc.x": "X:",
+  "gui.misc.y": "Y:",
+  "gui.misc.z": "Z:",
+  "gui.misc.status": "Status:",
+  "gui.misc.voltage": "Voltage:",
+  "gui.misc.missile": "Missile[%d, %d]",
+  "gui.misc.object": "Object[%d, %d]",
+
+  "gui.tracker.freq": "Frequency",
+  "gui.detector": "Proximity Detector",
+  "gui.detector.all": "All",
+  "gui.detector.players": "Players",
+  "gui.detector.mobs": "Mobs",
+  "gui.detector.range": "Detection Range",
+  "gui.detector.min": "Min",
+  "gui.detector.max": "Max",
+  "gui.detector.exclude": "Exclude",
+  "gui.detector.include": "Include",
+  "gui.detector.target": "Target:",
+  "gui.detector.on": "On",
+  "gui.detector.status": "Status:",
+
+  "gui.empTower": "EMP Tower",
+  "gui.empTower.missiles": "Missiles",
+  "gui.empTower.elec": "Electricity",
+  "gui.empTower.both": "Both",
+  "gui.empTower.radius": "EMP Radius: %p blocks",
+  "gui.empTower.effect": "EMP Effect:",
+  "gui.empTower.effectDebilitate": "Debilitate Electronics",
+  "gui.empTower.effectDisrupt": "Disrupt Missiles",
+  "gui.empTower.effectDeplete": "Deplete Electricity",
+  "gui.empTower.mode": "Mode:",
+  "gui.empTower.ready": "Ready to blast!",
+
+  "gui.launcherBase": "Launcher Platform",
+  "gui.launcherBase.place": "Place Missile",
+  "gui.launcherscreen": "Launcher Control Panel",
+  "gui.launcherscreen.detHeight": "Detonation Height:",
+  "gui.launcherscreen.lockHeight": "Lock Height:",
+  "gui.launcherscreen.target": "Missile Target",
+  "gui.launcherscreen.inaccuracy": "Inaccuracy: %p blocks",
+  "gui.launcherscreen.statusMissing": "Not connected!",
+  "gui.launcherscreen.statusNoPower": "Insufficient electricity!",
+  "gui.launcherscreen.statusEmpty": "Missile silo is empty!",
+  "gui.launcherscreen.statusInvalid": "Target is invalid!",
+  "gui.launcherscreen.statusClose": "Target too close!",
+  "gui.launcherscreen.statusFar": "Target too far!",
+  "gui.launcherscreen.statusReady": "Ready to launch!",
+  "gui.launcherscreen.launch": "Launch",
+
+
+  "gui.launcherCruise": "Cruise Launcher",
+
+  "gui.launcherCruise.statusNoPower": "No Power!",
+  "gui.launcherCruise.statusEmpty": "No Missile!",
+  "gui.launcherCruise.invalidMissile": "Invalid Item!",
+  "gui.launcherCruise.invalidMissileTier": "Invalid Missile Tier!",
+  "gui.launcherCruise.notCruiseMissile": "Invalid Missile Type!",
+  "gui.launcherCruise.statusInvalid": "Invalid Target!",
+  "gui.launcherCruise.targetToClose": "Target to close!",
+  "gui.launcherCruise.noRoom": "3x3 not clear!",
+  "gui.launcherCruise.statusReady": "Ready!",
+
+  # Chat warning if user tries to fire by hand, %s is status message from GUI
+  "chat.launcher.status": "Status: %s",
+  "chat.launcher.failedToFire": "Warning: Cannot fire missile due to status error!",
+  "chat.launcher.toolTargetSet": "Target data transferred from tool.",
+  "chat.launcher.toolWorldNotMatch": "Target data's world is not the same as this one!",
+  "chat.launcher.noTargetInTool": "Tool does not contain any target data!",
+  "chat.launcher.toolFrequencySet": "Frequency set to %s",
+
+  "gui.coordinator": "Missile Coordinator",
+  "gui.coordinator.sim": "Path Simulator",
+  "gui.coordinator.from": "From:",
+  "gui.coordinator.to": "To:",
+  "gui.coordinator.displace": "Displacement: %p meters",
+  "gui.coordinator.arc": "Arc: %p meters",
+  "gui.coordinator.time": "Time: %p seconds",
+  "gui.coordinator.direction": "Direction:",
+  "gui.coordinator.wip": "More features coming soon!",
+
+  "gui.radar.coords": "Coordinates:",
+  "gui.radar.range": "Range",
+  "gui.radar.range.trigger": "Trigger:",
+  "gui.radar.range.detection": "Detection:",
+  "gui.radar.on": "Radar on!",
+  "gui.radar.nopower": "No electricity!",
+
+  "gui.terminal": "Terminal",
+  "gui.platform.ammo": "Ammunition",
+  "gui.platform.upgrades": "Upgrades",
+  "gui.platform.joules": "of %j",
+  "gui.platform.access": "User Access",
+
+  # Tooltips
+  "info.misc.freq": "Frequency:",
+  "info.tracker.tracking": "Tracking:",
+  "info.designator.noFreq": "Frequency: Not set",
+  "info.radarGun.savedCoords": "Saved coordinates:",
+  "info.radarGun.meters": "Meters",
+  "info.detonator.linked": "Linked explosive:",
+  "info.detonator.noLink": "No Linked explosive",
+  "info.misc.tier": "Explosive tier",
+  "info.tracker.tooltip": "Left-click on a mob (players aswell) and I will point to it.",
+
+  # Death messages
+  "death.attack.icbm.redmatter": "%s was crushed by the immense mass of the mighty black hole.",
+  "death.attack.icbm.chemical": "%s suddenly started feeling not so well.",
+  "death.attack.icbm.contagious": "%s breathed in too much of the green stuff.",
+
+  # GPS
+  "gps.pos.set": "GPS data saved",
+  "gps.error.pos.invalid": "Invalid location",
+  "gps.error.pos.invalid.world": "Can't target another world",
+  "gps.error.pos.invalid.null": "No target set",
+  "gps.data.transferred": "Data transferred",
+  "gps.cleared": "GPS data cleared"
+
+}

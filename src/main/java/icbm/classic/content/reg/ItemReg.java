@@ -23,10 +23,10 @@ import icbm.classic.ICBMConstants;
 //TODO//import icbm.classic.prefab.item.BlockItemSubTypes;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
@@ -34,6 +34,17 @@ import net.minecraftforge.registries.ObjectHolder;
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
 public class ItemReg {
 
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ICBMConstants.DOMAIN);
+
+    public static final RegistryObject<Item> CONCRETE              = ITEMS.register("concrete", () -> new BlockItem(BlockReg.CONCRETE.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+    public static final RegistryObject<Item> CONCRETE_COMPACT      = ITEMS.register("concrete_compact", () -> new BlockItem(BlockReg.CONCRETE_COMPACT.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+    public static final RegistryObject<Item> CONCRETE_REINFORCED   = ITEMS.register("concrete_reinforced", () -> new BlockItem(BlockReg.CONCRETE_REINFORCED.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+    public static final RegistryObject<Item> GLASS_BUTTON          = ITEMS.register("glass_button", () -> new BlockItem(BlockReg.GLASS_BUTTON.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+    public static final RegistryObject<Item> GLASS_PRESSURE_PLATE  = ITEMS.register("glass_pressure_plate", () -> new BlockItem(BlockReg.GLASS_PRESSURE_PLATE.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+    public static final RegistryObject<Item> REINFORCED_GLASS      = ITEMS.register("reinforced_glass", () -> new BlockItem(BlockReg.REINFORCED_GLASS.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+    public static final RegistryObject<Item> SPIKES                = ITEMS.register("spikes", () -> new BlockItem(BlockReg.SPIKES.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+
+    /*
     @ObjectHolder(ICBMConstants.PREFIX + "antidote")
     public static Item itemAntidote;
     @ObjectHolder(ICBMConstants.PREFIX + "signal_disrupter")
@@ -76,7 +87,7 @@ public class ItemReg {
     //TODO//public static ItemCrafting itemWire;
 
     @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) {
+    public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
 
         //Items
         //TODO//event.getRegistry().register(new ItemGrenade().setName("grenade"));
@@ -105,7 +116,9 @@ public class ItemReg {
         event.getRegistry().register(new BlockItem(BlockReg.GLASS_PRESSURE_PLATE.get(), new Item.Properties()).setRegistryName(BlockReg.GLASS_PRESSURE_PLATE.get().getRegistryName()));
         event.getRegistry().register(new BlockItem(BlockReg.GLASS_BUTTON.get(), new Item.Properties()).setRegistryName(BlockReg.GLASS_BUTTON.get().getRegistryName()));
         //TODO//event.getRegistry().register(new BlockItemSubTypes(BlockReg.SPIKES.get()));
-        //TODO//event.getRegistry().register(new BlockItemSubTypes(BlockReg.CONCRETE.get()));
+        event.getRegistry().register(new BlockItem(BlockReg.CONCRETE.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setRegistryName(BlockReg.CONCRETE.get().getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.CONCRETE_COMPACT.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setRegistryName(BlockReg.CONCRETE_COMPACT.get().getRegistryName()));
+        event.getRegistry().register(new BlockItem(BlockReg.CONCRETE_REINFORCED.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setRegistryName(BlockReg.CONCRETE_REINFORCED.get().getRegistryName()));
         event.getRegistry().register(new BlockItem(BlockReg.REINFORCED_GLASS.get(), new Item.Properties()).setRegistryName(BlockReg.REINFORCED_GLASS.get().getRegistryName()));
         //TODO//event.getRegistry().register(new BlockItemExplosive(BlockReg.EXPLOSIVES.get(), new Item.Properties()).setRegistryName(BlockReg.EXPLOSIVES.get().getRegistryName()));
         //TODO//event.getRegistry().register(new BlockItem(BlockReg.EMP_TOWER.get(), new Item.Properties()).setRegistryName(BlockReg.EMP_TOWER.get().getRegistryName()));
@@ -115,7 +128,6 @@ public class ItemReg {
         //TODO//event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_SCREEN.get()));
         //TODO//event.getRegistry().register(new BlockItem(BlockReg.CRUISE_LAUNCHER.get(), new Item.Properties()).setRegistryName(BlockReg.CRUISE_LAUNCHER.get().getRegistryName()));
 
-        /* TODO
         //Crafting resources
         if (ConfigItems.ENABLE_CRAFTING_ITEMS) {
 
@@ -136,8 +148,8 @@ public class ItemReg {
         if (ConfigItems.ENABLE_BATTERY)
             event.getRegistry().register(new ItemBattery());
 
-        */
-
     }
+
+    */
 
 }

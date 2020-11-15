@@ -7,7 +7,6 @@ import icbm.classic.content.reg.BlockReg;
 //TODO//import icbm.classic.lib.NBTConstants;
 //TODO//import icbm.classic.api.reg.events.ExplosiveRegistryEvent;
 //TODO//import icbm.classic.api.reg.events.ExplosiveContentRegistryEvent;
-import icbm.classic.client.ICBMCreativeTab;
 //TODO//import icbm.classic.command.ICBMCommands;
 //TODO//import icbm.classic.command.system.CommandEntryPoint;
 //TODO//import icbm.classic.config.ConfigItems;
@@ -31,18 +30,10 @@ import icbm.classic.content.reg.ItemReg;
 //TODO//import icbm.classic.lib.radio.RadioRegistry;
 //TODO//import icbm.classic.lib.thread.WorkerThreadManager;
 //TODO//import icbm.classic.prefab.item.LootEntryItemStack;
-import net.minecraft.block.Block;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Items;
-import net.minecraft.potion.Effects;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTables;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.*;
@@ -52,14 +43,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -91,12 +77,18 @@ public final class ICBMClassic {
     //TODO//public static final ContagiousPoison poisonous_potion = new ContagiousPoison("Chemical", 0, false);
     //TODO//public static final ContagiousPoison contagios_potion = new ContagiousPoison("Contagious", 1, true);
 
-    public static final ICBMCreativeTab CREATIVE_TAB = new ICBMCreativeTab(ICBMConstants.DOMAIN);
+    public static final ItemGroup CREATIVE_TAB = new ItemGroup(ICBMConstants.DOMAIN) {
+        @Override
+        public ItemStack createIcon() {
+            return new ItemStack(ItemReg.CONCRETE_REINFORCED.get());
+        }
+    };
 
     public ICBMClassic() {
         MinecraftForge.EVENT_BUS.register(this);
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         BlockReg.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ItemReg.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     /*
@@ -255,7 +247,6 @@ public final class ICBMClassic {
     public void init(FMLCommonSetupEvent event) {
         proxy.init();
         //TODO//packetHandler.init();
-        CREATIVE_TAB.init();
 
         //TODO//if (ConfigItems.ENABLE_CRAFTING_ITEMS) {
             //TODO//if (ConfigItems.ENABLE_INGOTS_ITEMS)
