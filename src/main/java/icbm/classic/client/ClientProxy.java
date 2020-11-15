@@ -18,6 +18,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ClientProxy extends CommonProxy {
 
     public void setRenderLayers() {
+        RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_GLASS.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_POISON.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.getCutout());

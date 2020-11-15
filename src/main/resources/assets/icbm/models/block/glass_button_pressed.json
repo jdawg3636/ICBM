@@ -1,6 +1,6 @@
 {
-    "parent": "block/button_pressed",
+    "parent": "minecraft:block/button_pressed",
     "textures": {
-        "texture": "icbmclassic:block/glass_button"
+      "texture": "minecraft:block/glass"
     }
-}
+  }

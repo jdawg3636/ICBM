@@ -1,6 +1,6 @@
 {
-    "parent": "block/button",
+    "parent": "minecraft:block/button",
     "textures": {
-        "texture": "icbmclassic:block/glass_button"
+      "texture": "minecraft:block/glass"
     }
-}
+  }

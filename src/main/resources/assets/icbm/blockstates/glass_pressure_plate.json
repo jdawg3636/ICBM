@@ -1,20 +1,10 @@
 {
   "variants": {
-    "": {
-      "model": "pressure_plate_up"
+    "powered=false": {
+      "model": "icbm:block/glass_pressure_plate"
     },
-    "inventory": {
-      "model": "pressure_plate_up",
-      "transform": "forge:default-block"
-    },
-    "powered": {
-      "false": {
-        "model": "pressure_plate_up"
-      },
-      "true": {
-        "model": "pressure_plate_down"
-      }
+    "powered=true": {
+      "model": "icbm:block/glass_pressure_plate_down"
     }
   }
 }
-

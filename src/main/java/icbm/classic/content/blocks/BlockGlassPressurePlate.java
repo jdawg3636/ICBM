@@ -10,7 +10,6 @@ public class BlockGlassPressurePlate extends PressurePlateBlock {
 
     public BlockGlassPressurePlate() {
         super(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.create(Material.GLASS).tickRandomly().hardnessAndResistance(0.3F, 1F).sound(SoundType.GLASS));
-        //TODO//this.setCreativeTab(CreativeTabs.REDSTONE);
         this.setDefaultState(getDefaultState().with(POWERED, false));
     }
 
