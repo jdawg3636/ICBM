@@ -3,11 +3,11 @@ package icbm.classic.client;
 import com.builtbroken.jlib.data.vector.IPos3D;
 
 import icbm.classic.CommonProxy;
-import icbm.classic.client.fx.ParticleAirICBM;
-import icbm.classic.client.fx.ParticleSmokeICBM;
-import icbm.classic.content.entity.missile.EntityMissile;
-import icbm.classic.content.entity.missile.MissileFlightType;
-import icbm.classic.lib.transform.vector.Pos;
+//TODO//import icbm.classic.client.fx.ParticleAirICBM;
+//TODO//import icbm.classic.client.fx.ParticleSmokeICBM;
+//TODO//import icbm.classic.content.entity.missile.EntityMissile;
+//TODO//import icbm.classic.content.entity.missile.MissileFlightType;
+//TODO//import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +16,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
+
+    /* TODO
 
     @Override
     public void spawnSmoke(World world, Pos position, double v, double v1, double v2, float red, float green, float blue, float scale, int ticksToLive) {
@@ -66,7 +68,7 @@ public class ClientProxy extends CommonProxy {
                         double z = Math.cos(Math.toRadians(missile.rotationYaw)) * dH;
                         position = position.add(x, y, z);
 
-                        if (missile.preLaunchSmokeTimer > 0 && missile.ticksInAir <= missile.getMaxPreLaunchSmokeTimer()) /* pre-launch phase */ {
+                        if (missile.preLaunchSmokeTimer > 0 && missile.ticksInAir <= missile.getMaxPreLaunchSmokeTimer()) /* pre-launch phase *//* {
 
                             Pos launcherSmokePosition = position.sub(0, 2, 0);
 
@@ -140,4 +142,5 @@ public class ClientProxy extends CommonProxy {
             }
         }
     }
+    */
 }

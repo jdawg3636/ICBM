@@ -4,37 +4,40 @@ import com.google.common.collect.Lists;
 import icbm.classic.ICBMClassic;
 import icbm.classic.ICBMConstants;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+//TODO//import net.minecraft.block.properties.PropertyEnum;
+//TODO//import net.minecraft.block.state.BlockFaceShape;
+//TODO//import net.minecraft.block.state.BlockStateContainer;
+//TODO//import net.minecraft.block.state.IBlockState;
+//TODO//import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+//TODO//import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+//TODO//import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+//TODO//import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+//TODO//import net.minecraftforge.fml.relauncher.Side;
+//TODO//import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSpikes extends Block
-{
-    public static final SpikeProperty SPIKE_PROPERTY = new SpikeProperty();
+public class BlockSpikes extends Block {
 
-    public BlockSpikes()
-    {
-        super(Material.IRON);
-        this.setRegistryName(ICBMConstants.PREFIX + "spikes");
-        this.setTranslationKey(ICBMConstants.PREFIX + "spikes");
-        this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
-        this.setHardness(1.0F);
+    //TODO//public static final SpikeProperty SPIKE_PROPERTY = new SpikeProperty();
+
+    public BlockSpikes() {
+        super(Block.Properties.create(Material.IRON));
+        //TODO//this.setTranslationKey(ICBMConstants.PREFIX + "spikes");
+        //TODO//this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
+        //TODO//this.setHardness(1.0F);
     }
+
+    /* TODO
 
     @Override
     public int damageDropped(IBlockState state)
@@ -104,7 +107,7 @@ public class BlockSpikes extends Block
     }
 
     @Override
-    public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
+    public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity)
     {
         // If the entity is a living entity
         if (entity instanceof EntityLivingBase)
@@ -123,7 +126,7 @@ public class BlockSpikes extends Block
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> items)
     {
         if (tab == getCreativeTab())
         {
@@ -165,4 +168,7 @@ public class BlockSpikes extends Block
             return meta >= 0 && meta < values().length ? values()[meta] : NORMAL;
         }
     }
+
+    */
+
 }

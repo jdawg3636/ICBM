@@ -1,8 +1,8 @@
 package icbm.classic;
 
-import icbm.classic.prefab.tile.IGuiTile;
-import icbm.classic.content.entity.missile.EntityMissile;
-import icbm.classic.lib.transform.vector.Pos;
+//TODO//import icbm.classic.prefab.tile.IGuiTile;
+//TODO//import icbm.classic.content.entity.missile.EntityMissile;
+//TODO//import icbm.classic.lib.transform.vector.Pos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -33,68 +33,72 @@ public class CommonProxy /* implements IGuiHandler */ {
     }
 
     //TODO//IGuiHandler// @Override
-    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
-        if (ID == GUI_ITEM)
-            return getServerGuiElement(y, player, x);
-        else if (ID == GUI_ENTITY)
-            return getServerGuiElement(y, player, world.getEntityByID(x));
-        return getServerGuiElement(ID, player, world.getTileEntity(new BlockPos(x, y, z)));
-    }
+    //TODO//public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
+    //TODO//    if (ID == GUI_ITEM)
+    //TODO//        return getServerGuiElement(y, player, x);
+    //TODO//    else if (ID == GUI_ENTITY)
+    //TODO//        return getServerGuiElement(y, player, world.getEntityByID(x));
+    //TODO//    return getServerGuiElement(ID, player, world.getTileEntity(new BlockPos(x, y, z)));
+    //TODO//}
 
-    public Object getServerGuiElement(int ID, PlayerEntity player, int slot) {
-        ItemStack stack = player.inventory.getStackInSlot(slot);
-        if (stack != null && stack.getItem() instanceof IGuiTile)
-            return ((IGuiTile) stack.getItem()).getServerGuiElement(ID, player);
-        return null;
-    }
+    //TODO//public Object getServerGuiElement(int ID, PlayerEntity player, int slot) {
+    //TODO//    ItemStack stack = player.inventory.getStackInSlot(slot);
+    //TODO//    if (stack != null && stack.getItem() instanceof IGuiTile)
+    //TODO//        return ((IGuiTile) stack.getItem()).getServerGuiElement(ID, player);
+    //TODO//    return null;
+    //TODO//}
 
-    public Object getServerGuiElement(int ID, PlayerEntity player, TileEntity tile) {
-        if (tile instanceof IGuiTile)
-            return ((IGuiTile) tile).getServerGuiElement(ID, player);
-        return null;
-    }
+    //TODO//public Object getServerGuiElement(int ID, PlayerEntity player, TileEntity tile) {
+    //TODO//    if (tile instanceof IGuiTile)
+    //TODO//        return ((IGuiTile) tile).getServerGuiElement(ID, player);
+    //TODO//    return null;
+    //TODO//}
 
-    public Object getServerGuiElement(int ID, PlayerEntity player, Entity entity) {
-        if (entity instanceof IGuiTile)
-            return ((IGuiTile) entity).getServerGuiElement(ID, player);
-        return null;
-    }
+    //TODO//public Object getServerGuiElement(int ID, PlayerEntity player, Entity entity) {
+    //TODO//    if (entity instanceof IGuiTile)
+    //TODO//        return ((IGuiTile) entity).getServerGuiElement(ID, player);
+    //TODO//    return null;
+    //TODO//}
 
     //TODO//IGuiHandler// @Override
-    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
-        if (ID == GUI_ITEM)
-            return getServerGuiElement(y, player, world.getEntityByID(x));
-        else if (ID == GUI_ENTITY)
-            return getClientGuiElement(y, player, world.getEntityByID(x));
-        return getClientGuiElement(ID, player, world.getTileEntity(new BlockPos(x, y, z)));
-    }
+    //TODO//public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
+    //TODO//    if (ID == GUI_ITEM)
+    //TODO//        return getServerGuiElement(y, player, world.getEntityByID(x));
+    //TODO//    else if (ID == GUI_ENTITY)
+    //TODO//        return getClientGuiElement(y, player, world.getEntityByID(x));
+    //TODO//    return getClientGuiElement(ID, player, world.getTileEntity(new BlockPos(x, y, z)));
+    //TODO//}
 
-    public Object getClientGuiElement(int ID, PlayerEntity player, int slot) {
-        ItemStack stack = player.inventory.getStackInSlot(slot);
-        if (stack != null && stack.getItem() instanceof IGuiTile)
-            return ((IGuiTile) stack.getItem()).getClientGuiElement(ID, player);
-        return null;
-    }
+    //TODO//public Object getClientGuiElement(int ID, PlayerEntity player, int slot) {
+    //TODO//    ItemStack stack = player.inventory.getStackInSlot(slot);
+    //TODO//    if (stack != null && stack.getItem() instanceof IGuiTile)
+    //TODO//        return ((IGuiTile) stack.getItem()).getClientGuiElement(ID, player);
+    //TODO//    return null;
+    //TODO//}
 
-    public Object getClientGuiElement(int ID, PlayerEntity player, TileEntity tile) {
-        if (tile instanceof IGuiTile)
-            return ((IGuiTile) tile).getClientGuiElement(ID, player);
-        return null;
-    }
+    //TODO//public Object getClientGuiElement(int ID, PlayerEntity player, TileEntity tile) {
+    //TODO//    if (tile instanceof IGuiTile)
+    //TODO//        return ((IGuiTile) tile).getClientGuiElement(ID, player);
+    //TODO//    return null;
+    //TODO//}
 
-    public Object getClientGuiElement(int ID, PlayerEntity player, Entity entity) {
-        if (entity instanceof IGuiTile)
-            return ((IGuiTile) entity).getClientGuiElement(ID, player);
-        return null;
-    }
+    //TODO//public Object getClientGuiElement(int ID, PlayerEntity player, Entity entity) {
+    //TODO//    if (entity instanceof IGuiTile)
+    //TODO//        return ((IGuiTile) entity).getClientGuiElement(ID, player);
+    //TODO//    return null;
+    //TODO//}
 
+    /* TODO
     public void spawnSmoke(World world, Pos position, double v, double v1, double v2, float red, float green, float blue, float scale, int age) {
     }
 
     public void spawnAirParticle(World world, Pos position, double v, double v1, double v2, float red, float green, float blue, float scale, int age) {
     }
+    */
 
+    /*TODO
     public void spawnMissileSmoke(EntityMissile missile) {
     }
+    */
 
 }

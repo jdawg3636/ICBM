@@ -1,0 +1,421 @@
+## Master language file
+itemGroup.icbm=ICBM-Classic
+
+## Config
+config.icbm:main.title=Ogólne
+config.icbm:launcher.title=Wyrzutnia
+config.icbm:blast.title=Fala uderzeniowa
+config.icbm:emp.title=EMP
+config.icbm:missile.title=Rakieta
+config.icbm:battery.title=Bateria
+
+## Potions
+potion.toxin=Toksyny
+potion.virus=Wirus
+potion.frostBite=Odmrożenia
+potion.radiation=Choroba popromienna
+
+## Items
+item.icbm:battery.name=Bateria
+item.icbm:battery.info=Używane jako przenośny magazyn energii
+
+item.icbm:sulfurDust.name=Siarka
+item.icbm:sulfurDust.info=Używana do tworzenia czarnego prochu
+
+item.icbm:saltpeter.name=Saletra
+item.icbm:saltpeter.info=Używana do tworzenia czarnego prochu
+
+item.icbm:poisonPowder.name=Trujący proszek
+item.icbm:poisonPowder.info=Używany do tworzenia toksycznych substancji
+
+item.icbm:antidote.name=Antidotum
+item.icbm:antidote.info=Leczy ze wszystkich efektów
+
+item.icbm:radarGun.name=Radarowy wskaźnik celów
+item.icbm:radarGun.info=Przechowuje kordynaty GPS celu
+
+item.icbm:remoteDetonator.name=Zdalny Detonator
+item.icbm:radarGun.info.info=Umożliwia wystrzelenie rakiety z platformy T3 z bezpiecznej odległości
+
+item.icbm:defuser.name=Rozbrajacz
+item.icbm:defuser.info=Rozbraja uzbrojony już ładunek wybuchowy
+
+item.icbm:laserDetonator.name=Laserowy wskaźnik celów
+item.icbm:laserDetonator.info.info=Umożliwia zdalne wystrzelenie rakiet we wskazany punkt
+
+item.icbm:tracker.name=Tracker
+item.icbm:tracker.info=Namierza istoty i nakierowywuje na nie rakiety
+
+item.icbm:signalDisrupter.name=Zakłócacz sygnału
+item.icbm:signalDisrupter.info=Zakłoca sygnały odpalania rakiet i detonacji ładunków
+
+item.icbm:rocketLauncher.name=Wyrzutnia rakiet
+item.icbm:rocketLauncher.info=Naramienna wyrzutnia rakiet
+
+## Crafting items
+item.icbm:ingot.steel.name=Sztabka stali
+item.icbm:ingot.copper.name=Sztabka miedzi
+
+item.icbm:clump.steel.name=Stalowy proszek
+
+item.icbm:plate.iron.name=Żelazna płyta
+item.icbm:plate.steel.name=Stalowa płyta
+
+item.icbm:wire.copper.name=Przewód miedziany
+item.icbm:wire.gold.name=Złoty przewód
+
+item.icbm:circuit.basic.name=Prosty układ elektroniczny
+item.icbm:circuit.advanced.name=Zaawansowany układ elektroniczny
+item.icbm:circuit.elite.name=Elitarny układ elektroniczny
+
+## ICBM Machines
+tile.icbm:launcherbase.0.name=Platforma startowa T1
+tile.icbm:launcherbase.1.name=Platforma startowa T2
+tile.icbm:launcherbase.2.name=Platforma startowa T3
+tile.icbm:launcherbase.info=Ustawia rakiety w pozycji gotowej do strzału
+
+tile.icbm:launcherscreen.0.name=Panel kontrolny T1
+tile.icbm:launcherscreen.1.name=Panel kontrolny T2
+tile.icbm:launcherscreen.2.name=Panel kontrolny T3
+tile.icbm:launcherscreen.info=Panel za pomocą którego ustawia się parametry do startu rakiety
+
+tile.icbm:launcherframe.0.name=Platforma wspomagająca T1
+tile.icbm:launcherframe.1.name=Platforma wspomagająca T2
+tile.icbm:launcherframe.2.name=Platforma wspomagająca T3
+tile.icbm:launcherframe.info=Poprawia dokładność rakiet
+
+tile.icbm:radarstation.name=Stacja radarowa
+tile.icbm:radarstation.info=Wykrywa nadlatujące rakiety
+
+tile.icbm:emptower.name=Wieża EMP
+tile.icbm:emptower.info=Zakłoca działanie rakiet oraz urządzeń elektronicznych
+
+tile.icbm:cruiselauncher.name=Wyrzutnia taktyczna
+tile.icbm:cruiselauncher.info=Wystrzeliwuje raiety po linii prostej
+
+tile.icbm:missilecoordinator.name=Kordynator rakiet
+tile.icbm:missilecoordinator.info=Kalkulator wyliczający trasy przelotu rakiet kordynując je ze sobą
+
+## Blocks
+tile.icbm:reinforcedRail.name=Wzmocniona szyna
+tile.icbm:reinforcedRail.info=Wzmocnione przeciwko eksplozjom
+
+tile.icbm:redmatter.ore.name=Złoże czerwonej materii
+tile.icbm:redmatter.ore.info=Co to jest!? Skąd to masz!? Czy na pewno wiesz co ty robisz chory człowieku!?
+
+## ICBM Explosives
+
+## Block Form
+icbm.explosive.condensed.name=Skondensowana bomba
+icbm.explosive.shrapnel.name=Bomba odłamkowa
+icbm.explosive.incendiary.name=Bomba zapalająca
+icbm.explosive.debilitation.name=Bomba z gazem CS
+icbm.explosive.chemical.name=Bomba z gazem bojowym (Broń C)
+icbm.explosive.anvil.name=Bomba kowadłowa
+icbm.explosive.repulsive.name=Odpychająca bomba
+icbm.explosive.attractive.name=Przyciągająca bomba
+icbm.explosive.nightmare.name=Bomba z horroru
+
+icbm.explosive.fragmentation.name=Bomba kasetowa
+icbm.explosive.contagious.name=Bomba z zarazkami (Broń B)
+icbm.explosive.sonic.name=Bomba soniczna
+icbm.explosive.breaching.name=Bomba krusząca
+icbm.explosive.rejuvenation.name=Bomba rewitalizująca
+icbm.explosive.thermobaric.name=Bomba termobaryczna
+
+icbm.explosive.nuclear.name=Bomba nuklearna (Broń A)
+icbm.explosive.emp.name=Ładunek EMP
+icbm.explosive.exothermic.name=Bomba egzotermiczna
+icbm.explosive.endothermic.name=Bomba endotermiczna
+icbm.explosive.antiGravitational.name=Bomba antygrawitacyjna
+icbm.explosive.ender.name=Bomba Kresu
+icbm.explosive.hypersonic.name=Bomba hipersoniczna
+
+icbm.explosive.antimatter.name=Bomba antymateryjna
+icbm.explosive.redMatter.name=Bomba z czarną dziurą
+icbm.explosive.sMine.name=Mina skacząca Betty
+
+## Explosive Info
+icbm.explosive.condensed.info=Trochę mocniejsza od TNT.
+icbm.explosive.shrapnel.info=Wyrzuca setki małych odłamków
+icbm.explosive.incendiary.info=Podpala okolicę
+icbm.explosive.debilitation.info=Dezorientuje przeciwnika i niszczy ich zdolność do walki
+icbm.explosive.chemical.info=Nie możesz walczyć jeśli nie możesz oddychać
+icbm.explosive.anvil.info=Co to jest?
+icbm.explosive.repulsive.info=Odpycha wszystko
+icbm.explosive.attractive.info=Przyciąga wszystko
+
+icbm.explosive.fragmentation.info=Wyrzuca wiele innych wybuchowych odłamków
+icbm.explosive.contagious.info=Czy ty grasz w Plague inc. na żywo?
+icbm.explosive.sonic.info=Kto chce być ninją to ma teraz doskonałą okazję do tego
+icbm.explosive.breaching.info=Po co ci drzwi?
+icbm.explosive.rejuvenation.info=Odnawia chunck we wszystko, nawet w diamenty!
+icbm.explosive.thermobaric.info=Mini atomówka. Dlaczego jej nie użyć. Nie zakazuje ich żadna konwencja.
+
+icbm.explosive.nuclear.info=Czy ty grasz w Fallout na żywo?
+icbm.explosive.emp.info=Ponad 9000Tesli. Wystarczy do zakłocenia działania elektroniki w pobliskim otoczeniu.
+icbm.explosive.exothermic.info=Myślisz że słońce jest gorące?
+icbm.explosive.endothermic.info=Nazywają go Pan Mróz (Mr. Freeze)
+icbm.explosive.antiGravitational.info=Myślę że twoja baza będzie lepiej wyglądać gdy lata
+icbm.explosive.ender.info=Przenieśmy twoją bazę do Kresu
+icbm.explosive.hypersonic.info=Współczuję twoim uszom
+
+icbm.explosive.antimatter.info=Car bomba to przy tym zabawka dla dzieci.
+icbm.explosive.redMatter.info=Co ci strzeliło do łba!!? Chcesz stworzyć czarną dziure!?
+icbm.explosive.xmas.info=Nie, nie rób tego. Jesteś zły.
+
+##Some extra messages just to honor the great Yogscast https://www.youtube.com/watch?v=F2ohslGivm8
+icbm.explosive.redMatter.info.count=11
+icbm.explosive.redMatter.info.0=Kopiesz. Będzie wielka, wielka dziura.
+icbm.explosive.redMatter.info.1=Co ci strzeliło do łba!!? Chcesz stworzyć czarną dziure!?
+icbm.explosive.redMatter.info.2=Bomba ostatecznej zagłady
+icbm.explosive.redMatter.info.3=You spin me right round, baby Right around
+icbm.explosive.redMatter.info.4=Czy twoja krowa właśnie wyleciała przez okno?
+icbm.explosive.redMatter.info.5=O mój boże to Czarna dziura na Ziemi.
+icbm.explosive.redMatter.info.6=Stąd nie ma ucieczki.
+icbm.explosive.redMatter.info.7=Nie wszstko świeci.
+icbm.explosive.redMatter.info.8=W otchłań.
+icbm.explosive.redMatter.info.9=Oh? Myślisz że uciekniesz?
+icbm.explosive.redMatter.info.10=Oh. Wracaj tu bobasku.
+
+
+## Missile Form
+icbm.missile.condensed.name=Rakieta konwencjonalna
+icbm.missile.shrapnel.name=Rakieta odłamkowa
+icbm.missile.incendiary.name=Rakieta zapalająca
+icbm.missile.debilitation.name=Rakieta z gazem CS
+icbm.missile.chemical.name=Rakieta z gazem bojowym
+icbm.missile.anvil.name=Rakieta kowadłowa
+icbm.missile.repulsive.name=Rakieta odpychająca
+icbm.missile.attractive.name=Rakieta przyciągająca
+
+icbm.missile.fragmentation.name=Rakieta kasetowa
+icbm.missile.contagious.name=Rakieta z zarazkami
+icbm.missile.sonic.name=Rakieta soniczna
+icbm.missile.breaching.name=Rakieta krusząca
+icbm.missile.rejuvenation.name=Rakieta rewitalizująca
+icbm.missile.thermobaric.name=Rakieta termobaryczna
+
+icbm.missile.nuclear.name=Rakieta nuklearna
+icbm.missile.emp.name=Rakieta EMP
+icbm.missile.exothermic.name=Rakieta egzotermiczna
+icbm.missile.endothermic.name=Rakieta endotermiczna
+icbm.missile.antiGravitational.name=Rakieta antygrawitacyjna
+icbm.missile.ender.name=Rakieta Kresu
+icbm.missile.hypersonic.name=Rakieta hipersoniczna
+
+icbm.missile.antimatter.name=Rakieta antymateryjna
+icbm.missile.redMatter.name=Rakieta z czarną dziurą
+
+icbm.missile.xmas.zombie.name=Rakieta ze świąteczną niespodzianką zombie
+icbm.missile.xmas.skeleton.name=Rakieta ze świąteczną niespodzianką szkieletów
+
+## Special Missiles
+icbm.missile.missileModule.name=Moduł rakiety
+icbm.missile.antiBallistic.name=Rakieta antybalistyczna
+icbm.missile.cluster.name=Rakieta wielogłowicowa
+icbm.missile.nuclearCluster.name=Wielogłowicowa rakieta nuklearna
+icbm.missile.homing.name=Rakieta naprowadzająca
+
+## Grenades
+icbm.grenade.condensed.name=Zwykły granat
+icbm.grenade.shrapnel.name=Granat odłamkowy
+icbm.grenade.incendiary.name=Granat zapalający
+icbm.grenade.debilitation.name=Granat z gazem CS
+icbm.grenade.chemical.name=Granat z gazem bojowym
+icbm.grenade.anvil.name=Granat kowadłowy
+icbm.grenade.repulsive.name=Granat odpychający
+icbm.grenade.attractive.name=Granat przyciągający
+
+icbm.grenade.xmas.zombie.name=Granat z świąteczną niespodzianką zombie
+icbm.grenade.xmas.skeleton.name=Granat z świąteczną niespodzianką szkieletów
+
+## Explosive Minecarts
+icbm.minecart.condensed.name=Wybuchowy wagonik
+icbm.minecart.shrapnel.name=Odłamkowy wagonik
+icbm.minecart.incendiary.name=Zapalający wagonik
+icbm.minecart.debilitation.name=Wagonik z gazem CS
+icbm.minecart.chemical.name=Wagonik z gazem bojowym
+icbm.minecart.anvil.name=Wagonik kowadełkowy
+icbm.minecart.repulsive.name=Wagonik odpychający
+icbm.minecart.attractive.name=Wagonik przyciągający
+icbm.minecart.nightmare.name=Wagonik z horroru
+
+icbm.minecart.fragmentation.name=Wagonik kasetowy
+icbm.minecart.contagious.name=Wagonik z zarazkami
+icbm.minecart.sonic.name=Soniczny wagonik
+icbm.minecart.breaching.name=Kruszący wagonik
+icbm.minecart.rejuvenation.name=Rewitalizujący wagonik
+icbm.minecart.thermobaric.name=Termobaryczny wagonik
+
+icbm.minecart.xmas.zombie.name=Wagonik z świąteczną niespodzianką zombie
+icbm.minecart.xmas.skeleton.name=Wagonik z świąteczną niespodzianką szkielety
+
+## ICBM Misc Blocks
+tile.icbm:concrete.0.name=Beton
+tile.icbm:concrete.1.name=Beton zbrojony
+tile.icbm:concrete.2.name=Wzmocniony beton
+
+tile.icbm:reinforcedGlass.name=Hartowane szkło
+tile.icbm:glassPressurePlate.name=Szklana płyta naciskowa
+tile.icbm:glassButton.name=Szklany guzik
+tile.icbm:camouflage.name=Kamuflaż
+tile.icbm:proximityDetector.name=Czujnik zbliżeniowy
+
+tile.icbm:spikes.0.name=Kolce
+tile.icbm:spikes.1.name=Zatrute kolce
+tile.icbm:spikes.2.name=Kolce zapalające
+
+## Chat messages
+message.tracker.nowtrack=Namierzanie celu:
+message.tracker.nopower=Zbyt niski poziom naładowania trackera
+message.tracker.banned=Tracker jest zabroniony na aktualnym obszarze
+
+message.defuser.nopower=Zbyt niski poziom naładowania do użycia rozbrajacza
+
+message.designator.callTime=Wzywanie wsparcia powietrznego za:
+message.designator.blast=Wsparcie powietrzne atakuje!
+message.designator.setFreq= Cel laserowego wskaźnika celów znajduje się na kordynatach:
+message.designator.failFreq=Cząstotliwość musi być większa od 0MHz
+message.designator.callBlast=Wzywanie wsparcia powietrznego na wskazaną pozycję!
+message.designator.nopower=Zbyt niski poziom naładowania do użycia laserowego wskaźnika celów!
+message.designator.noFreq=Częstotliwośc komunikacji laserowego wskaźnika celów nie została ustawiona!
+
+message.radarGun.scanned=Przeskanowano kordynaty: X:%x, Y:%y, Z:%z - Dystans: %d metrów
+message.radarGun.nopower=Zbyt niski poziom naładowania radarowego wskaźnika celów!
+message.radarGun.transfer=Kordynaty cełow przekazane do komputera sterującego
+message.radarGun.noCoords=Nie wskazano pozycji
+message.launcher.protected=Region jest chroniony
+message.detonator.locked=Zdalny detonator ustawiony na pozycję: X:%x, Y:%y, Z:%z
+message.detonator.nopower=Zbyt niski poziom naładowania do użycia zdalnego detonatora!
+message.radar.redstone.on=Radar ustawiony do emisji sygnału czerwonego proszku
+message.radar.redstone.off=Radar ustawiony do nie emitowania sygnału czerwonego proszku
+
+## GUI stuff
+gui.misc.nopower=zbyt niski poziom naładowania akumulatora
+gui.misc.idle=Bezczynny
+gui.misc.freq=Częstotliwość MHz:
+gui.misc.XCoord=Kordynat X:
+gui.misc.YCoord=Kordynay Y:
+gui.misc.ZCoord=Kordynat Z:
+gui.misc.x=X:
+gui.misc.y=Y:
+gui.misc.z=Z:
+gui.misc.status=Status:
+gui.misc.voltage=Napięcie:
+gui.misc.missile=Rakieta[%d, %d]
+gui.misc.object=Obiekt[%d, %d]
+
+gui.tracker.freq=Częstotliwość MHz
+gui.detector.name=Detektor obecności
+gui.detector.all=Wszyscy
+gui.detector.players=Gracze
+gui.detector.mobs=Potwory
+gui.detector.range=Zasięg wykrywania
+gui.detector.min=Min
+gui.detector.max=Max
+gui.detector.exclude=Wyłączając
+gui.detector.include=Włączając
+gui.detector.target=Cel:
+gui.detector.on=Włączony
+gui.detector.status=Status:
+
+gui.empTower.name=Wieża EMP
+gui.empTower.missiles=Rakiety
+gui.empTower.elec=Zasilanie
+gui.empTower.both=Oba
+gui.empTower.radius=zasięg EMP: %p metrów
+gui.empTower.effect=zasięg oddziaływania EMP:
+gui.empTower.effectDebilitate=Zakłóc elektronikę
+gui.empTower.effectDisrupt=Zakłóć rakiety
+gui.empTower.effectDeplete=Wyładuj urządzenia
+gui.empTower.mode=Tryb:
+gui.empTower.ready=Gotowe do wyładowania!
+
+gui.launcherBase.name=Platforma startowa
+gui.launcherBase.place=Umieść rakietę
+gui.launcherscreen.name=Panel kontrolny
+gui.launcherscreen.detHeight=Wysokość detonacji:
+gui.launcherscreen.lockHeight=Wysokość zablokowania:
+gui.launcherscreen.target=Cel rakiety
+gui.launcherscreen.inaccuracy=Niedokładność: %p metrów
+gui.launcherscreen.statusMissing=Nie połączone
+gui.launcherscreen.statusNoPower=Niewystarczająca moc w układzie
+gui.launcherscreen.statusEmpty=Silos rakietowy nie załadowany
+gui.launcherscreen.statusInvalid=Cel jest nieprawidłowy
+gui.launcherscreen.statusClose=Cel zbyt blisko
+gui.launcherscreen.statusFar=Cel zbyt daleko
+gui.launcherscreen.statusReady=Gotowe do odpalenia
+
+
+gui.launcherCruise.name=Wyrzutnia taktyczna
+
+gui.launcherCruise.statusNoPower=Brak zasialnia
+gui.launcherCruise.statusEmpty=Brak umieszczonej rakiety
+gui.launcherCruise.invalidMissile=Niewłaściwy przedmiot
+gui.launcherCruise.invalidMissileTier=Zbyt wysoki tier rakiety
+gui.launcherCruise.notCruiseMissile=Niewłaściwy rodzaj rakiety
+gui.launcherCruise.statusInvalid=Niewłaściwy cel
+gui.launcherCruise.targetToClose=Cel zbyt blisko
+gui.launcherCruise.noRoom=otoczenie 3x3 metry nie jest oczyszczone
+gui.launcherCruise.statusReady=Gotowe!
+
+## Chat warning if user tries to fire by hand, %1 is status message from GUI
+chat.launcher.status=Status: %1
+chat.launcher.failedToFire=Nie można wystrzelić rakiety ze względu na błąd
+chat.launcher.toolTargetSet=Dane nawigacyjne przekazane do urządzenia.
+chat.launcher.toolWorldNotMatch=Kordynaty są niewłaściwe!
+chat.launcher.noTargetInTool=Narzędzie nie posiada żadnych wgranych kordynatów!
+chat.launcher.toolFrequencySet=Częstotliwość ustawiona na %1 MHz
+
+gui.coordinator.name=Kordynator rakiet
+gui.coordinator.sim=Symulator ścieżki rakiety
+gui.coordinator.from=Z:
+gui.coordinator.to=Do:
+gui.coordinator.displace=Rozrzut: %p Metrów
+gui.coordinator.arc=Łuk: %p Metrów
+gui.coordinator.time=Czas: %p Sekund
+gui.coordinator.direction=Kierunek:
+gui.coordinator.wip=Więcej danych wkrótce!
+
+gui.radar.coords=Kordynaty:
+gui.radar.range=Zasięg
+gui.radar.range.trigger=Zpust:
+gui.radar.range.detection=Detekcja:
+gui.radar.on=Radar włączony!
+gui.radar.nopower=Brak zasilania!
+
+gui.terminal.name=Terminal
+gui.platform.ammo=Amunija
+gui.platform.upgrades=Ulepszenia
+gui.platform.joules=z %j
+gui.platform.access=Dostęp użytkownika
+
+## Tooltips
+info.misc.freq=Częstotliwość MHz:
+info.tracker.tracking=Namierzanie:
+info.designator.noFreq=Częstotliwośc: Nie ustawiona
+info.radarGun.savedCoords=Kordynaty zostały zapisane:
+info.radarGun.meters=Metry
+info.detonator.linked=Połączone ładunki wybuchowe:
+info.detonator.noLink=Ładunki wybuchowe nie zostały połączone
+info.misc.tier=Tier ładunków wybuchowych
+info.tracker.tooltip=Lewym przyciskiem myszy (gracze także), I ja go namierzę.
+
+## Death messages
+death.attack.icbm.redmatter=%s Został rozerwany na pojedyńcze atomy przez czarną dziurę
+
+## GPS
+gps.pos.set.name=Kordynaty GPS zapisane
+gps.error.pos.invalid.name=Niewłaściwe kordynaty
+gps.data.transferred.name=Kordynaty przeniesione na urządzenie docelowe
+gps.cleared.name=Wyczyszczono kordynaty GPS
+
+## Entity
+entity.icbm:skeleton.xmas.elf.name=Lodowy szkielet
+entity.icbm:skeleton.xmas.boss.name=Władca lodowych szkieletów
+entity.icbm:skeleton.xmas.snowman.name=Taktyczny bałwan
+
+entity.icbm:zombie.xmas.elf.name=Płonący zombie
+entity.icbm:zombie.xmas.boss.name=Płonący boss zombie
+entity.icbm:zombie.xmas.creeper.name=Działko Creeperów

@@ -1,45 +1,36 @@
 package icbm.classic.client;
 
 import icbm.classic.ICBMConstants;
-import icbm.classic.api.EnumTier;
-import icbm.classic.api.refs.ICBMExplosives;
-import icbm.classic.api.ICBMClassicAPI;
-import icbm.classic.api.reg.IExplosiveData;
-import icbm.classic.client.mapper.BlockModelMapperExplosive;
-import icbm.classic.client.mapper.ItemModelMapperExplosive;
-import icbm.classic.client.render.entity.*;
-import icbm.classic.config.ConfigItems;
-import icbm.classic.content.blocks.emptower.TESREMPTower;
-import icbm.classic.content.blocks.emptower.TileEMPTower;
-import icbm.classic.content.blocks.launcher.base.TESRLauncherBase;
-import icbm.classic.content.blocks.launcher.base.TileLauncherBase;
-import icbm.classic.content.blocks.launcher.cruise.TESRCruiseLauncher;
-import icbm.classic.content.blocks.launcher.cruise.TileCruiseLauncher;
-import icbm.classic.content.blocks.launcher.frame.TESRLauncherFrame;
-import icbm.classic.content.blocks.launcher.frame.TileLauncherFrame;
-import icbm.classic.content.blocks.launcher.screen.TESRLauncherScreen;
-import icbm.classic.content.blocks.launcher.screen.TileLauncherScreen;
-import icbm.classic.content.blocks.radarstation.TESRRadarStation;
-import icbm.classic.content.blocks.radarstation.TileRadarStation;
-import icbm.classic.content.entity.*;
-import icbm.classic.content.entity.missile.EntityMissile;
-import icbm.classic.content.entity.mobs.*;
-import icbm.classic.content.items.ItemCrafting;
+//TODO//import icbm.classic.api.EnumTier;
+//TODO//import icbm.classic.api.refs.ICBMExplosives;
+//TODO//import icbm.classic.api.ICBMClassicAPI;
+//TODO//import icbm.classic.api.reg.IExplosiveData;
+//TODO//import icbm.classic.client.mapper.BlockModelMapperExplosive;
+//TODO//import icbm.classic.client.mapper.ItemModelMapperExplosive;
+//TODO//import icbm.classic.client.render.entity.*;
+//TODO//import icbm.classic.config.ConfigItems;
+//TODO//import icbm.classic.content.blocks.emptower.TESREMPTower;
+//TODO//import icbm.classic.content.blocks.emptower.TileEMPTower;
+//TODO//import icbm.classic.content.blocks.launcher.base.TESRLauncherBase;
+//TODO//import icbm.classic.content.blocks.launcher.base.TileLauncherBase;
+//TODO//import icbm.classic.content.blocks.launcher.cruise.TESRCruiseLauncher;
+//TODO//import icbm.classic.content.blocks.launcher.cruise.TileCruiseLauncher;
+//TODO//import icbm.classic.content.blocks.launcher.frame.TESRLauncherFrame;
+//TODO//import icbm.classic.content.blocks.launcher.frame.TileLauncherFrame;
+//TODO//import icbm.classic.content.blocks.launcher.screen.TESRLauncherScreen;
+//TODO//import icbm.classic.content.blocks.launcher.screen.TileLauncherScreen;
+//TODO//import icbm.classic.content.blocks.radarstation.TESRRadarStation;
+//TODO//import icbm.classic.content.blocks.radarstation.TileRadarStation;
+//TODO//import icbm.classic.content.items.ItemCrafting;
 import icbm.classic.content.reg.BlockReg;
 import icbm.classic.content.reg.ItemReg;
-import icbm.classic.prefab.tile.BlockICBM;
+//TODO//import icbm.classic.prefab.tile.BlockICBM;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.state.Property;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -49,8 +40,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,6 +51,8 @@ import java.util.stream.Collectors;
  */
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN, value = Dist.CLIENT)
 public class ClientReg {
+
+    /* TODO
 
     private final static Map<IExplosiveData, ModelResourceLocation> grenadeModelMap = new HashMap();
     private final static Map<IExplosiveData, ModelResourceLocation> missileModelMap = new HashMap();
@@ -188,7 +179,7 @@ public class ClientReg {
 
     protected static void registerExBlockRenders() {
 
-        for (IExplosiveData data : ICBMClassicAPI.EX_BLOCK_REGISTRY.getExplosives()) /* TODO run loop once for all 4 content types */ {
+        for (IExplosiveData data : ICBMClassicAPI.EX_BLOCK_REGISTRY.getExplosives()) /* TODO run loop once for all 4 content types *//* {
 
             //Add block state
             final HashMap<Direction,ModelResourceLocation> facingModelMap = new HashMap<>();
@@ -238,7 +229,7 @@ public class ClientReg {
 
     protected static void registerGrenadeRenders() {
 
-        for (IExplosiveData data : ICBMClassicAPI.EX_GRENADE_REGISTRY.getExplosives()) /* TODO run loop once for all 4 content types */ {
+        for (IExplosiveData data : ICBMClassicAPI.EX_GRENADE_REGISTRY.getExplosives()) /* TODO run loop once for all 4 content types *//* {
             final String resourcePath = data.getRegistryName().getNamespace() + ":grenades/" + data.getRegistryName().getPath();
             grenadeModelMap.put(data, new ModelResourceLocation(resourcePath, "inventory"));
         }
@@ -250,7 +241,7 @@ public class ClientReg {
 
     protected static void registerCartRenders() {
 
-        for (IExplosiveData data : ICBMClassicAPI.EX_MINECART_REGISTRY.getExplosives()) /* TODO run loop once for all 4 content types */ {
+        for (IExplosiveData data : ICBMClassicAPI.EX_MINECART_REGISTRY.getExplosives()) /* TODO run loop once for all 4 content types *//* {
             final String resourcePath = data.getRegistryName().getNamespace() + ":bombcarts/" + data.getRegistryName().getPath();
             cartModelMap.put(data, new ModelResourceLocation(resourcePath, "inventory"));
         }
@@ -262,7 +253,7 @@ public class ClientReg {
 
     protected static void registerMissileRenders() {
 
-        for (IExplosiveData data : ICBMClassicAPI.EX_MISSILE_REGISTRY.getExplosives()) /* TODO run loop once for all 4 content types */ {
+        for (IExplosiveData data : ICBMClassicAPI.EX_MISSILE_REGISTRY.getExplosives()) /* TODO run loop once for all 4 content types *//* {
             final String resourcePath = data.getRegistryName().getNamespace() + ":missiles/" + data.getRegistryName().getPath();
             missileModelMap.put(data, new ModelResourceLocation(resourcePath, "inventory"));
         }
@@ -333,4 +324,7 @@ public class ClientReg {
     private static <T extends Comparable<T>> String getPropertyName(Property<T> property, Comparable<?> comparable) {
         return property.getName((T) comparable);
     }
+
+    */
+
 }

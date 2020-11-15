@@ -1,71 +1,32 @@
 package icbm.classic.content.blocks;
 
-import icbm.classic.ICBMClassic;
 import icbm.classic.ICBMConstants;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.Direction;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockReinforcedGlass extends Block
-{
-    public BlockReinforcedGlass()
-    {
-        super(Material.GLASS);
-        this.setRegistryName(ICBMConstants.PREFIX + "reinforcedGlass");
-        this.setTranslationKey(ICBMConstants.PREFIX + "reinforcedGlass");
-        this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
-        this.setHardness(10);
-        this.setResistance(48);
+public class BlockReinforcedGlass extends Block {
+
+    public BlockReinforcedGlass() {
+        super(Block.Properties.create(Material.GLASS).hardnessAndResistance(10, 48));
+        //TODO//this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
     }
 
+    /* TODO - might have to be done through loot tables now? https://github.com/MinecraftForge/MinecraftForge/blob/1.15.x/src/test/java/net/minecraftforge/debug/gameplay/loot/GlobalLootModifiersTest.java
     @Override
-    protected boolean canSilkHarvest()
-    {
+    protected boolean canSilkHarvest() {
         return true;
     }
+    */
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
+    @OnlyIn(Dist.CLIENT)
+    public boolean isSideInvisible(BlockState p_200122_1_, BlockState p_200122_2_, Direction p_200122_3_) {
+        // Pretty sure p_200122_1_ is "this" but in BlockState form, overrides code from AbstractBlock that is obfuscated af so this could be wrong
+        return p_200122_1_.getBlock() == p_200122_2_.getBlock() || super.isSideInvisible(p_200122_1_, p_200122_2_, p_200122_3_);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-    {
-        IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
-        Block block = iblockstate.getBlock();
-
-        if (blockState != iblockstate)
-        {
-            return true;
-        }
-
-        if (block == this)
-        {
-            return false;
-        }
-
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-    }
 }

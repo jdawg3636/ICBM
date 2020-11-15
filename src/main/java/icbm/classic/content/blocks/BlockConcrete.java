@@ -6,7 +6,7 @@ import icbm.classic.ICBMConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
+//TODO//import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemGroup;
@@ -32,10 +32,10 @@ public class BlockConcrete extends Block {
 
     public BlockConcrete() {
         super(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F));
-        this.setRegistryName(ICBMConstants.PREFIX + "concrete");
-        this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
+        //TODO//this.setCreativeTab(ICBMClassic.CREATIVE_TAB);
     }
 
+    /*
     @Override
     public int damageDropped(BlockState state) {
         return getMetaFromState(state);
@@ -86,6 +86,8 @@ public class BlockConcrete extends Block {
                 items.add(new ItemStack(this, 1, i));
 
     }
+
+    */
 
     public static class PropertyType extends EnumProperty {
 

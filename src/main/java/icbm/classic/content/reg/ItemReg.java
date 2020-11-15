@@ -2,25 +2,25 @@ package icbm.classic.content.reg;
 
 import icbm.classic.ICBMClassic;
 import icbm.classic.ICBMConstants;
-import icbm.classic.config.ConfigItems;
-import icbm.classic.content.blocks.explosive.BlockItemExplosive;
-import icbm.classic.content.blocks.launcher.base.TileLauncherBase;
-import icbm.classic.content.items.ItemAntidote;
-import icbm.classic.content.items.ItemBattery;
-import icbm.classic.content.items.ItemBombCart;
-import icbm.classic.content.items.ItemCrafting;
-import icbm.classic.content.items.ItemDefuser;
-import icbm.classic.content.items.ItemGrenade;
-import icbm.classic.content.items.ItemLaserDetonator;
-import icbm.classic.content.items.ItemMissile;
-import icbm.classic.content.items.ItemRadarGun;
-import icbm.classic.content.items.ItemRemoteDetonator;
-import icbm.classic.content.items.ItemRocketLauncher;
-import icbm.classic.content.items.ItemSignalDisrupter;
-import icbm.classic.content.items.ItemTracker;
-import icbm.classic.prefab.item.ItemBase;
-import icbm.classic.prefab.item.BlockItemRotatedMultiTile;
-import icbm.classic.prefab.item.BlockItemSubTypes;
+//TODO//import icbm.classic.config.ConfigItems;
+//TODO//import icbm.classic.content.blocks.explosive.BlockItemExplosive;
+//TODO//import icbm.classic.content.blocks.launcher.base.TileLauncherBase;
+//TODO//import icbm.classic.content.items.ItemAntidote;
+//TODO//import icbm.classic.content.items.ItemBattery;
+//TODO//import icbm.classic.content.items.ItemBombCart;
+//TODO//import icbm.classic.content.items.ItemCrafting;
+//TODO//import icbm.classic.content.items.ItemDefuser;
+//TODO//import icbm.classic.content.items.ItemGrenade;
+//TODO//import icbm.classic.content.items.ItemLaserDetonator;
+//TODO//import icbm.classic.content.items.ItemMissile;
+//TODO//import icbm.classic.content.items.ItemRadarGun;
+//TODO//import icbm.classic.content.items.ItemRemoteDetonator;
+//TODO//import icbm.classic.content.items.ItemRocketLauncher;
+//TODO//import icbm.classic.content.items.ItemSignalDisrupter;
+//TODO//import icbm.classic.content.items.ItemTracker;
+//TODO//import icbm.classic.prefab.item.ItemBase;
+//TODO//import icbm.classic.prefab.item.BlockItemRotatedMultiTile;
+//TODO//import icbm.classic.prefab.item.BlockItemSubTypes;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -36,7 +36,7 @@ public class ItemReg {
 
     @ObjectHolder(ICBMConstants.PREFIX + "antidote")
     public static Item itemAntidote;
-    @ObjectHolder(ICBMConstants.PREFIX + "signalDisrupter")
+    @ObjectHolder(ICBMConstants.PREFIX + "signal_disrupter")
     public static Item itemSignalDisrupter;
     @ObjectHolder(ICBMConstants.PREFIX + "tracker")
     public static Item itemTracker;
@@ -44,77 +44,78 @@ public class ItemReg {
     public static Item itemMissile;
     @ObjectHolder(ICBMConstants.PREFIX + "defuser")
     public static Item itemDefuser;
-    @ObjectHolder(ICBMConstants.PREFIX + "radarGun")
+    @ObjectHolder(ICBMConstants.PREFIX + "radar_gun")
     public static Item itemRadarGun;
-    @ObjectHolder(ICBMConstants.PREFIX + "remoteDetonator")
+    @ObjectHolder(ICBMConstants.PREFIX + "remote_detonator")
     public static Item itemRemoteDetonator;
-    @ObjectHolder(ICBMConstants.PREFIX + "laserDetonator")
+    @ObjectHolder(ICBMConstants.PREFIX + "laser_detonator")
     public static Item itemLaserDetonator;
-    @ObjectHolder(ICBMConstants.PREFIX + "rocketLauncher")
+    @ObjectHolder(ICBMConstants.PREFIX + "rocket_launcher")
     public static Item itemRocketLauncher;
     @ObjectHolder(ICBMConstants.PREFIX + "grenade")
     public static Item itemGrenade;
     @ObjectHolder(ICBMConstants.PREFIX + "bombcart")
     public static Item itemBombCart;
-    @ObjectHolder(ICBMConstants.PREFIX + "sulfurDust")
+    @ObjectHolder(ICBMConstants.PREFIX + "sulfur_dust")
     public static Item itemSulfurDust;
     @ObjectHolder(ICBMConstants.PREFIX + "saltpeter")
     public static Item itemSaltpeterDust;
-    @ObjectHolder(ICBMConstants.PREFIX + "poisonPowder")
+    @ObjectHolder(ICBMConstants.PREFIX + "poison_powder")
     public static Item itemPoisonPowder;
     @ObjectHolder(ICBMConstants.PREFIX + "battery")
     public static Item itemBattery;
-    @ObjectHolder(ICBMConstants.PREFIX + "ingot")
-    public static ItemCrafting itemIngot;
-    @ObjectHolder(ICBMConstants.PREFIX + "clump")
-    public static ItemCrafting itemIngotClump;
-    @ObjectHolder(ICBMConstants.PREFIX + "plate")
-    public static ItemCrafting itemPlate;
-    @ObjectHolder(ICBMConstants.PREFIX + "circuit")
-    public static ItemCrafting itemCircuit;
-    @ObjectHolder(ICBMConstants.PREFIX + "wire")
-    public static ItemCrafting itemWire;
+    //TODO//@ObjectHolder(ICBMConstants.PREFIX + "ingot")
+    //TODO//public static ItemCrafting itemIngot;
+    //TODO//@ObjectHolder(ICBMConstants.PREFIX + "clump")
+    //TODO//public static ItemCrafting itemIngotClump;
+    //TODO//@ObjectHolder(ICBMConstants.PREFIX + "plate")
+    //TODO//public static ItemCrafting itemPlate;
+    //TODO//@ObjectHolder(ICBMConstants.PREFIX + "circuit")
+    //TODO//public static ItemCrafting itemCircuit;
+    //TODO//@ObjectHolder(ICBMConstants.PREFIX + "wire")
+    //TODO//public static ItemCrafting itemWire;
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
 
         //Items
-        event.getRegistry().register(new ItemGrenade().setName("grenade"));
-        event.getRegistry().register(new ItemBombCart().setName("bombcart"));
-        event.getRegistry().register(new ItemBase(new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setName("poisonPowder")); //TODO fix name _
-        Item sulfurItem = new ItemBase(new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setName("sulfurDust");
-        event.getRegistry().register(sulfurItem); //TODO fix name _
-        OreDictionary.registerOre("dustSulfur", sulfurItem);
+        //TODO//event.getRegistry().register(new ItemGrenade().setName("grenade"));
+        //TODO//event.getRegistry().register(new ItemBombCart().setName("bombcart"));
+        //TODO//event.getRegistry().register(new ItemBase(new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setName("poisonPowder")); //TODO fix name _
+        //TODO//Item sulfurItem = new ItemBase(new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setName("sulfurDust");
+        //TODO//event.getRegistry().register(sulfurItem); //TODO fix name _
+        //TODO//OreDictionary.registerOre("dustSulfur", sulfurItem);
 
-        Item saltpeterItem = new ItemBase(new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setName("saltpeter");
-        event.getRegistry().register(saltpeterItem);
-        OreDictionary.registerOre("dustSaltpeter", saltpeterItem);
+        //TODO//Item saltpeterItem = new ItemBase(new Item.Properties().group(ICBMClassic.CREATIVE_TAB)).setName("saltpeter");
+        //TODO//event.getRegistry().register(saltpeterItem);
+        //TODO//OreDictionary.registerOre("dustSaltpeter", saltpeterItem);
 
 
-        event.getRegistry().register(new ItemAntidote().setName("antidote"));
-        event.getRegistry().register(new ItemSignalDisrupter());
-        event.getRegistry().register(new ItemTracker());
-        event.getRegistry().register(new ItemDefuser());
-        event.getRegistry().register(new ItemRadarGun());
-        event.getRegistry().register(new ItemRemoteDetonator());
-        event.getRegistry().register(new ItemLaserDetonator());
-        event.getRegistry().register(new ItemRocketLauncher());
-        event.getRegistry().register(new ItemMissile());
+        //TODO//event.getRegistry().register(new ItemAntidote().setName("antidote"));
+        //TODO//event.getRegistry().register(new ItemSignalDisrupter());
+        //TODO//event.getRegistry().register(new ItemTracker());
+        //TODO//event.getRegistry().register(new ItemDefuser());
+        //TODO//event.getRegistry().register(new ItemRadarGun());
+        //TODO//event.getRegistry().register(new ItemRemoteDetonator());
+        //TODO//event.getRegistry().register(new ItemLaserDetonator());
+        //TODO//event.getRegistry().register(new ItemRocketLauncher());
+        //TODO//event.getRegistry().register(new ItemMissile());
 
         //Block items
         event.getRegistry().register(new BlockItem(BlockReg.GLASS_PRESSURE_PLATE.get(), new Item.Properties()).setRegistryName(BlockReg.GLASS_PRESSURE_PLATE.get().getRegistryName()));
         event.getRegistry().register(new BlockItem(BlockReg.GLASS_BUTTON.get(), new Item.Properties()).setRegistryName(BlockReg.GLASS_BUTTON.get().getRegistryName()));
-        event.getRegistry().register(new BlockItemSubTypes(BlockReg.SPIKES.get()));
-        event.getRegistry().register(new BlockItemSubTypes(BlockReg.CONCRETE.get()));
+        //TODO//event.getRegistry().register(new BlockItemSubTypes(BlockReg.SPIKES.get()));
+        //TODO//event.getRegistry().register(new BlockItemSubTypes(BlockReg.CONCRETE.get()));
         event.getRegistry().register(new BlockItem(BlockReg.REINFORCED_GLASS.get(), new Item.Properties()).setRegistryName(BlockReg.REINFORCED_GLASS.get().getRegistryName()));
-        event.getRegistry().register(new BlockItemExplosive(BlockReg.EXPLOSIVES.get(), new Item.Properties()).setRegistryName(BlockReg.EXPLOSIVES.get().getRegistryName()));
-        event.getRegistry().register(new BlockItem(BlockReg.EMP_TOWER.get(), new Item.Properties()).setRegistryName(BlockReg.EMP_TOWER.get().getRegistryName()));
-        event.getRegistry().register(new BlockItem(BlockReg.RADAR_STATION.get(), new Item.Properties()).setRegistryName(BlockReg.RADAR_STATION.get().getRegistryName()));
-        event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_FRAME.get()));
-        event.getRegistry().register(new BlockItemRotatedMultiTile(BlockReg.LAUNCHER_BASE, e -> TileLauncherBase.getLayoutOfMultiBlock(e)));
-        event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_SCREEN.get()));
-        event.getRegistry().register(new BlockItem(BlockReg.CRUISE_LAUNCHER.get(), new Item.Properties()).setRegistryName(BlockReg.CRUISE_LAUNCHER.get().getRegistryName()));
+        //TODO//event.getRegistry().register(new BlockItemExplosive(BlockReg.EXPLOSIVES.get(), new Item.Properties()).setRegistryName(BlockReg.EXPLOSIVES.get().getRegistryName()));
+        //TODO//event.getRegistry().register(new BlockItem(BlockReg.EMP_TOWER.get(), new Item.Properties()).setRegistryName(BlockReg.EMP_TOWER.get().getRegistryName()));
+        //TODO//event.getRegistry().register(new BlockItem(BlockReg.RADAR_STATION.get(), new Item.Properties()).setRegistryName(BlockReg.RADAR_STATION.get().getRegistryName()));
+        //TODO//event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_FRAME.get()));
+        //TODO//event.getRegistry().register(new BlockItemRotatedMultiTile(BlockReg.LAUNCHER_BASE, e -> TileLauncherBase.getLayoutOfMultiBlock(e)));
+        //TODO//event.getRegistry().register(new BlockItemSubTypes(BlockReg.LAUNCHER_SCREEN.get()));
+        //TODO//event.getRegistry().register(new BlockItem(BlockReg.CRUISE_LAUNCHER.get(), new Item.Properties()).setRegistryName(BlockReg.CRUISE_LAUNCHER.get().getRegistryName()));
 
+        /* TODO
         //Crafting resources
         if (ConfigItems.ENABLE_CRAFTING_ITEMS) {
 
@@ -134,6 +135,8 @@ public class ItemReg {
         //Optional items
         if (ConfigItems.ENABLE_BATTERY)
             event.getRegistry().register(new ItemBattery());
+
+        */
 
     }
 

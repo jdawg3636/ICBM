@@ -1,36 +1,36 @@
 package icbm.classic;
 
-import icbm.classic.api.EnumTier;
-import icbm.classic.api.ICBMClassicAPI;
+//TODO//import icbm.classic.api.EnumTier;
+//TODO//import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.client.ClientProxy;
 import icbm.classic.content.reg.BlockReg;
-import icbm.classic.lib.NBTConstants;
-import icbm.classic.api.reg.events.ExplosiveRegistryEvent;
-import icbm.classic.api.reg.events.ExplosiveContentRegistryEvent;
+//TODO//import icbm.classic.lib.NBTConstants;
+//TODO//import icbm.classic.api.reg.events.ExplosiveRegistryEvent;
+//TODO//import icbm.classic.api.reg.events.ExplosiveContentRegistryEvent;
 import icbm.classic.client.ICBMCreativeTab;
-import icbm.classic.command.ICBMCommands;
-import icbm.classic.command.system.CommandEntryPoint;
-import icbm.classic.config.ConfigItems;
-import icbm.classic.config.ConfigThread;
-import icbm.classic.content.reg.ExplosiveInit;
-import icbm.classic.content.entity.missile.CapabilityMissile;
-import icbm.classic.content.items.behavior.BombCartDispenseBehavior;
-import icbm.classic.content.items.behavior.GrenadeDispenseBehavior;
-import icbm.classic.content.potion.ContagiousPoison;
-import icbm.classic.content.potion.PoisonContagion;
-import icbm.classic.content.potion.PoisonFrostBite;
-import icbm.classic.content.potion.PoisonToxin;
+//TODO//import icbm.classic.command.ICBMCommands;
+//TODO//import icbm.classic.command.system.CommandEntryPoint;
+//TODO//import icbm.classic.config.ConfigItems;
+//TODO//import icbm.classic.config.ConfigThread;
+//TODO//import icbm.classic.content.reg.ExplosiveInit;
+//TODO//import icbm.classic.content.entity.missile.CapabilityMissile;
+//TODO//import icbm.classic.content.items.behavior.BombCartDispenseBehavior;
+//TODO//import icbm.classic.content.items.behavior.GrenadeDispenseBehavior;
+//TODO//import icbm.classic.content.potion.ContagiousPoison;
+//TODO//import icbm.classic.content.potion.PoisonContagion;
+//TODO//import icbm.classic.content.potion.PoisonFrostBite;
+//TODO//import icbm.classic.content.potion.PoisonToxin;
 import icbm.classic.content.reg.ItemReg;
-import icbm.classic.lib.capability.emp.CapabilityEMP;
-import icbm.classic.lib.capability.ex.CapabilityExplosive;
-import icbm.classic.lib.energy.system.EnergySystem;
-import icbm.classic.lib.energy.system.EnergySystemFE;
-import icbm.classic.lib.explosive.reg.*;
-import icbm.classic.lib.network.netty.PacketManager;
-import icbm.classic.lib.radar.RadarRegistry;
-import icbm.classic.lib.radio.RadioRegistry;
-import icbm.classic.lib.thread.WorkerThreadManager;
-import icbm.classic.prefab.item.LootEntryItemStack;
+//TODO//import icbm.classic.lib.capability.emp.CapabilityEMP;
+//TODO//import icbm.classic.lib.capability.ex.CapabilityExplosive;
+//TODO//import icbm.classic.lib.energy.system.EnergySystem;
+//TODO//import icbm.classic.lib.energy.system.EnergySystemFE;
+//TODO//import icbm.classic.lib.explosive.reg.*;
+//TODO//import icbm.classic.lib.network.netty.PacketManager;
+//TODO//import icbm.classic.lib.radar.RadarRegistry;
+//TODO//import icbm.classic.lib.radio.RadioRegistry;
+//TODO//import icbm.classic.lib.thread.WorkerThreadManager;
+//TODO//import icbm.classic.prefab.item.LootEntryItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.Blocks;
@@ -86,10 +86,10 @@ public final class ICBMClassic {
     protected static Logger logger = LogManager.getLogger(ICBMConstants.DOMAIN);
     public static Logger logger() { return logger; }
 
-    public static final PacketManager packetHandler = new PacketManager(ICBMConstants.DOMAIN);
+    //TODO//public static final PacketManager packetHandler = new PacketManager(ICBMConstants.DOMAIN);
 
-    public static final ContagiousPoison poisonous_potion = new ContagiousPoison("Chemical", 0, false);
-    public static final ContagiousPoison contagios_potion = new ContagiousPoison("Contagious", 1, true);
+    //TODO//public static final ContagiousPoison poisonous_potion = new ContagiousPoison("Chemical", 0, false);
+    //TODO//public static final ContagiousPoison contagios_potion = new ContagiousPoison("Contagious", 1, true);
 
     public static final ICBMCreativeTab CREATIVE_TAB = new ICBMCreativeTab(ICBMConstants.DOMAIN);
 
@@ -185,6 +185,7 @@ public final class ICBMClassic {
     }
     */
 
+    /* TODO
     private void handleExRegistry(File configMainFolder) {
         //Init registry
         final ExplosiveRegistry explosiveRegistry = new ExplosiveRegistry();
@@ -231,6 +232,7 @@ public final class ICBMClassic {
         //Save registry, at this point everything should be registered
         explosiveRegistry.saveReg();
     }
+    */
 
     /**
      * This is the first of four commonly called events during mod initialization.
@@ -252,22 +254,22 @@ public final class ICBMClassic {
     @SubscribeEvent
     public void init(FMLCommonSetupEvent event) {
         proxy.init();
-        packetHandler.init();
+        //TODO//packetHandler.init();
         CREATIVE_TAB.init();
 
-        if (ConfigItems.ENABLE_CRAFTING_ITEMS) {
-            if (ConfigItems.ENABLE_INGOTS_ITEMS)
-                ItemReg.itemIngot.registerOreNames();
+        //TODO//if (ConfigItems.ENABLE_CRAFTING_ITEMS) {
+            //TODO//if (ConfigItems.ENABLE_INGOTS_ITEMS)
+                //TODO//ItemReg.itemIngot.registerOreNames();
 
-            if (ConfigItems.ENABLE_PLATES_ITEMS)
-                ItemReg.itemPlate.registerOreNames("iron");
+            //TODO//if (ConfigItems.ENABLE_PLATES_ITEMS)
+                //TODO//ItemReg.itemPlate.registerOreNames("iron");
 
-            if (ConfigItems.ENABLE_CIRCUIT_ITEMS)
-                ItemReg.itemCircuit.registerOreNames();
+            //TODO//if (ConfigItems.ENABLE_CIRCUIT_ITEMS)
+                //TODO//ItemReg.itemCircuit.registerOreNames();
 
-            if (ConfigItems.ENABLE_WIRES_ITEMS)
-                ItemReg.itemWire.registerOreNames();
-        }
+            //TODO//if (ConfigItems.ENABLE_WIRES_ITEMS)
+                //TODO//ItemReg.itemWire.registerOreNames();
+        //TODO//}
 
         //TODO//OreDictionary.registerOre("dustSulfur", new ItemStack(ItemReg.itemSulfurDust));
         //TODO//OreDictionary.registerOre("dustSaltpeter", new ItemStack(ItemReg.itemSaltpeterDust));
@@ -278,11 +280,11 @@ public final class ICBMClassic {
         //TODO//PoisonFrostBite.INSTANCE = Effects.POISON;//new PoisonFrostBite(false, 5149489, "frostBite");
 
         /** Dispenser Handler */
-        if (ItemReg.itemGrenade != null)
-            DispenserBlock.registerDispenseBehavior(ItemReg.itemGrenade, new GrenadeDispenseBehavior());
+        //TODO//if (ItemReg.itemGrenade != null)
+        //TODO//    DispenserBlock.registerDispenseBehavior(ItemReg.itemGrenade, new GrenadeDispenseBehavior());
 
-        if (ItemReg.itemBombCart != null)
-            DispenserBlock.registerDispenseBehavior(ItemReg.itemBombCart, new BombCartDispenseBehavior());
+        //TODO//if (ItemReg.itemBombCart != null)
+        //TODO//    DispenserBlock.registerDispenseBehavior(ItemReg.itemBombCart, new BombCartDispenseBehavior());
 
         proxy.init();
     }
@@ -308,13 +310,13 @@ public final class ICBMClassic {
         serverCommandManager.registerCommand(new CommandEntryPoint("icbm", ICBMCommands.ICBM_COMMAND));
         */
 
-        WorkerThreadManager.INSTANCE = new WorkerThreadManager(ConfigThread.THREAD_COUNT);
-        WorkerThreadManager.INSTANCE.startThreads();
+        //TODO//WorkerThreadManager.INSTANCE = new WorkerThreadManager(ConfigThread.THREAD_COUNT);
+        //TODO//WorkerThreadManager.INSTANCE.startThreads();
     }
 
     @SubscribeEvent
     public void serverStopping(FMLServerStoppingEvent event) {
-        WorkerThreadManager.INSTANCE.killThreads();
+        //TODO//WorkerThreadManager.INSTANCE.killThreads();
     }
 
 }
