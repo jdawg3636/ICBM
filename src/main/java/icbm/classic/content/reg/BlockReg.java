@@ -19,8 +19,15 @@ import icbm.classic.content.blocks.*;
 //TODO//import icbm.classic.content.blocks.radarstation.BlockRadarStation;
 //TODO//import icbm.classic.content.blocks.radarstation.TileRadarStation;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -36,6 +43,22 @@ public class BlockReg {
     public static final RegistryObject<Block> GLASS_PRESSURE_PLATE  = BLOCKS.register("glass_pressure_plate", BlockGlassPressurePlate::new);
     public static final RegistryObject<Block> REINFORCED_GLASS      = BLOCKS.register("reinforced_glass", BlockReinforcedGlass::new);
     public static final RegistryObject<Block> SPIKES                = BLOCKS.register("spikes", BlockSpikes::new);
+    public static final RegistryObject<Block> SPIKES_POISON         = BLOCKS.register("spikes_poison", () -> new BlockSpikes() {
+        @Override
+        public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+            super.onEntityCollision(state, world, pos, entity);
+            if (entity instanceof LivingEntity)
+                ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.POISON, 7 * 20, 0));
+        }
+    });
+    public static final RegistryObject<Block> SPIKES_FIRE           = BLOCKS.register("spikes_fire", () -> new BlockSpikes() {
+        @Override
+        public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+            super.onEntityCollision(state, world, pos, entity);
+            if (entity instanceof LivingEntity)
+                entity.setFire(7);
+        }
+    });
 
     //TODO//public static final RegistryObject<Block> CRUISE_LAUNCHER       = BLOCKS.register("cruise_launcher",     BlockCruiseLauncher::new);
     //TODO//public static final RegistryObject<Block> EMP_TOWER             = BLOCKS.register("emp_tower",           BlockEmpTower::new);

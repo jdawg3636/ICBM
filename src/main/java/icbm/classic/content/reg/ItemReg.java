@@ -43,6 +43,8 @@ public class ItemReg {
     public static final RegistryObject<Item> GLASS_PRESSURE_PLATE  = ITEMS.register("glass_pressure_plate", () -> new BlockItem(BlockReg.GLASS_PRESSURE_PLATE.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
     public static final RegistryObject<Item> REINFORCED_GLASS      = ITEMS.register("reinforced_glass", () -> new BlockItem(BlockReg.REINFORCED_GLASS.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
     public static final RegistryObject<Item> SPIKES                = ITEMS.register("spikes", () -> new BlockItem(BlockReg.SPIKES.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+    public static final RegistryObject<Item> SPIKES_POISON         = ITEMS.register("spikes_poison", () -> new BlockItem(BlockReg.SPIKES_POISON.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+    public static final RegistryObject<Item> SPIKES_FIRE           = ITEMS.register("spikes_fire", () -> new BlockItem(BlockReg.SPIKES_FIRE.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
 
     /*
     @ObjectHolder(ICBMConstants.PREFIX + "antidote")
