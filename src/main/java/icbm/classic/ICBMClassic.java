@@ -85,10 +85,18 @@ public final class ICBMClassic {
     };
 
     public ICBMClassic() {
+
         MinecraftForge.EVENT_BUS.register(this);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetupEvent);
+
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         BlockReg.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ItemReg.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+
+    }
+
+    public void onClientSetupEvent(final FMLClientSetupEvent event) {
+        proxy.setRenderLayers();
     }
 
     /*

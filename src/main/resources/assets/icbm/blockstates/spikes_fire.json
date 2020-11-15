@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "icbm:block/spikes"
+      "model": "icbm:block/spikes_fire"
     }
   }
 }

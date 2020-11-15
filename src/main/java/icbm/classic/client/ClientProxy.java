@@ -8,14 +8,20 @@ import icbm.classic.CommonProxy;
 //TODO//import icbm.classic.content.entity.missile.EntityMissile;
 //TODO//import icbm.classic.content.entity.missile.MissileFlightType;
 //TODO//import icbm.classic.lib.transform.vector.Pos;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import icbm.classic.content.reg.BlockReg;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
+
+    public void setRenderLayers() {
+        RenderTypeLookup.setRenderLayer(BlockReg.SPIKES.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_POISON.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.getCutout());
+    }
 
     /* TODO
 
