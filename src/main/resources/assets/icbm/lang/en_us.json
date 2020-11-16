@@ -1,6 +1,6 @@
 {
   # Master language file
-  "itemGroup.icbm": "ICBM-Classic",
+  "itemGroup.icbm": "ICBM",
 
   # Config
   "config.icbm.main.title": "General",
