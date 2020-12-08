@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "particle": "icbm:block/explosive_redmatter_side",
+    "down": "icbm:block/explosive_bottom_4",
+    "up": "icbm:block/explosive_redmatter_top",
+    "north": "icbm:block/explosive_redmatter_side",
+    "east": "icbm:block/explosive_redmatter_side",
+    "south": "icbm:block/explosive_redmatter_side",
+    "west": "icbm:block/explosive_redmatter_side"
+  }
+}

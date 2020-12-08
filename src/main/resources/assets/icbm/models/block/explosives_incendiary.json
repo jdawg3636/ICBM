@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "particle": "icbm:block/explosive_base_1",
+    "down": "icbm:block/explosive_bottom_1",
+    "up": "icbm:block/explosive_incendiary_top",
+    "north": "icbm:block/explosive_incendiary_side",
+    "east": "icbm:block/explosive_incendiary_side",
+    "south": "icbm:block/explosive_incendiary_side",
+    "west": "icbm:block/explosive_incendiary_side"
+  }
+}
