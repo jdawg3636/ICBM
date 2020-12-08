@@ -80,7 +80,7 @@ public final class ICBMClassic {
     public static final ItemGroup CREATIVE_TAB = new ItemGroup(ICBMConstants.DOMAIN) {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(ItemReg.CONCRETE_REINFORCED.get());
+            return new ItemStack(ItemReg.EXPLOSIVES_CONDENSED.get());
         }
     };
 

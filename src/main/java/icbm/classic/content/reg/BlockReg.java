@@ -62,7 +62,55 @@ public class BlockReg {
         }
     });
 
-    public static final RegistryObject<Block> EXPLOSIVES_CONDENSED  = BLOCKS.register("explosives_condensed", () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_CONDENSED         = BLOCKS.register("explosives_condensed",         () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_SHRAPNEL          = BLOCKS.register("explosives_shrapnel",          () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_INCENDIARY        = BLOCKS.register("explosives_incendiary",        () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_DEBILITATION      = BLOCKS.register("explosives_debilitation",      () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_CHEMICAL          = BLOCKS.register("explosives_chemical",          () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_ANVIL             = BLOCKS.register("explosives_anvil",             () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_REPULSIVE         = BLOCKS.register("explosives_repulsive",         () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_ATTRACTIVE        = BLOCKS.register("explosives_attractive",        () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_FRAGMENTATION     = BLOCKS.register("explosives_fragmentation",     () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_CONTAGIOUS        = BLOCKS.register("explosives_contagious",        () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_SONIC             = BLOCKS.register("explosives_sonic",             () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_BREACHING         = BLOCKS.register("explosives_breaching",         () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_REJUVENATION      = BLOCKS.register("explosives_rejuvenation",      () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_THERMOBARIC       = BLOCKS.register("explosives_thermobaric",       () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_NUCLEAR           = BLOCKS.register("explosives_nuclear",           () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_EMP               = BLOCKS.register("explosives_emp",               () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_EXOTHERMIC        = BLOCKS.register("explosives_exothermic",        () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_ENDOTHERMIC       = BLOCKS.register("explosives_endothermic",       () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_ANTIGRAVITATIONAL = BLOCKS.register("explosives_antigravitational", () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_ENDER             = BLOCKS.register("explosives_ender",             () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_HYPERSONIC        = BLOCKS.register("explosives_hypersonic",        () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_ANTIMATTER        = BLOCKS.register("explosives_antimatter",        () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_REDMATTER         = BLOCKS.register("explosives_redmatter",         () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_NIGHTMARE         = BLOCKS.register("explosives_nightmare",         () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    /*
+    * shrapnel
+    * incendiary
+    * debilitation
+    * chemical
+    * anvil
+    * repulsive
+    * attractive
+    * fragmentation
+    * contagious
+    * sonic
+    * breaching
+    * rejuvenation
+    * thermobaric
+    * nuclear
+    * emp
+    * exothermic
+    * endothermic
+    * anti-gravitational
+    * ender
+    * hypersonic
+    * antimatter
+    * red matter
+    * nightmare
+    * */
 
     //TODO//public static final RegistryObject<Block> CRUISE_LAUNCHER       = BLOCKS.register("cruise_launcher",     BlockCruiseLauncher::new);
     //TODO//public static final RegistryObject<Block> EMP_TOWER             = BLOCKS.register("emp_tower",           BlockEmpTower::new);
