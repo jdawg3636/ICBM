@@ -46,6 +46,8 @@ public class ItemReg {
     public static final RegistryObject<Item> SPIKES_POISON         = ITEMS.register("spikes_poison", () -> new BlockItem(BlockReg.SPIKES_POISON.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
     public static final RegistryObject<Item> SPIKES_FIRE           = ITEMS.register("spikes_fire", () -> new BlockItem(BlockReg.SPIKES_FIRE.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
 
+    public static final RegistryObject<Item> EXPLOSIVES_CONDENSED  = ITEMS.register("explosives_condensed", () -> new BlockItem(BlockReg.EXPLOSIVES_CONDENSED.get(), new Item.Properties().group(ICBMClassic.CREATIVE_TAB)));
+
     /*
     @ObjectHolder(ICBMConstants.PREFIX + "antidote")
     public static Item itemAntidote;

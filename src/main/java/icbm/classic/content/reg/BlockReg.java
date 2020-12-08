@@ -20,6 +20,8 @@ import icbm.classic.content.blocks.*;
 //TODO//import icbm.classic.content.blocks.radarstation.TileRadarStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.TNTBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -59,6 +61,8 @@ public class BlockReg {
                 entity.setFire(7);
         }
     });
+
+    public static final RegistryObject<Block> EXPLOSIVES_CONDENSED  = BLOCKS.register("explosives_condensed", () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
 
     //TODO//public static final RegistryObject<Block> CRUISE_LAUNCHER       = BLOCKS.register("cruise_launcher",     BlockCruiseLauncher::new);
     //TODO//public static final RegistryObject<Block> EMP_TOWER             = BLOCKS.register("emp_tower",           BlockEmpTower::new);
