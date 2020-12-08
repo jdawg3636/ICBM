@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "particle": "icbm:block/explosive_bottom_1",
+    "particle": "icbm:block/explosive_bottom_4",
     "down": "icbm:block/explosive_bottom_4",
     "up": "icbm:block/explosive_antimatter_top",
     "north": "icbm:block/explosive_antimatter_side",
