@@ -1,22 +1,26 @@
 package icbm.classic.content.reg;
 
 import icbm.classic.ICBMConstants;
-import icbm.classic.api.refs.ICBMEntities;
-import icbm.classic.content.entity.*;
-import icbm.classic.content.entity.missile.EntityMissile;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import icbm.classic.content.entity.EntityExplosivesCondensed;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-/**
- * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
- */
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
 public final class EntityReg {
+
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMConstants.DOMAIN);
+
+    public static final RegistryObject<EntityType<EntityExplosivesCondensed>> EXPLOSIVES_CONDENSED = ENTITIES.register(
+            "explosives_condensed", () -> EntityType.Builder.<EntityExplosivesCondensed>create(EntityExplosivesCondensed::new, EntityClassification.MISC)
+            .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
+            .build("explosives_condensed")
+    );
+
+    /*
 
     private static int nextEntityID = 0;
 
@@ -33,7 +37,6 @@ public final class EntityReg {
         event.getRegistry().register(buildEntityEntry(EntityBombCart.class, ICBMEntities.BOMB_CART, 50, 2));
         event.getRegistry().register(buildEntityEntry(EntityPlayerSeat.class, ICBMEntities.MISSILE_SEAT, 50, 2));
 
-        /*
         //Green team
         event.getRegistry().register(buildMobEntry(EntityXmasSkeleton.class, "skeleton.xmas.elf", Color.GREEN, Color.CYAN));
         event.getRegistry().register(buildMobEntry(EntityXmasSkeletonBoss.class, "skeleton.xmas.boss", Color.GREEN, Color.CYAN));
@@ -45,7 +48,7 @@ public final class EntityReg {
         event.getRegistry().register(buildMobEntry(EntityXmasCreeper.class, "zombie.xmas.creeper", Color.RED, Color.CYAN));
 
 
-        event.getRegistry().register(buildEntityEntry(EntityXmasRPG.class, "skeleton.snowman.rocket", 64, 1)); */
+        event.getRegistry().register(buildEntityEntry(EntityXmasRPG.class, "skeleton.snowman.rocket", 64, 1));
 
     }
 
@@ -57,5 +60,7 @@ public final class EntityReg {
         builder.entity(entityClass);
         return builder.build();
     }
+
+    */
 
 }

@@ -62,7 +62,7 @@ public class BlockReg {
         }
     });
 
-    public static final RegistryObject<Block> EXPLOSIVES_CONDENSED         = BLOCKS.register("explosives_condensed",         () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> EXPLOSIVES_CONDENSED         = BLOCKS.register("explosives_condensed",         BlockExplosivesCondensed::new);
     public static final RegistryObject<Block> EXPLOSIVES_SHRAPNEL          = BLOCKS.register("explosives_shrapnel",          () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
     public static final RegistryObject<Block> EXPLOSIVES_INCENDIARY        = BLOCKS.register("explosives_incendiary",        () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
     public static final RegistryObject<Block> EXPLOSIVES_DEBILITATION      = BLOCKS.register("explosives_debilitation",      () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));

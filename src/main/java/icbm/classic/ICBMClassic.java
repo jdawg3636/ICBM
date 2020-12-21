@@ -19,6 +19,7 @@ import icbm.classic.content.reg.BlockReg;
 //TODO//import icbm.classic.content.potion.PoisonContagion;
 //TODO//import icbm.classic.content.potion.PoisonFrostBite;
 //TODO//import icbm.classic.content.potion.PoisonToxin;
+import icbm.classic.content.reg.EntityReg;
 import icbm.classic.content.reg.ItemReg;
 //TODO//import icbm.classic.lib.capability.emp.CapabilityEMP;
 //TODO//import icbm.classic.lib.capability.ex.CapabilityExplosive;
@@ -91,6 +92,7 @@ public final class ICBMClassic {
 
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         BlockReg.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        EntityReg.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ItemReg.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
     }
