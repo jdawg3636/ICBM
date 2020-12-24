@@ -1,7 +1,5 @@
 package icbm.classic.client;
 
-import com.builtbroken.jlib.data.vector.IPos3D;
-
 import icbm.classic.CommonProxy;
 //TODO//import icbm.classic.client.fx.ParticleAirICBM;
 //TODO//import icbm.classic.client.fx.ParticleSmokeICBM;

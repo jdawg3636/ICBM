@@ -1,11 +1,11 @@
 package icbm.classic.client;
 
-import com.builtbroken.jlib.data.vector.IPos3D;
 import icbm.classic.ICBMConstants;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,8 +21,8 @@ import net.minecraftforge.fml.common.Mod;
  * Credit to https://github.com/kitsushadow for sharing info on how to do sounds in MC 1.12
  */
 @Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
-public enum ICBMSounds
-{
+public enum ICBMSounds {
+
     ANTIMATTER("antimatter"),
     BEAM_CHARGING("beamcharging"),
     COLLAPSE("collapse"),
@@ -44,8 +44,7 @@ public enum ICBMSounds
     private SoundEvent sound;
 
 
-    ICBMSounds(String path)
-    {
+    ICBMSounds(String path) {
         location = new ResourceLocation(ICBMConstants.DOMAIN, path);
     }
 
@@ -54,8 +53,7 @@ public enum ICBMSounds
      *
      * @return sound event
      */
-    public SoundEvent getSound()
-    {
+    public SoundEvent getSound() {
         return sound;
     }
 
@@ -67,8 +65,7 @@ public enum ICBMSounds
      * @param pitch         - sound pitch
      * @param distanceDelay - should the sound be delayed by distance
      */
-    public void play(Entity entity, float volume, float pitch, boolean distanceDelay)
-    {
+    public void play(Entity entity, float volume, float pitch, boolean distanceDelay) {
         //TODO move audio settings to constants attached to configs
         play(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), volume, pitch, distanceDelay);
     }
@@ -84,23 +81,20 @@ public enum ICBMSounds
      * @param pitch         - sound pitch
      * @param distanceDelay - should the sound be delayed by distance
      */
-    public void play(World world, double x, double y, double z, float volume, float pitch, boolean distanceDelay)
-    {
+    public void play(World world, double x, double y, double z, float volume, float pitch, boolean distanceDelay) {
         world.playSound(null, x, y, z, getSound(), SoundCategory.BLOCKS, volume, pitch);
     }
 
-    public void play(World world, IPos3D pos, float volume, float pitch, boolean distanceDelay)
-    {
-        world.playSound(null, pos.x(), pos.y(), pos.z(), getSound(), SoundCategory.BLOCKS, volume, pitch);
+    public void play(World world, BlockPos pos, float volume, float pitch, boolean distanceDelay) {
+        world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), getSound(), SoundCategory.BLOCKS, volume, pitch);
     }
 
     @SubscribeEvent
-    public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
-    {
-        for (ICBMSounds icbmSounds : values())
-        {
+    public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+        for (ICBMSounds icbmSounds : values()) {
             icbmSounds.sound = new SoundEvent(icbmSounds.location).setRegistryName(icbmSounds.location);
             event.getRegistry().register(icbmSounds.sound);
         }
     }
+
 }
