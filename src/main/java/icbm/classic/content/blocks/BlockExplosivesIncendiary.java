@@ -1,6 +1,6 @@
 package icbm.classic.content.blocks;
 
-import icbm.classic.content.entity.EntityExplosivesCondensed;
+import icbm.classic.content.entity.EntityExplosivesIncendiary;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -26,12 +26,12 @@ import javax.annotation.Nullable;
 
 // Pretty much this entire class is directly copy/pasted from net.minecraft.block.TNTBlock
 // Had to be duplicated rather than extended because the explode() method is static
-public class BlockExplosivesCondensed extends Block {
+public class BlockExplosivesIncendiary extends Block {
 
     /**
      * Parameterless Constructor
      * */
-    public BlockExplosivesCondensed() {
+    public BlockExplosivesIncendiary() {
         this(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT));
     }
 
@@ -40,7 +40,7 @@ public class BlockExplosivesCondensed extends Block {
      * */
     private static void explode(World world, BlockPos pos, @Nullable LivingEntity igniter) {
         if (!world.isRemote) {
-            EntityExplosivesCondensed explosives_entity = new EntityExplosivesCondensed(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter);
+            EntityExplosivesIncendiary explosives_entity = new EntityExplosivesIncendiary(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter);
             world.addEntity(explosives_entity);
             world.playSound((PlayerEntity)null, explosives_entity.getPosX(), explosives_entity.getPosY(), explosives_entity.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
@@ -60,7 +60,7 @@ public class BlockExplosivesCondensed extends Block {
      * */
     public void onExplosionDestroy(World world, BlockPos pos, Explosion explosionIn) {
         if (!world.isRemote) {
-            EntityExplosivesCondensed explosives_entity = new EntityExplosivesCondensed(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosionIn.getExplosivePlacedBy());
+            EntityExplosivesIncendiary explosives_entity = new EntityExplosivesIncendiary(world, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosionIn.getExplosivePlacedBy());
             explosives_entity.setFuse((short)(world.rand.nextInt(explosives_entity.getFuse() / 4) + explosives_entity.getFuse() / 8));
             world.addEntity(explosives_entity);
         }
@@ -72,7 +72,7 @@ public class BlockExplosivesCondensed extends Block {
 
     public static final BooleanProperty UNSTABLE = BlockStateProperties.UNSTABLE;
 
-    public BlockExplosivesCondensed(AbstractBlock.Properties properties) {
+    public BlockExplosivesIncendiary(AbstractBlock.Properties properties) {
         super(properties);
         this.setDefaultState(this.getDefaultState().with(UNSTABLE, Boolean.valueOf(false)));
     }

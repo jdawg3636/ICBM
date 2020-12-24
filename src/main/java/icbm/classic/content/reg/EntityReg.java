@@ -1,7 +1,7 @@
 package icbm.classic.content.reg;
 
 import icbm.classic.ICBMConstants;
-import icbm.classic.content.entity.EntityExplosivesCondensed;
+import icbm.classic.content.entity.EntityExplosivesIncendiary;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.fml.RegistryObject;
@@ -15,10 +15,10 @@ public final class EntityReg {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMConstants.DOMAIN);
 
     // Explosive registration
-    public static final RegistryObject<EntityType<EntityExplosivesCondensed>> EXPLOSIVES_CONDENSED = ENTITIES.register(
-            "explosives_condensed", () -> EntityType.Builder.<EntityExplosivesCondensed>create(EntityExplosivesCondensed::new, EntityClassification.MISC)
+    public static final RegistryObject<EntityType<EntityExplosivesIncendiary>> EXPLOSIVES_INCENDIARY = ENTITIES.register(
+            "explosives_incendiary", () -> EntityType.Builder.<EntityExplosivesIncendiary>create(EntityExplosivesIncendiary::new, EntityClassification.MISC)
             .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
-            .build("explosives_condensed")
+            .build("explosives_incendiary")
     );
 
     /*

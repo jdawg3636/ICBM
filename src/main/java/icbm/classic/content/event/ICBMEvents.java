@@ -11,8 +11,6 @@ public class ICBMEvents {
     @SubscribeEvent
     public static void onBlastIncendiary(BlastEvent.Incendiary event) {
 
-        System.out.println("Blast Event!");
-
         // Copied (with slight modifications) from old icbm.classic.content.blast.BlastFire
         // Would like to clean this up a bit if possible
         if (!event.getBlastWorld().isRemote) {
