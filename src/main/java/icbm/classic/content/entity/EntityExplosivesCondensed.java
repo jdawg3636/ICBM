@@ -1,10 +1,16 @@
 package icbm.classic.content.entity;
 
+import icbm.classic.content.event.BlastEvent;
 import icbm.classic.content.reg.EntityReg;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
 
@@ -24,6 +30,12 @@ public class EntityExplosivesCondensed extends TNTEntity {
         this.prevPosY = y;
         this.prevPosZ = z;
         this.tntPlacedBy = igniter;
+    }
+
+    @Override
+    protected void explode() {
+        System.out.println("Explode!");
+        MinecraftForge.EVENT_BUS.post(new BlastEvent.Incendiary(getPosition(), getEntityWorld()));
     }
 
 }

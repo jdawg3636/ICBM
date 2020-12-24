@@ -3,6 +3,7 @@ package icbm.classic;
 //TODO//import icbm.classic.api.EnumTier;
 //TODO//import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.client.ClientProxy;
+import icbm.classic.content.event.ICBMEvents;
 import icbm.classic.content.reg.BlockReg;
 //TODO//import icbm.classic.lib.NBTConstants;
 //TODO//import icbm.classic.api.reg.events.ExplosiveRegistryEvent;
@@ -89,6 +90,7 @@ public final class ICBMClassic {
 
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetupEvent);
+        MinecraftForge.EVENT_BUS.register(ICBMEvents.class);
 
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         BlockReg.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());

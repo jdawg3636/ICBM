@@ -14,6 +14,7 @@ public final class EntityReg {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMConstants.DOMAIN);
 
+    // Explosive registration
     public static final RegistryObject<EntityType<EntityExplosivesCondensed>> EXPLOSIVES_CONDENSED = ENTITIES.register(
             "explosives_condensed", () -> EntityType.Builder.<EntityExplosivesCondensed>create(EntityExplosivesCondensed::new, EntityClassification.MISC)
             .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
