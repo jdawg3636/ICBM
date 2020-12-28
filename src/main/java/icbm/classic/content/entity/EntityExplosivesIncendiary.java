@@ -2,6 +2,7 @@ package icbm.classic.content.entity;
 
 import icbm.classic.content.event.BlastEvent;
 import icbm.classic.content.reg.EntityReg;
+import net.minecraft.client.renderer.entity.TNTRenderer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
