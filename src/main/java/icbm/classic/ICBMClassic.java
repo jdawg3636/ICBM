@@ -3,7 +3,7 @@ package icbm.classic;
 //TODO//import icbm.classic.api.EnumTier;
 //TODO//import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.client.ClientProxy;
-import icbm.classic.client.entity.EntityExplosivesIncendiaryRenderer;
+import icbm.classic.client.render.entity.EntityExplosivesIncendiaryRenderer;
 import icbm.classic.content.event.ICBMEvents;
 import icbm.classic.content.reg.BlockReg;
 //TODO//import icbm.classic.lib.NBTConstants;

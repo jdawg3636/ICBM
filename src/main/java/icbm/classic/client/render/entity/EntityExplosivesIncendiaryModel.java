@@ -1,4 +1,4 @@
-package icbm.classic.client.entity;
+package icbm.classic.client.render.entity;
 
 public class EntityExplosivesIncendiaryModel {
 }

@@ -1,4 +1,4 @@
-package icbm.classic.client.entity;
+package icbm.classic.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
