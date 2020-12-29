@@ -17,7 +17,7 @@ public class CommonProxy /* implements IGuiHandler */ {
     public static final int GUI_ITEM = 10002;
     public static final int GUI_ENTITY = 10001;
 
-    public void setRenderLayers() {
+    public void onClientSetupEvent() {
     }
 
     public void doLoadModels() {

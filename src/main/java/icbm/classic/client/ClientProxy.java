@@ -1,27 +1,35 @@
 package icbm.classic.client;
 
 import icbm.classic.CommonProxy;
+import icbm.classic.client.render.entity.EntityExplosivesIncendiaryRenderer;
 //TODO//import icbm.classic.client.fx.ParticleAirICBM;
 //TODO//import icbm.classic.client.fx.ParticleSmokeICBM;
 //TODO//import icbm.classic.content.entity.missile.EntityMissile;
 //TODO//import icbm.classic.content.entity.missile.MissileFlightType;
 //TODO//import icbm.classic.lib.transform.vector.Pos;
 import icbm.classic.content.reg.BlockReg;
+import icbm.classic.content.reg.EntityReg;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-    public void setRenderLayers() {
+    public void onClientSetupEvent() {
+        // Set Render Layers
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_GLASS.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_POISON.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.getCutout());
+
+        // Register Entity Rendering Handlers
+        System.out.println("ICBM DEBUG: CLIENTPROXY ONCLIENTSETUPEVENT");
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), EntityExplosivesIncendiaryRenderer::new);
     }
 
     /* TODO

@@ -1,14 +1,19 @@
 package icbm.classic.content.entity;
 
 import icbm.classic.content.event.BlastEvent;
+import icbm.classic.content.reg.BlockReg;
 import icbm.classic.content.reg.EntityReg;
-import net.minecraft.client.renderer.entity.TNTRenderer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class EntityExplosivesIncendiary extends TNTEntity {
@@ -32,6 +37,23 @@ public class EntityExplosivesIncendiary extends TNTEntity {
     @Override
     protected void explode() {
         MinecraftForge.EVENT_BUS.post(new BlastEvent.Incendiary(getPosition(), getEntityWorld()));
+    }
+
+    @Nonnull
+    @Override
+    public EntityType<?> getType() {
+        return EntityReg.EXPLOSIVES_INCENDIARY.get();
+    }
+
+    @Nonnull
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(BlockReg.EXPLOSIVES_INCENDIARY.get());
     }
 
 }

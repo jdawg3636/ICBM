@@ -3,7 +3,6 @@ package icbm.classic;
 //TODO//import icbm.classic.api.EnumTier;
 //TODO//import icbm.classic.api.ICBMClassicAPI;
 import icbm.classic.client.ClientProxy;
-import icbm.classic.client.render.entity.EntityExplosivesIncendiaryRenderer;
 import icbm.classic.content.event.ICBMEvents;
 import icbm.classic.content.reg.BlockReg;
 //TODO//import icbm.classic.lib.NBTConstants;
@@ -39,7 +38,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -102,8 +100,7 @@ public final class ICBMClassic {
     }
 
     public void onClientSetupEvent(final FMLClientSetupEvent event) {
-        proxy.setRenderLayers();
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), EntityExplosivesIncendiaryRenderer::new);
+        proxy.onClientSetupEvent();
     }
 
     /*
