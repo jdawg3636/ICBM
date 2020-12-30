@@ -3,36 +3,32 @@ package icbm.classic.content.event;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SExplosionPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+/**
+ * Separate Event Handler for Mod's Own Events
+ * Keeps stuff like blast behavior separate from core functionality such as registration
+ */
 public class ICBMEvents {
 
     @SubscribeEvent
     public static void onBlast(BlastEvent event) {
-
-        System.out.println("Blast Generic");
-        System.out.println("X: " + event.getBlastPosition().getX());
-        System.out.println("Y: " + event.getBlastPosition().getY());
-        System.out.println("Z: " + event.getBlastPosition().getZ());
-
         // Based on net.minecraft.world.Explosion.doExplosionB(boolean spawnParticles)
 
         // Sound
-        if (event.getBlastWorld().isRemote)
-            event.getBlastWorld().playSound(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (event.getBlastWorld().rand.nextFloat() - event.getBlastWorld().rand.nextFloat()) * 0.2F) * 0.7F, false);
+        event.getBlastWorld().playSound(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (event.getBlastWorld().rand.nextFloat() - event.getBlastWorld().rand.nextFloat()) * 0.2F) * 0.7F, false);
         // Particles
         event.getBlastWorld().addParticle(ParticleTypes.EXPLOSION_EMITTER, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), 1.0D, 0.0D, 0.0D);
     }
 
     @SubscribeEvent
     public static void onBlastIncendiary(BlastEvent.Incendiary event) {
-
-        System.out.println("Blast Incin");
-
         // Copied (with slight modifications) from old icbm.classic.content.blast.BlastFire
         // Would like to clean this up a bit if possible
         if (!event.getBlastWorld().isRemote) {
