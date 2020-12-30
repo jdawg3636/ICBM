@@ -1,7 +1,7 @@
-package icbm.classic.content.reg;
+package icbm.content.reg;
 
-import icbm.classic.ICBMConstants;
-import icbm.classic.content.entity.EntityExplosivesIncendiary;
+import icbm.ICBMReference;
+import icbm.content.entity.EntityExplosivesIncendiary;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.fml.RegistryObject;
@@ -9,10 +9,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN)
+@Mod.EventBusSubscriber(modid = ICBMReference.MODID)
 public final class EntityReg {
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMConstants.DOMAIN);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMReference.MODID);
 
     // Explosive registration
     public static final RegistryObject<EntityType<EntityExplosivesIncendiary>> EXPLOSIVES_INCENDIARY = ENTITIES.register(

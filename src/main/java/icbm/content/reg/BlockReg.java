@@ -1,23 +1,23 @@
-package icbm.classic.content.reg;
+package icbm.content.reg;
 
-import icbm.classic.ICBMConstants;
-import icbm.classic.content.blocks.*;
-//TODO//import icbm.classic.content.blocks.emptower.BlockEmpTower;
-//TODO//import icbm.classic.content.blocks.emptower.TileEMPTower;
-//TODO//import icbm.classic.content.blocks.explosive.BlockExplosive;
-//TODO//import icbm.classic.content.blocks.explosive.TileEntityExplosive;
-//TODO//import icbm.classic.content.blocks.launcher.base.BlockLauncherBase;
-//TODO//import icbm.classic.content.blocks.launcher.base.TileLauncherBase;
-//TODO//import icbm.classic.content.blocks.launcher.cruise.BlockCruiseLauncher;
-//TODO//import icbm.classic.content.blocks.launcher.cruise.TileCruiseLauncher;
-//TODO//import icbm.classic.content.blocks.launcher.frame.BlockLaunchFrame;
-//TODO//import icbm.classic.content.blocks.launcher.frame.TileLauncherFrame;
-//TODO//import icbm.classic.content.blocks.launcher.screen.BlockLaunchScreen;
-//TODO//import icbm.classic.content.blocks.launcher.screen.TileLauncherScreen;
-//TODO//import icbm.classic.content.blocks.multiblock.BlockMultiblock;
-//TODO//import icbm.classic.content.blocks.multiblock.TileMulti;
-//TODO//import icbm.classic.content.blocks.radarstation.BlockRadarStation;
-//TODO//import icbm.classic.content.blocks.radarstation.TileRadarStation;
+import icbm.ICBMReference;
+import icbm.content.blocks.*;
+//TODO//import icbm.content.blocks.emptower.BlockEmpTower;
+//TODO//import icbm.content.blocks.emptower.TileEMPTower;
+//TODO//import icbm.content.blocks.explosive.BlockExplosive;
+//TODO//import icbm.content.blocks.explosive.TileEntityExplosive;
+//TODO//import icbm.content.blocks.launcher.base.BlockLauncherBase;
+//TODO//import icbm.content.blocks.launcher.base.TileLauncherBase;
+//TODO//import icbm.content.blocks.launcher.cruise.BlockCruiseLauncher;
+//TODO//import icbm.content.blocks.launcher.cruise.TileCruiseLauncher;
+//TODO//import icbm.content.blocks.launcher.frame.BlockLaunchFrame;
+//TODO//import icbm.content.blocks.launcher.frame.TileLauncherFrame;
+//TODO//import icbm.content.blocks.launcher.screen.BlockLaunchScreen;
+//TODO//import icbm.content.blocks.launcher.screen.TileLauncherScreen;
+//TODO//import icbm.content.blocks.multiblock.BlockMultiblock;
+//TODO//import icbm.content.blocks.multiblock.TileMulti;
+//TODO//import icbm.content.blocks.radarstation.BlockRadarStation;
+//TODO//import icbm.content.blocks.radarstation.TileRadarStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -36,7 +36,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlockReg {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ICBMConstants.DOMAIN);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ICBMReference.MODID);
 
     public static final RegistryObject<Block> CONCRETE              = BLOCKS.register("concrete", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 28)));
     public static final RegistryObject<Block> CONCRETE_COMPACT      = BLOCKS.register("concrete_compact", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 280)));
@@ -127,7 +127,7 @@ public class BlockReg {
     //blockCamo = manager.newBlock("icbmCCamouflage", TileCamouflage.class);
     //ICBMClassic.blockMissileCoordinator = ICBMClassic.INSTANCE.getManager().newBlock("icbmCMissileCoordinator", new TileMissileCoordinator());
 
-    public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, ICBMConstants.DOMAIN);
+    public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, ICBMReference.MODID);
 
     /*TODO
     public static final RegistryObject<TileEntityType<TileCruiseLauncher>> CRUISE_LAUNCHER_TILE = TILES.register(

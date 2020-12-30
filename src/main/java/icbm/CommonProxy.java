@@ -1,11 +1,11 @@
-package icbm.classic;
+package icbm;
 
 public class CommonProxy {
 
     public void onClientSetupEvent() {
     }
 
-    public void init() {
+    public void onCommonSetupEvent() {
     }
 
 }

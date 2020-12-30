@@ -1,4 +1,4 @@
-package icbm.classic.content.blocks;
+package icbm.content.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

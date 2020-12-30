@@ -1,55 +1,35 @@
-package icbm.classic.client;
+package icbm.client;
 
-import icbm.classic.ICBMConstants;
+import icbm.ICBMReference;
 //TODO//import icbm.classic.api.EnumTier;
 //TODO//import icbm.classic.api.refs.ICBMExplosives;
 //TODO//import icbm.classic.api.ICBMClassicAPI;
 //TODO//import icbm.classic.api.reg.IExplosiveData;
-//TODO//import icbm.classic.client.mapper.BlockModelMapperExplosive;
-//TODO//import icbm.classic.client.mapper.ItemModelMapperExplosive;
-//TODO//import icbm.classic.client.render.entity.*;
+//TODO//import icbm.client.mapper.BlockModelMapperExplosive;
+//TODO//import icbm.client.mapper.ItemModelMapperExplosive;
+//TODO//import icbm.client.render.entity.*;
 //TODO//import icbm.classic.config.ConfigItems;
-//TODO//import icbm.classic.content.blocks.emptower.TESREMPTower;
-//TODO//import icbm.classic.content.blocks.emptower.TileEMPTower;
-//TODO//import icbm.classic.content.blocks.launcher.base.TESRLauncherBase;
-//TODO//import icbm.classic.content.blocks.launcher.base.TileLauncherBase;
-//TODO//import icbm.classic.content.blocks.launcher.cruise.TESRCruiseLauncher;
-//TODO//import icbm.classic.content.blocks.launcher.cruise.TileCruiseLauncher;
-//TODO//import icbm.classic.content.blocks.launcher.frame.TESRLauncherFrame;
-//TODO//import icbm.classic.content.blocks.launcher.frame.TileLauncherFrame;
-//TODO//import icbm.classic.content.blocks.launcher.screen.TESRLauncherScreen;
-//TODO//import icbm.classic.content.blocks.launcher.screen.TileLauncherScreen;
-//TODO//import icbm.classic.content.blocks.radarstation.TESRRadarStation;
-//TODO//import icbm.classic.content.blocks.radarstation.TileRadarStation;
-//TODO//import icbm.classic.content.items.ItemCrafting;
-import icbm.classic.content.reg.BlockReg;
-import icbm.classic.content.reg.ItemReg;
+//TODO//import icbm.content.blocks.emptower.TESREMPTower;
+//TODO//import icbm.content.blocks.emptower.TileEMPTower;
+//TODO//import icbm.content.blocks.launcher.base.TESRLauncherBase;
+//TODO//import icbm.content.blocks.launcher.base.TileLauncherBase;
+//TODO//import icbm.content.blocks.launcher.cruise.TESRCruiseLauncher;
+//TODO//import icbm.content.blocks.launcher.cruise.TileCruiseLauncher;
+//TODO//import icbm.content.blocks.launcher.frame.TESRLauncherFrame;
+//TODO//import icbm.content.blocks.launcher.frame.TileLauncherFrame;
+//TODO//import icbm.content.blocks.launcher.screen.TESRLauncherScreen;
+//TODO//import icbm.content.blocks.launcher.screen.TileLauncherScreen;
+//TODO//import icbm.content.blocks.radarstation.TESRRadarStation;
+//TODO//import icbm.content.blocks.radarstation.TileRadarStation;
+//TODO//import icbm.content.items.ItemCrafting;
 //TODO//import icbm.classic.prefab.tile.BlockICBM;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.state.Property;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.obj.OBJLoader;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
  */
-@Mod.EventBusSubscriber(modid = ICBMConstants.DOMAIN, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = ICBMReference.MODID, value = Dist.CLIENT)
 public class ClientReg {
 
     /* TODO

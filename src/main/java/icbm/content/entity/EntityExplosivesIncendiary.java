@@ -1,8 +1,8 @@
-package icbm.classic.content.entity;
+package icbm.content.entity;
 
-import icbm.classic.content.event.BlastEvent;
-import icbm.classic.content.reg.BlockReg;
-import icbm.classic.content.reg.EntityReg;
+import icbm.content.event.BlastEvent;
+import icbm.content.reg.BlockReg;
+import icbm.content.reg.EntityReg;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;

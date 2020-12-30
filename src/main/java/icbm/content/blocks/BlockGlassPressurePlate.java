@@ -1,6 +1,5 @@
-package icbm.classic.content.blocks;
+package icbm.content.blocks;
 
-import icbm.classic.ICBMConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.block.SoundType;

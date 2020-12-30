@@ -1,6 +1,6 @@
-package icbm.classic.content.network;
+package icbm.content.network;
 
-import icbm.classic.ICBMConstants;
+import icbm.ICBMReference;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -12,7 +12,7 @@ public class ICBMPacketHandler {
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(ICBMConstants.DOMAIN, "main"),
+            new ResourceLocation(ICBMReference.MODID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
