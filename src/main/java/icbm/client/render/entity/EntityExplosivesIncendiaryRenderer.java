@@ -1,8 +1,8 @@
 package icbm.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import icbm.content.entity.EntityExplosivesIncendiary;
-import icbm.content.reg.BlockReg;
+import icbm.common.entity.EntityExplosivesIncendiary;
+import icbm.common.reg.BlockReg;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;

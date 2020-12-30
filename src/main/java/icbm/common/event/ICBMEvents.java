@@ -1,4 +1,4 @@
-package icbm.content.event;
+package icbm.common.event;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

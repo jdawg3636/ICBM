@@ -1,4 +1,4 @@
-package icbm.content.reg;
+package icbm.common.reg;
 
 import icbm.ICBM;
 import icbm.ICBMReference;

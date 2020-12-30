@@ -1,10 +1,11 @@
 package icbm;
 
 import icbm.client.ClientProxy;
-import icbm.content.event.ICBMEvents;
-import icbm.content.reg.BlockReg;
-import icbm.content.reg.EntityReg;
-import icbm.content.reg.ItemReg;
+import icbm.common.CommonProxy;
+import icbm.common.event.ICBMEvents;
+import icbm.common.reg.BlockReg;
+import icbm.common.reg.EntityReg;
+import icbm.common.reg.ItemReg;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;

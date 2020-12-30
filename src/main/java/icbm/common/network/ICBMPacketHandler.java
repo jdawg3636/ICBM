@@ -1,4 +1,4 @@
-package icbm.content.network;
+package icbm.common.network;
 
 import icbm.ICBMReference;
 import net.minecraft.util.ResourceLocation;

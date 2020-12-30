@@ -1,4 +1,4 @@
-package icbm.content.event;
+package icbm.common.event;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

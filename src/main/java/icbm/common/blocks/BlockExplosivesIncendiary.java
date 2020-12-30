@@ -1,6 +1,6 @@
-package icbm.content.blocks;
+package icbm.common.blocks;
 
-import icbm.content.entity.EntityExplosivesIncendiary;
+import icbm.common.entity.EntityExplosivesIncendiary;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;

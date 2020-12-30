@@ -1,4 +1,4 @@
-package icbm.content.blocks;
+package icbm.common.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.PressurePlateBlock;

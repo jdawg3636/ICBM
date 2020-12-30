@@ -1,7 +1,7 @@
-package icbm.content.reg;
+package icbm.common.reg;
 
 import icbm.ICBMReference;
-import icbm.content.blocks.*;
+import icbm.common.blocks.*;
 //TODO//import icbm.content.blocks.emptower.BlockEmpTower;
 //TODO//import icbm.content.blocks.emptower.TileEMPTower;
 //TODO//import icbm.content.blocks.explosive.BlockExplosive;

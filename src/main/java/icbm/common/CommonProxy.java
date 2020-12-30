@@ -1,4 +1,4 @@
-package icbm;
+package icbm.common;
 
 public class CommonProxy {
 
