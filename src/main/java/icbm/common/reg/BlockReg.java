@@ -22,6 +22,7 @@ public class BlockReg {
     public static final RegistryObject<Block> CONCRETE                      = BLOCKS.register("concrete",                       () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 28)));
     public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 280)));
     public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 2800)));
+    public static final RegistryObject<Block> RADIOACTIVE_MATERIAL          = BLOCKS.register("radioactive_material",           () -> new GrassBlock(AbstractBlock.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT)));
     public static final RegistryObject<Block> REINFORCED_GLASS              = BLOCKS.register("reinforced_glass",               BlockReinforcedGlass::new);
 
     // Ores

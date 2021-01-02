@@ -24,6 +24,7 @@ public class ItemReg {
     public static final RegistryObject<Item> CONCRETE                       = ITEMS.register("concrete",                        () -> new BlockItem(BlockReg.CONCRETE.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
     public static final RegistryObject<Item> CONCRETE_COMPACT               = ITEMS.register("concrete_compact",                () -> new BlockItem(BlockReg.CONCRETE_COMPACT.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
     public static final RegistryObject<Item> CONCRETE_REINFORCED            = ITEMS.register("concrete_reinforced",             () -> new BlockItem(BlockReg.CONCRETE_REINFORCED.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RADIOACTIVE_MATERIAL           = ITEMS.register("radioactive_material",            () -> new BlockItem(BlockReg.RADIOACTIVE_MATERIAL.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
     public static final RegistryObject<Item> REINFORCED_GLASS               = ITEMS.register("reinforced_glass",                () -> new BlockItem(BlockReg.REINFORCED_GLASS.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
 
     // Ores
