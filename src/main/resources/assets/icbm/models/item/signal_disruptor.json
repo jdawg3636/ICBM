@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "icbmclassic:items/grenade_attractive"
+    "layer0": "icbm:item/signal_disruptor"
   }
 }

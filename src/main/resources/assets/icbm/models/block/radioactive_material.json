@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "particle": "icbm:block/radioactive_material_side",
+    "down": "icbm:block/radioactive_material_bottom",
+    "up": "icbm:block/radioactive_material_top",
+    "north": "icbm:block/radioactive_material_side",
+    "east": "icbm:block/radioactive_material_side",
+    "south": "icbm:block/radioactive_material_side",
+    "west": "icbm:block/radioactive_material_side"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "icbmclassic:items/laser_designator"
+    "layer0": "icbm:item/grenade_shrapnel"
   }
 }
