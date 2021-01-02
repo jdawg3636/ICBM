@@ -29,7 +29,7 @@ public final class ICBM {
     public static final ItemGroup CREATIVE_TAB = new ItemGroup(ICBMReference.MODID) {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(ItemReg.EXPLOSIVES_CONDENSED.get());
+            return new ItemStack(ItemReg.EXPLOSIVES_ANTIMATTER.get());
         }
     };
 
