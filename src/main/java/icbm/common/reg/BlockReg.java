@@ -2,29 +2,12 @@ package icbm.common.reg;
 
 import icbm.ICBMReference;
 import icbm.common.blocks.*;
-//TODO//import icbm.content.blocks.emptower.BlockEmpTower;
-//TODO//import icbm.content.blocks.emptower.TileEMPTower;
-//TODO//import icbm.content.blocks.explosive.BlockExplosive;
-//TODO//import icbm.content.blocks.explosive.TileEntityExplosive;
-//TODO//import icbm.content.blocks.launcher.base.BlockLauncherBase;
-//TODO//import icbm.content.blocks.launcher.base.TileLauncherBase;
-//TODO//import icbm.content.blocks.launcher.cruise.BlockCruiseLauncher;
-//TODO//import icbm.content.blocks.launcher.cruise.TileCruiseLauncher;
-//TODO//import icbm.content.blocks.launcher.frame.BlockLaunchFrame;
-//TODO//import icbm.content.blocks.launcher.frame.TileLauncherFrame;
-//TODO//import icbm.content.blocks.launcher.screen.BlockLaunchScreen;
-//TODO//import icbm.content.blocks.launcher.screen.TileLauncherScreen;
-//TODO//import icbm.content.blocks.multiblock.BlockMultiblock;
-//TODO//import icbm.content.blocks.multiblock.TileMulti;
-//TODO//import icbm.content.blocks.radarstation.BlockRadarStation;
-//TODO//import icbm.content.blocks.radarstation.TileRadarStation;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
@@ -40,6 +23,11 @@ public class BlockReg {
     public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 280)));
     public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 2800)));
     public static final RegistryObject<Block> REINFORCED_GLASS              = BLOCKS.register("reinforced_glass",               BlockReinforcedGlass::new);
+
+    // Ores
+    public static final RegistryObject<Block> ORE_COPPER                    = BLOCKS.register("ore_copper",                     () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
+    public static final RegistryObject<Block> ORE_SULFUR                    = BLOCKS.register("ore_sulfur",                     () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
+    public static final RegistryObject<Block> ORE_TIN                       = BLOCKS.register("ore_tin",                        () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
 
     // Explosives
     public static final RegistryObject<Block> EXPLOSIVES_CONDENSED          = BLOCKS.register("explosives_condensed",           () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
@@ -70,22 +58,6 @@ public class BlockReg {
     // Unconventional Explosives
     public static final RegistryObject<Block> S_MINE                        = BLOCKS.register("s_mine",                         () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
 
-    // Missile Launch Apparatus
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T2     = BLOCKS.register("launcher_control_panel_t2",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T3     = BLOCKS.register("launcher_control_panel_t3",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T1     = BLOCKS.register("launcher_support_frame_t1",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T2     = BLOCKS.register("launcher_support_frame_t2",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      () -> new Block(Block.Properties.create(Material.IRON)));
-
-    // Other Machinery
-    public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new Block(Block.Properties.create(Material.IRON)));
-
     // Spikes
     public static final RegistryObject<Block> SPIKES                        = BLOCKS.register("spikes",                         BlockSpikes::new);
     public static final RegistryObject<Block> SPIKES_POISON                 = BLOCKS.register("spikes_poison",                  () -> new BlockSpikes() {
@@ -105,10 +77,21 @@ public class BlockReg {
         }
     });
 
-    // Ores
-    public static final RegistryObject<Block> ORE_COPPER                    = BLOCKS.register("ore_copper",                     () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
-    public static final RegistryObject<Block> ORE_SULFUR                    = BLOCKS.register("ore_sulfur",                     () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
-    public static final RegistryObject<Block> ORE_TIN                       = BLOCKS.register("ore_tin",                        () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
+    // Missile Launch Apparatus
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T2     = BLOCKS.register("launcher_control_panel_t2",      () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T3     = BLOCKS.register("launcher_control_panel_t3",      () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T1     = BLOCKS.register("launcher_support_frame_t1",      () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T2     = BLOCKS.register("launcher_support_frame_t2",      () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      () -> new Block(Block.Properties.create(Material.IRON)));
+
+    // Other Machinery
+    public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new Block(Block.Properties.create(Material.IRON)));
 
     // Extras
     public static final RegistryObject<Block> GLASS_BUTTON                  = BLOCKS.register("glass_button",                   BlockGlassButton::new);
