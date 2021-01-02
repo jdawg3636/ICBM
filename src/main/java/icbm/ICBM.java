@@ -41,7 +41,6 @@ public final class ICBM {
         MinecraftForge.EVENT_BUS.register(ICBMEvents.class);
 
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        BlockReg.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
         EntityReg.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ItemReg.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
