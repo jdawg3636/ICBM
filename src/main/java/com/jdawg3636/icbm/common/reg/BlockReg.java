@@ -1,6 +1,7 @@
-package icbm.common.reg;
+package com.jdawg3636.icbm.common.reg;
 
-import icbm.ICBMReference;
+import com.jdawg3636.icbm.common.blocks.*;
+import com.jdawg3636.icbm.ICBMReference;
 import icbm.common.blocks.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

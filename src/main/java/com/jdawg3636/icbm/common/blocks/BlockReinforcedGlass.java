@@ -1,4 +1,4 @@
-package icbm.common.blocks;
+package com.jdawg3636.icbm.common.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

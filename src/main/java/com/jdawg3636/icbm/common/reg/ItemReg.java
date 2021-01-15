@@ -1,7 +1,7 @@
-package icbm.common.reg;
+package com.jdawg3636.icbm.common.reg;
 
-import icbm.ICBM;
-import icbm.ICBMReference;
+import com.jdawg3636.icbm.ICBM;
+import com.jdawg3636.icbm.ICBMReference;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;

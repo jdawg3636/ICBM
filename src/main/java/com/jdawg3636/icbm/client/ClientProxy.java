@@ -1,9 +1,9 @@
-package icbm.client;
+package com.jdawg3636.icbm.client;
 
-import icbm.common.CommonProxy;
-import icbm.client.render.entity.EntityExplosivesIncendiaryRenderer;
-import icbm.common.reg.BlockReg;
-import icbm.common.reg.EntityReg;
+import com.jdawg3636.icbm.client.render.entity.EntityExplosivesIncendiaryRenderer;
+import com.jdawg3636.icbm.common.reg.BlockReg;
+import com.jdawg3636.icbm.common.reg.EntityReg;
+import com.jdawg3636.icbm.common.CommonProxy;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;

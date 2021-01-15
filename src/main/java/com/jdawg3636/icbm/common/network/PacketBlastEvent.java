@@ -1,11 +1,8 @@
-package icbm.common.network;
+package com.jdawg3636.icbm.common.network;
 
-import icbm.common.event.BlastEvent;
+import com.jdawg3636.icbm.common.event.BlastEvent;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkEvent;

@@ -1,11 +1,11 @@
-package icbm;
+package com.jdawg3636.icbm;
 
-import icbm.client.ClientProxy;
-import icbm.common.CommonProxy;
-import icbm.common.event.ICBMEvents;
-import icbm.common.reg.BlockReg;
-import icbm.common.reg.EntityReg;
-import icbm.common.reg.ItemReg;
+import com.jdawg3636.icbm.client.ClientProxy;
+import com.jdawg3636.icbm.common.CommonProxy;
+import com.jdawg3636.icbm.common.event.ICBMEvents;
+import com.jdawg3636.icbm.common.reg.BlockReg;
+import com.jdawg3636.icbm.common.reg.EntityReg;
+import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;

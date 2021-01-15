@@ -1,7 +1,7 @@
-package icbm.common;
+package com.jdawg3636.icbm.common;
 
-import icbm.common.network.ICBMPacketHandler;
-import icbm.common.network.PacketBlastEvent;
+import com.jdawg3636.icbm.common.network.ICBMPacketHandler;
+import com.jdawg3636.icbm.common.network.PacketBlastEvent;
 
 public class CommonProxy {
 

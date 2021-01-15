@@ -1,7 +1,7 @@
-package icbm.common.reg;
+package com.jdawg3636.icbm.common.reg;
 
-import icbm.ICBMReference;
-import icbm.common.entity.EntityExplosivesIncendiary;
+import com.jdawg3636.icbm.common.entity.EntityExplosivesIncendiary;
+import com.jdawg3636.icbm.ICBMReference;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.fml.RegistryObject;
