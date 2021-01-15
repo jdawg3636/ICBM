@@ -2,7 +2,6 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.common.blocks.*;
 import com.jdawg3636.icbm.ICBMReference;
-import icbm.common.blocks.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -10,6 +9,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -92,7 +94,7 @@ public class BlockReg {
 
     // Other Machinery
     public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      BlockEMPTower::new);
     public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new Block(Block.Properties.create(Material.IRON)));
 
     // Extras
