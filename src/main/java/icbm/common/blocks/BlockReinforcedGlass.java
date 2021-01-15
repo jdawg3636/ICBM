@@ -41,7 +41,8 @@ public class BlockReinforcedGlass extends Block {
         return true;
     }
 
-    /* TODO - might have to be done through loot tables now? https://github.com/MinecraftForge/MinecraftForge/blob/1.15.x/src/test/java/net/minecraftforge/debug/gameplay/loot/GlobalLootModifiersTest.java
+    // TODO - drop nothing on normal break
+    /* TODO - silk touch support - might have to be done through loot tables now? https://github.com/MinecraftForge/MinecraftForge/blob/1.15.x/src/test/java/net/minecraftforge/debug/gameplay/loot/GlobalLootModifiersTest.java
     @Override
     protected boolean canSilkHarvest() {
         return true;

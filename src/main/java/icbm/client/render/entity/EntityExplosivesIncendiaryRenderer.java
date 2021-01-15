@@ -16,9 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
-/**
- * Copied almost one-to-one from net.minecraft.client.renderer.entity.TNTRenderer
- */
+// Copied almost one-to-one from net.minecraft.client.renderer.entity.TNTRenderer
 @OnlyIn(Dist.CLIENT)
 public class EntityExplosivesIncendiaryRenderer extends EntityRenderer<EntityExplosivesIncendiary> {
 

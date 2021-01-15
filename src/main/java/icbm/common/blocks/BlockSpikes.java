@@ -20,39 +20,4 @@ public class BlockSpikes extends Block {
         if (entity instanceof LivingEntity) entity.attackEntityFrom(DamageSource.CACTUS, 1);
     }
 
-    /* TODO
-
-    @Override
-    public boolean isBlockNormalCube(IBlockState blockState)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState blockState)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-
-    */
-
 }

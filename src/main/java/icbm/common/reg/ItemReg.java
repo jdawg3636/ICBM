@@ -5,16 +5,12 @@ import icbm.ICBMReference;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.MinecartItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-/**
- * Created by Dark(DarkGuardsman, Robert) on 1/7/19.
- */
 @Mod.EventBusSubscriber(modid = ICBMReference.MODID)
 public class ItemReg {
 
