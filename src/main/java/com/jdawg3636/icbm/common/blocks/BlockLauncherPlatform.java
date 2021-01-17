@@ -22,16 +22,14 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-// Multiblock Code Copied from net.minecraft.block.DoublePlantBlock
-public class BlockEMPTower extends Block {
+public class BlockLauncherPlatform extends Block {
 
-    //TODO Add facing property (OG model is directional)
-
+    public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
-    public BlockEMPTower() {
+    public BlockLauncherPlatform() {
         super(Block.Properties.create(Material.IRON));
-        this.setDefaultState(this.stateContainer.getBaseState().with(HALF, DoubleBlockHalf.LOWER));
+        this.setDefaultState(this.stateContainer.getBaseState().with(HALF, DoubleBlockHalf.LOWER).with(AXIS, Direction.Axis.X));
     }
 
     @Override
@@ -47,6 +45,8 @@ public class BlockEMPTower extends Block {
      */
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        //todo temp bypass
+        if(1==1) return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         DoubleBlockHalf doubleblockhalf = stateIn.get(HALF);
         if (facing.getAxis() != Direction.Axis.Y || doubleblockhalf == DoubleBlockHalf.LOWER != (facing == Direction.UP) || facingState.isIn(this) && facingState.get(HALF) != doubleblockhalf) {
             return doubleblockhalf == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
@@ -58,8 +58,9 @@ public class BlockEMPTower extends Block {
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
+        int multiblockHeight = 3;
         BlockPos blockpos = context.getPos();
-        return blockpos.getY() < 255 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context) ? super.getStateForPlacement(context) : null;
+        return blockpos.getY() <= 256-multiblockHeight && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context) ? super.getStateForPlacement(context).with(AXIS, context.getPlacementHorizontalFacing().getAxis()) : null;
     }
 
     /**
@@ -67,12 +68,21 @@ public class BlockEMPTower extends Block {
      */
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        worldIn.setBlockState(pos.up(), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER), 3);
+        int xOffsetBase = 0;
+        int zOffsetBase = 0;
+        if (state.get(AXIS).compareTo(Direction.Axis.X) == 0) zOffsetBase = 1; else xOffsetBase = 1;
+        worldIn.setBlockState(pos.add(+xOffsetBase, 0, +zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(AXIS, state.get(AXIS)), 3);
+        worldIn.setBlockState(pos.add(+xOffsetBase, 1, +zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(AXIS, state.get(AXIS)), 3);
+        worldIn.setBlockState(pos.add(+xOffsetBase, 2, +zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(AXIS, state.get(AXIS)), 3);
+        worldIn.setBlockState(pos.add(-xOffsetBase, 0, -zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(AXIS, state.get(AXIS)), 3);
+        worldIn.setBlockState(pos.add(-xOffsetBase, 1, -zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(AXIS, state.get(AXIS)), 3);
+        worldIn.setBlockState(pos.add(-xOffsetBase, 2, -zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(AXIS, state.get(AXIS)), 3);
     }
 
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        if (state.get(HALF) != DoubleBlockHalf.UPPER) {
+        //TODO temp bypass, need to implement
+        if (true || state.get(HALF) != DoubleBlockHalf.UPPER) {
             return super.isValidPosition(state, worldIn, pos);
         } else {
             BlockState blockstate = worldIn.getBlockState(pos.down());
@@ -123,6 +133,7 @@ public class BlockEMPTower extends Block {
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(HALF);
+        builder.add(AXIS);
     }
 
 }

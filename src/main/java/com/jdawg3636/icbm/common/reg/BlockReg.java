@@ -82,7 +82,7 @@ public class BlockReg {
     });
 
     // Missile Launch Apparatus
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           BlockLauncherPlatform::new);
     public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new Block(Block.Properties.create(Material.IRON)));
     public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new Block(Block.Properties.create(Material.IRON)));
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      () -> new Block(Block.Properties.create(Material.IRON)));
