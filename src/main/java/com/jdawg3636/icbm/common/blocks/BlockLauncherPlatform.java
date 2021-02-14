@@ -10,15 +10,15 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -31,14 +31,28 @@ public class BlockLauncherPlatform extends Block {
      * Properties for Positioning Within Multiblock
      */
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-    public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
+    public static final IntegerProperty MULTIBLOCK_OFFSET_HORIZONTAL            = IntegerProperty.create("multiblock_offset_horizontal", 0, 3);
+    public static final BooleanProperty MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE   = BooleanProperty.create("multiblock_offset_horizontal_negative");
+    public static final IntegerProperty MULTIBLOCK_OFFSET_HEIGHT                = IntegerProperty.create("multiblock_offset_height", 0, 3);
+    public static final BooleanProperty MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE       = BooleanProperty.create("multiblock_offset_height_negative");
+    public static final IntegerProperty MULTIBLOCK_OFFSET_DEPTH                 = IntegerProperty.create("multiblock_offset_depth", 0, 3);
+    public static final BooleanProperty MULTIBLOCK_OFFSET_DEPTH_NEGATIVE        = BooleanProperty.create("multiblock_offset_depth_negative");
 
     /**
      * Constructor - Sets Default State for Multiblock Positioning Properties
      */
     public BlockLauncherPlatform() {
         super(Block.Properties.create(Material.IRON));
-        this.setDefaultState(this.stateContainer.getBaseState().with(HALF, DoubleBlockHalf.LOWER).with(FACING, Direction.NORTH));
+        this.setDefaultState(
+                this.stateContainer.getBaseState()
+                .with(FACING, Direction.NORTH)
+                .with(MULTIBLOCK_OFFSET_HORIZONTAL, 0)
+                .with(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE, false)
+                .with(MULTIBLOCK_OFFSET_HEIGHT, 0)
+                .with(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE, false)
+                .with(MULTIBLOCK_OFFSET_DEPTH, 0)
+                .with(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE, false)
+        );
     }
 
     /**
@@ -46,12 +60,18 @@ public class BlockLauncherPlatform extends Block {
      */
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(HALF);
         builder.add(FACING);
+        builder.add(MULTIBLOCK_OFFSET_HORIZONTAL);
+        builder.add(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE);
+        builder.add(MULTIBLOCK_OFFSET_HEIGHT);
+        builder.add(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE);
+        builder.add(MULTIBLOCK_OFFSET_DEPTH);
+        builder.add(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE);
     }
 
     /**
-     * Using to prevent placement in invalid locations (ex. near world height), return null BlockState if invalid
+     * Sets {@link this.FACING} to opposite of player
+     * Also using to prevent placement in invalid locations (ex. near world height), return null BlockState if invalid
      */
     @Override
     @Nullable
@@ -68,27 +88,49 @@ public class BlockLauncherPlatform extends Block {
      */
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        int xOffsetBase = 0;
-        int zOffsetBase = 0;
-        if (state.get(FACING).getAxis().compareTo(Direction.Axis.X) == 0) zOffsetBase = 1; else xOffsetBase = 1;
-        // Flag values copied from net.minecraft.block.DoublePlantBlock
-        worldIn.setBlockState(pos.add(+xOffsetBase, 0, +zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(FACING, state.get(FACING)), 3);
-        worldIn.setBlockState(pos.add(+xOffsetBase, 1, +zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(FACING, state.get(FACING)), 3);
-        worldIn.setBlockState(pos.add(+xOffsetBase, 2, +zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(FACING, state.get(FACING)), 3);
-        worldIn.setBlockState(pos.add(-xOffsetBase, 0, -zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(FACING, state.get(FACING)), 3);
-        worldIn.setBlockState(pos.add(-xOffsetBase, 1, -zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(FACING, state.get(FACING)), 3);
-        worldIn.setBlockState(pos.add(-xOffsetBase, 2, -zOffsetBase), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(FACING, state.get(FACING)), 3);
+
+        Vector3i[] multiblockPositions = {new Vector3i(1,0,0), new Vector3i(1,1,0), new Vector3i(1,2,0), new Vector3i(-1,0,0), new Vector3i(-1,1,0), new Vector3i(-1,2,0)};
+
+        for(Vector3i multiblockPos : multiblockPositions) {
+
+            // Calculate Rotation based on "facing" property
+            // NOTE: Using opposite of "facing", so all offsets are from pov of the player
+            Vector3i multiblockPosRotated = multiblockPos;
+            if(state.get(FACING).getOpposite().getDirectionVec().getZ() == -1)
+                assert true; // NOP, original does not need rotated.
+            if(state.get(FACING).getOpposite().getDirectionVec().getX() == -1)
+                multiblockPosRotated = new Vector3i(+multiblockPos.getZ(), multiblockPos.getY(), -multiblockPos.getX());
+            if(state.get(FACING).getOpposite().getDirectionVec().getZ() == 1)
+                multiblockPosRotated = new Vector3i(-multiblockPos.getX(), multiblockPos.getY(), -multiblockPos.getZ());
+            if(state.get(FACING).getOpposite().getDirectionVec().getX() == 1)
+                multiblockPosRotated = new Vector3i(+multiblockPos.getZ(), multiblockPos.getY(), +multiblockPos.getX());
+
+            worldIn.setBlockState(
+                    // Use rotated positions + base coords for world placement
+                    pos.add(multiblockPosRotated.getX(), multiblockPosRotated.getY(), multiblockPosRotated.getZ()),
+                    // Encode original offsets into BlockState
+                    this.getDefaultState()
+                            .with(FACING, state.get(FACING))
+                            .with(MULTIBLOCK_OFFSET_HORIZONTAL, Math.abs(multiblockPos.getX()))
+                            .with(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE, multiblockPos.getX() < 0)
+                            .with(MULTIBLOCK_OFFSET_HEIGHT, Math.abs(multiblockPos.getY()))
+                            .with(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE, multiblockPos.getY() < 0)
+                            .with(MULTIBLOCK_OFFSET_DEPTH, Math.abs(multiblockPos.getZ()))
+                            .with(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE, multiblockPos.getZ() < 0)
+                    , 3);
+        }
+
     }
 
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
         //TODO temp bypass, need to implement
-        if (true || state.get(HALF) != DoubleBlockHalf.UPPER) {
+        if (true /*TODO|| state.get(HALF) != DoubleBlockHalf.UPPER*/) {
             return super.isValidPosition(state, worldIn, pos);
         } else {
             BlockState blockstate = worldIn.getBlockState(pos.down());
             if (state.getBlock() != this) return super.isValidPosition(state, worldIn, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
-            return blockstate.isIn(this) && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
+            return blockstate.isIn(this) /*TODO&& blockstate.get(HALF) == DoubleBlockHalf.LOWER*/;
         }
     }
 
@@ -117,6 +159,7 @@ public class BlockLauncherPlatform extends Block {
      * Only called if broken in Creative Mode, otherwise uses spawnDrops method
      */
     protected static void removeBottomHalf(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        /*TODO
         DoubleBlockHalf doubleblockhalf = state.get(HALF);
         if (doubleblockhalf == DoubleBlockHalf.UPPER) {
             BlockPos blockpos = pos.down();
@@ -126,7 +169,7 @@ public class BlockLauncherPlatform extends Block {
                 world.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
             }
         }
-
+         */
     }
 
     /**
@@ -140,13 +183,13 @@ public class BlockLauncherPlatform extends Block {
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
         //todo temp bypass
-        if(1==1) return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-        DoubleBlockHalf doubleblockhalf = stateIn.get(HALF);
+        /*if(1==1)*/ return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        /*DoubleBlockHalf doubleblockhalf = stateIn.get(HALF);
         if (facing.getAxis() != Direction.Axis.Y || doubleblockhalf == DoubleBlockHalf.LOWER != (facing == Direction.UP) || facingState.isIn(this) && facingState.get(HALF) != doubleblockhalf) {
             return doubleblockhalf == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         } else {
             return Blocks.AIR.getDefaultState();
-        }
+        }*/
     }
 
     /**
