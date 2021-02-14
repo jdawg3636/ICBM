@@ -95,20 +95,24 @@ public class BlockLauncherPlatform extends Block {
 
             // Calculate Rotation based on "facing" property
             // NOTE: Using opposite of "facing", so all offsets are from pov of the player
-            Vector3i multiblockPosRotated = multiblockPos;
-            if(state.get(FACING).getOpposite().getDirectionVec().getZ() == -1)
-                assert true; // NOP, original does not need rotated.
-            if(state.get(FACING).getOpposite().getDirectionVec().getX() == -1)
-                multiblockPosRotated = new Vector3i(+multiblockPos.getZ(), multiblockPos.getY(), -multiblockPos.getX());
-            if(state.get(FACING).getOpposite().getDirectionVec().getZ() == 1)
-                multiblockPosRotated = new Vector3i(-multiblockPos.getX(), multiblockPos.getY(), -multiblockPos.getZ());
+            Vector3i multiblockPosRotated;
+
+            // North (-z) (Default)
+            multiblockPosRotated = multiblockPos;
+            // East (+x)
             if(state.get(FACING).getOpposite().getDirectionVec().getX() == 1)
                 multiblockPosRotated = new Vector3i(+multiblockPos.getZ(), multiblockPos.getY(), +multiblockPos.getX());
+            // South (+z)
+            else if(state.get(FACING).getOpposite().getDirectionVec().getZ() == 1)
+                multiblockPosRotated = new Vector3i(-multiblockPos.getX(), multiblockPos.getY(), -multiblockPos.getZ());
+            // West (-x)
+            else if(state.get(FACING).getOpposite().getDirectionVec().getX() == -1)
+                multiblockPosRotated = new Vector3i(+multiblockPos.getZ(), multiblockPos.getY(), -multiblockPos.getX());
 
             worldIn.setBlockState(
-                    // Use rotated positions + base coords for world placement
+                    // Use rotated offset + base coords for world placement
                     pos.add(multiblockPosRotated.getX(), multiblockPosRotated.getY(), multiblockPosRotated.getZ()),
-                    // Encode original offsets into BlockState
+                    // Encode unrotated offset into BlockState
                     this.getDefaultState()
                             .with(FACING, state.get(FACING))
                             .with(MULTIBLOCK_OFFSET_HORIZONTAL, Math.abs(multiblockPos.getX()))
