@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "icbm:missile_conventional",
     "icbm:missile_shrapnel",

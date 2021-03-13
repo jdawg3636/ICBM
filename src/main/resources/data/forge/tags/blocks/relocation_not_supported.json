@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "icbm:launcher_platform_t1",
+    "icbm:launcher_platform_t2",
+    "icbm:launcher_platform_t3",
+    "icbm:launcher_control_panel_t1",
+    "icbm:launcher_control_panel_t2",
+    "icbm:launcher_control_panel_t3",
+    "icbm:launcher_support_frame_t1",
+    "icbm:launcher_support_frame_t2",
+    "icbm:launcher_support_frame_t3",
+    "icbm:cruise_launcher",
+    "icbm:emp_tower",
+    "icbm:radar_station"
+  ]
+}
