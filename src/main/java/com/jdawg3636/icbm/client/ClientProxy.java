@@ -1,9 +1,12 @@
 package com.jdawg3636.icbm.client;
 
 import com.jdawg3636.icbm.client.render.entity.EntityExplosivesIncendiaryRenderer;
+import com.jdawg3636.icbm.common.gui.ScreenLauncherPlatform;
 import com.jdawg3636.icbm.common.reg.BlockReg;
+import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.CommonProxy;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,6 +27,9 @@ public class ClientProxy extends CommonProxy {
 
         // Register Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), EntityExplosivesIncendiaryRenderer::new);
+
+        // Register Container Screens
+        ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
     }
 
 }

@@ -1,0 +1,32 @@
+{
+  "values": [
+    "icbm:missile_conventional",
+    "icbm:missile_shrapnel",
+    "icbm:missile_incendiary",
+    "icbm:missile_debilitation",
+    "icbm:missile_chemical",
+    "icbm:missile_anvil",
+    "icbm:missile_repulsive",
+    "icbm:missile_attractive",
+    "icbm:missile_nightmare",
+    "icbm:missile_fragmentation",
+    "icbm:missile_contagious",
+    "icbm:missile_sonic",
+    "icbm:missile_breaching",
+    "icbm:missile_rejuvenation",
+    "icbm:missile_thermobaric",
+    "icbm:missile_nuclear",
+    "icbm:missile_emp",
+    "icbm:missile_exothermic",
+    "icbm:missile_endothermic",
+    "icbm:missile_antigravitational",
+    "icbm:missile_ender",
+    "icbm:missile_hypersonic",
+    "icbm:missile_antimatter",
+    "icbm:missile_redmatter",
+    "icbm:missile_homing",
+    "icbm:missile_antiballistic",
+    "icbm:missile_cluster",
+    "icbm:missile_cluster_nuclear"
+  ]
+}

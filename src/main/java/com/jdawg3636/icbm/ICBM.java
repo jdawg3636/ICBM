@@ -3,9 +3,7 @@ package com.jdawg3636.icbm;
 import com.jdawg3636.icbm.client.ClientProxy;
 import com.jdawg3636.icbm.common.CommonProxy;
 import com.jdawg3636.icbm.common.event.ICBMEvents;
-import com.jdawg3636.icbm.common.reg.BlockReg;
-import com.jdawg3636.icbm.common.reg.EntityReg;
-import com.jdawg3636.icbm.common.reg.ItemReg;
+import com.jdawg3636.icbm.common.reg.*;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,6 +12,7 @@ import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,8 +40,10 @@ public final class ICBM {
         MinecraftForge.EVENT_BUS.register(ICBMEvents.class);
 
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ContainerReg.CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
         EntityReg.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ItemReg.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TileReg.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
     }
 

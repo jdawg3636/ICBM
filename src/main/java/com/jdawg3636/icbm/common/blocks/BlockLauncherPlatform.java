@@ -1,5 +1,8 @@
 package com.jdawg3636.icbm.common.blocks;
 
+import com.jdawg3636.icbm.common.container.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.reg.BlockReg;
+import com.jdawg3636.icbm.common.tile.TileLauncherPlatform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -8,27 +11,33 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
 public class BlockLauncherPlatform extends Block {
-
-    public static final Vector3i[] MULTIBLOCK_POSITIONS = {new Vector3i(1,0,0), new Vector3i(1,1,0), new Vector3i(1,2,0), new Vector3i(-1,0,0), new Vector3i(-1,1,0), new Vector3i(-1,2,0)};
-
-    public Vector3i[] getMultiblockPositions() {
-        return MULTIBLOCK_POSITIONS;
-    }
 
     /**
      * Properties for Positioning Within Multiblock
@@ -72,6 +81,19 @@ public class BlockLauncherPlatform extends Block {
         builder.add(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE);
     }
 
+    private static final Vector3i[] MULTIBLOCK_POSITIONS = {
+            new Vector3i(1,0,0),
+            new Vector3i(1,1,0),
+            new Vector3i(1,2,0),
+            new Vector3i(-1,0,0),
+            new Vector3i(-1,1,0),
+            new Vector3i(-1,2,0)
+    };
+
+    public Vector3i[] getMultiblockPositions() {
+        return MULTIBLOCK_POSITIONS;
+    }
+
     /**
      * Sets {@link this.FACING} to opposite of player
      * Also using to prevent placement in invalid locations (ex. near world height), return null BlockState if invalid
@@ -80,8 +102,9 @@ public class BlockLauncherPlatform extends Block {
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         int multiblockHeight = 3;
-        BlockPos blockpos = context.getPos();
-        return blockpos.getY() <= context.getWorld().getHeight()-multiblockHeight && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context) ? super.getStateForPlacement(context).with(FACING, context.getPlacementHorizontalFacing().getOpposite()) : null;
+        if(context.getPos().getY() > context.getWorld().getHeight()-multiblockHeight) return null;
+        if(!context.getWorld().getBlockState(context.getPos().up()).isReplaceable(context)) return null;
+        return super.getStateForPlacement(context).with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
     /**
@@ -184,7 +207,13 @@ public class BlockLauncherPlatform extends Block {
      * Multiblock Destruction Routine
      */
     public void destroyMultiblock(World worldIn, BlockPos pos, BlockState sourceState) {
+        BlockPos posOfCenter = getMultiblockCenter(worldIn, pos, sourceState);
+        // Fill with Air
+        fillMultiblock(worldIn, posOfCenter, worldIn.getBlockState(posOfCenter), true);
 
+    }
+
+    public BlockPos getMultiblockCenter(World worldIn, BlockPos pos, BlockState sourceState) {
         // Raw Data from BlockState
         int offsetX = sourceState.get(MULTIBLOCK_OFFSET_HORIZONTAL); if(sourceState.get(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE)) offsetX *= -1;
         int offsetY = sourceState.get(MULTIBLOCK_OFFSET_HEIGHT); if(sourceState.get(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE)) offsetY *= -1;
@@ -210,11 +239,43 @@ public class BlockLauncherPlatform extends Block {
             offsetZ = temp;
         }
 
-        // Invert Offsets
-        BlockPos posOfCenter = pos.add(-offsetX, -offsetY, -offsetZ);
-        // Fill with Air
-        fillMultiblock(worldIn, posOfCenter, worldIn.getBlockState(posOfCenter), true);
+        // Invert Offsets and Return
+        return pos.add(-offsetX, -offsetY, -offsetZ);
+    }
 
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return state.get(MULTIBLOCK_OFFSET_HORIZONTAL) == 0 && state.get(MULTIBLOCK_OFFSET_HEIGHT) == 0 && state.get(MULTIBLOCK_OFFSET_DEPTH) == 0;
+    }
+
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return hasTileEntity(state) ? new TileLauncherPlatform() : null;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
+        if (!world.isRemote) {
+            TileEntity tileEntity = world.getTileEntity(getMultiblockCenter(world, pos, state));
+            if (tileEntity instanceof TileLauncherPlatform) {
+                INamedContainerProvider containerProvider = new INamedContainerProvider() {
+                    @Override
+                    public ITextComponent getDisplayName() {
+                        return new TranslationTextComponent("gui.launcherBase");
+                    }
+
+                    @Override
+                    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                        return new ContainerLauncherPlatform(i, world, getMultiblockCenter(world, pos, state), playerInventory, playerEntity);
+                    }
+                };
+                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());
+            } else {
+                throw new IllegalStateException("Our named container provider is missing!");
+            }
+        }
+        return ActionResultType.SUCCESS;
     }
 
 }
