@@ -8,11 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -77,7 +73,7 @@ public class BlockReg {
         @Override
         public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
             super.onEntityCollision(state, world, pos, entity);
-            if (entity instanceof LivingEntity)
+            if (entity instanceof LivingEntity && !state.get(BlockSpikes.WATERLOGGED))
                 entity.setFire(7);
         }
     });
