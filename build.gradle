@@ -21,6 +21,9 @@ repositories {
         name "tterrag maven"
         url "http://maven.tterrag.com"
     }
+    maven { // CurseForge, currently using for WorldEdit
+        url "https://www.cursemaven.com"
+    }
 }
 
 version = version_mc + "-" + version_major + "." + version_minor + "." + version_revis
@@ -125,6 +128,7 @@ dependencies {
 
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.72")
     runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.7-13")
+    runtimeOnly fg.deobf("curse.maven:worldedit-225608:3172951")
 
 }
 

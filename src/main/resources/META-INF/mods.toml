@@ -9,7 +9,7 @@ loaderVersion="[34,)" #mandatory This is typically bumped every Minecraft versio
 license="MIT License"
 
 # A URL to refer people to when problems occur with this mod
-issueTrackerURL="https://github.com/jdawg3636/BleachMod/issues" #optional
+issueTrackerURL="https://github.com/jdawg3636/ICBM/issues" #optional
 
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
@@ -31,15 +31,24 @@ logoFile="icbm_logo.png" #optional
 
 # A text field displayed in the mod UI (#optional)
 credits='''
-Calcalvia (Author ICBM)
 DarkGuardsman (Author ICBM Classic)
-AFlyingCar
+Calcalvia (Author ICBM)
+tgame14
 bl4ckscor3
-Dmod
 GHXX
-Graugger
-M1W3st
-Tgame14
+dmodoomsirius
+AFlyingCar
+clienthax
+kmecpp
+Quant1um
+suoliangao
+CraftalotReloaded
+michasrutek
+gravityfox
+Vexatos
+Nowp
+Hennamann
+Bogdan2003
 '''
 
 # A text field displayed in the mod UI
