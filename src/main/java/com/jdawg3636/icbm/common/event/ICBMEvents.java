@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.event;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -15,14 +16,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public class ICBMEvents {
 
-    @SubscribeEvent
+    // Not Subscribed - Called Directly by Subclass Events to ensure this is triggered before the rest of the blast code
     public static void onBlast(BlastEvent event) {
-        // Based on net.minecraft.world.Explosion.doExplosionB(boolean spawnParticles)
-
-        // Sound
-        event.getBlastWorld().playSound(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (event.getBlastWorld().rand.nextFloat() - event.getBlastWorld().rand.nextFloat()) * 0.2F) * 0.7F, false);
-        // Particles
-        event.getBlastWorld().addParticle(ParticleTypes.EXPLOSION_EMITTER, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), 1.0D, 0.0D, 0.0D);
+        // Loosely Based on net.minecraft.world.Explosion.doExplosionB(boolean spawnParticles)
+        if (!event.getBlastWorld().isRemote) {
+            // Sound
+            event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (event.getBlastWorld().rand.nextFloat() - event.getBlastWorld().rand.nextFloat()) * 0.2F) * 0.7F);
+            // Particles - Handled Client Side by net.minecraft.client.network.play.ClientPlayNetHandler.handleParticles(SSpawnParticlePacket packetIn)
+            event.getBlastWorld().spawnParticle(ParticleTypes.EXPLOSION_EMITTER, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), 1, 0, 0, 0, 1.0D);
+        }
     }
 
     @SubscribeEvent
@@ -31,7 +33,7 @@ public class ICBMEvents {
         // Would like to clean this up a bit if possible
         if (!event.getBlastWorld().isRemote) {
 
-            int radius = (int) 6; //TODO Figure out the correct (original) value for this is
+            int radius = (!event.getBlastIsGrenade()) ? 14 : 7;
 
             for (int x = 0; x < radius; ++x) {
                 for (int y = 0; y < radius; ++y) {

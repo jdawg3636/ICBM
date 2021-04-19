@@ -6,7 +6,12 @@ import com.jdawg3636.icbm.common.event.ICBMEvents;
 import com.jdawg3636.icbm.common.reg.*;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -37,6 +42,7 @@ public final class ICBM {
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetupEvent);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetupEvent);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, ICBM::onBiomeLoadingEvent);
         MinecraftForge.EVENT_BUS.register(ICBMEvents.class);
 
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
@@ -48,11 +54,26 @@ public final class ICBM {
     }
 
     public void onClientSetupEvent(final FMLClientSetupEvent event) {
-        proxy.onClientSetupEvent();
+        proxy.onClientSetupEvent(event);
     }
 
     public void onCommonSetupEvent(final FMLCommonSetupEvent event) {
-        proxy.onCommonSetupEvent();
+        proxy.onCommonSetupEvent(event);
+    }
+
+    public static void onBiomeLoadingEvent(final BiomeLoadingEvent event) {
+        // Copper Ore
+        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
+                () -> Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, BlockReg.ORE_COPPER.get().getDefaultState(), 9)).range(64).square().func_242731_b(20)
+        );
+        // Sulfur Ore
+        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
+                () -> Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, BlockReg.ORE_SULFUR.get().getDefaultState(), 9)).range(64).square().func_242731_b(20)
+        );
+        // Tin Ore
+        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
+                () -> Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, BlockReg.ORE_TIN.get().getDefaultState(), 9)).range(64).square().func_242731_b(20)
+        );
     }
 
 }

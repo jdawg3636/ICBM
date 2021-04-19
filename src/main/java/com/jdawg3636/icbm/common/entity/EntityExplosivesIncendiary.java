@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -36,7 +37,7 @@ public class EntityExplosivesIncendiary extends TNTEntity {
 
     @Override
     protected void explode() {
-        MinecraftForge.EVENT_BUS.post(new BlastEvent.Incendiary(getPosition(), getEntityWorld()));
+        if(!getEntityWorld().isRemote()) MinecraftForge.EVENT_BUS.post(new BlastEvent.Incendiary(getPosition(), (ServerWorld) getEntityWorld(), false));
     }
 
     @Nonnull
