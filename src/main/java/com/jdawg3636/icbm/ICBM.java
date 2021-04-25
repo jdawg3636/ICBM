@@ -74,6 +74,10 @@ public final class ICBM {
         event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
                 () -> Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, BlockReg.ORE_TIN.get().getDefaultState(), 9)).range(64).square().func_242731_b(20)
         );
+        // Uranium Ore
+        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
+                () -> Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, BlockReg.ORE_URANIUM.get().getDefaultState(), 9)).range(64).square().func_242731_b(20)
+        );
     }
 
 }

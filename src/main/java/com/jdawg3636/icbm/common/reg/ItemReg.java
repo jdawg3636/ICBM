@@ -27,6 +27,7 @@ public class ItemReg {
     public static final RegistryObject<Item> ORE_COPPER                     = ITEMS.register("ore_copper",                      () -> new BlockItem(BlockReg.ORE_COPPER.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
     public static final RegistryObject<Item> ORE_SULFUR                     = ITEMS.register("ore_sulfur",                      () -> new BlockItem(BlockReg.ORE_SULFUR.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
     public static final RegistryObject<Item> ORE_TIN                        = ITEMS.register("ore_tin",                         () -> new BlockItem(BlockReg.ORE_TIN.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
+    public static final RegistryObject<Item> ORE_URANIUM                    = ITEMS.register("ore_uranium",                     () -> new BlockItem(BlockReg.ORE_URANIUM.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
 
     // Explosives
     public static final RegistryObject<Item> EXPLOSIVES_CONDENSED           = ITEMS.register("explosives_condensed",            () -> new BlockItem(BlockReg.EXPLOSIVES_CONDENSED.get(), new Item.Properties().group(ICBM.CREATIVE_TAB)));
@@ -168,6 +169,7 @@ public class ItemReg {
     public static final RegistryObject<Item> INGOT_COPPER                   = ITEMS.register("ingot_copper",                    () -> new Item(new Item.Properties().group(ICBM.CREATIVE_TAB)));
     public static final RegistryObject<Item> INGOT_STEEL                    = ITEMS.register("ingot_steel",                     () -> new Item(new Item.Properties().group(ICBM.CREATIVE_TAB)));
     public static final RegistryObject<Item> INGOT_TIN                      = ITEMS.register("ingot_tin",                       () -> new Item(new Item.Properties().group(ICBM.CREATIVE_TAB)));
+    public static final RegistryObject<Item> INGOT_URANIUM                  = ITEMS.register("ingot_uranium",                   () -> new Item(new Item.Properties().group(ICBM.CREATIVE_TAB)));
     public static final RegistryObject<Item> PLATE_BRONZE                   = ITEMS.register("plate_bronze",                    () -> new Item(new Item.Properties().group(ICBM.CREATIVE_TAB)));
     public static final RegistryObject<Item> PLATE_STEEL                    = ITEMS.register("plate_steel",                     () -> new Item(new Item.Properties().group(ICBM.CREATIVE_TAB)));
 

@@ -96,6 +96,7 @@
   "item.icbm.ingot_copper": "Copper Ingot",
   "item.icbm.ingot_steel": "Steel Ingot",
   "item.icbm.ingot_tin": "Tin Ingot",
+  "item.icbm.ingot_uranium": "Uranium Ingot",
 
   "item.icbm.dust_bronze": "Bronze Dust",
   "item.icbm.dust_steel": "Steel Dust",
@@ -310,6 +311,7 @@
   "block.icbm.ore_copper": "Copper Ore",
   "block.icbm.ore_sulfur": "Sulfur Ore",
   "block.icbm.ore_tin": "Tin Ore",
+  "block.icbm.ore_uranium": "Uranium Ore",
 
   "block.icbm.glass_pressure_plate": "Glass Pressure Plate",
   "block.icbm.glass_button": "Glass Button",
