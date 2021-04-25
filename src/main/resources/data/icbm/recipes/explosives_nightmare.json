@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CBC",
+    "BAB",
+    "CBC"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:explosives_condensed"
+    },
+    "B": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "C": {
+      "tag": "forge:dusts/poison"
+    }
+  },
+  "result": {
+    "item": "icbm:explosives_nightmare",
+    "count": 1
+  }
+}

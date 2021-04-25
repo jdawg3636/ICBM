@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "BBB"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:cactus"
+    },
+    "B": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "result": {
+    "item": "icbm:spikes",
+    "count": 8
+  }
+}

@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      " A ",
+      "A A",
+      " A "
+    ],
+    "key": {
+      "A": {
+        "item": "icbm:explosives_sonic"
+      }
+    },
+    "result": {
+      "item": "icbm:explosives_hypersonic",
+      "count": 1
+    }
+  }

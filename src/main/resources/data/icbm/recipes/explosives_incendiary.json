@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "ABA",
+    "ACA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:dusts/sulfur"
+    },
+    "B": {
+      "item": "icbm:explosives_repulsive"
+    },
+    "C": {
+      "item": "minecraft:lava_bucket"
+    }
+  },
+  "result": {
+    "item": "icbm:explosives_incendiary",
+    "count": 1
+  }
+}

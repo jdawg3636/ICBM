@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    "BAB",
+    "ABA"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:concrete"
+    },
+    "B": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "result": {
+    "item": "icbm:concrete_compact",
+    "count": 8
+  }
+}

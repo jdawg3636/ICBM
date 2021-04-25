@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:explosives_shrapnel"
+    },
+    "B": {
+      "tag": "minecraft:anvil"
+    }
+  },
+  "result": {
+    "item": "icbm:explosives_anvil",
+    "count": 8
+  }
+}

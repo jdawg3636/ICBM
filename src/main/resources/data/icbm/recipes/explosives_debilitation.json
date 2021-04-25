@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "CBC",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:dusts/sulfur"
+    },
+    "B": {
+      "item": "icbm:explosives_repulsive"
+    },
+    "C": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result": {
+    "item": "icbm:explosives_debilitation",
+    "count": 1
+  }
+}

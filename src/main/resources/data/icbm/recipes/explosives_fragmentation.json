@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "ABA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:explosives_shrapnel"
+    },
+    "B": {
+      "item": "icbm:explosives_incendiary"
+    }
+  },
+  "result": {
+    "item": "icbm:explosives_fragmentation",
+    "count": 1
+  }
+}

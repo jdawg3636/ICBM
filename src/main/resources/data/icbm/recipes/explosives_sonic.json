@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    "BCB",
+    "ABA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/bronze"
+    },
+    "B": {
+      "item": "minecraft:note_block"
+    },
+    "C": {
+      "item": "icbm:explosives_repulsive"
+    }
+  },
+  "result": {
+    "item": "icbm:explosives_sonic",
+    "count": 1
+  }
+}

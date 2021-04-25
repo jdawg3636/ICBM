@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "ABA",
+      "BCB",
+      "ABA"
+    ],
+    "key": {
+      "A": {
+        "item": "minecraft:ice"
+      },
+      "B": {
+        "item": "minecraft:snow_block"
+      },
+      "C": {
+        "item": "icbm:explosives_attractive"
+      }
+    },
+    "result": {
+      "item": "icbm:explosives_endothermic",
+      "count": 1
+    }
+  }

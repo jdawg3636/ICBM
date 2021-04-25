@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:dusts/poison"
+    },
+    "B": {
+      "item": "icbm:explosives_debilitation"
+    }
+  },
+  "result": {
+    "item": "icbm:explosives_chemical",
+    "count": 1
+  }
+}

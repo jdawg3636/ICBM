@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:tnt"
+    },
+    "B": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "icbm:explosives_condensed",
+    "count": 1
+  }
+}

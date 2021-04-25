@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:gunpowder"
+    },
+    "B": {
+      "item": "icbm:explosives_condensed"
+    }
+  },
+  "result": {
+    "item": "icbm:explosives_breaching",
+    "count": 1
+  }
+}

@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "ABA",
+      "BCB",
+      "ABA"
+    ],
+    "key": {
+      "A": {
+        "item": "icbm:explosives_chemical"
+      },
+      "B": {
+        "item": "icbm:explosives_incendiary"
+      },
+      "C": {
+        "item": "icbm:explosives_repulsive"
+      }
+    },
+    "result": {
+      "item": "icbm:explosives_thermobaric",
+      "count": 1
+    }
+  }
