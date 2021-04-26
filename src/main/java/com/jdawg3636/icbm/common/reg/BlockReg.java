@@ -81,19 +81,19 @@ public class BlockReg {
 
     // Missile Launch Apparatus
     public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           BlockLauncherPlatform::new);
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           BlockLauncherPlatform::new);
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           BlockLauncherPlatform::new);
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      () -> new Block(Block.Properties.create(Material.IRON)));
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T2     = BLOCKS.register("launcher_control_panel_t2",      () -> new Block(Block.Properties.create(Material.IRON)));
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T3     = BLOCKS.register("launcher_control_panel_t3",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T1     = BLOCKS.register("launcher_support_frame_t1",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T2     = BLOCKS.register("launcher_support_frame_t2",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T1     = BLOCKS.register("launcher_support_frame_t1",      BlockLauncherSupportFrame::new);
+    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T2     = BLOCKS.register("launcher_support_frame_t2",      BlockLauncherSupportFrame::new);
+    public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      BlockLauncherSupportFrame::new);
 
     // Other Machinery
     public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new Block(Block.Properties.create(Material.IRON)));
     public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      BlockEMPTower::new);
-    public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  BlockRadarStation::new);
 
     // Extras
     public static final RegistryObject<Block> GLASS_BUTTON                  = BLOCKS.register("glass_button",                   BlockGlassButton::new);
