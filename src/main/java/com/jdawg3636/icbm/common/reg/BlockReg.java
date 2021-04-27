@@ -2,7 +2,8 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.common.blocks.*;
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.container.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.blocks.launcher_platform.BlockLauncherPlatform;
+import com.jdawg3636.icbm.common.blocks.launcher_platform.ContainerLauncherPlatform;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -83,17 +84,20 @@ public class BlockReg {
 
     // Missile Launch Apparatus
     public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1) {
-        public ContainerType<ContainerLauncherPlatform> getContainer() {
+        @Override
+        public ContainerType<ContainerLauncherPlatform> getContainerType() {
             return ContainerReg.LAUNCHER_PLATFORM_T1.get();
         }
     });
     public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2) {
-        public ContainerType<ContainerLauncherPlatform> getContainer() {
+        @Override
+        public ContainerType<ContainerLauncherPlatform> getContainerType() {
             return ContainerReg.LAUNCHER_PLATFORM_T2.get();
         }
     });
     public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3) {
-        public ContainerType<ContainerLauncherPlatform> getContainer() {
+        @Override
+        public ContainerType<ContainerLauncherPlatform> getContainerType() {
             return ContainerReg.LAUNCHER_PLATFORM_T3.get();
         }
     });

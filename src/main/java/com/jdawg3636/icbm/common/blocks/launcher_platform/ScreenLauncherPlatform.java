@@ -1,7 +1,7 @@
-package com.jdawg3636.icbm.common.gui;
+package com.jdawg3636.icbm.common.blocks.launcher_platform;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.container.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.blocks.launcher_platform.ContainerLauncherPlatform;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;

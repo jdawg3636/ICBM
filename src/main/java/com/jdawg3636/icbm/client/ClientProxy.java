@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.client;
 
 import com.jdawg3636.icbm.client.render.entity.EntityExplosivesIncendiaryRenderer;
-import com.jdawg3636.icbm.common.gui.ScreenLauncherPlatform;
+import com.jdawg3636.icbm.common.blocks.launcher_platform.ScreenLauncherPlatform;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.EntityReg;
@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 

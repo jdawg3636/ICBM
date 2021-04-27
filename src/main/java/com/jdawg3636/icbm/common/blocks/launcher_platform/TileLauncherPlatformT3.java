@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.tile;
+package com.jdawg3636.icbm.common.blocks.launcher_platform;
 
 import com.jdawg3636.icbm.common.reg.TileReg;
 

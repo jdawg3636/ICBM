@@ -1,9 +1,9 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.tile.TileLauncherPlatformT1;
-import com.jdawg3636.icbm.common.tile.TileLauncherPlatformT2;
-import com.jdawg3636.icbm.common.tile.TileLauncherPlatformT3;
+import com.jdawg3636.icbm.common.blocks.launcher_platform.TileLauncherPlatformT1;
+import com.jdawg3636.icbm.common.blocks.launcher_platform.TileLauncherPlatformT2;
+import com.jdawg3636.icbm.common.blocks.launcher_platform.TileLauncherPlatformT3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;

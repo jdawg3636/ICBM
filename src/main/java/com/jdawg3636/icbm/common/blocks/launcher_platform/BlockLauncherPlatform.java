@@ -1,8 +1,6 @@
-package com.jdawg3636.icbm.common.blocks;
+package com.jdawg3636.icbm.common.blocks.launcher_platform;
 
 import com.jdawg3636.icbm.common.blocks.multiblock.AbstractBlockMultiTile;
-import com.jdawg3636.icbm.common.container.ContainerLauncherPlatform;
-import com.jdawg3636.icbm.common.tile.TileLauncherPlatform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -49,7 +47,6 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile {
 
     @Override
     public void onMultiblockActivated(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-        System.out.println("[DEBUG] Activated Multiblock @ " + state + " " + pos);
         if(tileEntity instanceof TileLauncherPlatform) {
             INamedContainerProvider containerProvider = new INamedContainerProvider() {
                 @Override
@@ -59,13 +56,13 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile {
 
                 @Override
                 public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                    return new ContainerLauncherPlatform(getContainer(), state.getBlock(), i, world, getMultiblockCenter(world, pos, state), playerInventory, playerEntity);
+                    return new ContainerLauncherPlatform(getContainerType(), state.getBlock(), i, world, getMultiblockCenter(world, pos, state), playerInventory, playerEntity);
                 }
             };
             NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());
         }
     }
 
-    public abstract ContainerType<ContainerLauncherPlatform> getContainer();
+    public abstract ContainerType<ContainerLauncherPlatform> getContainerType();
 
 }
