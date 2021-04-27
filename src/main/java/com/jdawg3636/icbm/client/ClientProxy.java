@@ -32,6 +32,8 @@ public class ClientProxy extends CommonProxy {
 
         // Register Container Screens
         ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
+        ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
+        ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
     }
 
 }

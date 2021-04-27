@@ -1,7 +1,10 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.tile.TileLauncherPlatform;
+import com.jdawg3636.icbm.common.tile.TileLauncherPlatformT1;
+import com.jdawg3636.icbm.common.tile.TileLauncherPlatformT2;
+import com.jdawg3636.icbm.common.tile.TileLauncherPlatformT3;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -11,6 +14,8 @@ public class TileReg {
 
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, ICBMReference.MODID);
 
-    public static final RegistryObject<TileEntityType<TileLauncherPlatform>> LAUNCHER_PLATFORM_T1 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T1.getId().getPath(), () -> TileEntityType.Builder.create(TileLauncherPlatform::new, BlockReg.LAUNCHER_PLATFORM_T1.get()).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T1 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T1.getId().getPath(), () -> TileEntityType.Builder.create(TileLauncherPlatformT1::new, BlockReg.LAUNCHER_PLATFORM_T1.get()).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T2 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T2.getId().getPath(), () -> TileEntityType.Builder.create(TileLauncherPlatformT2::new, BlockReg.LAUNCHER_PLATFORM_T2.get()).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T3 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T3.getId().getPath(), () -> TileEntityType.Builder.create(TileLauncherPlatformT3::new, BlockReg.LAUNCHER_PLATFORM_T3.get()).build(null));
 
 }

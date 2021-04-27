@@ -1,20 +1,24 @@
 package com.jdawg3636.icbm.common.blocks.multiblock;
 
-import com.jdawg3636.icbm.common.tile.TileLauncherPlatform;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.RegistryObject;
 
 public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
-    public AbstractBlockMultiTile(Properties properties) {
+    RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType;
+
+    public AbstractBlockMultiTile(Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
         super(properties);
+        this.tileEntityType = tileEntityType;
     }
 
     @Override
@@ -24,7 +28,7 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return hasTileEntity(state) ? new TileLauncherPlatform() : null;
+        return hasTileEntity(state) ? tileEntityType.get().create() : null;
     }
 
     @SuppressWarnings("deprecation")

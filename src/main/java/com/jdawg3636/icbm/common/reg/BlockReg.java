@@ -2,10 +2,12 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.common.blocks.*;
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.container.ContainerLauncherPlatform;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
@@ -80,9 +82,21 @@ public class BlockReg {
     });
 
     // Missile Launch Apparatus
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           BlockLauncherPlatform::new);
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           BlockLauncherPlatform::new);
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           BlockLauncherPlatform::new);
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1) {
+        public ContainerType<ContainerLauncherPlatform> getContainer() {
+            return ContainerReg.LAUNCHER_PLATFORM_T1.get();
+        }
+    });
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2) {
+        public ContainerType<ContainerLauncherPlatform> getContainer() {
+            return ContainerReg.LAUNCHER_PLATFORM_T2.get();
+        }
+    });
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3) {
+        public ContainerType<ContainerLauncherPlatform> getContainer() {
+            return ContainerReg.LAUNCHER_PLATFORM_T3.get();
+        }
+    });
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      () -> new Block(Block.Properties.create(Material.IRON)));
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T2     = BLOCKS.register("launcher_control_panel_t2",      () -> new Block(Block.Properties.create(Material.IRON)));
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T3     = BLOCKS.register("launcher_control_panel_t3",      () -> new Block(Block.Properties.create(Material.IRON)));

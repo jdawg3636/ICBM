@@ -10,8 +10,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -19,9 +21,10 @@ import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class BlockLauncherPlatform extends AbstractBlockMultiTile {
+public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile {
 
     private static final Vector3i[] MULTIBLOCK_POSITIONS = {
             new Vector3i(1,0,0),
@@ -35,8 +38,8 @@ public class BlockLauncherPlatform extends AbstractBlockMultiTile {
     /**
      * Constructor - Sets Default State for Multiblock Positioning Properties
      */
-    public BlockLauncherPlatform() {
-        super(Block.Properties.create(Material.IRON));
+    public BlockLauncherPlatform(RegistryObject<TileEntityType<? extends TileEntity>> tileEntity) {
+        super(Block.Properties.create(Material.IRON), tileEntity);
     }
 
     @Override
@@ -46,6 +49,7 @@ public class BlockLauncherPlatform extends AbstractBlockMultiTile {
 
     @Override
     public void onMultiblockActivated(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
+        System.out.println("[DEBUG] Activated Multiblock @ " + state + " " + pos);
         if(tileEntity instanceof TileLauncherPlatform) {
             INamedContainerProvider containerProvider = new INamedContainerProvider() {
                 @Override
@@ -55,11 +59,13 @@ public class BlockLauncherPlatform extends AbstractBlockMultiTile {
 
                 @Override
                 public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                    return new ContainerLauncherPlatform(i, world, getMultiblockCenter(world, pos, state), playerInventory, playerEntity);
+                    return new ContainerLauncherPlatform(getContainer(), state.getBlock(), i, world, getMultiblockCenter(world, pos, state), playerInventory, playerEntity);
                 }
             };
             NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());
         }
     }
+
+    public abstract ContainerType<ContainerLauncherPlatform> getContainer();
 
 }

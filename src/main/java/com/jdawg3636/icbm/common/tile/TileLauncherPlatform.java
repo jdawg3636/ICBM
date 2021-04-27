@@ -1,12 +1,12 @@
 package com.jdawg3636.icbm.common.tile;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.reg.TileReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -18,13 +18,13 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileLauncherPlatform extends TileEntity {
+public abstract class TileLauncherPlatform extends TileEntity {
 
     private ItemStackHandler itemHandler = createHandler();
     private LazyOptional<IItemHandler> itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
 
-    public TileLauncherPlatform() {
-        super(TileReg.LAUNCHER_PLATFORM_T1.get());
+    public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn) {
+        super(tileEntityTypeIn);
     }
 
     private ItemStackHandler createHandler() {

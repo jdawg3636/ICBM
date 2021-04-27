@@ -17,7 +17,19 @@ public class ContainerReg {
     public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T1 = CONTAINERS.register(BlockReg.LAUNCHER_PLATFORM_T1.getId().getPath(), () -> IForgeContainerType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
         World world = inv.player.getEntityWorld();
-        return new ContainerLauncherPlatform(windowId, world, pos, inv, inv.player);
+        return new ContainerLauncherPlatform(ContainerReg.LAUNCHER_PLATFORM_T1.get(), BlockReg.LAUNCHER_PLATFORM_T1.get(), windowId, world, pos, inv, inv.player);
+    }));
+
+    public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T2 = CONTAINERS.register(BlockReg.LAUNCHER_PLATFORM_T2.getId().getPath(), () -> IForgeContainerType.create((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        World world = inv.player.getEntityWorld();
+        return new ContainerLauncherPlatform(ContainerReg.LAUNCHER_PLATFORM_T2.get(), BlockReg.LAUNCHER_PLATFORM_T2.get(), windowId, world, pos, inv, inv.player);
+    }));
+
+    public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T3 = CONTAINERS.register(BlockReg.LAUNCHER_PLATFORM_T3.getId().getPath(), () -> IForgeContainerType.create((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        World world = inv.player.getEntityWorld();
+        return new ContainerLauncherPlatform(ContainerReg.LAUNCHER_PLATFORM_T3.get(), BlockReg.LAUNCHER_PLATFORM_T3.get(), windowId, world, pos, inv, inv.player);
     }));
 
 }

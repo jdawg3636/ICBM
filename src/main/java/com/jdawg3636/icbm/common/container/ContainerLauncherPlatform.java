@@ -2,13 +2,13 @@ package com.jdawg3636.icbm.common.container;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.reg.BlockReg;
-import com.jdawg3636.icbm.common.reg.ContainerReg;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
@@ -20,16 +20,16 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
+import javax.annotation.Nullable;
+
 public class ContainerLauncherPlatform extends Container {
 
     private TileEntity tileEntity;
-    private PlayerEntity playerEntity;
     private IItemHandler playerInventory;
 
-    public ContainerLauncherPlatform(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
-        super(ContainerReg.LAUNCHER_PLATFORM_T1.get(), windowId);
+    public ContainerLauncherPlatform(@Nullable ContainerType<?> type, Block block, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
+        super(type, windowId);
         this.tileEntity = world.getTileEntity(pos);
-        this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
         if(tileEntity != null)
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> addSlot(new SlotItemHandler(h, 0, 84, 47)));
@@ -38,7 +38,7 @@ public class ContainerLauncherPlatform extends Container {
 
     @Override
     public boolean canInteractWith(PlayerEntity playerEntity) {
-        return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerEntity, BlockReg.LAUNCHER_PLATFORM_T1.get());
+        return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerEntity, tileEntity.getBlockState().getBlock());
     }
 
     @Override
