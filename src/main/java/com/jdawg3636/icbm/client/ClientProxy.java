@@ -13,11 +13,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
     public void onClientSetupEvent(FMLClientSetupEvent event) {
+
         // Set Render Layers
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.getCutout());
@@ -33,6 +35,10 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
+
+    }
+
+    public void onCommonSetupEvent(final FMLCommonSetupEvent event) {
     }
 
 }

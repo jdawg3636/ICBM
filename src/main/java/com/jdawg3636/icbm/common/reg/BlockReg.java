@@ -13,9 +13,13 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Random;
 
 public class BlockReg {
 
@@ -32,7 +36,13 @@ public class BlockReg {
     public static final RegistryObject<Block> ORE_COPPER                    = BLOCKS.register("ore_copper",                     () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
     public static final RegistryObject<Block> ORE_SULFUR                    = BLOCKS.register("ore_sulfur",                     () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
     public static final RegistryObject<Block> ORE_TIN                       = BLOCKS.register("ore_tin",                        () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
-    public static final RegistryObject<Block> ORE_URANIUM                   = BLOCKS.register("ore_uranium",                    () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
+    public static final RegistryObject<Block> ORE_URANIUM                   = BLOCKS.register("ore_uranium",                    () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)) {
+        @OnlyIn(Dist.CLIENT)
+        public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+            super.animateTick(stateIn, worldIn, pos, rand);
+            // TODO Radiation Particles
+        }
+    });
 
     // Explosives
     public static final RegistryObject<Block> EXPLOSIVES_CONDENSED          = BLOCKS.register("explosives_condensed",           () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));

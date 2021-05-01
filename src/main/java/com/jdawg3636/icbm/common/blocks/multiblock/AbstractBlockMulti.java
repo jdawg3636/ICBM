@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.blocks.multiblock;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.PushReaction;
@@ -17,7 +18,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
@@ -40,7 +44,7 @@ public abstract class AbstractBlockMulti extends Block {
     public static final BooleanProperty MULTIBLOCK_OFFSET_DEPTH_NEGATIVE        = BooleanProperty.create("multiblock_offset_depth_negative");
 
     public AbstractBlockMulti(Properties properties) {
-        super(properties);
+        super(properties.notSolid());
         this.setDefaultState(
                 this.stateContainer.getBaseState()
                 .with(FACING, Direction.NORTH)
@@ -189,7 +193,13 @@ public abstract class AbstractBlockMulti extends Block {
         BlockPos posOfCenter = getMultiblockCenter(worldIn, pos, sourceState);
         // Fill with Air
         fillMultiblock(worldIn, posOfCenter, worldIn.getBlockState(posOfCenter), true);
+    }
 
+    public boolean isRootOfMultiblock(BlockState state) {
+        return
+            state.get(MULTIBLOCK_OFFSET_HORIZONTAL) == 0 &&
+            state.get(MULTIBLOCK_OFFSET_HEIGHT) == 0 &&
+            state.get(MULTIBLOCK_OFFSET_DEPTH) == 0;
     }
 
     public BlockPos getMultiblockCenter(World worldIn, BlockPos pos, BlockState sourceState) {
@@ -220,6 +230,22 @@ public abstract class AbstractBlockMulti extends Block {
 
         // Invert Offsets and Return
         return pos.add(-offsetX, -offsetY, -offsetZ);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public float getAmbientOcclusionLightValue(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
+        return 1.0F;
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(BlockState p_200123_1_, IBlockReader p_200123_2_, BlockPos p_200123_3_) {
+        return true;
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return isRootOfMultiblock(state) ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
     }
 
     /**

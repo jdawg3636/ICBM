@@ -1,0 +1,5 @@
+{
+    "loader": "forge:obj",
+    "model": "icbm:models/block/launcher_platform_t1.obj",
+    "flip-v": true
+  }

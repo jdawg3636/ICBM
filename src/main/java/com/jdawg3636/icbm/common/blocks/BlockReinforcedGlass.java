@@ -19,6 +19,7 @@ public class BlockReinforcedGlass extends Block {
      * Copied from {@link net.minecraft.block.AbstractGlassBlock}
      */
     @OnlyIn(Dist.CLIENT)
+    @Override
     public float getAmbientOcclusionLightValue(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
         return 1.0F;
     }
