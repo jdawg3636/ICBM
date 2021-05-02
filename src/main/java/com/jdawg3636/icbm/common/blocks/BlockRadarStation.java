@@ -13,13 +13,6 @@ public class BlockRadarStation extends AbstractBlockMulti {
             new Vector3i(-1,1,0)
     };
 
-    /**
-     * Constructor - Sets Default State for Multiblock Positioning Properties
-     */
-    public BlockRadarStation() {
-        super(Block.Properties.create(Material.IRON));
-    }
-
     @Override
     public Vector3i[] getMultiblockPositions() {
         return MULTIBLOCK_POSITIONS;

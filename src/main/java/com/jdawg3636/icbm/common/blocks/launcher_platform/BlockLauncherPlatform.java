@@ -37,7 +37,7 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile {
      * Constructor - Sets Default State for Multiblock Positioning Properties
      */
     public BlockLauncherPlatform(RegistryObject<TileEntityType<? extends TileEntity>> tileEntity) {
-        super(Block.Properties.create(Material.IRON), tileEntity);
+        super(tileEntity);
     }
 
     @Override

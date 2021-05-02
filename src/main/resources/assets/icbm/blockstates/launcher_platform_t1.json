@@ -1,7 +1,20 @@
 {
   "variants": {
-    "": {
-      "model": "icbm:item/launcher/launcher"
+    "facing=north": {
+      "model": "icbm:item/launcher_platform_t1",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "icbm:item/launcher_platform_t1",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "icbm:item/launcher_platform_t1",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "icbm:item/launcher_platform_t1",
+      "y": 270
     }
   }
 }

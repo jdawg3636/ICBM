@@ -12,13 +12,6 @@ public class BlockLauncherSupportFrame extends AbstractBlockMulti {
             new Vector3i(0,2,0)
     };
 
-    /**
-     * Constructor - Sets Default State for Multiblock Positioning Properties
-     */
-    public BlockLauncherSupportFrame() {
-        super(Block.Properties.create(Material.IRON));
-    }
-
     @Override
     public Vector3i[] getMultiblockPositions() {
         return MULTIBLOCK_POSITIONS;

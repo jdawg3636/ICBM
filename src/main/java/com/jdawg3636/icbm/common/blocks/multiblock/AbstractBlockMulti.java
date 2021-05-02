@@ -1,9 +1,8 @@
 package com.jdawg3636.icbm.common.blocks.multiblock;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,8 +42,8 @@ public abstract class AbstractBlockMulti extends Block {
     public static final IntegerProperty MULTIBLOCK_OFFSET_DEPTH                 = IntegerProperty.create("multiblock_offset_depth", 0, absDepthMax);
     public static final BooleanProperty MULTIBLOCK_OFFSET_DEPTH_NEGATIVE        = BooleanProperty.create("multiblock_offset_depth_negative");
 
-    public AbstractBlockMulti(Properties properties) {
-        super(properties.notSolid());
+    public AbstractBlockMulti() {
+        super(AbstractBlock.Properties.create(Material.GLASS, MaterialColor.IRON).notSolid());
         this.setDefaultState(
                 this.stateContainer.getBaseState()
                 .with(FACING, Direction.NORTH)
