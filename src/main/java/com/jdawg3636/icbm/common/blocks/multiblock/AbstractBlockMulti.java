@@ -4,6 +4,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -43,7 +44,14 @@ public abstract class AbstractBlockMulti extends Block {
     public static final BooleanProperty MULTIBLOCK_OFFSET_DEPTH_NEGATIVE        = BooleanProperty.create("multiblock_offset_depth_negative");
 
     public AbstractBlockMulti() {
-        super(AbstractBlock.Properties.create(Material.GLASS, MaterialColor.IRON).notSolid());
+        super(AbstractBlock.Properties.create(Material.GLASS, MaterialColor.IRON)
+                /* Copied(ish) from registration for GLASS in net.minecraft.block.Blocks */
+                .notSolid()
+                .setAllowsSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
+                .setOpaque((BlockState state, IBlockReader reader, BlockPos pos)->false)
+                .setSuffocates((BlockState state, IBlockReader reader, BlockPos pos)->false)
+                .setBlocksVision((BlockState state, IBlockReader reader, BlockPos pos)->false)
+        );
         this.setDefaultState(
                 this.stateContainer.getBaseState()
                 .with(FACING, Direction.NORTH)
@@ -231,14 +239,14 @@ public abstract class AbstractBlockMulti extends Block {
         return pos.add(-offsetX, -offsetY, -offsetZ);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public float getAmbientOcclusionLightValue(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
+    @OnlyIn(Dist.CLIENT)
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return 1.0F;
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState p_200123_1_, IBlockReader p_200123_2_, BlockPos p_200123_3_) {
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return true;
     }
 
@@ -246,6 +254,13 @@ public abstract class AbstractBlockMulti extends Block {
     public BlockRenderType getRenderType(BlockState state) {
         return isRootOfMultiblock(state) ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
     }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+        return false;
+    }
+
 
     /**
      * @return Array of Vector3i, each vector represents the horiz/height/depth offsets for all non-root multiblock components.

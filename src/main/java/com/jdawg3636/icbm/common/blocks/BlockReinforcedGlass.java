@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -12,7 +13,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockReinforcedGlass extends Block {
 
     public BlockReinforcedGlass() {
-        super(Block.Properties.create(Material.GLASS).hardnessAndResistance(10, 48).notSolid());
+        super(Block.Properties.create(Material.GLASS).hardnessAndResistance(10, 48)
+                /* Copied(ish) from registration for GLASS in net.minecraft.block.Blocks */
+                .notSolid()
+                .setAllowsSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
+                .setOpaque((BlockState state, IBlockReader reader, BlockPos pos)->false)
+                .setSuffocates((BlockState state, IBlockReader reader, BlockPos pos)->false)
+                .setBlocksVision((BlockState state, IBlockReader reader, BlockPos pos)->false)
+        );
     }
 
     /**
@@ -29,9 +37,8 @@ public class BlockReinforcedGlass extends Block {
      */
     @Override
     @OnlyIn(Dist.CLIENT)
-    public boolean isSideInvisible(BlockState p_200122_1_, BlockState p_200122_2_, Direction p_200122_3_) {
-        // Pretty sure p_200122_1_ is "this" but in BlockState form, overrides code from AbstractBlock that is obfuscated af so this could be wrong
-        return p_200122_1_.getBlock() == p_200122_2_.getBlock() || super.isSideInvisible(p_200122_1_, p_200122_2_, p_200122_3_);
+    public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+        return state.getBlock() == adjacentBlockState.getBlock() || super.isSideInvisible(state, adjacentBlockState, side);
     }
 
     /**
