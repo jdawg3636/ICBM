@@ -1,7 +1,10 @@
 {
     "loader": "forge:obj",
     "model": "icbm:models/block/launcher_platform_t3.obj",
+    "detectCullableFaces": false,
+    "diffuseLighting": false,
     "flip-v": true,
+    "ambientToFullbright": false,
     "display": {
         "ground": {
             "scale": [
