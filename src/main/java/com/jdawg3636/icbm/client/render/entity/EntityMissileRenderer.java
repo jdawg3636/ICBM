@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.client.render.entity;
 
-import com.jdawg3636.icbm.common.entity.EntityMissileIncendiary;
+import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class EntityMissileRenderer extends EntityRenderer<EntityMissileIncendiary> {
+public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
 
     public ItemStack missileItem;
     public float rotationX;
@@ -32,7 +32,7 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissileIncendiar
     }
 
     @Override
-    public void render(@Nonnull EntityMissileIncendiary entity, float entityYaw, float partialTick, @Nonnull MatrixStack matrix, @Nonnull IRenderTypeBuffer buffer, int light) {
+    public void render(@Nonnull EntityMissile entity, float entityYaw, float partialTick, @Nonnull MatrixStack matrix, @Nonnull IRenderTypeBuffer buffer, int light) {
 
         rotationX = entity.getDataManager().get(entity.ROTATION_X);
         rotationY = entity.getDataManager().get(entity.ROTATION_Y);
@@ -79,13 +79,13 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissileIncendiar
      * Implemented preemptively as a missile's hitbox will frequently not line up with its render.
      */
     @Override
-    public boolean shouldRender(EntityMissileIncendiary livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(EntityMissile livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
         return true;
     }
 
     @Nonnull
     @Override
-    public ResourceLocation getEntityTexture(@Nonnull EntityMissileIncendiary entity) {
+    public ResourceLocation getEntityTexture(@Nonnull EntityMissile entity) {
         return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 

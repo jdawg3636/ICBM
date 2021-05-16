@@ -1,10 +1,10 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.reg.EntityReg;
-import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -15,19 +15,26 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 
-public class EntityMissileIncendiary extends Entity {
+public abstract class EntityMissile extends Entity {
 
-    public static final DataParameter<Float> ROTATION_X = EntityDataManager.createKey(EntityMissileIncendiary.class, DataSerializers.FLOAT);
-    public static final DataParameter<Float> ROTATION_Y = EntityDataManager.createKey(EntityMissileIncendiary.class, DataSerializers.FLOAT);
-    public static final DataParameter<Float> ROTATION_Z = EntityDataManager.createKey(EntityMissileIncendiary.class, DataSerializers.FLOAT);
+    public static final DataParameter<Float> ROTATION_X = EntityDataManager.createKey(EntityMissile.class, DataSerializers.FLOAT);
+    public static final DataParameter<Float> ROTATION_Y = EntityDataManager.createKey(EntityMissile.class, DataSerializers.FLOAT);
+    public static final DataParameter<Float> ROTATION_Z = EntityDataManager.createKey(EntityMissile.class, DataSerializers.FLOAT);
 
-    public EntityMissileIncendiary(EntityType<?> entityTypeIn, World worldIn) {
+    public EntityMissile(EntityType<?> entityTypeIn, World worldIn) {
         super(entityTypeIn, worldIn);
     }
+
+    /**
+     * Abstract - To Be Overridden during Registration
+     * @return ItemStack form of the missile this entity represents
+     */
+    public abstract RegistryObject<Item> getMissileItem();
 
     @Override
     public void tick() {
@@ -96,7 +103,7 @@ public class EntityMissileIncendiary extends Entity {
 
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
-        return new ItemStack(ItemReg.MISSILE_INCENDIARY.get());
+        return getMissileItem().get().getDefaultInstance();
     }
 
 }

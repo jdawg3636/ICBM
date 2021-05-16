@@ -2,9 +2,10 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.common.entity.EntityExplosivesIncendiary;
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.entity.EntityMissileIncendiary;
+import com.jdawg3636.icbm.common.entity.EntityMissile;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -24,12 +25,26 @@ public final class EntityReg {
     );
 
     // Missile Registration
-    public static final RegistryObject<EntityType<EntityMissileIncendiary>> MISSILE_INCENDIARY = ENTITIES.register(
-            "missile_incendiary",
-            () -> EntityType.Builder.<EntityMissileIncendiary>create(EntityMissileIncendiary::new, EntityClassification.MISC)
-                    .immuneToFire().size(1F, 2.5F).trackingRange(10).func_233608_b_(10)
-                    .build("missile_incendiary")
-    );
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_INCENDIARY = registerMissile(ItemReg.MISSILE_INCENDIARY);
+
+    public static RegistryObject<EntityType<EntityMissile>> registerMissile(RegistryObject<Item> missileItem) {
+        return ENTITIES.register(
+                missileItem.getId().getPath(),
+                () -> {
+                        return EntityType.Builder.<EntityMissile>create(
+                                (type, world) -> new EntityMissile(type, world) {
+                                    @Override
+                                    public RegistryObject<Item> getMissileItem() {
+                                        return missileItem;
+                                    }
+                                },
+                                EntityClassification.MISC
+                        )
+                        .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
+                        .build(missileItem.getId().getPath());
+                }
+        );
+    }
 
     /*
 
