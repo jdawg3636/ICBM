@@ -25,22 +25,44 @@ public final class EntityReg {
     );
 
     // Missile Registration
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONVENTIONAL = registerMissile(ItemReg.MISSILE_CONVENTIONAL);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SHRAPNEL = registerMissile(ItemReg.MISSILE_SHRAPNEL);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_INCENDIARY = registerMissile(ItemReg.MISSILE_INCENDIARY);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_DEBILITATION = registerMissile(ItemReg.MISSILE_DEBILITATION);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CHEMICAL = registerMissile(ItemReg.MISSILE_CHEMICAL);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANVIL = registerMissile(ItemReg.MISSILE_ANVIL);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REPULSIVE = registerMissile(ItemReg.MISSILE_REPULSIVE);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ATTRACTIVE = registerMissile(ItemReg.MISSILE_ATTRACTIVE);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NIGHTMARE = registerMissile(ItemReg.MISSILE_NIGHTMARE);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_FRAGMENTATION = registerMissile(ItemReg.MISSILE_FRAGMENTATION);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONTAGIOUS = registerMissile(ItemReg.MISSILE_CONTAGIOUS);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SONIC = registerMissile(ItemReg.MISSILE_SONIC);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_BREACHING = registerMissile(ItemReg.MISSILE_BREACHING);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REJUVENATION = registerMissile(ItemReg.MISSILE_REJUVENATION);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_THERMOBARIC = registerMissile(ItemReg.MISSILE_THERMOBARIC);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NUCLEAR = registerMissile(ItemReg.MISSILE_NUCLEAR);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EMP = registerMissile(ItemReg.MISSILE_EMP);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EXOTHERMIC = registerMissile(ItemReg.MISSILE_EXOTHERMIC);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDOTHERMIC = registerMissile(ItemReg.MISSILE_ENDOTHERMIC);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIGRAVITATIONAL = registerMissile(ItemReg.MISSILE_ANTIGRAVITATIONAL);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDER = registerMissile(ItemReg.MISSILE_ENDER);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HYPERSONIC = registerMissile(ItemReg.MISSILE_HYPERSONIC);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIMATTER = registerMissile(ItemReg.MISSILE_ANTIMATTER);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REDMATTER = registerMissile(ItemReg.MISSILE_REDMATTER);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HOMING = registerMissile(ItemReg.MISSILE_HOMING);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC = registerMissile(ItemReg.MISSILE_ANTIBALLISTIC);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER = registerMissile(ItemReg.MISSILE_CLUSTER);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR = registerMissile(ItemReg.MISSILE_CLUSTER_NUCLEAR);
 
     public static RegistryObject<EntityType<EntityMissile>> registerMissile(RegistryObject<Item> missileItem) {
         return ENTITIES.register(
                 missileItem.getId().getPath(),
                 () -> {
                         return EntityType.Builder.<EntityMissile>create(
-                                (type, world) -> new EntityMissile(type, world) {
-                                    @Override
-                                    public RegistryObject<Item> getMissileItem() {
-                                        return missileItem;
-                                    }
-                                },
+                                (type, world) -> new EntityMissile(type, world, missileItem),
                                 EntityClassification.MISC
                         )
-                        .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
+                        .immuneToFire().size(1F, 4F).trackingRange(10).func_233608_b_(10)
                         .build(missileItem.getId().getPath());
                 }
         );

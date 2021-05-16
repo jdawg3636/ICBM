@@ -31,14 +31,43 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_POISON.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.getCutout());
 
-        // Register Entity Rendering Handlers
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), EntityExplosivesIncendiaryRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_INCENDIARY.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_INCENDIARY.get().getDefaultInstance()));
-
         // Register Container Screens
         ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
+
+        // Register Explosives Entity Rendering Handlers
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), EntityExplosivesIncendiaryRenderer::new);
+
+        // Register Missile Entity Rendering Handlers
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CONVENTIONAL.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CONVENTIONAL.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_SHRAPNEL.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_SHRAPNEL.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_INCENDIARY.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_INCENDIARY.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_DEBILITATION.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_DEBILITATION.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CHEMICAL.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CHEMICAL.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_ANVIL.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_ANVIL.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_REPULSIVE.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_REPULSIVE.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_ATTRACTIVE.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_ATTRACTIVE.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_NIGHTMARE.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_NIGHTMARE.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_FRAGMENTATION.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_FRAGMENTATION.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CONTAGIOUS.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CONTAGIOUS.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_SONIC.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_SONIC.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_BREACHING.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_BREACHING.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_REJUVENATION.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_REJUVENATION.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_THERMOBARIC.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_THERMOBARIC.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_NUCLEAR.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_NUCLEAR.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_EMP.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_EMP.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_EXOTHERMIC.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_EXOTHERMIC.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_ENDOTHERMIC.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_ENDOTHERMIC.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_ANTIGRAVITATIONAL.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_ANTIGRAVITATIONAL.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_ENDER.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_ENDER.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_HYPERSONIC.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_HYPERSONIC.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_ANTIMATTER.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_ANTIMATTER.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_REDMATTER.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_REDMATTER.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_HOMING.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_HOMING.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_ANTIBALLISTIC.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_ANTIBALLISTIC.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER_NUCLEAR.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER_NUCLEAR.get().getDefaultInstance()));
 
     }
 

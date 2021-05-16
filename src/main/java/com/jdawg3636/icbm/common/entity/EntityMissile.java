@@ -20,21 +20,18 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 
-public abstract class EntityMissile extends Entity {
+public class EntityMissile extends Entity {
 
     public static final DataParameter<Float> ROTATION_X = EntityDataManager.createKey(EntityMissile.class, DataSerializers.FLOAT);
     public static final DataParameter<Float> ROTATION_Y = EntityDataManager.createKey(EntityMissile.class, DataSerializers.FLOAT);
     public static final DataParameter<Float> ROTATION_Z = EntityDataManager.createKey(EntityMissile.class, DataSerializers.FLOAT);
 
-    public EntityMissile(EntityType<?> entityTypeIn, World worldIn) {
-        super(entityTypeIn, worldIn);
-    }
+    RegistryObject<Item> missileItem;
 
-    /**
-     * Abstract - To Be Overridden during Registration
-     * @return ItemStack form of the missile this entity represents
-     */
-    public abstract RegistryObject<Item> getMissileItem();
+    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, RegistryObject<Item> missileItem) {
+        super(entityTypeIn, worldIn);
+        this.missileItem = missileItem;
+    }
 
     @Override
     public void tick() {
@@ -67,12 +64,6 @@ public abstract class EntityMissile extends Entity {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    @Nonnull
-    @Override
-    public EntityType<?> getType() {
-        return EntityReg.MISSILE_INCENDIARY.get();
-    }
-
     @Override
     public boolean canBeCollidedWith() {
         return true;
@@ -103,7 +94,7 @@ public abstract class EntityMissile extends Entity {
 
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
-        return getMissileItem().get().getDefaultInstance();
+        return missileItem.get().getDefaultInstance();
     }
 
 }
