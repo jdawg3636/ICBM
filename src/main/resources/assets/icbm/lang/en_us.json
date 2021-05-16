@@ -214,6 +214,35 @@
   "item.icbm.missile_antimatter": "Antimatter Missile",
   "item.icbm.missile_redmatter": "Red Matter Missile",
 
+  # Missile Entity Form
+  "entity.icbm.missile_conventional": "Conventional Missile",
+  "entity.icbm.missile_shrapnel": "Shrapnel Missile",
+  "entity.icbm.missile_incendiary": "Incendiary Missile",
+  "entity.icbm.missile_debilitation": "Debilitation Missile",
+  "entity.icbm.missile_chemical": "Chemical Missile",
+  "entity.icbm.missile_anvil": "Anvil Missile",
+  "entity.icbm.missile_repulsive": "Repulsive Missile",
+  "entity.icbm.missile_attractive": "Attractive Missile",
+  "entity.icbm.missile_nightmare": "Nightmare Missile",
+
+  "entity.icbm.missile_fragmentation": "Fragmentation Missile",
+  "entity.icbm.missile_contagious": "Contagious Missile",
+  "entity.icbm.missile_sonic": "Sonic Missile",
+  "entity.icbm.missile_breaching": "Breaching Missile",
+  "entity.icbm.missile_rejuvenation": "Rejuvenation Missile",
+  "entity.icbm.missile_thermobaric": "Thermobaric Missile",
+
+  "entity.icbm.missile_nuclear": "Nuclear Missile",
+  "entity.icbm.missile_emp": "EMP Missile",
+  "entity.icbm.missile_exothermic": "Exothermic Missile",
+  "entity.icbm.missile_endothermic": "Endothermic Missile",
+  "entity.icbm.missile_antigravitational": "Anti-Gravitational Missile",
+  "entity.icbm.missile_ender": "Ender Missile",
+  "entity.icbm.missile_hypersonic": "Hypersonic Missile",
+
+  "entity.icbm.missile_antimatter": "Antimatter Missile",
+  "entity.icbm.missile_redmatter": "Red Matter Missile",
+
   # Explosive Minecarts
   "item.icbm.minecart_explosive": "Explosive Cart",
   "item.icbm.minecart_shrapnel": "Shrapnel Minecart",

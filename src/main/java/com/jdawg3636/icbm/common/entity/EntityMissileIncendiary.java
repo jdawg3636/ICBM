@@ -62,6 +62,16 @@ public class EntityMissileIncendiary extends Entity implements IRideable {
     }
 
     @Override
+    public boolean canBeCollidedWith() {
+        return true;
+    }
+
+    @Override
+    protected boolean canTriggerWalking() {
+        return false;
+    }
+
+    @Override
     public ItemStack getPickedResult(RayTraceResult target) {
         return new ItemStack(ItemReg.MISSILE_INCENDIARY.get());
     }
