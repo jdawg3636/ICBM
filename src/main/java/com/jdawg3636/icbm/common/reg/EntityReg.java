@@ -27,7 +27,7 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissileIncendiary>> MISSILE_INCENDIARY = ENTITIES.register(
             "missile_incendiary",
             () -> EntityType.Builder.<EntityMissileIncendiary>create(EntityMissileIncendiary::new, EntityClassification.MISC)
-                    .immuneToFire().size(1F, 2F).trackingRange(10).func_233608_b_(10)
+                    .immuneToFire().size(1F, 2.5F).trackingRange(10).func_233608_b_(10)
                     .build("missile_incendiary")
     );
 

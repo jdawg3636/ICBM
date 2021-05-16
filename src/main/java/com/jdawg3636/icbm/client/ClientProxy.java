@@ -1,12 +1,13 @@
 package com.jdawg3636.icbm.client;
 
 import com.jdawg3636.icbm.client.render.entity.EntityExplosivesIncendiaryRenderer;
-import com.jdawg3636.icbm.client.render.entity.EntityMissileIncendiaryRenderer;
+import com.jdawg3636.icbm.client.render.entity.EntityMissileRenderer;
 import com.jdawg3636.icbm.common.blocks.launcher_platform.ScreenLauncherPlatform;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.CommonProxy;
+import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -32,7 +33,7 @@ public class ClientProxy extends CommonProxy {
 
         // Register Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), EntityExplosivesIncendiaryRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_INCENDIARY.get(), EntityMissileIncendiaryRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_INCENDIARY.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_INCENDIARY.get().getDefaultInstance()));
 
         // Register Container Screens
         ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
