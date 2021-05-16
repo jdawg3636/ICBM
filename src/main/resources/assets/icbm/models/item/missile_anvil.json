@@ -1,0 +1,75 @@
+{
+    "loader": "forge:obj",
+    "model": "icbm:models/item/missile_anvil.obj",
+    "detectCullableFaces": false,
+    "diffuseLighting": false,
+    "flip-v": true,
+    "ambientToFullbright": false,
+    "display": {
+        "ground": {
+            "scale": [
+                0.1875,0.1875,0.1875
+            ],
+            "rotation": [
+                90,0,0
+            ],
+            "translation": [
+                0,3,-4
+            ]
+        },
+        "thirdperson_righthand": {
+            "scale": [
+                0.25,0.25,0.25
+            ],
+            "rotation": [
+                0,315,0
+            ]
+        },
+        "thirdperson_lefthand": {
+            "scale": [
+                0.25,0.25,0.25
+            ],
+            "rotation": [
+                0,315,0
+            ]
+        },
+        "firstperson_righthand": {
+            "scale": [
+                0.25,0.25,0.25
+            ],
+            "rotation": [
+                0,315,0
+            ]
+        },
+        "firstperson_lefthand": {
+            "scale": [
+                0.25,0.25,0.25
+            ],
+            "rotation": [
+                0,315,0
+            ]
+        },
+        "gui": {
+            "scale": [
+                0.3,0.3,0.3
+            ],
+            "rotation": [
+                20,120,90
+            ],
+            "translation": [
+                -3,1,0
+            ]
+        },
+        "fixed": {
+            "scale": [
+                0.25,0.25,0.25
+            ],
+            "translation": [
+                0,-6,0
+            ]
+        }
+    },
+    "textures": {
+        "particle": "icbm:block/machine"
+    }
+}
