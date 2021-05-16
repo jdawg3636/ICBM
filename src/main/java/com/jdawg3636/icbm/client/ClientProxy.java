@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.client;
 
 import com.jdawg3636.icbm.client.render.entity.EntityExplosivesIncendiaryRenderer;
+import com.jdawg3636.icbm.client.render.entity.EntityMissileIncendiaryRenderer;
 import com.jdawg3636.icbm.common.blocks.launcher_platform.ScreenLauncherPlatform;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
@@ -23,8 +24,6 @@ public class ClientProxy extends CommonProxy {
         // Set Render Layers
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_PLATFORM_T1.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_PLATFORM_T2.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_PLATFORM_T3.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_GLASS.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES.get(), RenderType.getCutout());
@@ -33,6 +32,7 @@ public class ClientProxy extends CommonProxy {
 
         // Register Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), EntityExplosivesIncendiaryRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_INCENDIARY.get(), EntityMissileIncendiaryRenderer::new);
 
         // Register Container Screens
         ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);

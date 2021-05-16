@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.common.entity.EntityExplosivesIncendiary;
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.entity.EntityMissileIncendiary;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.fml.RegistryObject;
@@ -14,11 +15,20 @@ public final class EntityReg {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMReference.MODID);
 
-    // Explosive registration
+    // Explosives Registration
     public static final RegistryObject<EntityType<EntityExplosivesIncendiary>> EXPLOSIVES_INCENDIARY = ENTITIES.register(
-            "explosives_incendiary", () -> EntityType.Builder.<EntityExplosivesIncendiary>create(EntityExplosivesIncendiary::new, EntityClassification.MISC)
-            .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
-            .build("explosives_incendiary")
+            "explosives_incendiary",
+            () -> EntityType.Builder.<EntityExplosivesIncendiary>create(EntityExplosivesIncendiary::new, EntityClassification.MISC)
+                    .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
+                    .build("explosives_incendiary")
+    );
+
+    // Missile Registration
+    public static final RegistryObject<EntityType<EntityMissileIncendiary>> MISSILE_INCENDIARY = ENTITIES.register(
+            "missile_incendiary",
+            () -> EntityType.Builder.<EntityMissileIncendiary>create(EntityMissileIncendiary::new, EntityClassification.MISC)
+                    .immuneToFire().size(1F, 2F).trackingRange(10).func_233608_b_(10)
+                    .build("missile_incendiary")
     );
 
     /*
