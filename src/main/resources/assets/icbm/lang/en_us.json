@@ -243,6 +243,7 @@
   "entity.icbm.missile_antimatter": "Antimatter Missile",
   "entity.icbm.missile_redmatter": "Red Matter Missile",
 
+  "entity.icbm.missile_module": "Missile Module",
   "entity.icbm.missile_antiballistic": "Anti-Ballistic Missile",
   "entity.icbm.missile_cluster": "Cluster Missile",
   "entity.icbm.missile_cluster_nuclear": "Nuclear Cluster Missile",

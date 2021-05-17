@@ -25,6 +25,7 @@ public final class EntityReg {
     );
 
     // Missile Registration
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_MODULE = registerMissile(ItemReg.MISSILE_MODULE);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONVENTIONAL = registerMissile(ItemReg.MISSILE_CONVENTIONAL);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SHRAPNEL = registerMissile(ItemReg.MISSILE_SHRAPNEL);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_INCENDIARY = registerMissile(ItemReg.MISSILE_INCENDIARY);
