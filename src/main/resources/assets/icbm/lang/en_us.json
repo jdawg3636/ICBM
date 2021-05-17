@@ -243,6 +243,11 @@
   "entity.icbm.missile_antimatter": "Antimatter Missile",
   "entity.icbm.missile_redmatter": "Red Matter Missile",
 
+  "entity.icbm.missile_antiballistic": "Anti-Ballistic Missile",
+  "entity.icbm.missile_cluster": "Cluster Missile",
+  "entity.icbm.missile_cluster_nuclear": "Nuclear Cluster Missile",
+  "entity.icbm.missile_homing": "Homing Missile",
+
   # Explosive Minecarts
   "item.icbm.minecart_explosive": "Explosive Cart",
   "item.icbm.minecart_shrapnel": "Shrapnel Minecart",
@@ -314,7 +319,7 @@
 
   # Special Missiles
   "item.icbm.missile_module": "Missile Module",
-  "item.icbm.missile_antiballistic": "Anti-ballistic Missile",
+  "item.icbm.missile_antiballistic": "Anti-Ballistic Missile",
   "item.icbm.missile_cluster": "Cluster Missile",
   "item.icbm.missile_cluster_nuclear": "Nuclear Cluster Missile",
   "item.icbm.missile_homing": "Homing Missile",
