@@ -185,6 +185,35 @@
 
   "block.icbm.s_mine": "S-Mine",
 
+  # Primed Entity Form
+  "entity.icbm.explosives_condensed": "Primed Condensed Explosives",
+  "entity.icbm.explosives_shrapnel": "Primed Shrapnel Explosives",
+  "entity.icbm.explosives_incendiary": "Primed Incendiary Explosives",
+  "entity.icbm.explosives_debilitation": "Primed Debilitation Explosives",
+  "entity.icbm.explosives_chemical": "Primed Chemical Explosives",
+  "entity.icbm.explosives_anvil": "Primed Anvil Explosives",
+  "entity.icbm.explosives_repulsive": "Primed Repulsive Explosives",
+  "entity.icbm.explosives_attractive": "Primed Attractive Explosives",
+  "entity.icbm.explosives_nightmare": "Primed Nightmare Explosives",
+
+  "entity.icbm.explosives_fragmentation": "Primed Fragmentation Explosives",
+  "entity.icbm.explosives_contagious": "Primed Contagious Explosives",
+  "entity.icbm.explosives_sonic": "Primed Sonic Explosives",
+  "entity.icbm.explosives_breaching": "Primed Breaching Explosives",
+  "entity.icbm.explosives_rejuvenation": "Primed Rejuvenation Explosives",
+  "entity.icbm.explosives_thermobaric": "Primed Thermobaric Explosives",
+
+  "entity.icbm.explosives_nuclear": "Primed Nuclear Explosives",
+  "entity.icbm.explosives_emp": "Primed EMP Explosives",
+  "entity.icbm.explosives_exothermic": "Primed Exothermic Explosives",
+  "entity.icbm.explosives_endothermic": "Primed Endothermic Explosives",
+  "entity.icbm.explosives_antigravitational": "Primed Anti-Gravitational Explosives",
+  "entity.icbm.explosives_ender": "Primed Ender Explosives",
+  "entity.icbm.explosives_hypersonic": "Primed Hypersonic Explosives",
+
+  "entity.icbm.explosives_antimatter": "Primed Antimatter Explosives",
+  "entity.icbm.explosives_redmatter": "Primed Red Matter Explosives",
+
   # Missile Form
   "item.icbm.missile_conventional": "Conventional Missile",
   "item.icbm.missile_shrapnel": "Shrapnel Missile",
