@@ -35,14 +35,129 @@ public class BlastEvent extends Event {
         return isGrenade;
     }
 
+    public interface BlastEventProvider {
+        BlastEvent getBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade);
+    }
+
+    public static class Condensed extends BlastEvent {
+        public Condensed(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Shrapnel extends BlastEvent {
+        public Shrapnel(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
     public static class Incendiary extends BlastEvent {
         public Incendiary(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
             super(blastPosition, blastWorld, isGrenade);
         }
     }
-
-    public interface BlastEventProvider {
-        public BlastEvent getBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade);
+    public static class Debilitation extends BlastEvent {
+        public Debilitation(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Chemical extends BlastEvent {
+        public Chemical(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Anvil extends BlastEvent {
+        public Anvil(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Repulsive extends BlastEvent {
+        public Repulsive(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Attractive extends BlastEvent {
+        public Attractive(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Nightmare extends BlastEvent {
+        public Nightmare(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Fragmentation extends BlastEvent {
+        public Fragmentation(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Contagious extends BlastEvent {
+        public Contagious(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Sonic extends BlastEvent {
+        public Sonic(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Breaching extends BlastEvent {
+        public Breaching(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Rejuvenation extends BlastEvent {
+        public Rejuvenation(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Thermobaric extends BlastEvent {
+        public Thermobaric(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Nuclear extends BlastEvent {
+        public Nuclear(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Emp extends BlastEvent {
+        public Emp(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Exothermic extends BlastEvent {
+        public Exothermic(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Endothermic extends BlastEvent {
+        public Endothermic(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Antigravitational extends BlastEvent {
+        public Antigravitational(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Ender extends BlastEvent {
+        public Ender(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Hypersonic extends BlastEvent {
+        public Hypersonic(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Antimatter extends BlastEvent {
+        public Antimatter(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
+    public static class Redmatter extends BlastEvent {
+        public Redmatter(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
     }
 
 }
