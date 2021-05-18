@@ -41,4 +41,8 @@ public class BlastEvent extends Event {
         }
     }
 
+    public interface BlastEventProvider {
+        public BlastEvent getBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade);
+    }
+
 }

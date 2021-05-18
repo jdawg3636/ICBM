@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.client.render.entity;
 
-import com.jdawg3636.icbm.common.entity.EntityExplosivesIncendiary;
+import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -18,14 +18,14 @@ import javax.annotation.Nonnull;
 
 // Copied almost one-to-one from net.minecraft.client.renderer.entity.TNTRenderer
 @OnlyIn(Dist.CLIENT)
-public class EntityExplosivesIncendiaryRenderer extends EntityRenderer<EntityExplosivesIncendiary> {
+public class EntityExplosivesIncendiaryRenderer extends EntityRenderer<EntityPrimedExplosives> {
 
     public EntityExplosivesIncendiaryRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
     }
 
     @Override
-    public void render(@Nonnull EntityExplosivesIncendiary entity, float entityYaw, float partialTick, @Nonnull MatrixStack matrix, @Nonnull IRenderTypeBuffer renderer, int light) {
+    public void render(@Nonnull EntityPrimedExplosives entity, float entityYaw, float partialTick, @Nonnull MatrixStack matrix, @Nonnull IRenderTypeBuffer renderer, int light) {
         matrix.push();
         matrix.translate(0, 0.5, 0);
         if (entity.getFuse() - partialTick + 1.0F < 10.0F) {
@@ -47,7 +47,7 @@ public class EntityExplosivesIncendiaryRenderer extends EntityRenderer<EntityExp
 
     @Nonnull
     @Override
-    public ResourceLocation getEntityTexture(@Nonnull EntityExplosivesIncendiary entity) {
+    public ResourceLocation getEntityTexture(@Nonnull EntityPrimedExplosives entity) {
         return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 

@@ -1,8 +1,9 @@
 package com.jdawg3636.icbm.common.reg;
 
-import com.jdawg3636.icbm.common.entity.EntityExplosivesIncendiary;
+import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
+import com.jdawg3636.icbm.common.event.BlastEvent;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -16,13 +17,8 @@ public final class EntityReg {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMReference.MODID);
 
-    // Explosives Registration
-    public static final RegistryObject<EntityType<EntityExplosivesIncendiary>> EXPLOSIVES_INCENDIARY = ENTITIES.register(
-            "explosives_incendiary",
-            () -> EntityType.Builder.<EntityExplosivesIncendiary>create(EntityExplosivesIncendiary::new, EntityClassification.MISC)
-                    .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
-                    .build("explosives_incendiary")
-    );
+    // Primed Explosives Registration
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_INCENDIARY = registerPrimedExplosives(BlastEvent.Incendiary::new, ItemReg.EXPLOSIVES_INCENDIARY);
 
     // Missile Registration
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_MODULE = registerMissile(ItemReg.MISSILE_MODULE);
@@ -54,6 +50,20 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC = registerMissile(ItemReg.MISSILE_ANTIBALLISTIC);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER = registerMissile(ItemReg.MISSILE_CLUSTER);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR = registerMissile(ItemReg.MISSILE_CLUSTER_NUCLEAR);
+
+    public static  RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+        return ENTITIES.register(
+                itemForm.getId().getPath(),
+                () -> {
+                    return EntityType.Builder.<EntityPrimedExplosives>create(
+                            (type, world) -> new EntityPrimedExplosives(type, world, blastEventProvider, itemForm, 0, 0, 0, null),
+                            EntityClassification.MISC
+                    )
+                            .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
+                            .build(itemForm.getId().getPath());
+                }
+        );
+    }
 
     public static RegistryObject<EntityType<EntityMissile>> registerMissile(RegistryObject<Item> missileItem) {
         return ENTITIES.register(
