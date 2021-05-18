@@ -1,8 +1,8 @@
 package com.jdawg3636.icbm.client.render.entity;
 
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
-import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -18,10 +18,13 @@ import javax.annotation.Nonnull;
 
 // Copied almost one-to-one from net.minecraft.client.renderer.entity.TNTRenderer
 @OnlyIn(Dist.CLIENT)
-public class EntityExplosivesIncendiaryRenderer extends EntityRenderer<EntityPrimedExplosives> {
+public class EntityPrimedExplosivesRenderer extends EntityRenderer<EntityPrimedExplosives> {
 
-    public EntityExplosivesIncendiaryRenderer(EntityRendererManager renderManagerIn) {
+    public BlockState blockState;
+
+    public EntityPrimedExplosivesRenderer(EntityRendererManager renderManagerIn, BlockState blockState) {
         super(renderManagerIn);
+        this.blockState = blockState;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class EntityExplosivesIncendiaryRenderer extends EntityRenderer<EntityPri
         matrix.rotate(Vector3f.YP.rotationDegrees(-90.0F));
         matrix.translate(-0.5, -0.5, 0.5);
         matrix.rotate(Vector3f.YP.rotationDegrees(90.0F));
-        TNTMinecartRenderer.renderTntFlash(BlockReg.EXPLOSIVES_INCENDIARY.get().getDefaultState(), matrix, renderer, light, entity.getFuse() / 5 % 2 == 0);
+        TNTMinecartRenderer.renderTntFlash(blockState, matrix, renderer, light, entity.getFuse() / 5 % 2 == 0);
         matrix.pop();
         super.render(entity, entityYaw, partialTick, matrix, renderer, light);
     }
