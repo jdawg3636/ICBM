@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.common.blocks.*;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.blocks.launcher_platform.BlockLauncherPlatform;
 import com.jdawg3636.icbm.common.blocks.launcher_platform.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.event.BlastEvent;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -47,7 +48,7 @@ public class BlockReg {
     // Explosives
     public static final RegistryObject<Block> EXPLOSIVES_CONDENSED          = BLOCKS.register("explosives_condensed",           () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
     public static final RegistryObject<Block> EXPLOSIVES_SHRAPNEL           = BLOCKS.register("explosives_shrapnel",            () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
-    public static final RegistryObject<Block> EXPLOSIVES_INCENDIARY         = BLOCKS.register("explosives_incendiary",          BlockExplosivesIncendiary::new);
+    public static final RegistryObject<Block> EXPLOSIVES_INCENDIARY         = BLOCKS.register("explosives_incendiary",          () -> new BlockExplosives(EntityReg.EXPLOSIVES_INCENDIARY, BlastEvent.Incendiary::new, ItemReg.EXPLOSIVES_INCENDIARY));
     public static final RegistryObject<Block> EXPLOSIVES_DEBILITATION       = BLOCKS.register("explosives_debilitation",        () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
     public static final RegistryObject<Block> EXPLOSIVES_CHEMICAL           = BLOCKS.register("explosives_chemical",            () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
     public static final RegistryObject<Block> EXPLOSIVES_ANVIL              = BLOCKS.register("explosives_anvil",               () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));

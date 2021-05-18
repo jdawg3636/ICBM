@@ -2,11 +2,10 @@ package com.jdawg3636.icbm.common.blocks;
 
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
 import com.jdawg3636.icbm.common.event.BlastEvent;
-import com.jdawg3636.icbm.common.reg.EntityReg;
-import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -24,37 +23,38 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.RegistryObject;
 
 import javax.annotation.Nullable;
 
 // Pretty much this entire class is directly copy/pasted from net.minecraft.block.TNTBlock
 // Had to be duplicated rather than extended because the explode() method is static
-public class BlockExplosivesIncendiary extends Block {
+public class BlockExplosives extends Block {
+
+    RegistryObject<EntityType<EntityPrimedExplosives>> entityForm;
+    BlastEvent.BlastEventProvider blastEventProvider;
+    RegistryObject<Item> itemForm;
 
     /**
      * Parameterless Constructor
      * */
-    public BlockExplosivesIncendiary() {
-        this(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT));
+    public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+        super(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT));
+        this.setDefaultState(this.getDefaultState().with(UNSTABLE, Boolean.FALSE));
+        this.entityForm = entityForm;
+        this.blastEventProvider = blastEventProvider;
+        this.itemForm = itemForm;
     }
 
     /**
      * Normal Ignition Routine
      * */
-    private static void explode(World world, BlockPos pos, @Nullable LivingEntity igniter) {
+    private void explode(World world, BlockPos pos, @Nullable LivingEntity igniter) {
         if (!world.isRemote) {
-            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(EntityReg.EXPLOSIVES_INCENDIARY.get(), world, BlastEvent.Incendiary::new, ItemReg.EXPLOSIVES_INCENDIARY, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter);
+            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter);
             world.addEntity(explosives_entity);
             world.playSound((PlayerEntity)null, explosives_entity.getPosX(), explosives_entity.getPosY(), explosives_entity.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
-    }
-
-    /**
-     * Overload copied from Vanilla
-     * Can't actually find any uses of this, but no real reason to leave it out.
-     * */
-    public static void explode(World world, BlockPos pos) {
-        explode(world, pos, (LivingEntity)null);
     }
 
     /**
@@ -63,7 +63,7 @@ public class BlockExplosivesIncendiary extends Block {
      * */
     public void onExplosionDestroy(World world, BlockPos pos, Explosion explosionIn) {
         if (!world.isRemote) {
-            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(EntityReg.EXPLOSIVES_INCENDIARY.get(), world, BlastEvent.Incendiary::new, ItemReg.EXPLOSIVES_INCENDIARY, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosionIn.getExplosivePlacedBy());
+            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosionIn.getExplosivePlacedBy());
             explosives_entity.setFuse((short)(world.rand.nextInt(explosives_entity.getFuse() / 4) + explosives_entity.getFuse() / 8));
             world.addEntity(explosives_entity);
         }
@@ -74,11 +74,6 @@ public class BlockExplosivesIncendiary extends Block {
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
     public static final BooleanProperty UNSTABLE = BlockStateProperties.UNSTABLE;
-
-    public BlockExplosivesIncendiary(AbstractBlock.Properties properties) {
-        super(properties);
-        this.setDefaultState(this.getDefaultState().with(UNSTABLE, Boolean.valueOf(false)));
-    }
 
     public void catchFire(BlockState state, World world, BlockPos pos, @Nullable net.minecraft.util.Direction face, @Nullable LivingEntity igniter) {
         explode(world, pos, igniter);
