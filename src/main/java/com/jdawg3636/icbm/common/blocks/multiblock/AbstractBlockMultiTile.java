@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.blocks.multiblock;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -16,8 +17,8 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
     RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType;
 
-    public AbstractBlockMultiTile(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super();
+    public AbstractBlockMultiTile(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
+        super(properties);
         this.tileEntityType = tileEntityType;
     }
 

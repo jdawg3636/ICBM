@@ -31,15 +31,22 @@ import javax.annotation.Nullable;
 // Had to be duplicated rather than extended because the explode() method is static
 public class BlockExplosives extends Block {
 
-    RegistryObject<EntityType<EntityPrimedExplosives>> entityForm;
-    BlastEvent.BlastEventProvider blastEventProvider;
-    RegistryObject<Item> itemForm;
+    public RegistryObject<EntityType<EntityPrimedExplosives>> entityForm;
+    public BlastEvent.BlastEventProvider blastEventProvider;
+    public RegistryObject<Item> itemForm;
 
     /**
      * Parameterless Constructor
      * */
     public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
-        super(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT));
+        this(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT), entityForm, blastEventProvider, itemForm);
+    }
+
+    /**
+     * Verbose Constructor (Used by S-Mine to implement a custom material)
+     * */
+    public BlockExplosives(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+        super(properties);
         this.setDefaultState(this.getDefaultState().with(UNSTABLE, Boolean.FALSE));
         this.entityForm = entityForm;
         this.blastEventProvider = blastEventProvider;
@@ -49,8 +56,9 @@ public class BlockExplosives extends Block {
     /**
      * Normal Ignition Routine
      * */
-    private void explode(World world, BlockPos pos, @Nullable LivingEntity igniter) {
+    public void explode(World world, BlockPos pos, @Nullable LivingEntity igniter) {
         if (!world.isRemote) {
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
             EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter);
             world.addEntity(explosives_entity);
             world.playSound((PlayerEntity)null, explosives_entity.getPosX(), explosives_entity.getPosY(), explosives_entity.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -112,7 +120,6 @@ public class BlockExplosives extends Block {
             return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
         } else {
             catchFire(state, worldIn, pos, hit.getFace(), player);
-            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
             if (!player.isCreative()) {
                 if (item == Items.FLINT_AND_STEEL) {
                     itemstack.damageItem(1, player, (player1) -> {

@@ -214,6 +214,8 @@
   "entity.icbm.explosives_antimatter": "Primed Antimatter Explosives",
   "entity.icbm.explosives_redmatter": "Primed Red Matter Explosives",
 
+  "entity.icbm.s_mine": "S-Mine",
+
   # Missile Form
   "item.icbm.missile_conventional": "Conventional Missile",
   "item.icbm.missile_shrapnel": "Shrapnel Missile",

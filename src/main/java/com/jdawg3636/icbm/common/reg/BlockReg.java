@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.common.blocks.*;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.blocks.launcher_platform.BlockLauncherPlatform;
 import com.jdawg3636.icbm.common.blocks.launcher_platform.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.blocks.multiblock.AbstractBlockMulti;
 import com.jdawg3636.icbm.common.event.BlastEvent;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -72,7 +73,7 @@ public class BlockReg {
     public static final RegistryObject<Block> EXPLOSIVES_REDMATTER          = BLOCKS.register("explosives_redmatter",           () -> new BlockExplosives(EntityReg.EXPLOSIVES_REDMATTER,           BlastEvent.Redmatter::new,          ItemReg.EXPLOSIVES_REDMATTER));
 
     // Unconventional Explosives
-    public static final RegistryObject<Block> S_MINE                        = BLOCKS.register("s_mine",                         () -> new TNTBlock(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> S_MINE                        = BLOCKS.register("s_mine",                         () -> new BlockSMine(EntityReg.S_MINE, BlastEvent.SMine::new, ItemReg.S_MINE));
 
     // Spikes
     public static final RegistryObject<Block> SPIKES                        = BLOCKS.register("spikes",                         BlockSpikes::new);
@@ -94,19 +95,19 @@ public class BlockReg {
     });
 
     // Missile Launch Apparatus
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1) {
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new BlockLauncherPlatform(AbstractBlockMulti.getMultiblockMachineBlockProperties(), TileReg.LAUNCHER_PLATFORM_T1) {
         @Override
         public ContainerType<ContainerLauncherPlatform> getContainerType() {
             return ContainerReg.LAUNCHER_PLATFORM_T1.get();
         }
     });
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2) {
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new BlockLauncherPlatform(AbstractBlockMulti.getMultiblockMachineBlockProperties(), TileReg.LAUNCHER_PLATFORM_T2) {
         @Override
         public ContainerType<ContainerLauncherPlatform> getContainerType() {
             return ContainerReg.LAUNCHER_PLATFORM_T2.get();
         }
     });
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3) {
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new BlockLauncherPlatform(AbstractBlockMulti.getMultiblockMachineBlockProperties(), TileReg.LAUNCHER_PLATFORM_T3) {
         @Override
         public ContainerType<ContainerLauncherPlatform> getContainerType() {
             return ContainerReg.LAUNCHER_PLATFORM_T3.get();

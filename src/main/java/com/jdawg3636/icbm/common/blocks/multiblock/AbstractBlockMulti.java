@@ -44,14 +44,11 @@ public abstract class AbstractBlockMulti extends Block {
     public static final BooleanProperty MULTIBLOCK_OFFSET_DEPTH_NEGATIVE        = BooleanProperty.create("multiblock_offset_depth_negative");
 
     public AbstractBlockMulti() {
-        super(AbstractBlock.Properties.create(Material.GLASS, MaterialColor.IRON)
-                /* Copied(ish) from registration for GLASS in net.minecraft.block.Blocks */
-                .notSolid()
-                .setAllowsSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
-                .setOpaque((BlockState state, IBlockReader reader, BlockPos pos)->false)
-                .setSuffocates((BlockState state, IBlockReader reader, BlockPos pos)->false)
-                .setBlocksVision((BlockState state, IBlockReader reader, BlockPos pos)->false)
-        );
+        this(getMultiblockMachineBlockProperties());
+    }
+
+    public AbstractBlockMulti(AbstractBlock.Properties properties) {
+        super(properties);
         this.setDefaultState(
                 this.stateContainer.getBaseState()
                 .with(FACING, Direction.NORTH)
@@ -62,6 +59,17 @@ public abstract class AbstractBlockMulti extends Block {
                 .with(MULTIBLOCK_OFFSET_DEPTH, 0)
                 .with(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE, false)
         );
+    }
+
+    // Properties Copied(ish) from registration for GLASS in net.minecraft.block.Blocks
+    // Intended to be used for all multiblocks but separating out to leave flexibility. At the time of writing this is also used by the S-Mine (not a multiblock).
+    public static AbstractBlock.Properties getMultiblockMachineBlockProperties() {
+        return AbstractBlock.Properties.create(Material.GLASS, MaterialColor.IRON)
+                .notSolid()
+                .setAllowsSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
+                .setOpaque((BlockState state, IBlockReader reader, BlockPos pos)->false)
+                .setSuffocates((BlockState state, IBlockReader reader, BlockPos pos)->false)
+                .setBlocksVision((BlockState state, IBlockReader reader, BlockPos pos)->false);
     }
 
     /**

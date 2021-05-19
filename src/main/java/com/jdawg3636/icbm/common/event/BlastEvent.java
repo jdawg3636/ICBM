@@ -159,5 +159,10 @@ public class BlastEvent extends Event {
             super(blastPosition, blastWorld, isGrenade);
         }
     }
+    public static class SMine extends BlastEvent {
+        public SMine(BlockPos blastPosition, ServerWorld blastWorld, boolean isGrenade) {
+            super(blastPosition, blastWorld, isGrenade);
+        }
+    }
 
 }

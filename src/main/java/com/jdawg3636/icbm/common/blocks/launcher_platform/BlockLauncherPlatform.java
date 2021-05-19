@@ -1,9 +1,8 @@
 package com.jdawg3636.icbm.common.blocks.launcher_platform;
 
 import com.jdawg3636.icbm.common.blocks.multiblock.AbstractBlockMultiTile;
-import net.minecraft.block.Block;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -36,8 +35,8 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile {
     /**
      * Constructor - Sets Default State for Multiblock Positioning Properties
      */
-    public BlockLauncherPlatform(RegistryObject<TileEntityType<? extends TileEntity>> tileEntity) {
-        super(tileEntity);
+    public BlockLauncherPlatform(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntity) {
+        super(properties, tileEntity);
     }
 
     @Override
