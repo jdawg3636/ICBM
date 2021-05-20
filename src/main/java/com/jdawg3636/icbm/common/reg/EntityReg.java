@@ -42,7 +42,7 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_HYPERSONIC        = registerPrimedExplosives(BlastEvent.Hypersonic::new,          ItemReg.EXPLOSIVES_HYPERSONIC);
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ANTIMATTER        = registerPrimedExplosives(BlastEvent.Antimatter::new,          ItemReg.EXPLOSIVES_ANTIMATTER);
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_REDMATTER         = registerPrimedExplosives(BlastEvent.Redmatter::new,           ItemReg.EXPLOSIVES_REDMATTER);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> S_MINE                       = registerPrimedExplosives(BlastEvent.SMine::new,               ItemReg.S_MINE);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> S_MINE                       = registerPrimedExplosives(BlastEvent.SMine::new,               ItemReg.S_MINE, 0.875F, 0.125F);
 
     // Missile Registration
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_MODULE = registerMissile(ItemReg.MISSILE_MODULE);
@@ -55,27 +55,31 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REPULSIVE = registerMissile(ItemReg.MISSILE_REPULSIVE);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ATTRACTIVE = registerMissile(ItemReg.MISSILE_ATTRACTIVE);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NIGHTMARE = registerMissile(ItemReg.MISSILE_NIGHTMARE);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_FRAGMENTATION = registerMissile(ItemReg.MISSILE_FRAGMENTATION);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONTAGIOUS = registerMissile(ItemReg.MISSILE_CONTAGIOUS);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SONIC = registerMissile(ItemReg.MISSILE_SONIC);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_BREACHING = registerMissile(ItemReg.MISSILE_BREACHING);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REJUVENATION = registerMissile(ItemReg.MISSILE_REJUVENATION);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_THERMOBARIC = registerMissile(ItemReg.MISSILE_THERMOBARIC);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NUCLEAR = registerMissile(ItemReg.MISSILE_NUCLEAR);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EMP = registerMissile(ItemReg.MISSILE_EMP);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EXOTHERMIC = registerMissile(ItemReg.MISSILE_EXOTHERMIC);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDOTHERMIC = registerMissile(ItemReg.MISSILE_ENDOTHERMIC);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIGRAVITATIONAL = registerMissile(ItemReg.MISSILE_ANTIGRAVITATIONAL);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDER = registerMissile(ItemReg.MISSILE_ENDER);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HYPERSONIC = registerMissile(ItemReg.MISSILE_HYPERSONIC);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_FRAGMENTATION = registerMissile(ItemReg.MISSILE_FRAGMENTATION, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONTAGIOUS = registerMissile(ItemReg.MISSILE_CONTAGIOUS, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SONIC = registerMissile(ItemReg.MISSILE_SONIC, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_BREACHING = registerMissile(ItemReg.MISSILE_BREACHING, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REJUVENATION = registerMissile(ItemReg.MISSILE_REJUVENATION, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_THERMOBARIC = registerMissile(ItemReg.MISSILE_THERMOBARIC, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NUCLEAR = registerMissile(ItemReg.MISSILE_NUCLEAR, 1F, 7F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EMP = registerMissile(ItemReg.MISSILE_EMP, 1F, 7F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EXOTHERMIC = registerMissile(ItemReg.MISSILE_EXOTHERMIC, 1F, 7F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDOTHERMIC = registerMissile(ItemReg.MISSILE_ENDOTHERMIC, 1F, 7F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIGRAVITATIONAL = registerMissile(ItemReg.MISSILE_ANTIGRAVITATIONAL, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDER = registerMissile(ItemReg.MISSILE_ENDER, 1F, 6F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HYPERSONIC = registerMissile(ItemReg.MISSILE_HYPERSONIC, 1F, 7F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIMATTER = registerMissile(ItemReg.MISSILE_ANTIMATTER);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REDMATTER = registerMissile(ItemReg.MISSILE_REDMATTER);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HOMING = registerMissile(ItemReg.MISSILE_HOMING);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC = registerMissile(ItemReg.MISSILE_ANTIBALLISTIC);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER = registerMissile(ItemReg.MISSILE_CLUSTER);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR = registerMissile(ItemReg.MISSILE_CLUSTER_NUCLEAR);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC = registerMissile(ItemReg.MISSILE_ANTIBALLISTIC, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER = registerMissile(ItemReg.MISSILE_CLUSTER, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR = registerMissile(ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
 
-    public static  RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+    public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+        return registerPrimedExplosives(blastEventProvider, itemForm, 0.98F, 0.98F);
+    }
+
+    public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, float width, float height) {
         return ENTITIES.register(
                 itemForm.getId().getPath(),
                 () -> {
@@ -83,13 +87,17 @@ public final class EntityReg {
                             (type, world) -> new EntityPrimedExplosives(type, world, blastEventProvider, itemForm, 0, 0, 0, null),
                             EntityClassification.MISC
                     )
-                            .immuneToFire().size(0.98F, 0.98F).trackingRange(10).func_233608_b_(10)
+                            .immuneToFire().size(width, height).trackingRange(10).func_233608_b_(10)
                             .build(itemForm.getId().getPath());
                 }
         );
     }
 
     public static RegistryObject<EntityType<EntityMissile>> registerMissile(RegistryObject<Item> missileItem) {
+        return registerMissile(missileItem, 1F, 4F);
+    }
+
+    public static RegistryObject<EntityType<EntityMissile>> registerMissile(RegistryObject<Item> missileItem, float width, float height) {
         return ENTITIES.register(
                 missileItem.getId().getPath(),
                 () -> {
@@ -97,7 +105,7 @@ public final class EntityReg {
                                 (type, world) -> new EntityMissile(type, world, missileItem),
                                 EntityClassification.MISC
                         )
-                        .immuneToFire().size(1F, 4F).trackingRange(10).func_233608_b_(10)
+                        .immuneToFire().size(width, height).trackingRange(10).func_233608_b_(10)
                         .build(missileItem.getId().getPath());
                 }
         );
