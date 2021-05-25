@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.blocks.multiblock;
+package com.jdawg3636.icbm.common.block.multiblock;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

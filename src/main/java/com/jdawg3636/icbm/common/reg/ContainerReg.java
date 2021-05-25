@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.blocks.launcher_platform.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

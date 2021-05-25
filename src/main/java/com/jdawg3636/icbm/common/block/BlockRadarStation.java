@@ -1,8 +1,6 @@
-package com.jdawg3636.icbm.common.blocks;
+package com.jdawg3636.icbm.common.block;
 
-import com.jdawg3636.icbm.common.blocks.multiblock.AbstractBlockMulti;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
 import net.minecraft.util.math.vector.Vector3i;
 
 public class BlockRadarStation extends AbstractBlockMulti {

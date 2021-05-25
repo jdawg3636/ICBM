@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.blocks.launcher_platform;
+package com.jdawg3636.icbm.common.block.launcher_platform;
 
 import com.jdawg3636.icbm.ICBMReference;
 import net.minecraft.block.BlockState;

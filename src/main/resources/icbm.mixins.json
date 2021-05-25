@@ -1,0 +1,12 @@
+{
+  "required": false,
+  "package": "com.jdawg3636.icbm.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "icbm.refmap.json",
+  "mixins": [],
+  "client": [
+    "MixinClientRocketLauncherPose"
+  ],
+  "server": [],
+  "minVersion": "0.8"
+}

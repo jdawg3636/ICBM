@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.blocks;
+package com.jdawg3636.icbm.common.block;
 
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;

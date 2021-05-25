@@ -1,6 +1,6 @@
-package com.jdawg3636.icbm.common.blocks;
+package com.jdawg3636.icbm.common.block;
 
-import com.jdawg3636.icbm.common.blocks.multiblock.AbstractBlockMulti;
+import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
 import com.jdawg3636.icbm.common.event.BlastEvent;
 import net.minecraft.block.AbstractBlock;

@@ -1,10 +1,10 @@
 package com.jdawg3636.icbm.common.reg;
 
-import com.jdawg3636.icbm.common.blocks.*;
+import com.jdawg3636.icbm.common.block.*;
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.blocks.launcher_platform.BlockLauncherPlatform;
-import com.jdawg3636.icbm.common.blocks.launcher_platform.ContainerLauncherPlatform;
-import com.jdawg3636.icbm.common.blocks.multiblock.AbstractBlockMulti;
+import com.jdawg3636.icbm.common.block.launcher_platform.BlockLauncherPlatform;
+import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
 import com.jdawg3636.icbm.common.event.BlastEvent;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

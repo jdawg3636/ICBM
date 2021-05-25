@@ -1,6 +1,6 @@
-package com.jdawg3636.icbm.common.blocks.launcher_platform;
+package com.jdawg3636.icbm.common.block.launcher_platform;
 
-import com.jdawg3636.icbm.common.blocks.multiblock.AbstractBlockMultiTile;
+import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
