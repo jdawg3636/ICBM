@@ -58,7 +58,7 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile {
                     return new ContainerLauncherPlatform(getContainerType(), state.getBlock(), i, world, getMultiblockCenter(world, pos, state), playerInventory, playerEntity);
                 }
             };
-            NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());
+            NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());
         }
     }
 

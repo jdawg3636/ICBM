@@ -26,27 +26,27 @@ public class EntityPrimedExplosives extends TNTEntity {
         super(type, worldIn);
         this.blastEventProvider = blastEventProvider;
         this.itemForm = itemForm;
-        this.setPosition(x, y, z);
-        double d0 = worldIn.rand.nextDouble() * (double)((float)Math.PI * 2F);
-        this.setMotion(-Math.sin(d0) * 0.02D, (double)0.2F, -Math.cos(d0) * 0.02D);
+        this.setPos(x, y, z);
+        double d0 = worldIn.random.nextDouble() * (double)((float)Math.PI * 2F);
+        this.setDeltaMovement(-Math.sin(d0) * 0.02D, (double)0.2F, -Math.cos(d0) * 0.02D);
         this.setFuse(80);
-        this.prevPosX = x;
-        this.prevPosY = y;
-        this.prevPosZ = z;
-        this.tntPlacedBy = igniter;
+        this.xo = x;
+        this.yo = y;
+        this.zo = z;
+        this.owner = igniter;
     }
 
     @Override
     protected void explode() {
-        if(!getEntityWorld().isRemote())
+        if(!getCommandSenderWorld().isClientSide())
             MinecraftForge.EVENT_BUS.post(
-                    blastEventProvider.getBlastEvent(getPosition(), (ServerWorld) getEntityWorld(), false)
+                    blastEventProvider.getBlastEvent(blockPosition(), (ServerWorld) getCommandSenderWorld(), false)
             );
     }
 
     @Nonnull
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

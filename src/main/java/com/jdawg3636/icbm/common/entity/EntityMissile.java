@@ -22,9 +22,9 @@ import javax.annotation.Nonnull;
 
 public class EntityMissile extends Entity {
 
-    public static final DataParameter<Float> ROTATION_X = EntityDataManager.createKey(EntityMissile.class, DataSerializers.FLOAT);
-    public static final DataParameter<Float> ROTATION_Y = EntityDataManager.createKey(EntityMissile.class, DataSerializers.FLOAT);
-    public static final DataParameter<Float> ROTATION_Z = EntityDataManager.createKey(EntityMissile.class, DataSerializers.FLOAT);
+    public static final DataParameter<Float> ROTATION_X = EntityDataManager.defineId(EntityMissile.class, DataSerializers.FLOAT);
+    public static final DataParameter<Float> ROTATION_Y = EntityDataManager.defineId(EntityMissile.class, DataSerializers.FLOAT);
+    public static final DataParameter<Float> ROTATION_Z = EntityDataManager.defineId(EntityMissile.class, DataSerializers.FLOAT);
 
     RegistryObject<Item> missileItem;
 
@@ -39,53 +39,53 @@ public class EntityMissile extends Entity {
     }
 
     @Override
-    protected void registerData() {
-        dataManager.register(ROTATION_X, 0F);
-        dataManager.register(ROTATION_Y, 0F);
-        dataManager.register(ROTATION_Z, 0F);
+    protected void defineSynchedData() {
+        entityData.define(ROTATION_X, 0F);
+        entityData.define(ROTATION_Y, 0F);
+        entityData.define(ROTATION_Z, 0F);
     }
 
     @Override
-    protected void readAdditional(CompoundNBT compound) {
-        dataManager.set(ROTATION_X, compound.getFloat("MissileRotationX"));
-        dataManager.set(ROTATION_Y, compound.getFloat("MissileRotationY"));
-        dataManager.set(ROTATION_Z, compound.getFloat("MissileRotationZ"));
+    protected void readAdditionalSaveData(CompoundNBT compound) {
+        entityData.set(ROTATION_X, compound.getFloat("MissileRotationX"));
+        entityData.set(ROTATION_Y, compound.getFloat("MissileRotationY"));
+        entityData.set(ROTATION_Z, compound.getFloat("MissileRotationZ"));
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
-        compound.putFloat("MissileRotationX", dataManager.get(ROTATION_X));
-        compound.putFloat("MissileRotationY", dataManager.get(ROTATION_Y));
-        compound.putFloat("MissileRotationZ", dataManager.get(ROTATION_Z));
+    protected void addAdditionalSaveData(CompoundNBT compound) {
+        compound.putFloat("MissileRotationX", entityData.get(ROTATION_X));
+        compound.putFloat("MissileRotationY", entityData.get(ROTATION_Y));
+        compound.putFloat("MissileRotationZ", entityData.get(ROTATION_Z));
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean isPickable() {
         return true;
     }
 
     @Override
-    protected boolean canTriggerWalking() {
+    protected boolean isMovementNoisy() {
         return false;
     }
 
     @Override
-    protected boolean canBeRidden(Entity entityIn) {
+    protected boolean canRide(Entity entityIn) {
         return true;
     }
 
     @Override
-    public final ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
-        if (!this.isBeingRidden() && !player.isSecondaryUseActive()) {
-            if (!this.world.isRemote) {
+    public final ActionResultType interact(PlayerEntity player, Hand hand) {
+        if (!this.isVehicle() && !player.isSecondaryUseActive()) {
+            if (!this.level.isClientSide) {
                 player.startRiding(this);
             }
-            return ActionResultType.func_233537_a_(this.world.isRemote);
+            return ActionResultType.sidedSuccess(this.level.isClientSide);
         }
         else {
             return ActionResultType.PASS;

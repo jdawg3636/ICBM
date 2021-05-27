@@ -24,7 +24,7 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
     @Override
     public boolean hasTileEntity(BlockState state) {
-        return state.get(MULTIBLOCK_OFFSET_HORIZONTAL) == 0 && state.get(MULTIBLOCK_OFFSET_HEIGHT) == 0 && state.get(MULTIBLOCK_OFFSET_DEPTH) == 0;
+        return state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL) == 0 && state.getValue(MULTIBLOCK_OFFSET_HEIGHT) == 0 && state.getValue(MULTIBLOCK_OFFSET_DEPTH) == 0;
     }
 
     @Override
@@ -34,9 +34,9 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-        if (!world.isRemote) {
-            TileEntity tileEntity = world.getTileEntity(getMultiblockCenter(world, pos, state));
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
+        if (!world.isClientSide) {
+            TileEntity tileEntity = world.getBlockEntity(getMultiblockCenter(world, pos, state));
             if (tileEntity != null) {
                 onMultiblockActivated(tileEntity, state, world, pos, player, hand, trace);
             } else {

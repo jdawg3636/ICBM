@@ -29,10 +29,10 @@ public class EntityPrimedExplosivesRenderer extends EntityRenderer<EntityPrimedE
 
     @Override
     public void render(@Nonnull EntityPrimedExplosives entity, float entityYaw, float partialTick, @Nonnull MatrixStack matrix, @Nonnull IRenderTypeBuffer renderer, int light) {
-        matrix.push();
+        matrix.pushPose();
         matrix.translate(0, 0.5, 0);
-        if (entity.getFuse() - partialTick + 1.0F < 10.0F) {
-            float f = 1.0F - (entity.getFuse() - partialTick + 1.0F) / 10.0F;
+        if (entity.getLife() - partialTick + 1.0F < 10.0F) {
+            float f = 1.0F - (entity.getLife() - partialTick + 1.0F) / 10.0F;
             f = MathHelper.clamp(f, 0.0F, 1.0F);
             f = f * f;
             f = f * f;
@@ -40,18 +40,18 @@ public class EntityPrimedExplosivesRenderer extends EntityRenderer<EntityPrimedE
             matrix.scale(f1, f1, f1);
         }
 
-        matrix.rotate(Vector3f.YP.rotationDegrees(-90.0F));
+        matrix.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
         matrix.translate(-0.5, -0.5, 0.5);
-        matrix.rotate(Vector3f.YP.rotationDegrees(90.0F));
-        TNTMinecartRenderer.renderTntFlash(blockState, matrix, renderer, light, entity.getFuse() / 5 % 2 == 0);
-        matrix.pop();
+        matrix.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+        TNTMinecartRenderer.renderWhiteSolidBlock(blockState, matrix, renderer, light, entity.getLife() / 5 % 2 == 0);
+        matrix.popPose();
         super.render(entity, entityYaw, partialTick, matrix, renderer, light);
     }
 
     @Nonnull
     @Override
-    public ResourceLocation getEntityTexture(@Nonnull EntityPrimedExplosives entity) {
-        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+    public ResourceLocation getTextureLocation(@Nonnull EntityPrimedExplosives entity) {
+        return AtlasTexture.LOCATION_BLOCKS;
     }
 
 }

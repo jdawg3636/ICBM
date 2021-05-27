@@ -18,9 +18,9 @@ public abstract class MixinClientRocketLauncherPose extends LivingRenderer<Abstr
 
     // Forces the PlayerRenderer (third person) to use the player pose for a drawn bow and
     // arrow, even though the item is not in use. Mimics behavior of the MC 1.5.2 version.
-    @Inject(method = "func_241741_a_", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getArmPose", at = @At("HEAD"), cancellable = true)
     private static void onGetArmPose(AbstractClientPlayerEntity player, Hand hand, CallbackInfoReturnable<BipedModel.ArmPose> callback) {
-        if(player.getHeldItem(hand).getItem() instanceof ItemRocketLauncher) {
+        if(player.getItemInHand(hand).getItem() instanceof ItemRocketLauncher) {
             callback.setReturnValue(BipedModel.ArmPose.BOW_AND_ARROW);
         }
     }

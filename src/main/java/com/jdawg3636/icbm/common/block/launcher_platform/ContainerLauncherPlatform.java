@@ -28,7 +28,7 @@ public class ContainerLauncherPlatform extends Container {
 
     public ContainerLauncherPlatform(@Nullable ContainerType<?> type, Block block, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
         super(type, windowId);
-        this.tileEntity = world.getTileEntity(pos);
+        this.tileEntity = world.getBlockEntity(pos);
         this.playerInventory = new InvWrapper(playerInventory);
         if(tileEntity != null)
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> addSlot(new SlotItemHandler(h, 0, 84, 47)));
@@ -36,40 +36,40 @@ public class ContainerLauncherPlatform extends Container {
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerEntity) {
-        return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerEntity, tileEntity.getBlockState().getBlock());
+    public boolean stillValid(PlayerEntity playerEntity) {
+        return stillValid(IWorldPosCallable.create(tileEntity.getLevel(), tileEntity.getBlockPos()), playerEntity, tileEntity.getBlockState().getBlock());
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
-        if (slot != null && slot.getHasStack()) {
-            ItemStack stack = slot.getStack();
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack stack = slot.getItem();
             itemstack = stack.copy();
             if (index == 0) {
-                if (!this.mergeItemStack(stack, 1, 37, true)) {
+                if (!this.moveItemStackTo(stack, 1, 37, true)) {
                     return ItemStack.EMPTY;
                 }
-                slot.onSlotChange(stack, itemstack);
+                slot.onQuickCraft(stack, itemstack);
             } else {
-                if (ItemTags.getCollection().get(new ResourceLocation(ICBMReference.MODID, "missiles")).contains(stack.getItem())) {
-                    if (!this.mergeItemStack(stack, 0, 1, false)) {
+                if (ItemTags.getAllTags().getTag(new ResourceLocation(ICBMReference.MODID, "missiles")).contains(stack.getItem())) {
+                    if (!this.moveItemStackTo(stack, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (index < 28) {
-                    if (!this.mergeItemStack(stack, 28, 37, false)) {
+                    if (!this.moveItemStackTo(stack, 28, 37, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < 37 && !this.mergeItemStack(stack, 1, 28, false)) {
+                } else if (index < 37 && !this.moveItemStackTo(stack, 1, 28, false)) {
                     return ItemStack.EMPTY;
                 }
             }
 
             if (stack.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
             if (stack.getCount() == itemstack.getCount()) {

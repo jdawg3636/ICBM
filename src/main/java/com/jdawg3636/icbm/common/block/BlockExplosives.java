@@ -39,7 +39,7 @@ public class BlockExplosives extends Block {
      * Parameterless Constructor
      * */
     public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
-        this(Block.Properties.create(Material.TNT).hardnessAndResistance(2).sound(SoundType.PLANT), entityForm, blastEventProvider, itemForm);
+        this(Block.Properties.of(Material.EXPLOSIVE).strength(2).sound(SoundType.GRASS), entityForm, blastEventProvider, itemForm);
     }
 
     /**
@@ -47,7 +47,7 @@ public class BlockExplosives extends Block {
      * */
     public BlockExplosives(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
         super(properties);
-        this.setDefaultState(this.getDefaultState().with(UNSTABLE, Boolean.FALSE));
+        this.registerDefaultState(this.defaultBlockState().setValue(UNSTABLE, Boolean.FALSE));
         this.entityForm = entityForm;
         this.blastEventProvider = blastEventProvider;
         this.itemForm = itemForm;
@@ -57,11 +57,11 @@ public class BlockExplosives extends Block {
      * Normal Ignition Routine
      * */
     public void explode(World world, BlockPos pos, @Nullable LivingEntity igniter) {
-        if (!world.isRemote) {
-            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+        if (!world.isClientSide) {
+            world.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
             EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter);
-            world.addEntity(explosives_entity);
-            world.playSound((PlayerEntity)null, explosives_entity.getPosX(), explosives_entity.getPosY(), explosives_entity.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            world.addFreshEntity(explosives_entity);
+            world.playSound((PlayerEntity)null, explosives_entity.getX(), explosives_entity.getY(), explosives_entity.getZ(), SoundEvents.TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 
@@ -69,11 +69,11 @@ public class BlockExplosives extends Block {
      * Block destroyed by another explosion
      * Ignites with a shorter fuse and no sound effect
      * */
-    public void onExplosionDestroy(World world, BlockPos pos, Explosion explosionIn) {
-        if (!world.isRemote) {
-            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosionIn.getExplosivePlacedBy());
-            explosives_entity.setFuse((short)(world.rand.nextInt(explosives_entity.getFuse() / 4) + explosives_entity.getFuse() / 8));
-            world.addEntity(explosives_entity);
+    public void wasExploded(World world, BlockPos pos, Explosion explosionIn) {
+        if (!world.isClientSide) {
+            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, explosionIn.getSourceMob());
+            explosives_entity.setFuse((short)(world.random.nextInt(explosives_entity.getLife() / 4) + explosives_entity.getLife() / 8));
+            world.addFreshEntity(explosives_entity);
         }
     }
 
@@ -87,9 +87,9 @@ public class BlockExplosives extends Block {
         explode(world, pos, igniter);
     }
 
-    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-        if (!oldState.isIn(state.getBlock())) {
-            if (worldIn.isBlockPowered(pos)) {
+    public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+        if (!oldState.is(state.getBlock())) {
+            if (worldIn.hasNeighborSignal(pos)) {
                 catchFire(state, worldIn, pos, null, null);
                 worldIn.removeBlock(pos, false);
             }
@@ -97,7 +97,7 @@ public class BlockExplosives extends Block {
     }
 
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (worldIn.isBlockPowered(pos)) {
+        if (worldIn.hasNeighborSignal(pos)) {
             catchFire(state, worldIn, pos, null, null);
             worldIn.removeBlock(pos, false);
         }
@@ -107,37 +107,37 @@ public class BlockExplosives extends Block {
      * Called before the Block is set to air in the world. Called regardless of if the player's tool can actually collect
      * this block
      */
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!worldIn.isRemote() && !player.isCreative() && state.get(UNSTABLE))
+    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!worldIn.isClientSide() && !player.isCreative() && state.getValue(UNSTABLE))
             catchFire(state, worldIn, pos, null, null);
-        super.onBlockHarvested(worldIn, pos, state, player);
+        super.playerWillDestroy(worldIn, pos, state, player);
     }
 
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        ItemStack itemstack = player.getHeldItem(handIn);
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        ItemStack itemstack = player.getItemInHand(handIn);
         Item item = itemstack.getItem();
         if (item != Items.FLINT_AND_STEEL && item != Items.FIRE_CHARGE) {
-            return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+            return super.use(state, worldIn, pos, player, handIn, hit);
         } else {
-            catchFire(state, worldIn, pos, hit.getFace(), player);
+            catchFire(state, worldIn, pos, hit.getDirection(), player);
             if (!player.isCreative()) {
                 if (item == Items.FLINT_AND_STEEL) {
-                    itemstack.damageItem(1, player, (player1) -> {
-                        player1.sendBreakAnimation(handIn);
+                    itemstack.hurtAndBreak(1, player, (player1) -> {
+                        player1.broadcastBreakEvent(handIn);
                     });
                 } else {
                     itemstack.shrink(1);
                 }
             }
-            return ActionResultType.func_233537_a_(worldIn.isRemote);
+            return ActionResultType.sidedSuccess(worldIn.isClientSide);
         }
     }
 
-    public void onProjectileCollision(World worldIn, BlockState state, BlockRayTraceResult hit, ProjectileEntity projectile) {
-        if (!worldIn.isRemote) {
-            Entity entity = projectile.func_234616_v_();
-            if (projectile.isBurning()) {
-                BlockPos blockpos = hit.getPos();
+    public void onProjectileHit(World worldIn, BlockState state, BlockRayTraceResult hit, ProjectileEntity projectile) {
+        if (!worldIn.isClientSide) {
+            Entity entity = projectile.getOwner();
+            if (projectile.isOnFire()) {
+                BlockPos blockpos = hit.getBlockPos();
                 catchFire(state, worldIn, blockpos, null, entity instanceof LivingEntity ? (LivingEntity)entity : null);
                 worldIn.removeBlock(blockpos, false);
             }
@@ -147,11 +147,11 @@ public class BlockExplosives extends Block {
     /**
      * Return whether this block can drop from an explosion.
      */
-    public boolean canDropFromExplosion(Explosion explosionIn) {
+    public boolean dropFromExplosion(Explosion explosionIn) {
         return false;
     }
 
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(UNSTABLE);
     }
 

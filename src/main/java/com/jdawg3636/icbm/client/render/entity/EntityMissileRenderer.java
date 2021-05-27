@@ -34,18 +34,18 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
     @Override
     public void render(@Nonnull EntityMissile entity, float entityYaw, float partialTick, @Nonnull MatrixStack matrix, @Nonnull IRenderTypeBuffer buffer, int light) {
 
-        rotationX = entity.getDataManager().get(entity.ROTATION_X);
-        rotationY = entity.getDataManager().get(entity.ROTATION_Y);
-        rotationZ = entity.getDataManager().get(entity.ROTATION_Z);
+        rotationX = entity.getEntityData().get(entity.ROTATION_X);
+        rotationY = entity.getEntityData().get(entity.ROTATION_Y);
+        rotationZ = entity.getEntityData().get(entity.ROTATION_Z);
 
-        matrix.push();
-        matrix.rotate(anglesToQuaternion(rotationX, rotationY, rotationZ));
+        matrix.pushPose();
+        matrix.mulPose(anglesToQuaternion(rotationX, rotationY, rotationZ));
         matrix.translate(0, 0.5, 0);
 
         // Based on net.minecraft.client.renderer.entity.FireworkRocketRenderer
-        Minecraft.getInstance().getItemRenderer().renderItem(missileItem, ItemCameraTransforms.TransformType.NONE, light, OverlayTexture.NO_OVERLAY, matrix, buffer);
+        Minecraft.getInstance().getItemRenderer().renderStatic(missileItem, ItemCameraTransforms.TransformType.NONE, light, OverlayTexture.NO_OVERLAY, matrix, buffer);
 
-        matrix.pop();
+        matrix.popPose();
 
     }
 
@@ -85,8 +85,8 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
 
     @Nonnull
     @Override
-    public ResourceLocation getEntityTexture(@Nonnull EntityMissile entity) {
-        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+    public ResourceLocation getTextureLocation(@Nonnull EntityMissile entity) {
+        return AtlasTexture.LOCATION_BLOCKS;
     }
 
 }

@@ -13,13 +13,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockReinforcedGlass extends Block {
 
     public BlockReinforcedGlass() {
-        super(Block.Properties.create(Material.GLASS).hardnessAndResistance(10, 48)
+        super(Block.Properties.of(Material.GLASS).strength(10, 48)
                 /* Copied(ish) from registration for GLASS in net.minecraft.block.Blocks */
-                .notSolid()
-                .setAllowsSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
-                .setOpaque((BlockState state, IBlockReader reader, BlockPos pos)->false)
-                .setSuffocates((BlockState state, IBlockReader reader, BlockPos pos)->false)
-                .setBlocksVision((BlockState state, IBlockReader reader, BlockPos pos)->false)
+                .noOcclusion()
+                .isValidSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
+                .isRedstoneConductor((BlockState state, IBlockReader reader, BlockPos pos)->false)
+                .isSuffocating((BlockState state, IBlockReader reader, BlockPos pos)->false)
+                .isViewBlocking((BlockState state, IBlockReader reader, BlockPos pos)->false)
         );
     }
 
@@ -28,7 +28,7 @@ public class BlockReinforcedGlass extends Block {
      */
     @OnlyIn(Dist.CLIENT)
     @Override
-    public float getAmbientOcclusionLightValue(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
+    public float getShadeBrightness(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
         return 1.0F;
     }
 
@@ -37,8 +37,8 @@ public class BlockReinforcedGlass extends Block {
      */
     @Override
     @OnlyIn(Dist.CLIENT)
-    public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
-        return state.getBlock() == adjacentBlockState.getBlock() || super.isSideInvisible(state, adjacentBlockState, side);
+    public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+        return state.getBlock() == adjacentBlockState.getBlock() || super.skipRendering(state, adjacentBlockState, side);
     }
 
     /**

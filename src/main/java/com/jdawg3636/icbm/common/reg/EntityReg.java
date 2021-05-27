@@ -83,11 +83,11 @@ public final class EntityReg {
         return ENTITIES.register(
                 itemForm.getId().getPath(),
                 () -> {
-                    return EntityType.Builder.<EntityPrimedExplosives>create(
+                    return EntityType.Builder.<EntityPrimedExplosives>of(
                             (type, world) -> new EntityPrimedExplosives(type, world, blastEventProvider, itemForm, 0, 0, 0, null),
                             EntityClassification.MISC
                     )
-                            .immuneToFire().size(width, height).trackingRange(10).func_233608_b_(10)
+                            .fireImmune().sized(width, height).clientTrackingRange(10).updateInterval(10)
                             .build(itemForm.getId().getPath());
                 }
         );
@@ -101,11 +101,11 @@ public final class EntityReg {
         return ENTITIES.register(
                 missileItem.getId().getPath(),
                 () -> {
-                        return EntityType.Builder.<EntityMissile>create(
+                        return EntityType.Builder.<EntityMissile>of(
                                 (type, world) -> new EntityMissile(type, world, missileItem),
                                 EntityClassification.MISC
                         )
-                        .immuneToFire().size(width, height).trackingRange(10).func_233608_b_(10)
+                        .fireImmune().sized(width, height).clientTrackingRange(10).updateInterval(10)
                         .build(missileItem.getId().getPath());
                 }
         );

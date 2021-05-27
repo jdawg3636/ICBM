@@ -31,7 +31,7 @@ public final class ICBM {
 
     public static final ItemGroup CREATIVE_TAB = new ItemGroup(ICBMReference.MODID) {
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(ItemReg.EXPLOSIVES_ANTIMATTER.get());
         }
     };
@@ -63,19 +63,19 @@ public final class ICBM {
     public static void onBiomeLoadingEvent(final BiomeLoadingEvent event) {
         // Copper Ore
         event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
-                () -> Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, BlockReg.ORE_COPPER.get().getDefaultState(), 9)).range(64).square().func_242731_b(20)
+                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_COPPER.get().defaultBlockState(), 9)).range(64).squared().count(20)
         );
         // Sulfur Ore
         event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
-                () -> Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, BlockReg.ORE_SULFUR.get().getDefaultState(), 9)).range(64).square().func_242731_b(20)
+                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_SULFUR.get().defaultBlockState(), 9)).range(64).squared().count(20)
         );
         // Tin Ore
         event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
-                () -> Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, BlockReg.ORE_TIN.get().getDefaultState(), 9)).range(64).square().func_242731_b(20)
+                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_TIN.get().defaultBlockState(), 9)).range(64).squared().count(20)
         );
         // Uranium Ore
         event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
-                () -> Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, BlockReg.ORE_URANIUM.get().getDefaultState(), 9)).range(64).square().func_242731_b(20)
+                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_URANIUM.get().defaultBlockState(), 9)).range(64).squared().count(20)
         );
     }
 

@@ -19,11 +19,11 @@ public class ICBMEvents {
     // Not Subscribed - Called Directly by Subclass Events to ensure this is triggered before the rest of the blast code
     public static void onBlast(BlastEvent event) {
         // Loosely Based on net.minecraft.world.Explosion.doExplosionB(boolean spawnParticles)
-        if (!event.getBlastWorld().isRemote) {
+        if (!event.getBlastWorld().isClientSide) {
             // Sound
-            event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (event.getBlastWorld().rand.nextFloat() - event.getBlastWorld().rand.nextFloat()) * 0.2F) * 0.7F);
+            event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), SoundEvents.GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (event.getBlastWorld().random.nextFloat() - event.getBlastWorld().random.nextFloat()) * 0.2F) * 0.7F);
             // Particles - Handled Client Side by net.minecraft.client.network.play.ClientPlayNetHandler.handleParticles(SSpawnParticlePacket packetIn)
-            event.getBlastWorld().spawnParticle(ParticleTypes.EXPLOSION_EMITTER, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), 1, 0, 0, 0, 1.0D);
+            event.getBlastWorld().sendParticles(ParticleTypes.EXPLOSION_EMITTER, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), 1, 0, 0, 0, 1.0D);
         }
     }
 
@@ -34,7 +34,7 @@ public class ICBMEvents {
 
         // Copied (with slight modifications) from old icbm.content.blast.BlastFire
         // Would like to clean this up a bit if possible
-        if (!event.getBlastWorld().isRemote) {
+        if (!event.getBlastWorld().isClientSide) {
 
             int radius = (!event.getBlastIsGrenade()) ? 14 : 7;
 
@@ -51,7 +51,7 @@ public class ICBMEvents {
                             xStep /= diagonalDistance;
                             yStep /= diagonalDistance;
                             zStep /= diagonalDistance;
-                            float var14 = radius * (0.7F + event.getBlastWorld().rand.nextFloat() * 0.6F);
+                            float var14 = radius * (0.7F + event.getBlastWorld().random.nextFloat() * 0.6F);
                             double var15 = event.getBlastPosition().getX();
                             double var17 = event.getBlastPosition().getY();
                             double var19 = event.getBlastPosition().getZ();
@@ -59,7 +59,7 @@ public class ICBMEvents {
                             for (float var21 = 0.3F; var14 > 0.0F; var14 -= var21 * 0.75F) {
 
                                 BlockPos targetPosition = new BlockPos(var15, var17, var19);
-                                double distanceFromCenter = Math.sqrt(event.getBlastPosition().distanceSq(targetPosition));
+                                double distanceFromCenter = Math.sqrt(event.getBlastPosition().distSqr(targetPosition));
                                 BlockState blockState = event.getBlastWorld().getBlockState(targetPosition);
                                 Block block = blockState.getBlock();
 
@@ -76,9 +76,9 @@ public class ICBMEvents {
                                         boolean canReplace = blockState.getMaterial().isReplaceable() || block.isAir(blockState, event.getBlastWorld(), targetPosition);
 
                                         if (canReplace)
-                                            event.getBlastWorld().setBlockState(targetPosition, Blocks.FIRE.getDefaultState());
+                                            event.getBlastWorld().setBlockAndUpdate(targetPosition, Blocks.FIRE.defaultBlockState());
                                         else if (block == Blocks.ICE) {
-                                            event.getBlastWorld().setBlockState(targetPosition, Blocks.WATER.getDefaultState());
+                                            event.getBlastWorld().setBlockAndUpdate(targetPosition, Blocks.WATER.defaultBlockState());
                                             event.getBlastWorld().neighborChanged(targetPosition, Blocks.WATER, targetPosition);
                                         }
 

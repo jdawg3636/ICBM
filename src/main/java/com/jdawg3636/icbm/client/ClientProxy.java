@@ -23,45 +23,45 @@ public class ClientProxy extends CommonProxy {
     public void onClientSetupEvent(FMLClientSetupEvent event) {
 
         // Set Render Layers
-        RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_PLATFORM_T3.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_GLASS.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(BlockReg.SPIKES.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_POISON.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_PLATFORM_T3.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_GLASS.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.SPIKES.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_POISON.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.cutout());
 
         // Register Container Screens
-        ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
-        ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
-        ScreenManager.registerFactory(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
+        ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
+        ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
+        ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
 
         // Register Explosives Entity Rendering Handlers
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONDENSED.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONDENSED.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_SHRAPNEL.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_SHRAPNEL.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_INCENDIARY.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_DEBILITATION.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_DEBILITATION.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CHEMICAL.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CHEMICAL.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ANVIL.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ANVIL.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_REPULSIVE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_REPULSIVE.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ATTRACTIVE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ATTRACTIVE.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_NIGHTMARE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_NIGHTMARE.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_FRAGMENTATION.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_FRAGMENTATION.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONTAGIOUS.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONTAGIOUS.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_SONIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_SONIC.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_BREACHING.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_BREACHING.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_REJUVENATION.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_REJUVENATION.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_THERMOBARIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_THERMOBARIC.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_NUCLEAR.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_NUCLEAR.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_EMP.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_EMP.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_EXOTHERMIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_EXOTHERMIC.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ENDOTHERMIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ENDOTHERMIC.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ANTIGRAVITATIONAL.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ANTIGRAVITATIONAL.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ENDER.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ENDER.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_HYPERSONIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_HYPERSONIC.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ANTIMATTER.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ANTIMATTER.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_REDMATTER.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_REDMATTER.get().getDefaultState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.S_MINE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.S_MINE.get().getDefaultState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONDENSED.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONDENSED.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_SHRAPNEL.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_SHRAPNEL.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_INCENDIARY.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_DEBILITATION.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_DEBILITATION.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CHEMICAL.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CHEMICAL.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ANVIL.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ANVIL.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_REPULSIVE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_REPULSIVE.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ATTRACTIVE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ATTRACTIVE.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_NIGHTMARE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_NIGHTMARE.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_FRAGMENTATION.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_FRAGMENTATION.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONTAGIOUS.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONTAGIOUS.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_SONIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_SONIC.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_BREACHING.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_BREACHING.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_REJUVENATION.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_REJUVENATION.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_THERMOBARIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_THERMOBARIC.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_NUCLEAR.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_NUCLEAR.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_EMP.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_EMP.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_EXOTHERMIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_EXOTHERMIC.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ENDOTHERMIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ENDOTHERMIC.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ANTIGRAVITATIONAL.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ANTIGRAVITATIONAL.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ENDER.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ENDER.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_HYPERSONIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_HYPERSONIC.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ANTIMATTER.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ANTIMATTER.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_REDMATTER.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_REDMATTER.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.S_MINE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.S_MINE.get().defaultBlockState()));
 
         // Register Missile Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_MODULE.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_MODULE.get().getDefaultInstance()));

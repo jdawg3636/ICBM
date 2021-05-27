@@ -24,10 +24,10 @@ public class BlockSpikes extends Block {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BlockSpikes() {
-        super(Block.Properties.create((new Material.Builder(MaterialColor.IRON)).notSolid().build()).hardnessAndResistance(1.0F).doesNotBlockMovement().notSolid());
-        this.setDefaultState(
-                this.stateContainer.getBaseState()
-                .with(WATERLOGGED, true)
+        super(Block.Properties.of((new Material.Builder(MaterialColor.METAL)).nonSolid().build()).strength(1.0F).noCollission().noOcclusion());
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                .setValue(WATERLOGGED, true)
         );
     }
 
@@ -35,7 +35,7 @@ public class BlockSpikes extends Block {
      * Add Properties to BlockState
      */
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
     }
 
@@ -43,36 +43,36 @@ public class BlockSpikes extends Block {
     // Based on net.minecraft.block.LadderBlock
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         if (!context.replacingClickedOnBlock()) {
-            BlockState blockstate = context.getWorld().getBlockState(context.getPos().offset(context.getFace().getOpposite()));
-            if (blockstate.isIn(this)) {
+            BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos().relative(context.getClickedFace().getOpposite()));
+            if (blockstate.is(this)) {
                 return null;
             }
         }
 
-        BlockState blockstate = this.getDefaultState();
-        IWorldReader iworldreader = context.getWorld();
-        BlockPos blockpos = context.getPos();
-        FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
+        BlockState blockstate = this.defaultBlockState();
+        IWorldReader iworldreader = context.getLevel();
+        BlockPos blockpos = context.getClickedPos();
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
 
-        if (blockstate.isValidPosition(iworldreader, blockpos)) {
-            return blockstate.with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
+        if (blockstate.canSurvive(iworldreader, blockpos)) {
+            return blockstate.setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
         }
 
         return null;
     }
 
     // Copied from net.minecraft.block.CakeBlock
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos.down()).getMaterial().isSolid();
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        return worldIn.getBlockState(pos.below()).getMaterial().isSolid();
     }
 
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        if (entity instanceof LivingEntity) entity.attackEntityFrom(DamageSource.CACTUS, 1);
+    public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+        if (entity instanceof LivingEntity) entity.hurt(DamageSource.CACTUS, 1);
     }
 
 }

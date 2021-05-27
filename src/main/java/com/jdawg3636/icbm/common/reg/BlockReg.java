@@ -28,17 +28,17 @@ public class BlockReg {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ICBMReference.MODID);
 
     // Basic Blocks
-    public static final RegistryObject<Block> CONCRETE                      = BLOCKS.register("concrete",                       () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 28)));
-    public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 280)));
-    public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(10F, 2800)));
-    public static final RegistryObject<Block> RADIOACTIVE_MATERIAL          = BLOCKS.register("radioactive_material",           () -> new GrassBlock(AbstractBlock.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> CONCRETE                      = BLOCKS.register("concrete",                       () -> new Block(Block.Properties.of(Material.STONE).strength(10F, 28)));
+    public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.of(Material.STONE).strength(10F, 280)));
+    public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.of(Material.STONE).strength(10F, 2800)));
+    public static final RegistryObject<Block> RADIOACTIVE_MATERIAL          = BLOCKS.register("radioactive_material",           () -> new GrassBlock(AbstractBlock.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS)));
     public static final RegistryObject<Block> REINFORCED_GLASS              = BLOCKS.register("reinforced_glass",               BlockReinforcedGlass::new);
 
     // Ores
-    public static final RegistryObject<Block> ORE_COPPER                    = BLOCKS.register("ore_copper",                     () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
-    public static final RegistryObject<Block> ORE_SULFUR                    = BLOCKS.register("ore_sulfur",                     () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
-    public static final RegistryObject<Block> ORE_TIN                       = BLOCKS.register("ore_tin",                        () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)));
-    public static final RegistryObject<Block> ORE_URANIUM                   = BLOCKS.register("ore_uranium",                    () -> new OreBlock(AbstractBlock.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.0F, 3.0F)) {
+    public static final RegistryObject<Block> ORE_COPPER                    = BLOCKS.register("ore_copper",                     () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+    public static final RegistryObject<Block> ORE_SULFUR                    = BLOCKS.register("ore_sulfur",                     () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+    public static final RegistryObject<Block> ORE_TIN                       = BLOCKS.register("ore_tin",                        () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+    public static final RegistryObject<Block> ORE_URANIUM                   = BLOCKS.register("ore_uranium",                    () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)) {
         @OnlyIn(Dist.CLIENT)
         public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
             super.animateTick(stateIn, worldIn, pos, rand);
@@ -79,18 +79,18 @@ public class BlockReg {
     public static final RegistryObject<Block> SPIKES                        = BLOCKS.register("spikes",                         BlockSpikes::new);
     public static final RegistryObject<Block> SPIKES_POISON                 = BLOCKS.register("spikes_poison",                  () -> new BlockSpikes() {
         @Override
-        public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-            super.onEntityCollision(state, world, pos, entity);
+        public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+            super.entityInside(state, world, pos, entity);
             if (entity instanceof LivingEntity)
-                ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.POISON, 7 * 20, 0));
+                ((LivingEntity) entity).addEffect(new EffectInstance(Effects.POISON, 7 * 20, 0));
         }
     });
     public static final RegistryObject<Block> SPIKES_FIRE                   = BLOCKS.register("spikes_fire",                    () -> new BlockSpikes() {
         @Override
-        public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-            super.onEntityCollision(state, world, pos, entity);
-            if (entity instanceof LivingEntity && !state.get(BlockSpikes.WATERLOGGED))
-                entity.setFire(7);
+        public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+            super.entityInside(state, world, pos, entity);
+            if (entity instanceof LivingEntity && !state.getValue(BlockSpikes.WATERLOGGED))
+                entity.setSecondsOnFire(7);
         }
     });
 
@@ -113,15 +113,15 @@ public class BlockReg {
             return ContainerReg.LAUNCHER_PLATFORM_T3.get();
         }
     });
-    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T2     = BLOCKS.register("launcher_control_panel_t2",      () -> new Block(Block.Properties.create(Material.IRON)));
-    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T3     = BLOCKS.register("launcher_control_panel_t3",      () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      () -> new Block(Block.Properties.of(Material.METAL)));
+    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T2     = BLOCKS.register("launcher_control_panel_t2",      () -> new Block(Block.Properties.of(Material.METAL)));
+    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T3     = BLOCKS.register("launcher_control_panel_t3",      () -> new Block(Block.Properties.of(Material.METAL)));
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T1     = BLOCKS.register("launcher_support_frame_t1",      BlockLauncherSupportFrame::new);
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T2     = BLOCKS.register("launcher_support_frame_t2",      BlockLauncherSupportFrame::new);
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      BlockLauncherSupportFrame::new);
 
     // Other Machinery
-    public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new Block(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new Block(Block.Properties.of(Material.METAL)));
     public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      BlockEMPTower::new);
     public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  BlockRadarStation::new);
 

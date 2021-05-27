@@ -8,8 +8,8 @@ import net.minecraft.block.material.Material;
 public class BlockGlassPressurePlate extends PressurePlateBlock {
 
     public BlockGlassPressurePlate() {
-        super(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.create(Material.GLASS).tickRandomly().hardnessAndResistance(0.3F, 1F).sound(SoundType.GLASS).doesNotBlockMovement());
-        this.setDefaultState(getDefaultState().with(POWERED, false));
+        super(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.GLASS).randomTicks().strength(0.3F, 1F).sound(SoundType.GLASS).noCollission());
+        this.registerDefaultState(defaultBlockState().setValue(POWERED, false));
     }
 
 }

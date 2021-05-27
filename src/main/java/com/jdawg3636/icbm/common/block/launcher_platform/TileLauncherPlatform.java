@@ -32,12 +32,12 @@ public abstract class TileLauncherPlatform extends TileEntity {
 
             @Override
             protected void onContentsChanged(int slot) {
-                markDirty();
+                setChanged();
             }
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return ItemTags.getCollection().get(new ResourceLocation(ICBMReference.MODID, "missiles")).contains(stack.getItem());
+                return ItemTags.getAllTags().getTag(new ResourceLocation(ICBMReference.MODID, "missiles")).contains(stack.getItem());
             }
 
             @Nonnull
@@ -58,15 +58,15 @@ public abstract class TileLauncherPlatform extends TileEntity {
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tag) {
+    public void load(BlockState state, CompoundNBT tag) {
         itemHandler.deserializeNBT(tag.getCompound("inv"));
-        super.read(state, tag);
+        super.load(state, tag);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tag) {
+    public CompoundNBT save(CompoundNBT tag) {
         tag.put("inv", itemHandler.serializeNBT());
-        return super.write(tag);
+        return super.save(tag);
     }
 
 }
