@@ -34,12 +34,12 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
     @Override
     public void render(@Nonnull EntityMissile entity, float entityYaw, float partialTick, @Nonnull MatrixStack matrix, @Nonnull IRenderTypeBuffer buffer, int light) {
 
-        rotationX = entity.getEntityData().get(entity.ROTATION_X);
-        rotationY = entity.getEntityData().get(entity.ROTATION_Y);
-        rotationZ = entity.getEntityData().get(entity.ROTATION_Z);
+        //rotationX = entity.getEntityData().get(entity.ROTATION_X);
+        //rotationY = entity.getEntityData().get(entity.ROTATION_Y);
+        //rotationZ = entity.getEntityData().get(entity.ROTATION_Z);
 
         matrix.pushPose();
-        matrix.mulPose(anglesToQuaternion(rotationX, rotationY, rotationZ));
+        //matrix.mulPose(anglesToQuaternion(entity.getRotationVector().x, entity.getRotationVector().y, rotationZ));
         matrix.translate(0, 0.5, 0);
 
         // Based on net.minecraft.client.renderer.entity.FireworkRocketRenderer

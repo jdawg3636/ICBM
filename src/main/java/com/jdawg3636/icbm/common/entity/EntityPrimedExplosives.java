@@ -38,9 +38,9 @@ public class EntityPrimedExplosives extends TNTEntity {
 
     @Override
     protected void explode() {
-        if(!getCommandSenderWorld().isClientSide())
+        if(!level.isClientSide())
             MinecraftForge.EVENT_BUS.post(
-                    blastEventProvider.getBlastEvent(blockPosition(), (ServerWorld) getCommandSenderWorld(), false)
+                    blastEventProvider.getBlastEvent(blockPosition(), (ServerWorld) level, false)
             );
     }
 
