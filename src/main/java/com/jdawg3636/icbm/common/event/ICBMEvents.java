@@ -36,7 +36,7 @@ public class ICBMEvents {
         // Would like to clean this up a bit if possible
         if (!event.getBlastWorld().isClientSide) {
 
-            int radius = (!event.getBlastIsGrenade()) ? 14 : 7;
+            int radius = (!(event.getBlastType() == BlastEvent.Type.GRENADE)) ? 14 : 7;
 
             for (int x = 0; x < radius; ++x) {
                 for (int y = 0; y < radius; ++y) {

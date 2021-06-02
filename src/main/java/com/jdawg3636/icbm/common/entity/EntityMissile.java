@@ -37,9 +37,21 @@ import java.util.function.Function;
 public class EntityMissile extends Entity {
 
     public enum MissileSourceType {
-        LAUNCHER_PLATFORM,
-        CRUISE_LAUNCHER,
-        ROCKET_LAUNCHER
+
+        LAUNCHER_PLATFORM(BlastEvent.Type.PLATFORM_MISSILE),
+        CRUISE_LAUNCHER(BlastEvent.Type.CRUISE_MISSILE),
+        ROCKET_LAUNCHER(BlastEvent.Type.HANDHELD_ROCKET);
+
+        MissileSourceType(final BlastEvent.Type blastType) {
+            this.blastType = blastType;
+        }
+
+        private BlastEvent.Type blastType;
+
+        public BlastEvent.Type getResultantBlastType() {
+            return blastType;
+        }
+
     }
 
     public enum MissileLaunchPhase {
@@ -194,6 +206,37 @@ public class EntityMissile extends Entity {
 
     }
 
+    //@Override
+    //@OnlyIn(Dist.CLIENT)
+    //public void lerpTo(double p_180426_1_, double p_180426_3_, double p_180426_5_, float p_180426_7_, float p_180426_8_, int p_180426_9_, boolean p_180426_10_) {
+    //    this.lerpX = p_180426_1_;
+    //    this.lerpY = p_180426_3_;
+    //    this.lerpZ = p_180426_5_;
+    //    this.lerpYRot = (double)p_180426_7_;
+    //    this.lerpXRot = (double)p_180426_8_;
+    //    this.lerpSteps = 10;
+    //}
+    //
+    //// Copied from BoatEntity
+    //private void tickLerp() {
+    //    if (this.isControlledByLocalInstance()) {
+    //        this.lerpSteps = 0;
+    //        this.setPacketCoordinates(this.getX(), this.getY(), this.getZ());
+    //    }
+    //
+    //    if (this.lerpSteps > 0) {
+    //        double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
+    //        double d1 = this.getY() + (this.lerpY - this.getY()) / (double)this.lerpSteps;
+    //        double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double)this.lerpSteps;
+    //        double d3 = MathHelper.wrapDegrees(this.lerpYRot - (double)this.yRot);
+    //        this.yRot = (float)((double)this.yRot + d3 / (double)this.lerpSteps);
+    //        this.xRot = (float)((double)this.xRot + (this.lerpXRot - (double)this.xRot) / (double)this.lerpSteps);
+    //        --this.lerpSteps;
+    //        this.setPos(d0, d1, d2);
+    //        this.setRot(this.yRot, this.xRot);
+    //    }
+    //}
+
     @Override
     public void tick() {
         super.tick();
@@ -257,7 +300,7 @@ public class EntityMissile extends Entity {
         level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0F, Explosion.Mode.BREAK);
         if(!level.isClientSide()) {
             MinecraftForge.EVENT_BUS.post(
-                    blastEventProvider.getBlastEvent(blockPosition(), (ServerWorld) level, false)
+                    blastEventProvider.getBlastEvent(blockPosition(), (ServerWorld) level, missileSourceType.getResultantBlastType())
             );
             this.kill();
         }
@@ -359,7 +402,7 @@ public class EntityMissile extends Entity {
 
     @Override
     protected boolean isMovementNoisy() {
-        return true;
+        return false;
     }
 
     public boolean isAttackable() {
