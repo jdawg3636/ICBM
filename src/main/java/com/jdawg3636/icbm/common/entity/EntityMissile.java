@@ -29,8 +29,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -117,8 +115,8 @@ public class EntityMissile extends Entity {
      */
     public static Tuple<Function<Integer, Vector3d>, Function<Vector3d, Vector3d>> calculatePathFunctions(BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks) {
 
-        BigDecimal[] parabolaXCoefficients = generateParabola(sourcePos.getX(), destPos.getX(), peakHeight);
-        BigDecimal[] parabolaZCoefficients = generateParabola(sourcePos.getZ(), destPos.getZ(), peakHeight);
+        double[] parabolaXCoefficients = generateParabola(sourcePos.getX(), sourcePos.getY(), destPos.getX(), destPos.getY(), peakHeight);
+        double[] parabolaZCoefficients = generateParabola(sourcePos.getZ(), sourcePos.getY(), destPos.getZ(), destPos.getY(), peakHeight);
 
         //System.out.printf("[ICBM DEBUG] Updated Path Function for X: %fx^2 + %fx + %f\n", parabolaXCoefficients[0], parabolaXCoefficients[1], parabolaXCoefficients[2]);
         //System.out.printf("[ICBM DEBUG] Updated Path Function for Z: %fz^2 + %fz + %f\n", parabolaZCoefficients[0], parabolaZCoefficients[1], parabolaZCoefficients[2]);
@@ -130,23 +128,21 @@ public class EntityMissile extends Entity {
 
                     final BlockPos funcSourcePos = sourcePos;
                     final BlockPos funcDestPos = destPos;
-                    final BigDecimal[] funcParabolaXCoefficients = parabolaXCoefficients;
-                    final BigDecimal[] funcParabolaZCoefficients = parabolaZCoefficients;
+                    final double[] funcParabolaXCoefficients = parabolaXCoefficients;
+                    final double[] funcParabolaZCoefficients = parabolaZCoefficients;
                     final int funcTotalFlightTicks = totalFlightTicks != 0 ? totalFlightTicks : 1;
 
                     @Override
                     public Vector3d apply(Integer ticks) {
 
-                        MathContext mathContext = new MathContext(128);
+                        double x = funcSourcePos.getX() + ((double) (funcDestPos.getX() - funcSourcePos.getX()) * ticks / funcTotalFlightTicks);
+                        double z = funcSourcePos.getZ() + ((double) (funcDestPos.getZ() - funcSourcePos.getZ()) * ticks / funcTotalFlightTicks);
 
-                        BigDecimal x = new BigDecimal(funcSourcePos.getX() + ((double) (funcDestPos.getX() - funcSourcePos.getX()) * ticks / funcTotalFlightTicks));
-                        BigDecimal z = new BigDecimal(funcSourcePos.getZ() + ((double) (funcDestPos.getZ() - funcSourcePos.getZ()) * ticks / funcTotalFlightTicks));
+                        double yFromX = funcParabolaXCoefficients[0] * x * x + funcParabolaXCoefficients[1] * x + funcParabolaXCoefficients[2];
+                        double yFromZ = funcParabolaZCoefficients[0] * z * z + funcParabolaZCoefficients[1] * z + funcParabolaZCoefficients[2];
+                        double y = funcParabolaXCoefficients[0] != 0d ? yFromX : yFromZ;
 
-                        double yFromX = funcParabolaXCoefficients[0].multiply(x, mathContext).multiply(x, mathContext).add(funcParabolaXCoefficients[1].multiply(x, mathContext)).add(funcParabolaXCoefficients[2]).doubleValue();
-                        double yFromZ = funcParabolaZCoefficients[0].multiply(z, mathContext).multiply(z, mathContext).add(funcParabolaZCoefficients[1].multiply(z, mathContext)).add(funcParabolaZCoefficients[2]).doubleValue();
-                        double y = funcParabolaXCoefficients[0].doubleValue() != 0d ? yFromX : yFromZ;
-
-                        return new Vector3d(x.doubleValue(), y, z.doubleValue());
+                        return new Vector3d(x, y, z);
 
                     }
 
@@ -155,16 +151,14 @@ public class EntityMissile extends Entity {
                 // Takes Position, Returns Euler Rotations
                 new Function<Vector3d, Vector3d>() {
 
-                    final BigDecimal[] funcParabolaXCoefficients = parabolaXCoefficients;
-                    final BigDecimal[] funcParabolaZCoefficients = parabolaZCoefficients;
+                    final double[] funcParabolaXCoefficients = parabolaXCoefficients;
+                    final double[] funcParabolaZCoefficients = parabolaZCoefficients;
 
                     @Override
                     public Vector3d apply(Vector3d position) {
 
-                        MathContext mathContext = new MathContext(128);
-
-                        double slopeX = 2d * funcParabolaZCoefficients[0].multiply(new BigDecimal(position.z), mathContext).add(funcParabolaZCoefficients[1]).doubleValue();
-                        double slopeZ = 2d * funcParabolaXCoefficients[0].multiply(new BigDecimal(position.x), mathContext).add(funcParabolaXCoefficients[1]).doubleValue();
+                        double slopeX = 2d * funcParabolaZCoefficients[0] * position.z + funcParabolaZCoefficients[1];
+                        double slopeZ = 2d * funcParabolaXCoefficients[0] * position.x + funcParabolaXCoefficients[1];
                         double slopeY = 0d;
 
                         return new Vector3d(slopeX, slopeY, slopeZ);
@@ -177,32 +171,68 @@ public class EntityMissile extends Entity {
     }
 
     /**
-     * @return Vector3d containing (in order) the a, b, and c coefficients for the standard form of the calculated parabola
+     * @return Vector3d containing (in order) the a, b, and c coefficients for the standard form of the calculated parabola (y = ax^2 + bx + c)
      */
-    public static BigDecimal[] generateParabola(double interceptOneIn, double interceptTwoIn, double peakHeightIn) {
+    public static double[] generateParabola(double sourceHoriz, double sourceHeight, double targetHoriz, double targetHeight, double peakHeightIn) {
 
-        //System.out.printf("[ICBM DEBUG] Generating Parabola From %f to %f with Peak Height of %f \n", interceptOneIn, interceptTwoIn, peakHeightIn);
+        // Using Gaussian Elimination
+        // ax^2 + bx + c = y
+        // Somewhat inverted as x^2, x, and 1 are the known coefficients while a, b, c are being solved for.
 
-        MathContext mathContext = new MathContext(128);
-        BigDecimal bigDecimalZero = new BigDecimal("0");
+        // Includes logic to ensure that that the First Equation (x1Squared * a + x1 * b + x1Const * c = y1) has the
+        // heighest x value (and therefore heighest x^2 value) as otherwise a value of 0 could cause serious problems
 
-        BigDecimal interceptOne = new BigDecimal(interceptOneIn);
-        BigDecimal interceptTwo = new BigDecimal(interceptTwoIn);
-        BigDecimal peakHeight   = new BigDecimal(peakHeightIn);
+        // Coefficients for 'c'
+        double x1Const = 1;
+        double x2Const = 1;
+        double x3Const = 1;
 
-        BigDecimal midpoint = interceptOne.add(interceptTwo, mathContext).divide(new BigDecimal("2"), mathContext);
-        BigDecimal unscaledPeak = (midpoint.subtract(interceptOne, mathContext)).multiply(midpoint.subtract(interceptTwo, mathContext), mathContext);
-        if(unscaledPeak.compareTo(bigDecimalZero) == 0) {
-            //System.out.printf("[ICBM DEBUG] Generated Parabola: %sx^2 + %sx + %s\n", 0d, 0d, 0d);
-            return new BigDecimal[]{bigDecimalZero, bigDecimalZero, bigDecimalZero};
-        }
+        // Coefficients for 'b'
+        double x1 = (sourceHoriz > targetHoriz) ? sourceHoriz : targetHoriz;
+        double x2 = (sourceHoriz + targetHoriz) / 2d;
+        double x3 = (sourceHoriz < targetHoriz) ? sourceHoriz : targetHoriz;
 
-        BigDecimal a = peakHeight.divide(unscaledPeak, mathContext);
-        BigDecimal b = new BigDecimal("-1").multiply(a, mathContext).multiply(interceptOne.add(interceptTwo, mathContext), mathContext);
-        BigDecimal c = a.multiply(interceptOne, mathContext).multiply(interceptTwo, mathContext);
+        // Coefficients for 'a'
+        double x1Squared = x1 * x1;
+        double x2Squared = x2 * x2;
+        double x3Squared = x3 * x3;
 
-        //System.out.printf("[ICBM DEBUG] Generated Parabola: %sx^2 + %sx + %s\n", a.toString(), b.toString(), c.toString());
-        return new BigDecimal[]{a, b, c};
+        // Right Side of Equations
+        double y1 = (sourceHoriz > targetHoriz) ? sourceHeight : targetHeight;
+        double y2 = peakHeightIn;
+        double y3 = (sourceHoriz < targetHoriz) ? sourceHeight : targetHeight;
+
+        // Reused Temp Var for Scaling Process
+        double multiple;
+
+        // Scale Equation 2 using Equation 1
+        multiple    = -x2Squared/x1Squared;
+        x2Squared   += multiple * x1Squared;
+        x2          += multiple * x1;
+        x2Const     += multiple * x1Const;
+        y2          += multiple * y1;
+
+        // Scale Equation 3 using Equation 1
+        multiple    = -x3Squared/x1Squared;
+        x3Squared   += multiple * x1Squared;
+        x3          += multiple * x1;
+        x3Const     += multiple * x1Const;
+        y3          += multiple * y1;
+
+        // Scale Equation 3 using Equation 2
+        multiple    = -x3/x2;
+        x3Squared   += multiple * x2Squared;
+        x3          += multiple * x2;
+        x3Const     += multiple * x2Const;
+        y3          += multiple * y2;
+
+        // Final Solve
+        double c =  y3 / x3Const;
+        double b = (y2 - x2Const * c) / x2;
+        double a = (y1 - x1Const * c - x1 * b) / x1Squared;
+
+        // Package and Return
+        return new double[]{a,b,c};
 
     }
 
