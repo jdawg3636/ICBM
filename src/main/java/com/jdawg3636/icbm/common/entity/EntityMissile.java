@@ -76,6 +76,8 @@ public class EntityMissile extends Entity {
     public Function<Integer, Vector3d> pathFunction = null;
     public Function<Vector3d, Vector3d> gradientFunction = null;
 
+    public int ticksSinceLaunch = 0;
+
     public EntityMissile(EntityType<?> entityTypeIn, World worldIn, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem) {
         this(
                 entityTypeIn,
@@ -271,12 +273,17 @@ public class EntityMissile extends Entity {
     public void tick() {
         super.tick();
         switch(missileLaunchPhase) {
+
             case STATIONARY:
                 break;
+
             case STATIONARY_ACTIVATED:
                 spawnParticles();
                 break;
+
             case LAUNCHED:
+
+                ticksSinceLaunch++;
 
                 spawnParticles();
                 if(!level.isClientSide() && ProjectileHelper.getHitResult(this, (entity) -> entity instanceof EntityMissile).getType() != RayTraceResult.Type.MISS) explode();
@@ -312,7 +319,7 @@ public class EntityMissile extends Entity {
                 //this.setRot((float)Math.PI/2, 0);
 
                 // Correct Position
-                Vector3d newPos = pathFunction.apply(tickCount);
+                Vector3d newPos = pathFunction.apply(ticksSinceLaunch);
 
                 // Correct Rotation
                 Vector3d newRot = gradientFunction.apply(newPos);
