@@ -1,6 +1,6 @@
 {
     "loader": "forge:obj",
-    "model": "icbm:models/block/launcher_control_panel_t1.obj",
+    "model": "icbm:models/block/launcher_control_panel_t3.obj",
     "detectCullableFaces": false,
     "diffuseLighting": false,
     "flip-v": true,
