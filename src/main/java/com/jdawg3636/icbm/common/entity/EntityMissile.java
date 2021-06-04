@@ -325,7 +325,7 @@ public class EntityMissile extends Entity {
                 Vector3d newRot = gradientFunction.apply(newPos);
                 this.setRot((float)newRot.x, (float)newRot.z);
 
-                System.out.printf("[ICBM DEBUG] [%s] Setting Position of Missile to %f, %f, %f\n", level.isClientSide() ? "Client" : "Server", newPos.x, newPos.y, newPos.z);
+                //System.out.printf("[ICBM DEBUG] [%s] Setting Position of Missile to %f, %f, %f\n", level.isClientSide() ? "Client" : "Server", newPos.x, newPos.y, newPos.z);
                 this.teleportTo(newPos.x(), newPos.y(), newPos.z());
 
                 break;
