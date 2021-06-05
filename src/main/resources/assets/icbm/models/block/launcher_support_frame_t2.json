@@ -1,0 +1,72 @@
+{
+    "loader": "forge:obj",
+    "model": "icbm:models/block/launcher_support_frame_t2.obj",
+    "detectCullableFaces": false,
+    "diffuseLighting": false,
+    "flip-v": true,
+    "ambientToFullbright": false,
+    "display": {
+        "ground": {
+            "scale": [
+                0.1875,0.1875,0.1875
+            ],
+            "translation": [
+                0,3,0
+            ]
+        },
+        "thirdperson_righthand": {
+            "scale": [
+                0.333,0.333,0.333
+            ],
+            "rotation": [
+                0,315,0
+            ]
+        },
+        "thirdperson_lefthand": {
+            "scale": [
+                0.333,0.333,0.333
+            ],
+            "rotation": [
+                0,315,0
+            ]
+        },
+        "firstperson_righthand": {
+            "scale": [
+                0.333,0.333,0.333
+            ],
+            "rotation": [
+                0,315,0
+            ]
+        },
+        "firstperson_lefthand": {
+            "scale": [
+                0.333,0.333,0.333
+            ],
+            "rotation": [
+                0,315,0
+            ]
+        },
+        "gui": {
+            "scale": [
+                0.24,0.24,0.24
+            ],
+            "rotation": [
+                20,30,0
+            ],
+            "translation": [
+                0,-3.5,0
+            ]
+        },
+        "fixed": {
+            "scale": [
+                0.333,0.333,0.333
+            ],
+            "translation": [
+                0,-6,0
+            ]
+        }
+    },
+    "textures": {
+        "particle": "icbm:block/machine"
+    }
+}
