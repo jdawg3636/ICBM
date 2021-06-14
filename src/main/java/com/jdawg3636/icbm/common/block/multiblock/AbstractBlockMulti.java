@@ -29,13 +29,12 @@ import javax.annotation.Nullable;
  * Superclass for Multiblocks
  * Multiblock Mechanics are handled through BlockState Properties, not TileEntities
  */
-public abstract class AbstractBlockMulti extends Block {
+public abstract class AbstractBlockMulti extends AbstractBlockMachine {
 
     public static final int absHorizMax = 1;
     public static final int absHeightMax = 2;
     public static final int absDepthMax = 1;
 
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty MULTIBLOCK_OFFSET_HORIZONTAL            = IntegerProperty.create("multiblock_offset_horizontal", 0, absHorizMax);
     public static final BooleanProperty MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE   = BooleanProperty.create("multiblock_offset_horizontal_negative");
     public static final IntegerProperty MULTIBLOCK_OFFSET_HEIGHT                = IntegerProperty.create("multiblock_offset_height", 0, absHeightMax);
@@ -50,8 +49,7 @@ public abstract class AbstractBlockMulti extends Block {
     public AbstractBlockMulti(AbstractBlock.Properties properties) {
         super(properties);
         this.registerDefaultState(
-                this.stateDefinition.any()
-                .setValue(FACING, Direction.NORTH)
+                this.defaultBlockState() // We know this isn't null, set in super.
                 .setValue(MULTIBLOCK_OFFSET_HORIZONTAL, 0)
                 .setValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE, false)
                 .setValue(MULTIBLOCK_OFFSET_HEIGHT, 0)
@@ -59,17 +57,6 @@ public abstract class AbstractBlockMulti extends Block {
                 .setValue(MULTIBLOCK_OFFSET_DEPTH, 0)
                 .setValue(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE, false)
         );
-    }
-
-    // Properties Copied(ish) from registration for GLASS in net.minecraft.block.Blocks
-    // Intended to be used for all multiblocks but separating out to leave flexibility. At the time of writing this is also used by the S-Mine (not a multiblock).
-    public static AbstractBlock.Properties getMultiblockMachineBlockProperties() {
-        return AbstractBlock.Properties.of(Material.GLASS, MaterialColor.METAL)
-                .noOcclusion()
-                .isValidSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
-                .isRedstoneConductor((BlockState state, IBlockReader reader, BlockPos pos)->false)
-                .isSuffocating((BlockState state, IBlockReader reader, BlockPos pos)->false)
-                .isViewBlocking((BlockState state, IBlockReader reader, BlockPos pos)->false);
     }
 
     /**
@@ -84,7 +71,7 @@ public abstract class AbstractBlockMulti extends Block {
      */
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        super.createBlockStateDefinition(builder);
         builder.add(MULTIBLOCK_OFFSET_HORIZONTAL);
         builder.add(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE);
         builder.add(MULTIBLOCK_OFFSET_HEIGHT);
@@ -94,38 +81,18 @@ public abstract class AbstractBlockMulti extends Block {
     }
 
     /**
-     * Override to Block Interaction with Pistons
-     */
-    @Override
-    public PushReaction getPistonPushReaction(BlockState state) {
-        return PushReaction.BLOCK;
-    }
-
-    /**
-     * Sets {@link this.FACING} to opposite of player
-     * Also using to prevent placement in invalid locations (ex. near world height), return null BlockState if invalid
+     * Prevents placement in invalid locations (ex. near world height), return null BlockState if invalid
      */
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         if(context.getClickedPos().getY() > context.getLevel().getMaxBuildHeight()-getMultiblockHeight()) return null;
         if(!context.getLevel().getBlockState(context.getClickedPos().above()).canBeReplaced(context)) return null;
-        return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
+        return super.getStateForPlacement(context);
     }
 
     /**
-     * Override to take into account the {@link this.FACING} property
-     *
-     * Copied from net.minecraft.block.AnvilBlock
-     */
-    @Override
-    public BlockState rotate(BlockState state, Rotation rot) {
-        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
-    }
-
-    /**
-     * Multiblock Placement Routine
-     *
+     * Initiates Multiblock Placement Routine
      * Called by ItemBlocks after a block is set in the world, to allow post-place logic
      */
     @Override
@@ -135,8 +102,7 @@ public abstract class AbstractBlockMulti extends Block {
     }
 
     /**
-     * Initiates Multiblock Destruction Propagation
-     *
+     * Initiates Multiblock Destruction Routine
      * Called before the Block is set to air in the world. Called regardless of if the player's tool can actually collect
      * this block
      */
@@ -146,12 +112,27 @@ public abstract class AbstractBlockMulti extends Block {
         destroyMultiblock(worldIn, pos, state);
     }
 
-    public void fillMultiblock(World worldIn, BlockPos pos, BlockState state, boolean setToAir) {
+    /**
+     * Multiblock Placement/Destruction Routine
+     * @param setToAir Set True to Destroy, False to Place
+     */
+    public void fillMultiblock(World worldIn, BlockPos rootPos, BlockState rootBlockState, boolean setToAir) {
 
-        // Add Center Block to List
-        Vector3i[] multiblockPositions = new Vector3i[getMultiblockPositions().length+1];
-        for(int i = 0; i < getMultiblockPositions().length; i++) multiblockPositions[i] = getMultiblockPositions()[i];
-        multiblockPositions[multiblockPositions.length-1] = new Vector3i(0, 0, 0);
+        // Checks that the root position actually contains a root BlockState.
+        // This should always be true before this method is called, otherwise can cause NPEs.
+        if(!((rootBlockState.getBlock() instanceof AbstractBlockMulti) && isRootOfMultiblock(rootBlockState))) {
+            return;
+        }
+
+        // Add Root Block to List
+        Vector3i[] multiblockPositions;
+        if(setToAir) {
+            multiblockPositions = new Vector3i[getMultiblockPositions().length+1];
+            for(int i = 0; i < getMultiblockPositions().length; i++) multiblockPositions[i] = getMultiblockPositions()[i];
+            multiblockPositions[multiblockPositions.length-1] = new Vector3i(0, 0, 0);
+        } else {
+            multiblockPositions = getMultiblockPositions();
+        }
 
         for(Vector3i multiblockPos : multiblockPositions) {
 
@@ -162,17 +143,17 @@ public abstract class AbstractBlockMulti extends Block {
             // North (-z) (Default)
             multiblockPosRotated = multiblockPos;
             // East (+x)
-            if(state.getValue(FACING).getOpposite().getNormal().getX() == 1)
+            if(rootBlockState.getValue(FACING).getOpposite().getNormal().getX() == 1)
                 multiblockPosRotated = new Vector3i(+multiblockPos.getZ(), multiblockPos.getY(), +multiblockPos.getX());
                 // South (+z)
-            else if(state.getValue(FACING).getOpposite().getNormal().getZ() == 1)
+            else if(rootBlockState.getValue(FACING).getOpposite().getNormal().getZ() == 1)
                 multiblockPosRotated = new Vector3i(-multiblockPos.getX(), multiblockPos.getY(), -multiblockPos.getZ());
                 // West (-x)
-            else if(state.getValue(FACING).getOpposite().getNormal().getX() == -1)
+            else if(rootBlockState.getValue(FACING).getOpposite().getNormal().getX() == -1)
                 multiblockPosRotated = new Vector3i(+multiblockPos.getZ(), multiblockPos.getY(), -multiblockPos.getX());
 
             // Use rotated offset + base coords for world placement
-            BlockPos worldPos = pos.offset(multiblockPosRotated.getX(), multiblockPosRotated.getY(), multiblockPosRotated.getZ());
+            BlockPos worldPos = rootPos.offset(multiblockPosRotated.getX(), multiblockPosRotated.getY(), multiblockPosRotated.getZ());
 
             if(worldIn.getBlockState(new BlockPos(worldPos)).getBlock().defaultBlockState().equals(defaultBlockState()) || worldIn.getBlockState(new BlockPos(worldPos)).getMaterial().isReplaceable()) {
 
@@ -184,7 +165,7 @@ public abstract class AbstractBlockMulti extends Block {
                             worldPos,
                             // Encode unrotated offset into BlockState
                             this.defaultBlockState()
-                                    .setValue(FACING, state.getValue(FACING))
+                                    .setValue(FACING, rootBlockState.getValue(FACING))
                                     .setValue(MULTIBLOCK_OFFSET_HORIZONTAL, Math.abs(multiblockPos.getX()))
                                     .setValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE, multiblockPos.getX() < 0)
                                     .setValue(MULTIBLOCK_OFFSET_HEIGHT, Math.abs(multiblockPos.getY()))
@@ -203,6 +184,7 @@ public abstract class AbstractBlockMulti extends Block {
 
     /**
      * Multiblock Destruction Routine
+     * This is just a passthrough to the combo placement/destruction routine
      */
     public void destroyMultiblock(World worldIn, BlockPos pos, BlockState sourceState) {
         BlockPos posOfCenter = getMultiblockCenter(worldIn, pos, sourceState);
@@ -248,17 +230,6 @@ public abstract class AbstractBlockMulti extends Block {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return 1.0F;
-    }
-
-    @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return true;
-    }
-
-    @Override
     public BlockRenderType getRenderShape(BlockState state) {
         return isRootOfMultiblock(state) ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
     }
@@ -268,7 +239,6 @@ public abstract class AbstractBlockMulti extends Block {
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
         return false;
     }
-
 
     /**
      * @return Array of Vector3i, each vector represents the horiz/height/depth offsets for all non-root multiblock components.
