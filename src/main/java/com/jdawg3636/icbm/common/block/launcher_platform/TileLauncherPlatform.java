@@ -18,7 +18,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public abstract class TileLauncherPlatform extends TileEntity {
+public class TileLauncherPlatform extends TileEntity {
 
     private ItemStackHandler itemHandler = createHandler();
     private LazyOptional<IItemHandler> itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
