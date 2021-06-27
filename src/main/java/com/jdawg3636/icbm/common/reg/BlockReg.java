@@ -96,27 +96,27 @@ public class BlockReg {
     });
 
     // Missile Launch Apparatus
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new BlockLauncherPlatform(AbstractBlockMulti.getMultiblockMachineBlockProperties(), TileReg.LAUNCHER_PLATFORM_T1) {
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1) {
         @Override
         public ContainerType<ContainerLauncherPlatform> getContainerType() {
             return ContainerReg.LAUNCHER_PLATFORM_T1.get();
         }
     });
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new BlockLauncherPlatform(AbstractBlockMulti.getMultiblockMachineBlockProperties(), TileReg.LAUNCHER_PLATFORM_T2) {
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2) {
         @Override
         public ContainerType<ContainerLauncherPlatform> getContainerType() {
             return ContainerReg.LAUNCHER_PLATFORM_T2.get();
         }
     });
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new BlockLauncherPlatform(AbstractBlockMulti.getMultiblockMachineBlockProperties(), TileReg.LAUNCHER_PLATFORM_T3) {
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3) {
         @Override
         public ContainerType<ContainerLauncherPlatform> getContainerType() {
             return ContainerReg.LAUNCHER_PLATFORM_T3.get();
         }
     });
-    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      BlockLauncherControlPanel::new);
-    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T2     = BLOCKS.register("launcher_control_panel_t2",      BlockLauncherControlPanel::new);
-    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T3     = BLOCKS.register("launcher_control_panel_t3",      BlockLauncherControlPanel::new);
+    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      () -> new BlockLauncherControlPanel(TileReg.LAUNCHER_CONTROL_PANEL_T1));
+    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T2     = BLOCKS.register("launcher_control_panel_t2",      () -> new BlockLauncherControlPanel(TileReg.LAUNCHER_CONTROL_PANEL_T2));
+    public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T3     = BLOCKS.register("launcher_control_panel_t3",      () -> new BlockLauncherControlPanel(TileReg.LAUNCHER_CONTROL_PANEL_T3));
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T1     = BLOCKS.register("launcher_support_frame_t1",      BlockLauncherSupportFrame::new);
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T2     = BLOCKS.register("launcher_support_frame_t2",      BlockLauncherSupportFrame::new);
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      BlockLauncherSupportFrame::new);

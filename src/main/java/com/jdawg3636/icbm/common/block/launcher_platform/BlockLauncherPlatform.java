@@ -32,9 +32,10 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile {
             new Vector3i(-1,2,0)
     };
 
-    /**
-     * Constructor - Sets Default State for Multiblock Positioning Properties
-     */
+    public BlockLauncherPlatform(RegistryObject<TileEntityType<? extends TileEntity>> tileEntity) {
+        this(getMultiblockMachineBlockProperties(), tileEntity);
+    }
+
     public BlockLauncherPlatform(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntity) {
         super(properties, tileEntity);
     }

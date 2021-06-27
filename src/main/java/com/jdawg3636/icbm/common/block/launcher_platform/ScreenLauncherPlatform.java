@@ -34,8 +34,8 @@ public class ScreenLauncherPlatform extends ContainerScreen<ContainerLauncherPla
         // TODO make text dynamically centered for better localization support, fix alignment of center slot both here and in texture file
         // Using fontRenderer.draw() instead of ContainerScreen.drawString() - draws localized text without a shadow
         FontRenderer fontRenderer = Minecraft.getInstance().font;
-        fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.launcherBase"), 46, 5, 0x8f8f8f);
-        fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.launcherBase.place"), 62, 32, 0x363636);
+        fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.icbm.launcher_platform"), 46, 5, 0x8f8f8f);
+        fontRenderer.draw(matrixStack, new TranslationTextComponent("gui.icbm.launcher_platform.place"), 62, 32, 0x363636);
         fontRenderer.draw(matrixStack, new TranslationTextComponent("container.inventory"), 8, 72, 0x363636);
     }
 
