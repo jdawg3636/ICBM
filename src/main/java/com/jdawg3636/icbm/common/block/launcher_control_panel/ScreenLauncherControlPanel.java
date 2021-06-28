@@ -1,15 +1,18 @@
 package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.network.CPacketUpdateLauncherControlPanel;
+import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,6 +24,11 @@ public class ScreenLauncherControlPanel extends Screen {
     // TileEntity
     private final TileLauncherControlPanel tileEntity;
 
+    // Sizing Copied from ContainerScreen
+    public final int imageWidth = 176;
+    public final int imageHeight = 166;
+    public final int widthTextField = (imageWidth / 2) - 14;
+
     // GUI
     public static final ResourceLocation TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_empty.png");
     public static final ITextComponent LABEL_TITLE              = new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel");
@@ -28,15 +36,11 @@ public class ScreenLauncherControlPanel extends Screen {
     public static final ITextComponent LABEL_TARGET_Z           = new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel.target_z");
     public static final ITextComponent LABEL_TARGET_Y           = new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel.target_y");
     public static final ITextComponent LABEL_RADIO_FREQUENCY    = new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel.radio_frequency");
+    public final Button BUTTON_UPDATE = new Button(((width - imageWidth) / 2) + 7, imageHeight + ((height - imageHeight) / 2) - 7, imageWidth / 2 - 7*4, 20, new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel.button_update"), (ignored) -> this.sendUpdatePacketToServer());
     public TextFieldWidget textFieldTargetX;
     public TextFieldWidget textFieldTargetZ;
     public TextFieldWidget textFieldTargetY;
     public TextFieldWidget textFieldRadioFrequency;
-
-    // Sizing Copied from ContainerScreen
-    public final int imageWidth = 176;
-    public final int imageHeight = 166;
-    public final int widthTextField = (imageWidth / 2) - 14;
 
     public ScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {
         this(new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel"), tileEntity);
@@ -78,11 +82,24 @@ public class ScreenLauncherControlPanel extends Screen {
 
     }
 
+    public void updateGui() {
+        this.textFieldTargetX.setValue(String.valueOf(tileEntity.getTargetX()));
+        this.textFieldTargetZ.setValue(String.valueOf(tileEntity.getTargetZ()));
+        this.textFieldTargetY.setValue(String.valueOf(tileEntity.getTargetY()));
+        this.textFieldRadioFrequency.setValue(String.valueOf(tileEntity.getRadioFrequency()));
+    }
+
     @Override
     public void resize(Minecraft p_231152_1_, int p_231152_2_, int p_231152_3_) {
         String s = this.textFieldTargetX.getValue();
         this.init(p_231152_1_, p_231152_2_, p_231152_3_);
         this.textFieldTargetX.setValue(s);
+    }
+
+    @Override
+    public void onClose() {
+        sendUpdatePacketToServer();
+        super.onClose();
     }
 
     @Override
@@ -93,6 +110,27 @@ public class ScreenLauncherControlPanel extends Screen {
     @Override
     public void tick() {
         this.textFieldTargetX.tick();
+    }
+
+    public void sendUpdatePacketToServer() {
+
+        BlockPos pos;
+        int packetShouldUpdate = 0b1111;
+        double packetTargetX = 0D;
+        double packetTargetZ = 0D;
+        double packetTargetY = 0D;
+        int packetRadioFrequency = 0;
+
+        if(tileEntity != null) pos = tileEntity.getBlockPos();
+        else return;
+
+        try { packetTargetX        = Double.parseDouble(textFieldTargetX.getValue()); } catch (Exception e) { packetShouldUpdate &= 0b1110; }
+        try { packetTargetZ        = Double.parseDouble(textFieldTargetZ.getValue()); } catch (Exception e) { packetShouldUpdate &= 0b1101; }
+        try { packetTargetY        = Double.parseDouble(textFieldTargetY.getValue()); } catch (Exception e) { packetShouldUpdate &= 0b1011; }
+        try { packetRadioFrequency = Integer.parseInt(textFieldRadioFrequency.getValue()); } catch (Exception e) { packetShouldUpdate |= 0b0111; }
+
+        ICBMNetworking.INSTANCE.sendToServer(new CPacketUpdateLauncherControlPanel(pos, packetShouldUpdate, packetTargetX, packetTargetZ, packetTargetY, packetRadioFrequency));
+
     }
 
     @Override
@@ -111,6 +149,7 @@ public class ScreenLauncherControlPanel extends Screen {
         this.textFieldTargetZ.render(matrixStack, mouseX, mouseY, partialTicks);
         this.textFieldTargetY.render(matrixStack, mouseX, mouseY, partialTicks);
         this.textFieldRadioFrequency.render(matrixStack, mouseX, mouseY, partialTicks);
+        this.BUTTON_UPDATE.render(matrixStack, mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
