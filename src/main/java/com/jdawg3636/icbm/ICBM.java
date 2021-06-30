@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm;
 
-import com.jdawg3636.icbm.client.ClientProxy;
+import com.jdawg3636.icbm.common.ClientProxy;
 import com.jdawg3636.icbm.common.CommonProxy;
 import com.jdawg3636.icbm.common.event.ICBMEvents;
 import com.jdawg3636.icbm.common.reg.*;

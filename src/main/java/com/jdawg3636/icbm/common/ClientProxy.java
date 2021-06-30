@@ -1,12 +1,11 @@
-package com.jdawg3636.icbm.client;
+package com.jdawg3636.icbm.common;
 
-import com.jdawg3636.icbm.client.render.entity.EntityPrimedExplosivesRenderer;
-import com.jdawg3636.icbm.client.render.entity.EntityMissileRenderer;
+import com.jdawg3636.icbm.common.entity.EntityPrimedExplosivesRenderer;
+import com.jdawg3636.icbm.common.entity.EntityMissileRenderer;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.EntityReg;
-import com.jdawg3636.icbm.common.CommonProxy;
 import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;

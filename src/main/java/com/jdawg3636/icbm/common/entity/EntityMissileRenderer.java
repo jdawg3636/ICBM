@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.client.render.entity;
+package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.mojang.blaze3d.matrix.MatrixStack;
