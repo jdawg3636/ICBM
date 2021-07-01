@@ -19,12 +19,15 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -120,6 +123,17 @@ public class EntityMissile extends Entity {
         double[] parabolaXCoefficients = generateParabola(sourcePos.getX(), sourcePos.getY(), destPos.getX(), destPos.getY(), peakHeight);
         double[] parabolaZCoefficients = generateParabola(sourcePos.getZ(), sourcePos.getY(), destPos.getZ(), destPos.getY(), peakHeight);
 
+        // Precalculating Horizontal Rotation, doesn't change during flight.
+        double rotX = Math.toDegrees(Math.atan(Math.abs((double)(destPos.getX() - sourcePos.getX())) / Math.abs(destPos.getZ() - sourcePos.getZ())));
+        if(destPos.getX() > sourcePos.getX()) rotX -= 2 * rotX;
+        if(destPos.getZ() < sourcePos.getZ()) rotX += 2 * (90 - rotX);
+        final double finalRotX = rotX;
+
+        // Precalculating a Multiple for Vertical Rotation, direction of travel is not known at runtime so may need to multiply by -1
+        // Need to calculate for both X and Z as the choice of which to use for calculating Y is made at runtime
+        final int rotYMultipleFromX = destPos.getX() >= sourcePos.getX() ? -1 : 1;
+        final int rotYMultipleFromZ = destPos.getZ() >= sourcePos.getZ() ? -1 : 1;
+
         //System.out.printf("[ICBM DEBUG] Updated Path Function for X: %fx^2 + %fx + %f\n", parabolaXCoefficients[0], parabolaXCoefficients[1], parabolaXCoefficients[2]);
         //System.out.printf("[ICBM DEBUG] Updated Path Function for Z: %fz^2 + %fz + %f\n", parabolaZCoefficients[0], parabolaZCoefficients[1], parabolaZCoefficients[2]);
 
@@ -142,7 +156,7 @@ public class EntityMissile extends Entity {
 
                         double yFromX = funcParabolaXCoefficients[0] * x * x + funcParabolaXCoefficients[1] * x + funcParabolaXCoefficients[2];
                         double yFromZ = funcParabolaZCoefficients[0] * z * z + funcParabolaZCoefficients[1] * z + funcParabolaZCoefficients[2];
-                        double y = funcParabolaXCoefficients[0] != 0d ? yFromX : yFromZ;
+                        double y = !Double.isNaN(funcParabolaXCoefficients[0]) ? yFromX : yFromZ;
 
                         return new Vector3d(x, y, z);
 
@@ -155,15 +169,18 @@ public class EntityMissile extends Entity {
 
                     final double[] funcParabolaXCoefficients = parabolaXCoefficients;
                     final double[] funcParabolaZCoefficients = parabolaZCoefficients;
+                    final double funcRotX = finalRotX;
 
                     @Override
                     public Vector3d apply(Vector3d position) {
 
-                        double slopeX = 2d * funcParabolaZCoefficients[0] * position.z + funcParabolaZCoefficients[1];
-                        double slopeZ = 2d * funcParabolaXCoefficients[0] * position.x + funcParabolaXCoefficients[1];
-                        double slopeY = 0d;
+                        double rotYFromX = rotYMultipleFromX * Math.toDegrees(Math.atan(2d * funcParabolaXCoefficients[0] * position.x + funcParabolaXCoefficients[1]));
+                        double rotYFromZ = rotYMultipleFromZ * Math.toDegrees(Math.atan(2d * funcParabolaZCoefficients[0] * position.z + funcParabolaZCoefficients[1]));
 
-                        return new Vector3d(slopeX, slopeY, slopeZ);
+                        Vector3d toReturn = new Vector3d(funcRotX, (!Double.isNaN(funcParabolaXCoefficients[0]) ? rotYFromX : rotYFromZ), 0);
+                        //System.out.printf("[ICBM DEBUG] Position = (%s, %s)\n", position.x, position.z);
+                        //System.out.printf("[ICBM DEBUG] Applying Rotation (%s, %s)\n", toReturn.x(), toReturn.y());
+                        return toReturn;
 
                     }
 
@@ -182,7 +199,7 @@ public class EntityMissile extends Entity {
         // Somewhat inverted as x^2, x, and 1 are the known coefficients while a, b, c are being solved for.
 
         // Includes logic to ensure that that the First Equation (x1Squared * a + x1 * b + x1Const * c = y1) has the
-        // heighest x value (and therefore heighest x^2 value) as otherwise a value of 0 could cause serious problems
+        // highest x value (and therefore highest x^2 value) as otherwise a value of 0 could cause serious problems
 
         // Coefficients for 'c'
         double x1Const = 1;
@@ -236,6 +253,19 @@ public class EntityMissile extends Entity {
         // Package and Return
         return new double[]{a,b,c};
 
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void lerpMotion(double x, double y, double z) {
+        super.lerpMotion(x, y, z);
+        if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
+            float distance = MathHelper.sqrt(x*x + z*z);
+            this.xRot = (float)(MathHelper.atan2(y, distance) * (double)(180F / (float)Math.PI));
+            this.yRot = (float)(MathHelper.atan2(x, z) * (double)(180F / (float)Math.PI));
+            this.xRotO = this.xRot;
+            this.yRotO = this.yRot;
+            this.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+        }
     }
 
     //@Override
@@ -312,23 +342,17 @@ public class EntityMissile extends Entity {
                         explode();
                         break;
                     }
+
+                    Vector3d newPos = pathFunction.apply(ticksSinceLaunch);
+                    Vector3d newRot = gradientFunction.apply(newPos);
+                    //System.out.printf("[ICBM DEBUG] [%s] Setting Position of Missile to %f, %f, %f\n", level.isClientSide() ? "Client" : "Server", newPos.x, newPos.y, newPos.z);
+                    this.teleportTo(newPos.x(), newPos.y(), newPos.z());
+                    this.setRot((float)newRot.x, (float)newRot.y);
+
                 }
 
-                // Debug Alternatives to Real Calculations
-                //Vector3d newPos = new Vector3d(getX() + 1d/20d, getY() + 1d/20d, getZ() + 1d/20d);
-                //this.setRot((float)Math.PI/2, 0);
-
-                // Correct Position
-                Vector3d newPos = pathFunction.apply(ticksSinceLaunch);
-
-                // Correct Rotation
-                Vector3d newRot = gradientFunction.apply(newPos);
-                this.setRot((float)newRot.x, (float)newRot.z);
-
-                //System.out.printf("[ICBM DEBUG] [%s] Setting Position of Missile to %f, %f, %f\n", level.isClientSide() ? "Client" : "Server", newPos.x, newPos.y, newPos.z);
-                this.teleportTo(newPos.x(), newPos.y(), newPos.z());
-
                 break;
+
         }
     }
 
