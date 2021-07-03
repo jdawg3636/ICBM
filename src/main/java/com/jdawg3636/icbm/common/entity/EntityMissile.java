@@ -94,6 +94,7 @@ public class EntityMissile extends Entity {
                 worldIn.getMaxBuildHeight(),
                 3000
         );
+        yRot = -90F;
     }
 
     public EntityMissile(EntityType<?> entityTypeIn, World worldIn, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase, BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks) {
@@ -308,15 +309,13 @@ public class EntityMissile extends Entity {
                 break;
 
             case STATIONARY_ACTIVATED:
-                spawnParticles();
+                if(!level.isClientSide()) spawnParticles(0,0,0);
                 break;
 
             case LAUNCHED:
 
                 ticksSinceLaunch++;
 
-                spawnParticles();
-                if(!level.isClientSide() && ProjectileHelper.getHitResult(this, (entity) -> entity instanceof EntityMissile).getType() != RayTraceResult.Type.MISS) explode();
                 if(!level.isClientSide()) {
                     // Based on subsections of AbstractArrowEntity.tick()
                     BlockPos blockpos = this.blockPosition();
@@ -338,6 +337,10 @@ public class EntityMissile extends Entity {
                         explode();
                         break;
                     }
+                    if (ProjectileHelper.getHitResult(this, (entity) -> entity instanceof EntityMissile).getType() != RayTraceResult.Type.MISS) {
+                        explode();
+                        break;
+                    }
                     if(getY() <= 0) {
                         explode();
                         break;
@@ -349,6 +352,9 @@ public class EntityMissile extends Entity {
                     this.teleportTo(newPos.x(), newPos.y(), newPos.z());
                     this.setRot((float)newRot.x, (float)newRot.y);
 
+                } else {
+                    Vector3d newPos = pathFunction.apply(ticksSinceLaunch);
+                    spawnParticles(getX() - newPos.x(), getY() - newPos.y(), getZ() - newPos.z());
                 }
 
                 break;
@@ -356,7 +362,6 @@ public class EntityMissile extends Entity {
         }
     }
 
-    // TODO Trigger Appropriate Blast Event
     public void explode() {
         level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0F, Explosion.Mode.BREAK);
         if(!level.isClientSide()) {
@@ -452,12 +457,12 @@ public class EntityMissile extends Entity {
         return missileItem.get().getDefaultInstance();
     }
 
-    public void spawnParticles() {
+    public void spawnParticles(double motionX, double motionY, double motionZ) {
         if(this.level.isClientSide()) {
             Random random = new Random();
-            for(int i = 0; i < 4; i++)     this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, false, this.getX(), this.getY(), this.getZ(), random.nextDouble()/1.5 - 0.3333, random.nextDouble()/-1.5 - 0.3333, random.nextDouble()/1.5 - 0.3333);
-            for(int i = 0; i < 4; i++)     this.level.addParticle(ParticleTypes.CLOUD,               false, this.getX(), this.getY(), this.getZ(), random.nextDouble()/1.5 - 0.3333, random.nextDouble()/-1.5 - 0.3333, random.nextDouble()/1.5 - 0.3333);
-            if(random.nextFloat() < 0.25f) this.level.addParticle(ParticleTypes.EXPLOSION,           true,  this.getX() + (3 * random.nextDouble() - 1.5), this.getY()- 1.5 * random.nextDouble(), this.getZ() + (3 * random.nextDouble() - 1.5), random.nextDouble()/1.5 - 0.3333, random.nextDouble()/-1.5 - 0.3333, random.nextDouble()/1.5 - 0.3333);
+            for(int i = 0; i < 4; i++)     this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, false, this.getX(), this.getY(), this.getZ(), random.nextDouble()/1.5 - 0.3333 + motionX, random.nextDouble()/1.5 - 0.3333 + motionY, random.nextDouble()/1.5 - 0.3333 + motionZ);
+            for(int i = 0; i < 4; i++)     this.level.addParticle(ParticleTypes.CLOUD,               false, this.getX(), this.getY(), this.getZ(), random.nextDouble()/1.5 - 0.3333 + motionX, random.nextDouble()/1.5 - 0.3333 + motionY, random.nextDouble()/1.5 - 0.3333 + motionZ);
+            if(random.nextFloat() < 0.25f) this.level.addParticle(ParticleTypes.EXPLOSION,           true,  this.getX() + (3 * random.nextDouble() - 1.5), this.getY()- 1.5 * random.nextDouble(), this.getZ() + (3 * random.nextDouble() - 1.5), random.nextDouble()/1.5 - 0.3333 + motionX, random.nextDouble()/-1.5 - 0.3333 + motionY, random.nextDouble()/1.5 - 0.3333 + motionZ);
         }
     }
 
