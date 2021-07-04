@@ -28,6 +28,26 @@ public class ICBMEvents {
     }
 
     @SubscribeEvent
+    public static void onBlastAntimatter(BlastEvent.Antimatter event) {
+
+        onBlast(event);
+
+        if (!event.getBlastWorld().isClientSide) {
+            int radius = 50;
+            int radiusSq = radius * radius;
+            for(int i = -radius; i <= radius; i++)
+                for(int j = -radius; j <= radius; j++)
+                    for(int k = -radius; k <= radius; k++) {
+                        BlockPos candidatePos = new BlockPos(event.getBlastPosition().getX() + i, event.getBlastPosition().getY() + j, event.getBlastPosition().getZ() + k);
+                        if (event.getBlastPosition().distSqr(candidatePos) < radiusSq) {
+                            event.getBlastWorld().setBlock(candidatePos, Blocks.AIR.defaultBlockState(), 3);
+                        }
+                    }
+        }
+
+    }
+
+    @SubscribeEvent
     public static void onBlastIncendiary(BlastEvent.Incendiary event) {
 
         onBlast(event);
