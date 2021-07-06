@@ -342,7 +342,7 @@ public class EntityMissile extends Entity {
                         break;
                     }
                     if(getY() <= 0) {
-                        explode();
+                        kill(); // Don't Explode, Just Disappear.
                         break;
                     }
 
