@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -75,6 +76,21 @@ public class BlockExplosives extends Block {
             explosives_entity.setFuse((short)(world.random.nextInt(explosives_entity.getLife() / 4) + explosives_entity.getLife() / 8));
             world.addFreshEntity(explosives_entity);
         }
+    }
+
+    /**
+     * Easter Egg for Redcoats
+     */
+    @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        BlockState state = super.getStateForPlacement(context);
+        if(state != null && context.getPlayer() != null) {
+            String playerName = context.getPlayer().getName().getString();
+            if(playerName.equals("SlushierZeus69") || playerName.equals("dig_dug__"))
+                state = state.setValue(UNSTABLE, Boolean.TRUE);
+        }
+        return state;
     }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
