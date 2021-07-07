@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.block.launcher_platform;
 
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
+import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile {
+public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile implements IMissileLaunchApparatus {
 
     private static final Vector3i[] MULTIBLOCK_POSITIONS = {
             new Vector3i(1,0,0),

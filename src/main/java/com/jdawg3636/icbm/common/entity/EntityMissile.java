@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.event.BlastEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -320,7 +321,7 @@ public class EntityMissile extends Entity {
                     // Based on subsections of AbstractArrowEntity.tick()
                     BlockPos blockpos = this.blockPosition();
                     BlockState blockstate = this.level.getBlockState(blockpos);
-                    if (!blockstate.isAir(this.level, blockpos)) {
+                    if (!blockstate.isAir(this.level, blockpos) && !(level.getBlockState(blockpos).getBlock() instanceof IMissileLaunchApparatus)) {
                         VoxelShape voxelshape = blockstate.getCollisionShape(this.level, blockpos);
                         if (!voxelshape.isEmpty()) {
                             Vector3d vector3d1 = this.position();
@@ -333,12 +334,14 @@ public class EntityMissile extends Entity {
                             }
                         }
                     }
+                    // The entity check may be redundant, probably covered by general getHitResult
                     if (ProjectileHelper.getEntityHitResult(this.level, this, position(), position().add(getDeltaMovement()), this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (entity) -> entity instanceof EntityMissile) != null) {
                         explode();
                         break;
                     }
-                    if (ProjectileHelper.getHitResult(this, (entity) -> entity instanceof EntityMissile).getType() != RayTraceResult.Type.MISS) {
-                        explode();
+                    RayTraceResult rayTraceResult = ProjectileHelper.getHitResult(this, (entity) -> entity instanceof EntityMissile);
+                    if (rayTraceResult.getType() != RayTraceResult.Type.MISS) {
+                        if(rayTraceResult.getType() == RayTraceResult.Type.ENTITY || !(level.getBlockState(new BlockPos(rayTraceResult.getLocation())).getBlock() instanceof IMissileLaunchApparatus)) explode();
                         break;
                     }
                     if(getY() <= 0) {
@@ -403,9 +406,6 @@ public class EntityMissile extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundNBT compound) {
-
-        //System.out.print("[ICBM DEBUG] Reading Missile Save Data!");
-        //System.out.println(" Side = " + ((level.isClientSide) ? "Client" : "Server"));
 
         entityData.set(MISSILE_SOURCE_TYPE, compound.getInt("MissileSourceType"));
         entityData.set(MISSILE_LAUNCH_PHASE, compound.getInt("MissileLaunchPhase"));
@@ -491,6 +491,11 @@ public class EntityMissile extends Entity {
         else {
             return ActionResultType.PASS;
         }
+    }
+
+    @Override
+    public void setRot(float yRot, float xRot) {
+        super.setRot(yRot, xRot);
     }
 
 }

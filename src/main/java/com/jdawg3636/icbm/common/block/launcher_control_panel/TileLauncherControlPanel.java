@@ -1,11 +1,13 @@
 package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
+import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
@@ -37,6 +39,14 @@ public abstract class TileLauncherControlPanel extends TileEntity {
 
     public int getRadioFrequency() {
         return 0;
+    }
+
+    // TODO Implement Varying Accuracy Based on Support Frames
+    public void launchMissile() {
+        BlockPos platformPos = getBlockPos().offset(getBlockState().getValue(BlockLauncherControlPanel.FACING).getOpposite().getNormal());
+        TileEntity platformTile = level.getBlockEntity(platformPos);
+        BlockPos targetPos = new BlockPos(getTargetX(), getTargetY(), getTargetZ());
+        if(platformTile instanceof TileLauncherPlatform) ((TileLauncherPlatform)platformTile).launchMissile(getBlockPos(), targetPos, level.getHeight(), (int)Math.sqrt(getBlockPos().distSqr(targetPos)));
     }
 
     @Override

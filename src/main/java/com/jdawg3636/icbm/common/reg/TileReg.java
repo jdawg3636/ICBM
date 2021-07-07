@@ -17,7 +17,12 @@ public class TileReg {
 
     public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T1 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T1.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1.get()), BlockReg.LAUNCHER_PLATFORM_T1.get()).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T2 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T2.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2.get()), BlockReg.LAUNCHER_PLATFORM_T2.get()).build(null));
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T3 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T3.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3.get()), BlockReg.LAUNCHER_PLATFORM_T3.get()).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T3 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T3.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3.get()) {
+        @Override
+        public double getMissileEntityYOffset() {
+            return 6D/16D;
+        }
+    }, BlockReg.LAUNCHER_PLATFORM_T3.get()).build(null));
 
     public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_CONTROL_PANEL_T1 = TILES.register(
             BlockReg.LAUNCHER_CONTROL_PANEL_T1.getId().getPath(),
