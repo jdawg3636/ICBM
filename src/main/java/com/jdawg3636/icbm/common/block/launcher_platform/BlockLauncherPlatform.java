@@ -59,7 +59,7 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile imple
         if(!world.isClientSide() && tileEntity instanceof TileLauncherPlatform) {
             if (((TileLauncherPlatform)tileEntity).itemHandler.getStackInSlot(0).isEmpty() && player.getItemInHand(hand).getItem() instanceof ItemMissile) {
                 ItemStack itemStack = player.getItemInHand(hand);
-                player.inventory.removeItem(itemStack);
+                if(!player.isCreative()) player.inventory.removeItem(itemStack);
                 ((TileLauncherPlatform)tileEntity).itemHandler.setStackInSlot(0, itemStack);
             }
             else {

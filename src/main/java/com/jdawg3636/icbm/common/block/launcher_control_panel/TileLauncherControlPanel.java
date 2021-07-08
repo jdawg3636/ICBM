@@ -46,7 +46,7 @@ public abstract class TileLauncherControlPanel extends TileEntity {
         BlockPos platformPos = getBlockPos().offset(getBlockState().getValue(BlockLauncherControlPanel.FACING).getOpposite().getNormal());
         TileEntity platformTile = level.getBlockEntity(platformPos);
         BlockPos targetPos = new BlockPos(getTargetX(), getTargetY(), getTargetZ());
-        if(platformTile instanceof TileLauncherPlatform) ((TileLauncherPlatform)platformTile).launchMissile(getBlockPos(), targetPos, level.getHeight(), (int)Math.sqrt(getBlockPos().distSqr(targetPos)));
+        if(platformTile instanceof TileLauncherPlatform) ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, level.getHeight(), (int)Math.sqrt(platformPos.distSqr(targetPos)));
     }
 
     @Override
