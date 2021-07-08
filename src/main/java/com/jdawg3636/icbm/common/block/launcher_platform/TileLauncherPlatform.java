@@ -6,6 +6,7 @@ import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.item.ItemMissile;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.impl.data.EntityDataAccessor;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -29,9 +30,9 @@ import java.util.UUID;
 
 public class TileLauncherPlatform extends TileEntity {
 
-    private ItemStackHandler itemHandler = createHandler();
-    private LazyOptional<IItemHandler> itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
-    private UUID missileEntityID = null;
+    public ItemStackHandler itemHandler = createHandler();
+    public LazyOptional<IItemHandler> itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
+    public UUID missileEntityID = null;
 
     public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
@@ -69,6 +70,14 @@ public class TileLauncherPlatform extends TileEntity {
         }
     }
 
+    public void onPlatformDestroyed() {
+        if(level != null) {
+            ItemStack contents = itemHandler.getStackInSlot(0);
+            itemHandler.setStackInSlot(0, ItemStack.EMPTY);
+            InventoryHelper.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), contents);
+        }
+    }
+
     private ItemStackHandler createHandler() {
         return new ItemStackHandler(1) {
 
@@ -82,6 +91,7 @@ public class TileLauncherPlatform extends TileEntity {
                     try {
                         ((ServerWorld)level).getEntity(missileEntityID).kill();
                     } catch (Exception ignored) {}
+                    missileEntityID = null;
 
                     // Spawn New Entity (If Applicable)
                     Item item = itemHandler.getStackInSlot(slot).getItem();
@@ -100,7 +110,7 @@ public class TileLauncherPlatform extends TileEntity {
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return ItemTags.getAllTags().getTag(new ResourceLocation(ICBMReference.MODID, "missiles")).contains(stack.getItem());
+                return stack.getItem() instanceof ItemMissile;
             }
 
             @Nonnull
