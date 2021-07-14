@@ -16,6 +16,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 
@@ -24,7 +25,7 @@ public class BlockSpikes extends Block {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BlockSpikes() {
-        super(Block.Properties.of((new Material.Builder(MaterialColor.METAL)).nonSolid().build()).strength(1.0F).noCollission().noOcclusion());
+        super(Block.Properties.of((new Material.Builder(MaterialColor.METAL)).nonSolid().build()).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(2F, 2F).noCollission().noOcclusion());
         this.registerDefaultState(
                 this.stateDefinition.any()
                 .setValue(WATERLOGGED, true)

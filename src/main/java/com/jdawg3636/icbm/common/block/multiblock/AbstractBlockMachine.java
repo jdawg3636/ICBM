@@ -38,7 +38,9 @@ public abstract class AbstractBlockMachine extends Block {
     // Properties Copied(ish) from registration for GLASS in net.minecraft.block.Blocks
     // Intended to be used for all multiblocks but separating out to leave flexibility. At the time of writing this is also used by the S-Mine (not a multiblock).
     public static AbstractBlock.Properties getMultiblockMachineBlockProperties() {
-        return AbstractBlock.Properties.of(Material.GLASS, MaterialColor.METAL)
+        return AbstractBlock.Properties.of(Material.STONE, MaterialColor.METAL)
+                .requiresCorrectToolForDrops()
+                .strength(5.0F, 6.0F)
                 .noOcclusion()
                 .isValidSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
                 .isRedstoneConductor((BlockState state, IBlockReader reader, BlockPos pos)->false)

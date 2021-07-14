@@ -9,12 +9,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
 
 public class BlockReinforcedGlass extends Block {
 
     public BlockReinforcedGlass() {
-        super(Block.Properties.of(Material.GLASS).strength(10, 48)
+        super(Block.Properties.of(Material.GLASS)
                 /* Copied(ish) from registration for GLASS in net.minecraft.block.Blocks */
+                .harvestTool(ToolType.PICKAXE)
+                .strength(2F, 48F)
                 .noOcclusion()
                 .isValidSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
                 .isRedstoneConductor((BlockState state, IBlockReader reader, BlockPos pos)->false)
@@ -48,13 +51,5 @@ public class BlockReinforcedGlass extends Block {
     public boolean propagatesSkylightDown(BlockState p_200123_1_, IBlockReader p_200123_2_, BlockPos p_200123_3_) {
         return true;
     }
-
-    // TODO - drop nothing on normal break
-    /* TODO - silk touch support - might have to be done through loot tables now? https://github.com/MinecraftForge/MinecraftForge/blob/1.15.x/src/test/java/net/minecraftforge/debug/gameplay/loot/GlobalLootModifiersTest.java
-    @Override
-    protected boolean canSilkHarvest() {
-        return true;
-    }
-    */
 
 }

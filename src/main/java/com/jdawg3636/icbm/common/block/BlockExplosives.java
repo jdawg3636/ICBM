@@ -40,7 +40,7 @@ public class BlockExplosives extends Block {
      * Parameterless Constructor
      * */
     public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
-        this(Block.Properties.of(Material.EXPLOSIVE).strength(2).sound(SoundType.GRASS), entityForm, blastEventProvider, itemForm);
+        this(Block.Properties.of(Material.EXPLOSIVE).instabreak().sound(SoundType.GRASS), entityForm, blastEventProvider, itemForm);
     }
 
     /**

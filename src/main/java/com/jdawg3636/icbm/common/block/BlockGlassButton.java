@@ -6,11 +6,12 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraftforge.common.ToolType;
 
 public class BlockGlassButton extends AbstractButtonBlock {
 
     public BlockGlassButton() {
-        super(false, Block.Properties.of(Material.GLASS).randomTicks().sound(SoundType.GLASS).strength(0.5F).noCollission());
+        super(false, Block.Properties.of(Material.GLASS).harvestTool(ToolType.PICKAXE).randomTicks().sound(SoundType.GLASS).strength(0.5F).noCollission());
     }
 
     protected SoundEvent getSound(boolean p_196369_1_) {
