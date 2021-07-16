@@ -50,7 +50,7 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile imple
     }
 
     @Override
-    public Vector3i[] getMultiblockPositions() {
+    public Vector3i[] getMultiblockOffsets() {
         return MULTIBLOCK_POSITIONS;
     }
 

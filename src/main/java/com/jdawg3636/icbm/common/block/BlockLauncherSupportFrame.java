@@ -12,7 +12,7 @@ public class BlockLauncherSupportFrame extends AbstractBlockMulti implements IMi
     };
 
     @Override
-    public Vector3i[] getMultiblockPositions() {
+    public Vector3i[] getMultiblockOffsets() {
         return MULTIBLOCK_POSITIONS;
     }
 

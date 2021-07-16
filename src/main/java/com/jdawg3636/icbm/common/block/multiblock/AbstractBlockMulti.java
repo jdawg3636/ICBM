@@ -1,24 +1,16 @@
 package com.jdawg3636.icbm.common.block.multiblock;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -80,15 +72,31 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         builder.add(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE);
     }
 
+    public BlockState getStateWithOffset(Vector3i offset, Direction facing) {
+        return this.defaultBlockState()
+            .setValue(FACING, facing)
+            .setValue(MULTIBLOCK_OFFSET_HORIZONTAL, Math.abs(offset.getX()))
+            .setValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE, offset.getX() < 0)
+            .setValue(MULTIBLOCK_OFFSET_HEIGHT, Math.abs(offset.getY()))
+            .setValue(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE, offset.getY() < 0)
+            .setValue(MULTIBLOCK_OFFSET_DEPTH, Math.abs(offset.getZ()))
+            .setValue(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE, offset.getZ() < 0);
+    }
+
     /**
      * Prevents placement in invalid locations (ex. near world height), return null BlockState if invalid
      */
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
+
+        BlockState state = super.getStateForPlacement(context);
+
         if(context.getClickedPos().getY() > context.getLevel().getMaxBuildHeight()-getMultiblockHeight()) return null;
-        if(!context.getLevel().getBlockState(context.getClickedPos().above()).canBeReplaced(context)) return null;
-        return super.getStateForPlacement(context);
+        for(BlockPos toCheck : getMultiblockWorldPositions(context.getClickedPos(), state)) if(!context.getLevel().getBlockState(toCheck).canBeReplaced(context)) return null;
+
+        return state;
+
     }
 
     /**
@@ -98,7 +106,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     @Override
     public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
-        fillMultiblock(worldIn, pos, state, false);
+        placeMultiblock(worldIn, pos, state);
     }
 
     /**
@@ -112,84 +120,39 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         destroyMultiblock(worldIn, pos, state);
     }
 
-    /**
-     * Multiblock Placement/Destruction Routine
-     * @param setToAir Set True to Destroy, False to Place
-     */
-    public void fillMultiblock(World worldIn, BlockPos rootPos, BlockState rootBlockState, boolean setToAir) {
+    public void placeMultiblock(World world, BlockPos rootPos, BlockState rootState) {
 
-        // Checks that the root position actually contains a root BlockState.
-        // This should always be true before this method is called, otherwise can cause NPEs.
-        if(!((rootBlockState.getBlock() instanceof AbstractBlockMulti) && isRootOfMultiblock(rootBlockState))) {
-            return;
-        }
+        // Checks that the root position actually contains a root BlockState, otherwise could cause NPEs
+        if(!((rootState.getBlock() instanceof AbstractBlockMulti) && isRootOfMultiblock(rootState))) return;
 
-        // Add Root Block to List
-        Vector3i[] multiblockPositions;
-        if(setToAir) {
-            multiblockPositions = new Vector3i[getMultiblockPositions().length+1];
-            for(int i = 0; i < getMultiblockPositions().length; i++) multiblockPositions[i] = getMultiblockPositions()[i];
-            multiblockPositions[multiblockPositions.length-1] = new Vector3i(0, 0, 0);
-        } else {
-            multiblockPositions = getMultiblockPositions();
-        }
+        Vector3i[] multiblockOffsets = getMultiblockOffsets();
+        BlockPos[] multiblockWorldPositions = getMultiblockWorldPositions(rootPos, rootState);
 
-        for(Vector3i multiblockPos : multiblockPositions) {
+        for(int i = 0; i < multiblockOffsets.length; i++) {
 
-            // Calculate Rotation based on "facing" property
-            // NOTE: Using opposite of "facing", so all offsets are from pov of the player
-            Vector3i multiblockPosRotated;
+            Vector3i offset = multiblockOffsets[i];
+            BlockPos worldPos = multiblockWorldPositions[i];
 
-            // North (-z) (Default)
-            multiblockPosRotated = multiblockPos;
-            // East (+x)
-            if(rootBlockState.getValue(FACING).getOpposite().getNormal().getX() == 1)
-                multiblockPosRotated = new Vector3i(+multiblockPos.getZ(), multiblockPos.getY(), +multiblockPos.getX());
-                // South (+z)
-            else if(rootBlockState.getValue(FACING).getOpposite().getNormal().getZ() == 1)
-                multiblockPosRotated = new Vector3i(-multiblockPos.getX(), multiblockPos.getY(), -multiblockPos.getZ());
-                // West (-x)
-            else if(rootBlockState.getValue(FACING).getOpposite().getNormal().getX() == -1)
-                multiblockPosRotated = new Vector3i(+multiblockPos.getZ(), multiblockPos.getY(), -multiblockPos.getX());
-
-            // Use rotated offset + base coords for world placement
-            BlockPos worldPos = rootPos.offset(multiblockPosRotated.getX(), multiblockPosRotated.getY(), multiblockPosRotated.getZ());
-
-            if(worldIn.getBlockState(new BlockPos(worldPos)).getBlock().defaultBlockState().equals(defaultBlockState()) || worldIn.getBlockState(new BlockPos(worldPos)).getMaterial().isReplaceable()) {
-
-                if(setToAir){
-                    worldIn.setBlockAndUpdate(worldPos, Blocks.AIR.defaultBlockState());
-                }
-                else {
-                    worldIn.setBlock(
-                            worldPos,
-                            // Encode unrotated offset into BlockState
-                            this.defaultBlockState()
-                                    .setValue(FACING, rootBlockState.getValue(FACING))
-                                    .setValue(MULTIBLOCK_OFFSET_HORIZONTAL, Math.abs(multiblockPos.getX()))
-                                    .setValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE, multiblockPos.getX() < 0)
-                                    .setValue(MULTIBLOCK_OFFSET_HEIGHT, Math.abs(multiblockPos.getY()))
-                                    .setValue(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE, multiblockPos.getY() < 0)
-                                    .setValue(MULTIBLOCK_OFFSET_DEPTH, Math.abs(multiblockPos.getZ()))
-                                    .setValue(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE, multiblockPos.getZ() < 0)
-                            , 3
-                    );
-                }
-
+            if(world.getBlockState(new BlockPos(worldPos)).getMaterial().isReplaceable()) {
+                world.setBlock(worldPos, getStateWithOffset(offset, rootState.getValue(FACING)), 3);
             }
 
         }
 
     }
 
+    public void destroyMultiblock(World world, BlockPos breakSourcePos, BlockState breakSourceState) {
+        BlockPos rootPos = getMultiblockCenter(world, breakSourcePos, breakSourceState);
+        BlockState rootState = world.getBlockState(rootPos);
+        destroyMultiblockInternal(world, rootPos, rootState, breakSourcePos);
+    }
+
     /**
-     * Multiblock Destruction Routine
-     * This is just a passthrough to the combo placement/destruction routine
+     * @param exclude Excluded from destruction, cannot be null.
      */
-    public void destroyMultiblock(World worldIn, BlockPos pos, BlockState sourceState) {
-        BlockPos posOfCenter = getMultiblockCenter(worldIn, pos, sourceState);
-        // Fill with Air
-        fillMultiblock(worldIn, posOfCenter, worldIn.getBlockState(posOfCenter), true);
+    private void destroyMultiblockInternal(World world, BlockPos rootPos, BlockState rootState, BlockPos exclude) {
+        if(!exclude.equals(rootPos)) world.setBlockAndUpdate(rootPos, Blocks.AIR.defaultBlockState());
+        for(BlockPos pos : getMultiblockWorldPositions(rootPos, rootState)) if((!exclude.equals(pos)) && world.getBlockState(new BlockPos(pos)).getBlock().defaultBlockState().equals(defaultBlockState())) world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
     }
 
     public boolean isRootOfMultiblock(BlockState state) {
@@ -242,8 +205,53 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
 
     /**
      * @return Array of Vector3i, each vector represents the horiz/height/depth offsets for all non-root multiblock components.
-     * DO NOT INCLUDE THE ROOT (0, 0, 0)
+     * DOES NOT INCLUDE THE ROOT (0, 0, 0)
      */
-    public abstract Vector3i[] getMultiblockPositions();
+    public abstract Vector3i[] getMultiblockOffsets();
+
+    /**
+     * Takes in the BlockPos and BlockState of the root node of this multiblock in the
+     * world and returns the full set of BlockPos that comprise the full structure, EXCLUDING THE ROOT
+     *
+     * Guaranteed to return in the same order as the offsets in this::getMultiblockOffsets
+     *
+     * See this::getMultiblockCenter for acquiring the root's BlockPos
+     *
+     * @return Array of all BlockPos that comprise this multiblock, EXCLUDING THE ROOT
+     */
+    public BlockPos[] getMultiblockWorldPositions(BlockPos rootPos, BlockState rootState) {
+
+        Vector3i[] offsets = getMultiblockOffsets();
+        BlockPos[] positions = new BlockPos[offsets.length];
+
+        for(int i = 0; i < offsets.length; i++) {
+
+            Vector3i offset = offsets[i];
+
+            // Calculate Rotation based on "facing" property
+            // NOTE: Using opposite of "facing", so all offsets are from pov of the player
+            Vector3i rotatedOffset;
+
+            // North (-z) (Default)
+            rotatedOffset = offset;
+            // East (+x)
+            if (rootState.getValue(FACING).getOpposite().getNormal().getX() == 1)
+                rotatedOffset = new Vector3i(+offset.getZ(), offset.getY(), +offset.getX());
+                // South (+z)
+            else if (rootState.getValue(FACING).getOpposite().getNormal().getZ() == 1)
+                rotatedOffset = new Vector3i(-offset.getX(), offset.getY(), -offset.getZ());
+                // West (-x)
+            else if (rootState.getValue(FACING).getOpposite().getNormal().getX() == -1)
+                rotatedOffset = new Vector3i(+offset.getZ(), offset.getY(), -offset.getX());
+
+            // worldPos = rootPos + rotatedOffset
+            BlockPos worldPos = rootPos.offset(rotatedOffset.getX(), rotatedOffset.getY(), rotatedOffset.getZ());
+            positions[i] = worldPos;
+
+        }
+
+        return positions;
+
+    }
 
 }
