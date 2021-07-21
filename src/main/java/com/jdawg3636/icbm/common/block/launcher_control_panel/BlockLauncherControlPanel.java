@@ -1,11 +1,11 @@
 package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
+import com.jdawg3636.icbm.ICBM;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachineTile;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -41,12 +41,12 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
     }
 
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockRayTraceResult blockRayTraceResult) {
-        TileEntity tileentity = world.getBlockEntity(blockPos);
-        if (tileentity instanceof TileLauncherControlPanel) {
+        TileEntity tileEntity = world.getBlockEntity(blockPos);
+        if (tileEntity instanceof TileLauncherControlPanel) {
             if(world.isClientSide()) {
-                Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel((TileLauncherControlPanel) tileentity));
+                ICBM.proxy.setScreenLauncherControlPanel((TileLauncherControlPanel) tileEntity);
             } else {
-                SUpdateTileEntityPacket supdatetileentitypacket = tileentity.getUpdatePacket();
+                SUpdateTileEntityPacket supdatetileentitypacket = tileEntity.getUpdatePacket();
                 if (supdatetileentitypacket != null) ((ServerPlayerEntity) playerEntity).connection.send(supdatetileentitypacket);
             }
             return ActionResultType.sidedSuccess(world.isClientSide);

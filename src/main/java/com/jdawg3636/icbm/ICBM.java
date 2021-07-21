@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -40,6 +41,7 @@ public final class ICBM {
 
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetupEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onModelRegistryEvent);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetupEvent);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, ICBM::onBiomeLoadingEvent);
         MinecraftForge.EVENT_BUS.register(ICBMEvents.class);
@@ -54,6 +56,10 @@ public final class ICBM {
 
     public void onClientSetupEvent(final FMLClientSetupEvent event) {
         proxy.onClientSetupEvent(event);
+    }
+
+    public void onModelRegistryEvent(final ModelRegistryEvent event) {
+        proxy.onModelRegistryEvent(event);
     }
 
     public void onCommonSetupEvent(final FMLCommonSetupEvent event) {

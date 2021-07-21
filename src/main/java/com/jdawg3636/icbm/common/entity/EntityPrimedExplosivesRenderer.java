@@ -1,6 +1,5 @@
 package com.jdawg3636.icbm.common.entity;
 
-import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -11,13 +10,9 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
 import javax.annotation.Nonnull;
 
 // Copied almost one-to-one from net.minecraft.client.renderer.entity.TNTRenderer
-@OnlyIn(Dist.CLIENT)
 public class EntityPrimedExplosivesRenderer extends EntityRenderer<EntityPrimedExplosives> {
 
     public BlockState blockState;

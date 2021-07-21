@@ -105,7 +105,11 @@ public final class EntityReg {
                 itemForm.getId().getPath(),
                 () -> {
                     return EntityType.Builder.<EntityMissile>of(
-                            (type, world) -> new EntityMissile(type, world, blastEventProvider, itemForm),
+                            (type, world) -> {
+                                EntityMissile toReturn = new EntityMissile(type, world, blastEventProvider, itemForm);
+                                toReturn.setRot(0F, 90F);
+                                return toReturn;
+                            },
                             EntityClassification.MISC
                     )
                     .fireImmune()

@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT1;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT2;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT3;
@@ -15,6 +16,7 @@ public class TileReg {
 
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, ICBMReference.MODID);
 
+    // Launcher Platforms
     public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T1 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T1.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1.get()), BlockReg.LAUNCHER_PLATFORM_T1.get()).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T2 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T2.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2.get()), BlockReg.LAUNCHER_PLATFORM_T2.get()).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T3 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T3.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3.get()) {
@@ -24,6 +26,7 @@ public class TileReg {
         }
     }, BlockReg.LAUNCHER_PLATFORM_T3.get()).build(null));
 
+    // Launcher Control Panels
     public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_CONTROL_PANEL_T1 = TILES.register(
             BlockReg.LAUNCHER_CONTROL_PANEL_T1.getId().getPath(),
             () -> TileEntityType.Builder.of(
@@ -45,6 +48,9 @@ public class TileReg {
                     BlockReg.LAUNCHER_CONTROL_PANEL_T3.get()
             ).build(null)
     );
+
+    // EMP Tower
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> EMP_TOWER = TILES.register(BlockReg.EMP_TOWER.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileEMPTower(TileReg.EMP_TOWER.get()), BlockReg.EMP_TOWER.get()).build(null));
 
 
 }

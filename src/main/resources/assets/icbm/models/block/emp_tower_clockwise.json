@@ -1,0 +1,8 @@
+{
+    "loader": "forge:obj",
+    "model": "icbm:models/block/emp_tower_clockwise.obj",
+    "detectCullableFaces": false,
+    "diffuseLighting": false,
+    "flip-v": true,
+    "ambientToFullbright": false
+}

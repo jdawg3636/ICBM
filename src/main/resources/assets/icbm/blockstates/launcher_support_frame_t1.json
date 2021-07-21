@@ -1,19 +1,19 @@
 {
   "variants": {
     "facing=north": {
-      "model": "icbm:item/launcher_support_frame_t1",
+      "model": "icbm:block/launcher_support_frame_t1",
       "y": 0
     },
     "facing=east": {
-      "model": "icbm:item/launcher_support_frame_t1",
+      "model": "icbm:block/launcher_support_frame_t1",
       "y": 90
     },
     "facing=south": {
-      "model": "icbm:item/launcher_support_frame_t1",
+      "model": "icbm:block/launcher_support_frame_t1",
       "y": 180
     },
     "facing=west": {
-      "model": "icbm:item/launcher_support_frame_t1",
+      "model": "icbm:block/launcher_support_frame_t1",
       "y": 270
     }
   }

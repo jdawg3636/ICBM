@@ -1,21 +1,26 @@
 package com.jdawg3636.icbm.common;
 
+import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.emp_tower.TEREMPTower;
+import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
+import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
+import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosivesRenderer;
 import com.jdawg3636.icbm.common.entity.EntityMissileRenderer;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
-import com.jdawg3636.icbm.common.reg.BlockReg;
-import com.jdawg3636.icbm.common.reg.ContainerReg;
-import com.jdawg3636.icbm.common.reg.EntityReg;
-import com.jdawg3636.icbm.common.reg.ItemReg;
+import com.jdawg3636.icbm.common.reg.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
     public void onClientSetupEvent(FMLClientSetupEvent event) {
@@ -95,6 +100,29 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER.get().getDefaultInstance()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER_NUCLEAR.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER_NUCLEAR.get().getDefaultInstance()));
 
+        // Register Tile Entity Renderers
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileEMPTower>) TileReg.EMP_TOWER.get(), TEREMPTower::new);
+
+    }
+
+    public void onModelRegistryEvent(final ModelRegistryEvent event) {
+        ModelLoader.addSpecialModel(MODEL_EMP_TOWER_CLOCKWISE);
+        ModelLoader.addSpecialModel(MODEL_EMP_TOWER_COUNTERCLOCKWISE);
+        ModelLoader.addSpecialModel(MODEL_EMP_TOWER_STATIC);
+    }
+
+    public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
+    public static final ResourceLocation MODEL_EMP_TOWER_COUNTERCLOCKWISE = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_counterclockwise");
+    public static final ResourceLocation MODEL_EMP_TOWER_STATIC = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_static");
+
+    public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {
+        Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));
+    }
+
+    public void updateScreenLauncherControlPanel() {
+        if (Minecraft.getInstance().screen instanceof ScreenLauncherControlPanel) {
+            ((ScreenLauncherControlPanel)Minecraft.getInstance().screen).updateGui();
+        }
     }
 
 }

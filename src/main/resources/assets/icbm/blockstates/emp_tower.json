@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "icbm:block/emp_tower",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "icbm:block/emp_tower",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "icbm:block/emp_tower",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "icbm:block/emp_tower",
+      "y": 270
+    }
+  }
+}

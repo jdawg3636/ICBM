@@ -145,7 +145,10 @@ public class ItemReg {
 
     // Other Machinery
     public static final RegistryObject<Item> CRUISE_LAUNCHER                = ITEMS.register("cruise_launcher",                 () -> new BlockItem(BlockReg.CRUISE_LAUNCHER.get(), new Item.Properties().tab(ICBM.CREATIVE_TAB)));
-    public static final RegistryObject<Item> EMP_TOWER                      = ITEMS.register("emp_tower",                       () -> new BlockItem(BlockReg.EMP_TOWER.get(), new Item.Properties().tab(ICBM.CREATIVE_TAB)));
+    public static final RegistryObject<Item> EMP_TOWER                      = ITEMS.register("emp_tower",                       () -> new BlockItem(BlockReg.EMP_TOWER.get(), new Item.Properties().tab(ICBM.CREATIVE_TAB)) {
+        //@Override //TODO Figure out how to enable ISTER
+        boolean isCustomRenderer() { return true; }
+    });
     public static final RegistryObject<Item> RADAR_STATION                  = ITEMS.register("radar_station",                   () -> new BlockItem(BlockReg.RADAR_STATION.get(), new Item.Properties().tab(ICBM.CREATIVE_TAB)));
 
     // Functional Items
