@@ -2,11 +2,11 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.common.block.*;
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.cruise_launcher.BlockCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.BlockEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.BlockLauncherPlatform;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
-import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachine;
 import com.jdawg3636.icbm.common.event.BlastEvent;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -124,7 +124,7 @@ public class BlockReg {
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      BlockLauncherSupportFrame::new);
 
     // Other Machinery
-    public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new Block(AbstractBlockMachine.getMultiblockMachineBlockProperties()));
+    public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new BlockCruiseLauncher(TileReg.CRUISE_LAUNCHER));
     public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      () -> new BlockEMPTower(TileReg.EMP_TOWER));
     public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  BlockRadarStation::new);
 

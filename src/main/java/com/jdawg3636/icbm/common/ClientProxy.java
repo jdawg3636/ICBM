@@ -1,6 +1,8 @@
 package com.jdawg3636.icbm.common;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.cruise_launcher.TERCruiseLauncher;
+import com.jdawg3636.icbm.common.block.cruise_launcher.TileCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.TEREMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
@@ -101,19 +103,27 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER_NUCLEAR.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER_NUCLEAR.get().getDefaultInstance()));
 
         // Register Tile Entity Renderers
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileEMPTower>) TileReg.EMP_TOWER.get(), TEREMPTower::new);
 
     }
 
     public void onModelRegistryEvent(final ModelRegistryEvent event) {
+
+        ModelLoader.addSpecialModel(MODEL_CRUISE_LAUNCHER_DYNAMIC);
+        ModelLoader.addSpecialModel(MODEL_CRUISE_LAUNCHER_STATIC);
+
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_CLOCKWISE);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_COUNTERCLOCKWISE);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_STATIC);
+
     }
 
-    public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
+    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_DYNAMIC    = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_dynamic");
+    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_STATIC     = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_static");
+    public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE        = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
     public static final ResourceLocation MODEL_EMP_TOWER_COUNTERCLOCKWISE = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_counterclockwise");
-    public static final ResourceLocation MODEL_EMP_TOWER_STATIC = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_static");
+    public static final ResourceLocation MODEL_EMP_TOWER_STATIC           = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_static");
 
     public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {
         Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));

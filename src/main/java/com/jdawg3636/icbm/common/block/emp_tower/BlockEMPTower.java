@@ -21,7 +21,7 @@ public class BlockEMPTower extends AbstractBlockMultiTile {
     };
 
     public BlockEMPTower(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        this(getMultiblockMachineBlockProperties(), tileEntityType);
+        super(tileEntityType);
     }
 
     public BlockEMPTower(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {

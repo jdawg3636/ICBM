@@ -17,6 +17,10 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
     RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType;
 
+    public AbstractBlockMultiTile(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
+        this(getMultiblockMachineBlockProperties(), tileEntityType);
+    }
+
     public AbstractBlockMultiTile(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
         super(properties);
         this.tileEntityType = tileEntityType;

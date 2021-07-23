@@ -1,0 +1,8 @@
+{
+    "loader": "forge:obj",
+    "model": "icbm:models/block/cruise_launcher_dynamic.obj",
+    "detectCullableFaces": false,
+    "diffuseLighting": false,
+    "flip-v": true,
+    "ambientToFullbright": false
+}

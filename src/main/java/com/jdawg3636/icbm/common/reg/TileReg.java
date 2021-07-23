@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.cruise_launcher.TileCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT1;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT2;
@@ -49,8 +50,9 @@ public class TileReg {
             ).build(null)
     );
 
-    // EMP Tower
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> EMP_TOWER = TILES.register(BlockReg.EMP_TOWER.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileEMPTower(TileReg.EMP_TOWER.get()), BlockReg.EMP_TOWER.get()).build(null));
+    // Other Machinery
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> CRUISE_LAUNCHER = TILES.register(BlockReg.CRUISE_LAUNCHER.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileCruiseLauncher(TileReg.CRUISE_LAUNCHER.get()), BlockReg.CRUISE_LAUNCHER.get()).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> EMP_TOWER       = TILES.register(BlockReg.EMP_TOWER.getId().getPath(),       () -> TileEntityType.Builder.of(() -> new TileEMPTower(TileReg.EMP_TOWER.get()),             BlockReg.EMP_TOWER.get()      ).build(null));
 
 
 }
