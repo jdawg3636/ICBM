@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "icbm:block/radar_station",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "icbm:block/radar_station",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "icbm:block/radar_station",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "icbm:block/radar_station",
+      "y": 270
+    }
+  }
+}

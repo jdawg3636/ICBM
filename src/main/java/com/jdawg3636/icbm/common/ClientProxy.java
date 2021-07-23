@@ -7,6 +7,8 @@ import com.jdawg3636.icbm.common.block.emp_tower.TEREMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
+import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
+import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosivesRenderer;
 import com.jdawg3636.icbm.common.entity.EntityMissileRenderer;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
@@ -105,6 +107,7 @@ public class ClientProxy extends CommonProxy {
         // Register Tile Entity Renderers
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileEMPTower>) TileReg.EMP_TOWER.get(), TEREMPTower::new);
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileRadarStation>) TileReg.RADAR_STATION.get(), TERRadarStation::new);
 
     }
 
@@ -117,6 +120,9 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_COUNTERCLOCKWISE);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_STATIC);
 
+        ModelLoader.addSpecialModel(MODEL_RADAR_STATION_DYNAMIC);
+        ModelLoader.addSpecialModel(MODEL_RADAR_STATION_STATIC);
+
     }
 
     public static final ResourceLocation MODEL_CRUISE_LAUNCHER_DYNAMIC    = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_dynamic");
@@ -124,6 +130,8 @@ public class ClientProxy extends CommonProxy {
     public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE        = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
     public static final ResourceLocation MODEL_EMP_TOWER_COUNTERCLOCKWISE = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_counterclockwise");
     public static final ResourceLocation MODEL_EMP_TOWER_STATIC           = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_static");
+    public static final ResourceLocation MODEL_RADAR_STATION_DYNAMIC      = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_dynamic");
+    public static final ResourceLocation MODEL_RADAR_STATION_STATIC       = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_static");
 
     public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {
         Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));

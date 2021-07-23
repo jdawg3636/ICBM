@@ -7,6 +7,7 @@ import com.jdawg3636.icbm.common.block.emp_tower.BlockEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.BlockLauncherPlatform;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.block.radar_station.BlockRadarStation;
 import com.jdawg3636.icbm.common.event.BlastEvent;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -126,7 +127,7 @@ public class BlockReg {
     // Other Machinery
     public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new BlockCruiseLauncher(TileReg.CRUISE_LAUNCHER));
     public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      () -> new BlockEMPTower(TileReg.EMP_TOWER));
-    public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  BlockRadarStation::new);
+    public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new BlockRadarStation(TileReg.RADAR_STATION));
 
     // Extras
     public static final RegistryObject<Block> GLASS_BUTTON                  = BLOCKS.register("glass_button",                   BlockGlassButton::new);

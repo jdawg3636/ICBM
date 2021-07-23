@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.block.cruise_launcher;
+package com.jdawg3636.icbm.common.block.radar_station;
 
 import com.jdawg3636.icbm.common.ClientProxy;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -15,21 +15,20 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 
-// https://mcforge.readthedocs.io/en/1.16.x/tileentities/tesr/
-public class TERCruiseLauncher extends TileEntityRenderer<TileCruiseLauncher> {
+public class TERRadarStation extends TileEntityRenderer<TileRadarStation> {
 
-    public TERCruiseLauncher(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
+    public TERRadarStation(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
         super(tileEntityRendererDispatcher);
     }
 
     @Override
-    public void render(TileCruiseLauncher tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer renderBuffer, int combinedLight, int combinedOverlay) {
+    public void render(TileRadarStation tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer renderBuffer, int combinedLight, int combinedOverlay) {
 
-        IBakedModel MODEL_DYNAMIC          = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_CRUISE_LAUNCHER_DYNAMIC);
-        IBakedModel MODEL_STATIC           = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_CRUISE_LAUNCHER_STATIC);
+        IBakedModel MODEL_DYNAMIC          = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_RADAR_STATION_DYNAMIC);
+        IBakedModel MODEL_STATIC           = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_RADAR_STATION_STATIC);
 
         BlockState blockState = tileEntity.getBlockState();
-        Direction direction = (blockState.getBlock() instanceof BlockCruiseLauncher) ? blockState.getValue(BlockCruiseLauncher.FACING) : null;
+        Direction direction = (blockState.getBlock() instanceof BlockRadarStation) ? blockState.getValue(BlockRadarStation.FACING) : null;
         float animationRadians = ((float)(tileEntity.getAnimationRadians() + (partialTicks * 0.05 * 2 * Math.PI)));
 
         // Outer Push, used for offsetting the entire model and rotating to account for the block's facing direction
