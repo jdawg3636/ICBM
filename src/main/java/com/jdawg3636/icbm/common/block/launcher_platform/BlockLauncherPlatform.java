@@ -55,7 +55,7 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile imple
     }
 
     @Override
-    public void onMultiblockActivated(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
+    public void onUseMultiblock(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
         if(!world.isClientSide() && tileEntity instanceof TileLauncherPlatform) {
             if (((TileLauncherPlatform)tileEntity).itemHandler.getStackInSlot(0).isEmpty() && player.getItemInHand(hand).getItem() instanceof ItemMissile) {
                 ItemStack itemStack = player.getItemInHand(hand);

@@ -42,7 +42,7 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
         if (!world.isClientSide) {
             TileEntity tileEntity = world.getBlockEntity(getMultiblockCenter(world, pos, state));
             if (tileEntity != null) {
-                onMultiblockActivated(tileEntity, state, world, pos, player, hand, trace);
+                onUseMultiblock(tileEntity, state, world, pos, player, hand, trace);
             } else {
                 throw new IllegalStateException("Our named container provider is missing!");
             }
@@ -50,6 +50,6 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
         return ActionResultType.SUCCESS;
     }
 
-    public abstract void onMultiblockActivated(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace);
+    public abstract void onUseMultiblock(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace);
 
 }

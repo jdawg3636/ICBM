@@ -111,30 +111,70 @@ public class EntityMissile extends Entity {
     }
 
     public void updatePathFunctions() {
-        Tuple<Function<Integer, Vector3d>, Function<Vector3d, Vector3d>> pathFunctions = calculatePathFunctions(sourcePos, destPos, peakHeight, totalFlightTicks);
+        Tuple<Function<Integer, Vector3d>, Function<Vector3d, Vector3d>> pathFunctions = calculatePathFunctions();
         this.pathFunction = pathFunctions.getA();
         this.gradientFunction = pathFunctions.getB();
     }
 
-    // TODO: Take into account source/dest height
     /**
-     * @return Function for Position, Function for Gradient
+     * @return Returns two functions, one for Ticks -> Position and another for Position -> Euler Rotations.
      */
-    public static Tuple<Function<Integer, Vector3d>, Function<Vector3d, Vector3d>> calculatePathFunctions(BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks) {
+    public Tuple<Function<Integer, Vector3d>, Function<Vector3d, Vector3d>> calculatePathFunctions() {
+        if (missileSourceType == MissileSourceType.LAUNCHER_PLATFORM) {
+            return calculatePathFunctionsParabola();
+        }
+        else {
+            return calculatePathFunctionsLine();
+        }
+    }
 
-        double[] parabolaXCoefficients = generateParabola(sourcePos.getX(), sourcePos.getY(), destPos.getX(), destPos.getY(), peakHeight);
-        double[] parabolaZCoefficients = generateParabola(sourcePos.getZ(), sourcePos.getY(), destPos.getZ(), destPos.getY(), peakHeight);
+    public Tuple<Function<Integer, Vector3d>, Function<Vector3d, Vector3d>> calculatePathFunctionsLine() {
 
-        // Precalculating Horizontal Rotation, doesn't change during flight.
-        double rotX = Math.toDegrees(Math.atan(Math.abs((double)(destPos.getX() - sourcePos.getX())) / Math.abs(destPos.getZ() - sourcePos.getZ())));
+        // Precalculating the 'm' in y = m(x - x1) + y1
+        final double deltaY = destPos.getY() - sourcePos.getY();
+        final double deltaX = destPos.getX() - sourcePos.getX();
+        final double deltaZ = destPos.getZ() - sourcePos.getZ();
+        final double slope = deltaX != 0 ? deltaY/deltaX : deltaY/deltaZ;
+
+        // Precalculating Rotation About the Y axis
+        double rotY = Math.toDegrees(Math.atan(deltaZ != 0 ? Math.abs(deltaX) / Math.abs(deltaZ) : 0));
+        if(destPos.getX() > sourcePos.getX()) rotY -= 2 * rotY;
+        if(destPos.getZ() < sourcePos.getZ()) rotY += 2 * (90 - rotY);
+        final double finalRotY = rotY;
+
+        // Precalculating Rotation About the X axis
+        double rotX = Math.toDegrees(Math.atan(Math.abs(deltaX) / Math.abs(deltaZ)));
         if(destPos.getX() > sourcePos.getX()) rotX -= 2 * rotX;
         if(destPos.getZ() < sourcePos.getZ()) rotX += 2 * (90 - rotX);
         final double finalRotX = rotX;
 
-        // Precalculating a Multiple for Vertical Rotation, direction of travel is not known at runtime so may need to multiply by -1
+        return new Tuple<>(
+
+                // Takes Ticks, Returns Position
+                ticks -> new Vector3d(deltaX,deltaY,deltaZ).scale(totalFlightTicks != 0 ? ((double)ticks)/totalFlightTicks : 0).add(Vector3d.atCenterOf(sourcePos)),
+
+                // Takes Position, Returns Euler Rotations
+                position -> new Vector3d(finalRotX, finalRotY, 0D)
+
+        );
+
+    }
+
+    public Tuple<Function<Integer, Vector3d>, Function<Vector3d, Vector3d>> calculatePathFunctionsParabola() {
+
+        double[] parabolaXCoefficients = generateParabola(sourcePos.getX(), sourcePos.getY(), destPos.getX(), destPos.getY(), peakHeight);
+        double[] parabolaZCoefficients = generateParabola(sourcePos.getZ(), sourcePos.getY(), destPos.getZ(), destPos.getY(), peakHeight);
+
+        // Precalculating Rotation About the Y axis, doesn't change during flight.
+        double rotY = Math.toDegrees(Math.atan(Math.abs((double)(destPos.getX() - sourcePos.getX())) / Math.abs(destPos.getZ() - sourcePos.getZ())));
+        if(destPos.getX() > sourcePos.getX()) rotY -= 2 * rotY;
+        if(destPos.getZ() < sourcePos.getZ()) rotY += 2 * (90 - rotY);
+        final double finalRotY = rotY;
+
+        // Precalculating a Multiple for Rotation About the X axis, direction of travel is not known at runtime so may need to multiply by -1
         // Need to calculate for both X and Z as the choice of which to use for calculating Y is made at runtime
-        final int rotYMultipleFromX = destPos.getX() >= sourcePos.getX() ? -1 : 1;
-        final int rotYMultipleFromZ = destPos.getZ() >= sourcePos.getZ() ? -1 : 1;
+        final int rotXMultipleFromX = destPos.getX() >= sourcePos.getX() ? -1 : 1;
+        final int rotXMultipleFromZ = destPos.getZ() >= sourcePos.getZ() ? -1 : 1;
 
         //System.out.printf("[ICBM DEBUG] Updated Path Function for X: %fx^2 + %fx + %f\n", parabolaXCoefficients[0], parabolaXCoefficients[1], parabolaXCoefficients[2]);
         //System.out.printf("[ICBM DEBUG] Updated Path Function for Z: %fz^2 + %fz + %f\n", parabolaZCoefficients[0], parabolaZCoefficients[1], parabolaZCoefficients[2]);
@@ -171,15 +211,15 @@ public class EntityMissile extends Entity {
 
                     final double[] funcParabolaXCoefficients = parabolaXCoefficients;
                     final double[] funcParabolaZCoefficients = parabolaZCoefficients;
-                    final double funcRotX = finalRotX;
+                    final double funcRotY = finalRotY;
 
                     @Override
                     public Vector3d apply(Vector3d position) {
 
-                        double rotYFromX = rotYMultipleFromX * Math.toDegrees(Math.atan(2d * funcParabolaXCoefficients[0] * position.x + funcParabolaXCoefficients[1]));
-                        double rotYFromZ = rotYMultipleFromZ * Math.toDegrees(Math.atan(2d * funcParabolaZCoefficients[0] * position.z + funcParabolaZCoefficients[1]));
+                        double rotXFromX = rotXMultipleFromX * Math.toDegrees(Math.atan(2d * funcParabolaXCoefficients[0] * position.x + funcParabolaXCoefficients[1]));
+                        double rotXFromZ = rotXMultipleFromZ * Math.toDegrees(Math.atan(2d * funcParabolaZCoefficients[0] * position.z + funcParabolaZCoefficients[1]));
 
-                        Vector3d toReturn = new Vector3d(funcRotX, (!Double.isNaN(funcParabolaXCoefficients[0]) ? rotYFromX : rotYFromZ), 0);
+                        Vector3d toReturn = new Vector3d((!Double.isNaN(funcParabolaXCoefficients[0]) ? rotXFromX : rotXFromZ), funcRotY, 0D);
                         //System.out.printf("[ICBM DEBUG] Position = (%s, %s)\n", position.x, position.z);
                         //System.out.printf("[ICBM DEBUG] Applying Rotation (%s, %s)\n", toReturn.x(), toReturn.y());
                         return toReturn;
@@ -353,7 +393,7 @@ public class EntityMissile extends Entity {
                     Vector3d newRot = gradientFunction.apply(newPos);
                     //System.out.printf("[ICBM DEBUG] [%s] Setting Position of Missile to %f, %f, %f\n", level.isClientSide() ? "Client" : "Server", newPos.x, newPos.y, newPos.z);
                     this.teleportTo(newPos.x(), newPos.y(), newPos.z());
-                    this.setRot((float)newRot.x, (float)newRot.y);
+                    this.setRot((float)newRot.y, (float)newRot.x);
 
                 } else {
                     Vector3d newPos = pathFunction.apply(ticksSinceLaunch);

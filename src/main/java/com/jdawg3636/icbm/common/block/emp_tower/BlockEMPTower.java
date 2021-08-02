@@ -39,7 +39,7 @@ public class BlockEMPTower extends AbstractBlockMultiTile {
     }
 
     @Override
-    public void onMultiblockActivated(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
+    public void onUseMultiblock(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
         // GUI/Screen NYI
     }
 
