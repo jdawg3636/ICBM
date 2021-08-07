@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import org.apache.logging.log4j.Level;
@@ -28,24 +29,35 @@ public class ItemRocketLauncher extends Item {
             EntityMissile entity = EntityReg.MISSILE_INCENDIARY.get().create(level);
             if(entity != null) {
 
+                Vector3d playerViewVector = player.getLookAngle();
+                playerViewVector = playerViewVector.normalize();
+
+                int sourcePosX = (int) (player.getX() + playerViewVector.x);
+                int sourcePosY = (int) (player.getY() + playerViewVector.y);
+                int sourcePosZ = (int) (player.getZ() + playerViewVector.z);
+
+                int destPosX = sourcePosX + (int)playerViewVector.scale(20).x;
+                int destPosY = sourcePosY + (int)playerViewVector.scale(20).y;
+                int destPosZ = sourcePosZ + (int)playerViewVector.scale(20).z;
+
                 entity.setPos(player.getX(), player.getY() + 2, player.getZ());
 
                 EntityDataAccessor entityDataAccessor = new EntityDataAccessor(entity);
                 CompoundNBT data = entityDataAccessor.getData();
-                data.putInt("SourcePosX", ((int) player.getX()));
-                data.putInt("SourcePosY", ((int) player.getY()));
-                data.putInt("SourcePosZ", ((int) player.getZ()));
-                data.putInt("DestPosX", ((int) player.getX()+50));
-                data.putInt("DestPosY", ((int) player.getY()+20));
-                data.putInt("DestPosZ", ((int) player.getZ()+50));
-                data.putInt("TotalFlightTicks", 2000);
+                data.putInt("SourcePosX", sourcePosX);
+                data.putInt("SourcePosY", sourcePosY);
+                data.putInt("SourcePosZ", sourcePosZ);
+                data.putInt("DestPosX", destPosX);
+                data.putInt("DestPosY", destPosY);
+                data.putInt("DestPosZ", destPosZ);
+                data.putInt("TotalFlightTicks", 25);
                 data.putInt("MissileSourceType", EntityMissile.MissileSourceType.ROCKET_LAUNCHER.ordinal());
                 data.putInt("MissileLaunchPhase", EntityMissile.MissileLaunchPhase.LAUNCHED.ordinal());
                 try { entityDataAccessor.setData(data); } catch (Exception e) { e.printStackTrace(); }
 
                 level.addFreshEntity(entity);
 
-                ICBM.logger().printf(Level.INFO, "Launching Missile '%s' from (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), ((int) player.getX()), ((int) player.getY()), ((int) player.getZ()), ((int) player.getX()+50), ((int) player.getY()+20), ((int) player.getZ()+50), 2000);
+                ICBM.logger().printf(Level.INFO, "Launching Missile '%s' from source '%s' at (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), EntityMissile.MissileSourceType.ROCKET_LAUNCHER.toString(), sourcePosX, sourcePosY, sourcePosZ, destPosX, destPosY, destPosZ, 75);
 
             }
             return ActionResult.consume(player.getItemInHand(hand));

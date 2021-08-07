@@ -522,7 +522,7 @@ public class EntityMissile extends Entity {
 
     @Override
     public final ActionResultType interact(PlayerEntity player, Hand hand) {
-        if (!this.isVehicle() && !player.isSecondaryUseActive()) {
+        if (!this.isVehicle() && !player.isSecondaryUseActive() && !missileSourceType.equals(MissileSourceType.ROCKET_LAUNCHER)) {
             if (!this.level.isClientSide) {
                 player.startRiding(this);
             }
