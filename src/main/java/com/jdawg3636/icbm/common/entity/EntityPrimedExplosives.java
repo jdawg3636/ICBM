@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.entity;
 
-import com.jdawg3636.icbm.common.event.BlastEvent;
+import com.jdawg3636.icbm.common.blast.event.BlastEvent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;

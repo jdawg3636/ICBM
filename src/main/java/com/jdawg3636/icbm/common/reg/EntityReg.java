@@ -3,7 +3,7 @@ package com.jdawg3636.icbm.common.reg;
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
-import com.jdawg3636.icbm.common.event.BlastEvent;
+import com.jdawg3636.icbm.common.blast.event.BlastEvent;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;

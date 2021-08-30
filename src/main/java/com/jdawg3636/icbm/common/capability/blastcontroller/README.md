@@ -1,0 +1,1 @@
+This capability is used to serialize data connected to World objects for keeping track of ongoing blasts. The implementation of the associated runtime behavior is located in the com.jdawg3636.icbm.common.blast package.

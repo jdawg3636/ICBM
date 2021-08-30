@@ -8,7 +8,7 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherContr
 import com.jdawg3636.icbm.common.block.launcher_platform.BlockLauncherPlatform;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.radar_station.BlockRadarStation;
-import com.jdawg3636.icbm.common.event.BlastEvent;
+import com.jdawg3636.icbm.common.blast.event.BlastEvent;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;

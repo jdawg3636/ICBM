@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.block;
 
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
-import com.jdawg3636.icbm.common.event.BlastEvent;
+import com.jdawg3636.icbm.common.blast.event.BlastEvent;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;

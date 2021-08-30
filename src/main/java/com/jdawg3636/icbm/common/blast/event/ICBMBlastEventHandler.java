@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.event;
+package com.jdawg3636.icbm.common.blast.event;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,7 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  * Separate Event Handler for Mod's Own Events
  * Keeps stuff like blast behavior separate from core functionality such as registration
  */
-public class ICBMEvents {
+public class ICBMBlastEventHandler {
 
     // Not Subscribed - Called Directly by Subclass Events to ensure this is triggered before the rest of the blast code
     public static void onBlast(BlastEvent event) {

@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
 import com.jdawg3636.icbm.ICBM;
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachineTile;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import net.minecraft.block.AbstractBlock;
@@ -44,7 +45,7 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
         TileEntity tileEntity = world.getBlockEntity(blockPos);
         if (tileEntity instanceof TileLauncherControlPanel) {
             if(world.isClientSide()) {
-                ICBM.proxy.setScreenLauncherControlPanel((TileLauncherControlPanel) tileEntity);
+                ICBMReference.proxy.setScreenLauncherControlPanel((TileLauncherControlPanel) tileEntity);
             } else {
                 SUpdateTileEntityPacket supdatetileentitypacket = tileEntity.getUpdatePacket();
                 if (supdatetileentitypacket != null) ((ServerPlayerEntity) playerEntity).connection.send(supdatetileentitypacket);

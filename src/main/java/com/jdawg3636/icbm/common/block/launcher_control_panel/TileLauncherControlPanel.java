@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
-import com.jdawg3636.icbm.ICBM;
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -65,7 +65,7 @@ public abstract class TileLauncherControlPanel extends TileEntity {
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         if(level != null && level.isClientSide()) {
             handleUpdateTag(getBlockState(), pkt.getTag());
-            ICBM.proxy.updateScreenLauncherControlPanel();
+            ICBMReference.proxy.updateScreenLauncherControlPanel();
         }
     }
 

@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.block.cruise_launcher;
 
-import com.jdawg3636.icbm.common.ClientProxy;
+import com.jdawg3636.icbm.common.listener.ClientProxy;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

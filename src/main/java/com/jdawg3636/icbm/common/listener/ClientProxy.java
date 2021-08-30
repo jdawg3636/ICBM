@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common;
+package com.jdawg3636.icbm.common.listener;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TERCruiseLauncher;

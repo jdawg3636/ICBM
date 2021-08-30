@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.event;
+package com.jdawg3636.icbm.common.blast.event;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -30,6 +30,11 @@ public class BlastEvent extends Event {
         this.blastPosition = blastPosition;
         this.blastWorld = blastWorld;
         this.blastType = blastType;
+    }
+
+    @Override
+    public boolean isCancelable() {
+        return true;
     }
 
     public BlockPos getBlastPosition() {

@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
-import com.jdawg3636.icbm.common.event.BlastEvent;
+import com.jdawg3636.icbm.common.blast.event.BlastEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
