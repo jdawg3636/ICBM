@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "icbm:explosives_fragmentation"
+    },
+    {
+      "item": "icbm:explosives_attractive"
+    },
+    {
+      "item": "icbm:explosives_repulsive"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:s_mine",
+    "count": 1
+  }
+}

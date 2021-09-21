@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "ABA"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:missile_nuclear"
+    },
+    "B": {
+      "item": "icbm:missile_module"
+    }
+  },
+  "result": {
+    "item": "icbm:missile_cluster_nuclear",
+    "count": 1
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    " B ",
+    "ACA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/bronze"
+    },
+    "B": {
+      "tag": "forge:circuits/basic"
+    },
+    "C": {
+      "item": "icbm:missile_module"
+    }
+  },
+  "result": {
+    "item": "icbm:missile_homing",
+    "count": 1
+  }
+}

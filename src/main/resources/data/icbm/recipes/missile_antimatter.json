@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "icbm:missile_module"
+    },
+    {
+      "item": "icbm:explosives_antimatter"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:missile_antimatter",
+    "count": 1
+  }
+}

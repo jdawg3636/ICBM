@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "icbm:missile_module"
+    },
+    {
+      "item": "icbm:explosives_antigravitational"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:missile_antigravitational",
+    "count": 1
+  }
+}

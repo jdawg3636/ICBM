@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "icbm:missile_module"
+    },
+    {
+      "item": "icbm:explosives_rejuvenation"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:missile_rejuvenation",
+    "count": 1
+  }
+}

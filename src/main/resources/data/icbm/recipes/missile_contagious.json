@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "icbm:missile_module"
+    },
+    {
+      "item": "icbm:explosives_contagious"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:missile_contagious",
+    "count": 1
+  }
+}
