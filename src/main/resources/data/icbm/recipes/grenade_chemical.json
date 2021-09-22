@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:string"
+    },
+    {
+      "item": "icbm:explosives_chemical"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:grenade_chemical",
+    "count": 1
+  }
+}
