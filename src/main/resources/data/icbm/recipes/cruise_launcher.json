@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AB ",
+    "CCC"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:launcher_support_frame_t3"
+    },
+    "B": {
+      "item": "icbm:launcher_platform_t3"
+    },
+    "C": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "result": {
+    "item": "icbm:cruise_launcher",
+    "count": 1
+  }
+}

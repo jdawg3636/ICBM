@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A A",
+    "ABA",
+    "A A"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:plates/steel"
+    },
+    "B": {
+      "item": "icbm:launcher_support_frame_t2"
+    }
+  },
+  "result": {
+    "item": "icbm:launcher_support_frame_t3",
+    "count": 1
+  }
+}

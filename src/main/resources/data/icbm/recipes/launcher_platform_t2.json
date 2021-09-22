@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A A",
+    "ABA",
+    "ACA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/steel"
+    },
+    "B": {
+      "tag": "forge:circuits/advanced"
+    },
+    "C": {
+      "item": "icbm:launcher_platform_t1"
+    }
+  },
+  "result": {
+    "item": "icbm:launcher_platform_t2",
+    "count": 1
+  }
+}

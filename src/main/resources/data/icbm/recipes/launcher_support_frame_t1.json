@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A A",
+    "AAA",
+    "A A"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "result": {
+    "item": "icbm:launcher_support_frame_t1",
+    "count": 1
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    "ACA",
+    "ADA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/steel"
+    },
+    "B": {
+      "item": "icbm:launcher_control_panel_t1"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "D": {
+      "item": "icbm:copper_wire"
+    }
+  },
+  "result": {
+    "item": "icbm:launcher_control_panel_t2",
+    "count": 1
+  }
+}

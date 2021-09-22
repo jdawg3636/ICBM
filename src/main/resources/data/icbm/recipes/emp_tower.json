@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    "CDC",
+    "AEA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:plates/steel"
+    },
+    "B": {
+      "item": "icbm:copper_wire"
+    },
+    "C": {
+      "tag": "forge:batteries"
+    },
+    "D": {
+      "tag": "forge:circuits/elite"
+    },
+    "E": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "icbm:emp_tower",
+    "count": 1
+  }
+}
