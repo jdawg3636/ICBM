@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "A"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:glass/colorless"
+    }
+  },
+  "result": {
+    "item": "icbm:glass_button",
+    "count": 2
+  }
+}

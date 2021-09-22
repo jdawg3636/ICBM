@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AA",
+    "AA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "result": {
+    "item": "icbm:plate_bronze",
+    "count": 1
+  }
+}

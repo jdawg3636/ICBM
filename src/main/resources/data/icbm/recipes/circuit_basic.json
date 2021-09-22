@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    "BCB",
+    "ABA"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:copper_wire"
+    },
+    "B": {
+      "tag": "forge:dusts/redstone"
+    },
+    "C": {
+      "tag": "forge:plates/bronze"
+    }
+  },
+  "result": {
+    "item": "icbm:circuit_basic",
+    "count": 1
+  }
+}

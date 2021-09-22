@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "BCB",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/gold"
+    },
+    "B": {
+      "tag": "forge:circuits/advanced"
+    },
+    "C": {
+      "tag": "forge:storage_blocks/lapis"
+    }
+  },
+  "result": {
+    "item": "icbm:circuit_elite",
+    "count": 1
+  }
+}
