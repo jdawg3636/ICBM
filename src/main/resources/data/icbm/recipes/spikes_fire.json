@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:dusts/sulfur"
+    },
+    {
+      "item": "icbm:spikes"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:spikes_fire",
+    "count": 1
+  }
+}

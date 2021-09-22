@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:dusts/poison"
+    },
+    {
+      "item": "icbm:spikes"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:spikes_poison",
+    "count": 1
+  }
+}
