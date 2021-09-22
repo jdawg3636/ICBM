@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABC",
+    "AD "
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/steel"
+    },
+    "B": {
+      "item": "icbm:cruise_launcher"
+    },
+    "C": {
+      "item": "icbm:radar_gun"
+    },
+    "D": {
+      "item": "minecraft:stone_button"
+    }
+  },
+  "result": {
+    "item": "icbm:rocket_launcher",
+    "count": 1
+  }
+}

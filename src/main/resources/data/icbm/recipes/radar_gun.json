@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABC",
+    " DC",
+    "  C"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:glass/colorless"
+    },
+    "B": {
+      "tag": "forge:circuits/basic"
+    },
+    "C": {
+      "tag": "forge:ingots/steel"
+    },
+    "D": {
+      "item": "minecraft:stone_button"
+    }
+  },
+  "result": {
+    "item": "icbm:radar_gun",
+    "count": 1
+  }
+}
