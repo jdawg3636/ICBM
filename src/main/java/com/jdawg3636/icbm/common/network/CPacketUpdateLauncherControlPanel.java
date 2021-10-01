@@ -6,6 +6,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -53,6 +54,8 @@ public class CPacketUpdateLauncherControlPanel {
     public static void handle(CPacketUpdateLauncherControlPanel packet, Supplier<NetworkEvent.Context> contextSupplier) {
 
         contextSupplier.get().enqueueWork(() -> {
+
+            if(contextSupplier.get().getDirection() != NetworkDirection.PLAY_TO_SERVER) return;
 
             ServerPlayerEntity sender = contextSupplier.get().getSender();
 
