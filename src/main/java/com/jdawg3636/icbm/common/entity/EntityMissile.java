@@ -5,6 +5,7 @@ import com.jdawg3636.icbm.common.blast.event.BlastEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.Item;
@@ -297,18 +298,18 @@ public class EntityMissile extends Entity {
 
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void lerpMotion(double x, double y, double z) {
-        super.lerpMotion(x, y, z);
-        if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-            float distance = MathHelper.sqrt(x*x + z*z);
-            this.xRot = (float)(MathHelper.atan2(y, distance) * (double)(180F / (float)Math.PI));
-            this.yRot = (float)(MathHelper.atan2(x, z) * (double)(180F / (float)Math.PI));
-            this.xRotO = this.xRot;
-            this.yRotO = this.yRot;
-            this.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-        }
-    }
+    //@OnlyIn(Dist.CLIENT)
+    //public void lerpMotion(double x, double y, double z) {
+    //    super.lerpMotion(x, y, z);
+    //    if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
+    //        float distance = MathHelper.sqrt(x*x + z*z);
+    //        this.xRot = (float)(MathHelper.atan2(y, distance) * (double)(180F / (float)Math.PI));
+    //       this.yRot = (float)(MathHelper.atan2(x, z) * (double)(180F / (float)Math.PI));
+    //        this.xRotO = this.xRot;
+    //        this.yRotO = this.yRot;
+    //        this.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+    //    }
+    //}
 
     //@Override
     //@OnlyIn(Dist.CLIENT)
@@ -392,7 +393,8 @@ public class EntityMissile extends Entity {
                     Vector3d newPos = pathFunction.apply(ticksSinceLaunch);
                     Vector3d newRot = gradientFunction.apply(newPos);
                     //System.out.printf("[ICBM DEBUG] [%s] Setting Position of Missile to %f, %f, %f\n", level.isClientSide() ? "Client" : "Server", newPos.x, newPos.y, newPos.z);
-                    this.teleportTo(newPos.x(), newPos.y(), newPos.z());
+                    this.setDeltaMovement(this.getDeltaMovement().add(newPos.x-getX(), newPos.y-getY(), newPos.z-getZ()));
+                    this.move(MoverType.SELF, this.getDeltaMovement());
                     this.setRot((float)newRot.y, (float)newRot.x);
 
                 } else {
