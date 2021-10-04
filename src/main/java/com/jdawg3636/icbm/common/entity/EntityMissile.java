@@ -82,6 +82,7 @@ public class EntityMissile extends Entity {
     public Function<Vector3d, Vector3d> gradientFunction = null;
 
     public int ticksSinceLaunch = 0;
+    public boolean shouldExplode = false;
 
     public EntityMissile(EntityType<?> entityTypeIn, World worldIn, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem) {
         this(
@@ -316,9 +317,11 @@ public class EntityMissile extends Entity {
 
                 if(!level.isClientSide()) {
 
+                    if(shouldExplode) explode();
+
                     // TODO make timeout user-configurable
-                    if(missileSourceType != MissileSourceType.LAUNCHER_PLATFORM && ticksSinceLaunch > 300) {
-                        kill(); // Don't Explode, Just Disappear.
+                    if(missileSourceType != MissileSourceType.LAUNCHER_PLATFORM && ticksSinceLaunch > 100) {
+                        explode();
                         break;
                     }
 
@@ -349,7 +352,7 @@ public class EntityMissile extends Entity {
     @Override
     public Vector3d collide(Vector3d destination) {
         Vector3d result = super.collide(destination);
-        if(!MathHelper.equal(destination.x, result.x) || !MathHelper.equal(destination.z, result.z) || destination.y != result.y) explode();
+        if(!MathHelper.equal(destination.x, result.x) || !MathHelper.equal(destination.z, result.z) || destination.y != result.y) shouldExplode = true;
         return result;
     }
 
