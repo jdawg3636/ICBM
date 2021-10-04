@@ -32,7 +32,7 @@ public class ItemRocketLauncher extends Item {
                 final Vector3d playerViewVector = player.getLookAngle().normalize();
 
                 final int sourcePosX = (int) (player.getX() + playerViewVector.x);
-                final int sourcePosY = (int) (player.getY() + playerViewVector.y);
+                final int sourcePosY = (int) (player.getY() + playerViewVector.y + 1);
                 final int sourcePosZ = (int) (player.getZ() + playerViewVector.z);
 
                 final int destPosX = sourcePosX + (int)playerViewVector.scale(20).x;

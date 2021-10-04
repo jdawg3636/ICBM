@@ -136,18 +136,18 @@ public class EntityMissile extends Entity {
         final double deltaY = destPos.getY() - sourcePos.getY();
         final double deltaX = destPos.getX() - sourcePos.getX();
         final double deltaZ = destPos.getZ() - sourcePos.getZ();
-        final double slope = deltaX != 0 ? deltaY/deltaX : deltaY/deltaZ;
+        final double horizDistance = Math.sqrt(Math.abs(deltaX * deltaX + deltaZ * deltaZ));
+        final double slope = Math.abs(deltaY/horizDistance);
 
         // Precalculating Rotation About the Y axis
-        double rotY = Math.toDegrees(Math.atan(deltaZ != 0 ? Math.abs(deltaX) / Math.abs(deltaZ) : 0));
-        if(destPos.getX() > sourcePos.getX()) rotY -= 2 * rotY;
-        if(destPos.getZ() < sourcePos.getZ()) rotY += 2 * (90 - rotY);
+        double rotY = Math.toDegrees(Math.atan(deltaZ != 0 ? Math.abs(deltaX) / Math.abs(deltaZ) : 90));
+        if(deltaX > 0) rotY -= 2 * rotY;
+        if(deltaZ < 0) rotY += 2 * (90 - rotY);
         final double finalRotY = rotY;
 
         // Precalculating Rotation About the X axis
-        double rotX = Math.toDegrees(Math.atan(Math.abs(deltaX) / Math.abs(deltaZ)));
-        if(destPos.getX() > sourcePos.getX()) rotX -= 2 * rotX;
-        if(destPos.getZ() < sourcePos.getZ()) rotX += 2 * (90 - rotX);
+        double rotX = Math.toDegrees(Math.atan(slope));
+        if(deltaY > 0) rotX *= -1;
         final double finalRotX = rotX;
 
         return new Tuple<>(
