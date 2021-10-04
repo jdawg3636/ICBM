@@ -298,50 +298,6 @@ public class EntityMissile extends Entity {
 
     }
 
-    //@OnlyIn(Dist.CLIENT)
-    //public void lerpMotion(double x, double y, double z) {
-    //    super.lerpMotion(x, y, z);
-    //    if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-    //        float distance = MathHelper.sqrt(x*x + z*z);
-    //        this.xRot = (float)(MathHelper.atan2(y, distance) * (double)(180F / (float)Math.PI));
-    //       this.yRot = (float)(MathHelper.atan2(x, z) * (double)(180F / (float)Math.PI));
-    //        this.xRotO = this.xRot;
-    //        this.yRotO = this.yRot;
-    //        this.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
-    //    }
-    //}
-
-    //@Override
-    //@OnlyIn(Dist.CLIENT)
-    //public void lerpTo(double p_180426_1_, double p_180426_3_, double p_180426_5_, float p_180426_7_, float p_180426_8_, int p_180426_9_, boolean p_180426_10_) {
-    //    this.lerpX = p_180426_1_;
-    //    this.lerpY = p_180426_3_;
-    //    this.lerpZ = p_180426_5_;
-    //    this.lerpYRot = (double)p_180426_7_;
-    //    this.lerpXRot = (double)p_180426_8_;
-    //    this.lerpSteps = 10;
-    //}
-    //
-    //// Copied from BoatEntity
-    //private void tickLerp() {
-    //    if (this.isControlledByLocalInstance()) {
-    //        this.lerpSteps = 0;
-    //        this.setPacketCoordinates(this.getX(), this.getY(), this.getZ());
-    //    }
-    //
-    //    if (this.lerpSteps > 0) {
-    //        double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
-    //        double d1 = this.getY() + (this.lerpY - this.getY()) / (double)this.lerpSteps;
-    //        double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double)this.lerpSteps;
-    //        double d3 = MathHelper.wrapDegrees(this.lerpYRot - (double)this.yRot);
-    //        this.yRot = (float)((double)this.yRot + d3 / (double)this.lerpSteps);
-    //        this.xRot = (float)((double)this.xRot + (this.lerpXRot - (double)this.xRot) / (double)this.lerpSteps);
-    //        --this.lerpSteps;
-    //        this.setPos(d0, d1, d2);
-    //        this.setRot(this.yRot, this.xRot);
-    //    }
-    //}
-
     @Override
     public void tick() {
         super.tick();
@@ -359,41 +315,24 @@ public class EntityMissile extends Entity {
                 ticksSinceLaunch++;
 
                 if(!level.isClientSide()) {
-                    // Based on subsections of AbstractArrowEntity.tick()
-                    BlockPos blockpos = this.blockPosition();
-                    BlockState blockstate = this.level.getBlockState(blockpos);
-                    if (!blockstate.isAir(this.level, blockpos) && !(level.getBlockState(blockpos).getBlock() instanceof IMissileLaunchApparatus)) {
-                        VoxelShape voxelshape = blockstate.getCollisionShape(this.level, blockpos);
-                        if (!voxelshape.isEmpty()) {
-                            Vector3d vector3d1 = this.position();
 
-                            for(AxisAlignedBB axisalignedbb : voxelshape.toAabbs()) {
-                                if (axisalignedbb.move(blockpos).contains(vector3d1)) {
-                                    explode();
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    // The entity check may be redundant, probably covered by general getHitResult
-                    if (ProjectileHelper.getEntityHitResult(this.level, this, position(), position().add(getDeltaMovement()), this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (entity) -> entity instanceof EntityMissile) != null) {
-                        explode();
-                        break;
-                    }
-                    RayTraceResult rayTraceResult = ProjectileHelper.getHitResult(this, (entity) -> entity instanceof EntityMissile);
-                    if (rayTraceResult.getType() != RayTraceResult.Type.MISS) {
-                        if(rayTraceResult.getType() == RayTraceResult.Type.ENTITY || !(level.getBlockState(new BlockPos(rayTraceResult.getLocation())).getBlock() instanceof IMissileLaunchApparatus)) explode();
-                        break;
-                    }
-                    if(getY() <= 0) {
+                    // TODO make timeout user-configurable
+                    if(missileSourceType != MissileSourceType.LAUNCHER_PLATFORM && ticksSinceLaunch > 300) {
                         kill(); // Don't Explode, Just Disappear.
                         break;
                     }
 
+                    if(getY() < 0) {
+                        kill(); // Don't Explode, Just Disappear.
+                        break;
+                    }
+
+                    // TODO: if y > 255, then despawn missile and switch to simulation
+
                     Vector3d newPos = pathFunction.apply(ticksSinceLaunch);
                     Vector3d newRot = gradientFunction.apply(newPos);
-                    //System.out.printf("[ICBM DEBUG] [%s] Setting Position of Missile to %f, %f, %f\n", level.isClientSide() ? "Client" : "Server", newPos.x, newPos.y, newPos.z);
-                    this.setDeltaMovement(this.getDeltaMovement().add(newPos.x-getX(), newPos.y-getY(), newPos.z-getZ()));
+                    //System.out.printf("Moving Missile from (%s, %s, %s) to (%s, %s, %s)\n", getX(), getY(), getZ(), newPos.x, newPos.y, newPos.z);
+                    this.setDeltaMovement(newPos.x-getX() + 0.5D, newPos.y-getY() + 0.5D, newPos.z-getZ() + 0.5D);
                     this.move(MoverType.SELF, this.getDeltaMovement());
                     this.setRot((float)newRot.y, (float)newRot.x);
 
@@ -405,6 +344,13 @@ public class EntityMissile extends Entity {
                 break;
 
         }
+    }
+
+    @Override
+    public Vector3d collide(Vector3d destination) {
+        Vector3d result = super.collide(destination);
+        if(!MathHelper.equal(destination.x, result.x) || !MathHelper.equal(destination.z, result.z) || destination.y != result.y) explode();
+        return result;
     }
 
     public void explode() {
