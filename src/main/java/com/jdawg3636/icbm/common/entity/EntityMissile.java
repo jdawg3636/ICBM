@@ -357,7 +357,6 @@ public class EntityMissile extends Entity {
     }
 
     public void explode() {
-        level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0F, Explosion.Mode.BREAK);
         if(!level.isClientSide()) {
             MinecraftForge.EVENT_BUS.post(
                     blastEventProvider.getBlastEvent(blockPosition(), (ServerWorld) level, missileSourceType.getResultantBlastType())
