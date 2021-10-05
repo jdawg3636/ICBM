@@ -41,8 +41,6 @@ public class ItemRocketLauncher extends Item {
 
                 final int totalFlightTicks = 25;
 
-                entity.setPos(sourcePosX, sourcePosY, sourcePosZ);
-
                 EntityDataAccessor entityDataAccessor = new EntityDataAccessor(entity);
                 CompoundNBT data = entityDataAccessor.getData();
                 data.putInt("SourcePosX", sourcePosX);
@@ -55,6 +53,12 @@ public class ItemRocketLauncher extends Item {
                 data.putInt("MissileSourceType", EntityMissile.MissileSourceType.ROCKET_LAUNCHER.ordinal());
                 data.putInt("MissileLaunchPhase", EntityMissile.MissileLaunchPhase.LAUNCHED.ordinal());
                 try { entityDataAccessor.setData(data); } catch (Exception e) { e.printStackTrace(); }
+
+                // Initializing prior to spawning, fixes split-second of incorrect rotation.
+                Vector3d initialPosition = entity.pathFunction.apply(1);
+                Vector3d initialRotation = entity.gradientFunction.apply(initialPosition);
+                entity.setPos(initialPosition.x, initialPosition.y, initialPosition.z);
+                entity.setRot((float)initialRotation.y, (float)initialRotation.x);
 
                 level.addFreshEntity(entity);
 
