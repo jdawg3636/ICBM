@@ -30,7 +30,11 @@ public class ICBMBlastEventHandler {
     }
 
     public static void doVanillaExplosion(BlastEvent event) {
-        event.getBlastWorld().explode(null, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), 4.0F, Explosion.Mode.BREAK);
+        doVanillaExplosion(event, 4.0F);
+    }
+
+    public static void doVanillaExplosion(BlastEvent event, float explosionPower) {
+        event.getBlastWorld().explode(null, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), explosionPower, Explosion.Mode.BREAK);
     }
 
     @SubscribeEvent
@@ -69,6 +73,11 @@ public class ICBMBlastEventHandler {
                     }
         }
 
+    }
+
+    @SubscribeEvent
+    public static void onBlastConventional(BlastEvent.Condensed event) {
+        doVanillaExplosion(event, 1.75F * 4.0F);
     }
 
     @SubscribeEvent
