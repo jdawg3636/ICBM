@@ -153,4 +153,9 @@ public class ICBMBlastEventHandler {
 
     }
 
+    @SubscribeEvent
+    public static void onBlastThermobaric(BlastEvent.Thermobaric event) {
+        doVanillaExplosion(event, 4F * 4.0F);
+    }
+
 }
