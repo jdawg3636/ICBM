@@ -63,6 +63,11 @@ public class BlastEvent extends Event {
             super(blastPosition, blastWorld, blastType);
         }
     }
+    public static class ShrapnelImpact extends BlastEvent {
+        public ShrapnelImpact(BlockPos blastPosition, ServerWorld blastWorld, BlastEvent.Type blastType) {
+            super(blastPosition, blastWorld, blastType);
+        }
+    }
     public static class Incendiary extends BlastEvent {
         public Incendiary(BlockPos blastPosition, ServerWorld blastWorld, BlastEvent.Type blastType) {
             super(blastPosition, blastWorld, blastType);

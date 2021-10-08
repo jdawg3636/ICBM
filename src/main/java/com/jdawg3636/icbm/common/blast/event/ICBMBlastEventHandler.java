@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.blast.event;
 
+import com.jdawg3636.icbm.common.entity.EntityShrapnel;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -81,6 +82,20 @@ public class ICBMBlastEventHandler {
     }
 
     @SubscribeEvent
+    public static void onBlastShrapnel(BlastEvent.Shrapnel event) {
+        onBlast(event);
+        doVanillaExplosion(event);
+        for(double i = -0.5; i <= 0.5; i += 0.0625) {
+            for(double j = -0.5; j <= 0.5; j += 0.0625) {
+                if(i * i + j * j > 0.5 * 0.5) continue; // Circle, not a square.
+                EntityShrapnel shrapnelEntity = new EntityShrapnel(event.getBlastWorld(), event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), false, event.getBlastType());
+                shrapnelEntity.setDeltaMovement(i, event.getBlastWorld().random.nextFloat(), j);
+                event.getBlastWorld().addFreshEntity(shrapnelEntity);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onBlastIncendiary(BlastEvent.Incendiary event) {
 
         onBlast(event);
@@ -151,6 +166,26 @@ public class ICBMBlastEventHandler {
             }
         }
 
+    }
+
+    @SubscribeEvent
+    public static void onBlastFragmentation(BlastEvent.Fragmentation event) {
+        onBlast(event);
+        doVanillaExplosion(event);
+        for(double i = -0.5; i <= 0.5; i += 0.0625) {
+            for(double j = -0.5; j <= 0.5; j += 0.0625) {
+                if(i * i + j * j > 0.5 * 0.5) continue; // Circle, not a square.
+                EntityShrapnel shrapnelEntity = new EntityShrapnel(event.getBlastWorld(), event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), true, event.getBlastType());
+                shrapnelEntity.setDeltaMovement(i, event.getBlastWorld().random.nextFloat(), j);
+                event.getBlastWorld().addFreshEntity(shrapnelEntity);
+            }
+        }
+    }
+
+    // Implements the explosion when shrapnel from a fragmentation explosive impacts a block/player
+    @SubscribeEvent
+    public static void onShrapnelImpact(BlastEvent.ShrapnelImpact event) {
+        doVanillaExplosion(event, 0.5F * 4.0F);
     }
 
     @SubscribeEvent

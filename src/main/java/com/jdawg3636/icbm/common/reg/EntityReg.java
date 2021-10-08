@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.blast.event.BlastEvent;
+import com.jdawg3636.icbm.common.entity.EntityShrapnel;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -74,6 +75,9 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC     = registerMissile(BlastEvent::new, /*TODO*/             ItemReg.MISSILE_ANTIBALLISTIC, 1F, 5F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER           = registerMissile(BlastEvent::new, /*TODO*/             ItemReg.MISSILE_CLUSTER, 1F, 5F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile(BlastEvent::new, /*TODO*/             ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
+
+    // Misc Registration
+    public static final RegistryObject<EntityType<EntityShrapnel>> SHRAPNEL = ENTITIES.register("shrapnel", ()->EntityType.Builder.<EntityShrapnel>of(EntityShrapnel::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("shrapnel"));
 
     public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
         return registerPrimedExplosives(blastEventProvider, itemForm, 0.98F, 0.98F);

@@ -12,6 +12,7 @@ import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosivesRenderer;
 import com.jdawg3636.icbm.common.entity.EntityMissileRenderer;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
+import com.jdawg3636.icbm.common.entity.EntityShrapnelRenderer;
 import com.jdawg3636.icbm.common.reg.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -103,6 +104,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_ANTIBALLISTIC.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_ANTIBALLISTIC.get().getDefaultInstance()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER.get().getDefaultInstance()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER_NUCLEAR.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER_NUCLEAR.get().getDefaultInstance()));
+
+        // Register Misc Entity Rendering Handlers
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 
         // Register Tile Entity Renderers
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);

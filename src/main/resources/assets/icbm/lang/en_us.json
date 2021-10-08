@@ -280,6 +280,9 @@
   "entity.icbm.missile_cluster_nuclear": "Nuclear Cluster Missile",
   "entity.icbm.missile_homing": "Homing Missile",
 
+  # Other Entities
+  "entity.icbm.shrapnel": "Shrapnel",
+
   # Explosive Minecarts
   "item.icbm.minecart_explosive": "Explosive Cart",
   "item.icbm.minecart_shrapnel": "Shrapnel Minecart",
