@@ -11,6 +11,8 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -120,6 +122,11 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         destroyMultiblock(worldIn, pos, state);
     }
 
+    @Override
+    public boolean canDropFromExplosion(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
+        return isRootOfMultiblock(state);
+    }
+
     public void placeMultiblock(World world, BlockPos rootPos, BlockState rootState) {
 
         // Checks that the root position actually contains a root BlockState, otherwise could cause NPEs
@@ -143,16 +150,16 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
 
     public void destroyMultiblock(World world, BlockPos breakSourcePos, BlockState breakSourceState) {
         BlockPos rootPos = getMultiblockCenter(world, breakSourcePos, breakSourceState);
-        BlockState rootState = world.getBlockState(rootPos);
-        destroyMultiblockInternal(world, rootPos, rootState, breakSourcePos);
+        destroyMultiblockInternal(world, rootPos, breakSourcePos, breakSourceState);
     }
 
     /**
      * @param exclude Excluded from destruction, cannot be null.
+     * @param sampleBlockState Used for calculating what direction the multiblock is facing, can be any member node.
      */
-    private void destroyMultiblockInternal(World world, BlockPos rootPos, BlockState rootState, BlockPos exclude) {
+    private void destroyMultiblockInternal(World world, BlockPos rootPos, BlockPos exclude, BlockState sampleBlockState) {
         if(!exclude.equals(rootPos)) world.setBlockAndUpdate(rootPos, Blocks.AIR.defaultBlockState());
-        for(BlockPos pos : getMultiblockWorldPositions(rootPos, rootState)) if((!exclude.equals(pos)) && world.getBlockState(new BlockPos(pos)).getBlock().defaultBlockState().equals(defaultBlockState())) world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        for(BlockPos pos : getMultiblockWorldPositions(rootPos, sampleBlockState)) if((!exclude.equals(pos)) && world.getBlockState(new BlockPos(pos)).getBlock().defaultBlockState().equals(defaultBlockState())) world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
     }
 
     public boolean isRootOfMultiblock(BlockState state) {
@@ -210,7 +217,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     public abstract Vector3i[] getMultiblockOffsets();
 
     /**
-     * Takes in the BlockPos and BlockState of the root node of this multiblock in the
+     * Takes in the BlockPos of the root node and the BlockState of any given node of this multiblock in the
      * world and returns the full set of BlockPos that comprise the full structure, EXCLUDING THE ROOT
      *
      * Guaranteed to return in the same order as the offsets in this::getMultiblockOffsets
@@ -219,7 +226,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      *
      * @return Array of all BlockPos that comprise this multiblock, EXCLUDING THE ROOT
      */
-    public BlockPos[] getMultiblockWorldPositions(BlockPos rootPos, BlockState rootState) {
+    public BlockPos[] getMultiblockWorldPositions(BlockPos rootPos, BlockState state) {
 
         Vector3i[] offsets = getMultiblockOffsets();
         BlockPos[] positions = new BlockPos[offsets.length];
@@ -235,13 +242,13 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
             // North (-z) (Default)
             rotatedOffset = offset;
             // East (+x)
-            if (rootState.getValue(FACING).getOpposite().getNormal().getX() == 1)
+            if (state.getValue(FACING).getOpposite().getNormal().getX() == 1)
                 rotatedOffset = new Vector3i(+offset.getZ(), offset.getY(), +offset.getX());
                 // South (+z)
-            else if (rootState.getValue(FACING).getOpposite().getNormal().getZ() == 1)
+            else if (state.getValue(FACING).getOpposite().getNormal().getZ() == 1)
                 rotatedOffset = new Vector3i(-offset.getX(), offset.getY(), -offset.getZ());
                 // West (-x)
-            else if (rootState.getValue(FACING).getOpposite().getNormal().getX() == -1)
+            else if (state.getValue(FACING).getOpposite().getNormal().getX() == -1)
                 rotatedOffset = new Vector3i(+offset.getZ(), offset.getY(), -offset.getX());
 
             // worldPos = rootPos + rotatedOffset
