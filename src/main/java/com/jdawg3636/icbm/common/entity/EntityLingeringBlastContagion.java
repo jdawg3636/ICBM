@@ -10,13 +10,13 @@ import net.minecraft.potion.Effects;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class EntityLingeringBlastContagious extends EntityLingeringBlast {
+public class EntityLingeringBlastContagion extends EntityLingeringBlast {
 
-    public EntityLingeringBlastContagious(EntityType<?> entityType, World level) {
+    public EntityLingeringBlastContagion(EntityType<?> entityType, World level) {
         super(entityType, level);
     }
 
-    public EntityLingeringBlastContagious(EntityType<?> entityType, World level, int ticksAlive) {
+    public EntityLingeringBlastContagion(EntityType<?> entityType, World level, int ticksAlive) {
         super(entityType, level, ticksAlive);
     }
 

@@ -6,7 +6,7 @@
         "entries": [
           {
             "type": "minecraft:item",
-            "name": "icbm:explosives_contagious"
+            "name": "icbm:explosives_contagion"
           }
         ],
         "conditions": [

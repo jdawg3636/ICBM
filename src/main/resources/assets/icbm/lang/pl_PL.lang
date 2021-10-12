@@ -117,7 +117,7 @@ icbm.explosive.attractive.name=Przyciągająca bomba
 icbm.explosive.nightmare.name=Bomba z horroru
 
 icbm.explosive.fragmentation.name=Bomba kasetowa
-icbm.explosive.contagious.name=Bomba z zarazkami (Broń B)
+icbm.explosive.contagion.name=Bomba z zarazkami (Broń B)
 icbm.explosive.sonic.name=Bomba soniczna
 icbm.explosive.breaching.name=Bomba krusząca
 icbm.explosive.rejuvenation.name=Bomba rewitalizująca
@@ -146,7 +146,7 @@ icbm.explosive.repulsive.info=Odpycha wszystko
 icbm.explosive.attractive.info=Przyciąga wszystko
 
 icbm.explosive.fragmentation.info=Wyrzuca wiele innych wybuchowych odłamków
-icbm.explosive.contagious.info=Czy ty grasz w Plague inc. na żywo?
+icbm.explosive.contagion.info=Czy ty grasz w Plague inc. na żywo?
 icbm.explosive.sonic.info=Kto chce być ninją to ma teraz doskonałą okazję do tego
 icbm.explosive.breaching.info=Po co ci drzwi?
 icbm.explosive.rejuvenation.info=Odnawia chunck we wszystko, nawet w diamenty!
@@ -190,7 +190,7 @@ icbm.missile.repulsive.name=Rakieta odpychająca
 icbm.missile.attractive.name=Rakieta przyciągająca
 
 icbm.missile.fragmentation.name=Rakieta kasetowa
-icbm.missile.contagious.name=Rakieta z zarazkami
+icbm.missile.contagion.name=Rakieta z zarazkami
 icbm.missile.sonic.name=Rakieta soniczna
 icbm.missile.breaching.name=Rakieta krusząca
 icbm.missile.rejuvenation.name=Rakieta rewitalizująca
@@ -242,7 +242,7 @@ icbm.minecart.attractive.name=Wagonik przyciągający
 icbm.minecart.nightmare.name=Wagonik z horroru
 
 icbm.minecart.fragmentation.name=Wagonik kasetowy
-icbm.minecart.contagious.name=Wagonik z zarazkami
+icbm.minecart.contagion.name=Wagonik z zarazkami
 icbm.minecart.sonic.name=Soniczny wagonik
 icbm.minecart.breaching.name=Kruszący wagonik
 icbm.minecart.rejuvenation.name=Rewitalizujący wagonik

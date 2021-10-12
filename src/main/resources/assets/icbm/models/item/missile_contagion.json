@@ -1,6 +1,6 @@
 {
     "loader": "forge:obj",
-    "model": "icbm:models/item/missile_contagious.obj",
+    "model": "icbm:models/item/missile_contagion.obj",
     "detectCullableFaces": false,
     "diffuseLighting": false,
     "flip-v": true,

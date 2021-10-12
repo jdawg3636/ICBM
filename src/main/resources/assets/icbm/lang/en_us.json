@@ -166,7 +166,7 @@
   "block.icbm.explosives_nightmare": "Nightmare Explosives",
 
   "block.icbm.explosives_fragmentation": "Fragmentation Explosives",
-  "block.icbm.explosives_contagious": "Contagious Explosives",
+  "block.icbm.explosives_contagion": "Contagion Explosives",
   "block.icbm.explosives_sonic": "Sonic Explosives",
   "block.icbm.explosives_breaching": "Breaching Explosives",
   "block.icbm.explosives_rejuvenation": "Rejuvenation Explosives",
@@ -197,7 +197,7 @@
   "entity.icbm.explosives_nightmare": "Primed Nightmare Explosives",
 
   "entity.icbm.explosives_fragmentation": "Primed Fragmentation Explosives",
-  "entity.icbm.explosives_contagious": "Primed Contagious Explosives",
+  "entity.icbm.explosives_contagion": "Primed Contagion Explosives",
   "entity.icbm.explosives_sonic": "Primed Sonic Explosives",
   "entity.icbm.explosives_breaching": "Primed Breaching Explosives",
   "entity.icbm.explosives_rejuvenation": "Primed Rejuvenation Explosives",
@@ -228,7 +228,7 @@
   "item.icbm.missile_nightmare": "Nightmare Missile",
 
   "item.icbm.missile_fragmentation": "Fragmentation Missile",
-  "item.icbm.missile_contagious": "Contagious Missile",
+  "item.icbm.missile_contagion": "Contagion Missile",
   "item.icbm.missile_sonic": "Sonic Missile",
   "item.icbm.missile_breaching": "Breaching Missile",
   "item.icbm.missile_rejuvenation": "Rejuvenation Missile",
@@ -257,7 +257,7 @@
   "entity.icbm.missile_nightmare": "Nightmare Missile",
 
   "entity.icbm.missile_fragmentation": "Fragmentation Missile",
-  "entity.icbm.missile_contagious": "Contagious Missile",
+  "entity.icbm.missile_contagion": "Contagion Missile",
   "entity.icbm.missile_sonic": "Sonic Missile",
   "entity.icbm.missile_breaching": "Breaching Missile",
   "entity.icbm.missile_rejuvenation": "Rejuvenation Missile",
@@ -296,7 +296,7 @@
   "item.icbm.minecart_nightmare": "Nightmare Minecart",
 
   "item.icbm.minecart_fragmentation": "Fragmentation Minecart",
-  "item.icbm.minecart_contagious": "Contagious Minecart",
+  "item.icbm.minecart_contagion": "Contagion Minecart",
   "item.icbm.minecart_sonic": "Sonic Minecart",
   "item.icbm.minecart_breaching": "Breaching Minecart",
   "item.icbm.minecart_rejuvenation": "Rejuvenation Minecart",
@@ -324,7 +324,7 @@
   "explosive.icbm.attractive.info": "Pulls everyone in",
 
   "explosive.icbm.fragmentation.info": "Devastates the landscape with high velocity fragments",
-  "explosive.icbm.contagious.info": "Have you ever heard of the plague?",
+  "explosive.icbm.contagion.info": "Have you ever heard of the plague?",
   "explosive.icbm.sonic.info": "Who needs to be a ninja to sneak in after that much noise?",
   "explosive.icbm.breaching.info": "When you need a door",
   "explosive.icbm.thermobaric.info": "Mini-nuke in a can. Or at least as close as the North can get",
@@ -525,7 +525,7 @@
   # Death messages
   "death.attack.icbm.redmatter": "%s was crushed by the immense mass of the mighty black hole.",
   "death.attack.icbm.chemical": "%s suddenly started feeling not so well.",
-  "death.attack.icbm.contagious": "%s breathed in too much of the green stuff.",
+  "death.attack.icbm.contagion": "%s breathed in too much of the green stuff.",
 
   # GPS
   "gps.pos.set": "GPS data saved",

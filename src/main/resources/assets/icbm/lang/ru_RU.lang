@@ -117,7 +117,7 @@ icbm.explosive.repulsive.name=Отталкивающая взрывчатка
 icbm.explosive.attractive.name=Притягивающая взрывчатка
 
 icbm.explosive.fragmentation.name=Осколочная бомба
-icbm.explosive.contagious.name=Заразная бомба
+icbm.explosive.contagion.name=Заразная бомба
 icbm.explosive.sonic.name=Звуковая бомба
 icbm.explosive.breaching.name=Разрушительная бомба
 icbm.explosive.thermobaric.name=Термобарическая бомба
@@ -147,7 +147,7 @@ icbm.explosive.repulsive.info=Отталкивает всех
 icbm.explosive.attractive.info=Притягивает всех
 
 icbm.explosive.fragmentation.info=Разрушает пейзаж высокоскоростными фрагментами
-icbm.explosive.contagious.info=Вы когда-нибудь слышали о чуме?
+icbm.explosive.contagion.info=Вы когда-нибудь слышали о чуме?
 icbm.explosive.sonic.info=Кто должен быть ниндзя, прокрасться после такого шума
 icbm.explosive.breaching.info=Когда вам нужна дверь
 icbm.explosive.thermobaric.info=Мини-ядерное оружие в банке или, по крайней мере, так близко, как Север может получить
@@ -189,7 +189,7 @@ icbm.missile.repulsive.name=Отталкивающая ракета
 icbm.missile.attractive.name=Притягивающая ракета
 
 icbm.missile.fragmentation.name=Дробленная ракета
-icbm.missile.contagious.name=Заражающая ракета
+icbm.missile.contagion.name=Заражающая ракета
 icbm.missile.sonic.name=Звуковая ракета
 icbm.missile.breaching.name=Разрушительная ракета
 icbm.missile.thermobaric.name=Термобарическая ракета
@@ -239,7 +239,7 @@ icbm.minecart.repulsive.name=Вагонетка с отталкивающей в
 icbm.minecart.attractive.name=Вагонетка с притягивающей взрывчаткой
 
 icbm.minecart.fragmentation.name=Фрагментирующая вагонетка
-icbm.minecart.contagious.name=Заражающая вагонетка
+icbm.minecart.contagion.name=Заражающая вагонетка
 icbm.minecart.sonic.name=Звуковая вагонетка
 icbm.minecart.breaching.name=Разрушительная вагонетка
 icbm.minecart.thermobaric.name=Термобарическая вагонетка

@@ -5,12 +5,12 @@
       "item": "icbm:missile_module"
     },
     {
-      "item": "icbm:explosives_contagious"
+      "item": "icbm:explosives_contagion"
     }
   ],
   "result":
   {
-    "item": "icbm:missile_contagious",
+    "item": "icbm:missile_contagion",
     "count": 1
   }
 }

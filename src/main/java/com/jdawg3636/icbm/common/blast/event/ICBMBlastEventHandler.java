@@ -205,10 +205,10 @@ public class ICBMBlastEventHandler {
     }
 
     @SubscribeEvent
-    public static void onBlastContagion(BlastEvent.Contagious event) {
+    public static void onBlastContagion(BlastEvent.Contagion event) {
         onBlast(event);
         doVanillaExplosion(event);
-        EntityLingeringBlast entity = EntityReg.BLAST_CONTAGIOUS.get().create(event.getBlastWorld());
+        EntityLingeringBlast entity = EntityReg.BLAST_CONTAGION.get().create(event.getBlastWorld());
         entity.setPos(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ());
         entity.ticksRemaining = 400;
         event.getBlastWorld().addFreshEntity(entity);

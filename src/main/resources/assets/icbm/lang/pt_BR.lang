@@ -52,7 +52,7 @@ icbm.explosive.attractive.name=Explosivo Atrativo
 icbm.explosive.nightmare.name=Explosivo Pesadelo
 
 icbm.explosive.fragmentation.name=Explosivo de Fragmentação
-icbm.explosive.contagious.name=Explosivo Infeccioso
+icbm.explosive.contagion.name=Explosivo Infeccioso
 icbm.explosive.sonic.name=Explosivos Sônico
 icbm.explosive.breaching.name=Explosivos de Brecha
 icbm.explosive.thermobaric.name=Explosivo Termobárico
@@ -81,7 +81,7 @@ icbm.missile.repulsive.name=Missíl Repulsivo
 icbm.missile.attractive.name=Missíl Atrativo
 
 icbm.missile.fragmentation.name=Missíl de Fragmentação
-icbm.missile.contagious.name=Missíl Infeccioso
+icbm.missile.contagion.name=Missíl Infeccioso
 icbm.missile.sonic.name=Missíl Sônico
 icbm.missile.breaching.name=Missíl de Brecha
 icbm.missile.thermobaric.name=Missíl Termobárico
@@ -126,7 +126,7 @@ icbm.minecart.attractive.name=Carrinho Atrativo
 icbm.minecart.nightmare.name=Carrinho Pesadelo
 
 icbm.minecart.fragmentation.name=Carrinho de Fragmentação
-icbm.minecart.contagious.name=Carrinho Infeccioso
+icbm.minecart.contagion.name=Carrinho Infeccioso
 icbm.minecart.sonic.name=Carrinho Sônico
 icbm.minecart.breaching.name=Carrinho de Brecha
 icbm.minecart.thermobaric.name=Carrinho Termobárico

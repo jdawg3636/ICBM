@@ -131,7 +131,7 @@ explosive.icbm:repulsive.name=Abstoßender Sprengstoff
 explosive.icbm:attractive.name=Anziehender Sprengstoff
 
 explosive.icbm:fragmentation.name=Splitternder Sprengstoff
-explosive.icbm:contagious.name=Ansteckender Sprengstoff
+explosive.icbm:contagion.name=Ansteckender Sprengstoff
 explosive.icbm:sonic.name=Schallsprengstoff
 explosive.icbm:breaching.name=Durchschlagssprengstoff
 explosive.icbm:thermobaric.name=Thermobarischer Sprengstoff
@@ -158,7 +158,7 @@ missile.icbm:repulsive.name=Abstoßende Rakete
 missile.icbm:attractive.name=Anziehende Rakete
 
 missile.icbm:fragmentation.name=Splitterrakete
-missile.icbm:contagious.name=Ansteckende Rakete
+missile.icbm:contagion.name=Ansteckende Rakete
 missile.icbm:sonic.name=Schallrakete
 missile.icbm:breaching.name=Durchschlagsrakete
 missile.icbm:thermobaric.name=Thermobarische Rakete
@@ -185,7 +185,7 @@ bombcart.icbm:repulsive.name=Abstoßende Lore
 bombcart.icbm:attractive.name=Anziehende Lore
 
 bombcart.icbm:fragmentation.name=Splitterlore
-bombcart.icbm:contagious.name=Ansteckende Lore
+bombcart.icbm:contagion.name=Ansteckende Lore
 bombcart.icbm:sonic.name=Schalllore
 bombcart.icbm:breaching.name=Durchschlagslore
 bombcart.icbm:thermobaric.name=Thermobarische Lore
@@ -212,7 +212,7 @@ explosive.icbm:repulsive.info=Stößt alle weg
 explosive.icbm:attractive.info=Zieht alle an
 
 explosive.icbm:fragmentation.info=Verwüstet die Landschaft mit extrem schnellen Fragmenten
-explosive.icbm:contagious.info=Hast du je von der Plage gehört?
+explosive.icbm:contagion.info=Hast du je von der Plage gehört?
 explosive.icbm:sonic.info=Wer braucht ein Ninja zu sein um nach so viel Lärm einzusteigen?
 explosive.icbm:breaching.info=Wenn du eine Tür benötigst
 explosive.icbm:thermobaric.info=Mini-Atombombe in der Dose, oder zumindest so nah wie der Norden kommen kann
@@ -416,7 +416,7 @@ info.tracker.tooltip=Linksklicke einen Mob (auch Spieler) und ich werde in desse
 ## Death messages
 death.attack.icbm.redmatter=%s wurde von der immensen Masse eines mächtigen Schwarzen Loches vernichtet.
 death.attack.icbm.chemical=%s fühlt sich plotzlich nicht mehr so gut.
-death.attack.icbm.contagious=%s hat zu viel von dem grünen Zeug eingeatmet.
+death.attack.icbm.contagion=%s hat zu viel von dem grünen Zeug eingeatmet.
 
 ## GPS
 gps.pos.set.name=GPS-Daten gespeichert

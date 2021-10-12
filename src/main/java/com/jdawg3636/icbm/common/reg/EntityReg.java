@@ -7,14 +7,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = ICBMReference.MODID)
 public final class EntityReg {
@@ -32,7 +28,7 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ATTRACTIVE        = registerPrimedExplosives(BlastEvent.Attractive::new,          ItemReg.EXPLOSIVES_ATTRACTIVE);
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_NIGHTMARE         = registerPrimedExplosives(BlastEvent.Nightmare::new,           ItemReg.EXPLOSIVES_NIGHTMARE);
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_FRAGMENTATION     = registerPrimedExplosives(BlastEvent.Fragmentation::new,       ItemReg.EXPLOSIVES_FRAGMENTATION);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CONTAGIOUS        = registerPrimedExplosives(BlastEvent.Contagious::new,          ItemReg.EXPLOSIVES_CONTAGIOUS);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CONTAGION         = registerPrimedExplosives(BlastEvent.Contagion::new,           ItemReg.EXPLOSIVES_CONTAGION);
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_SONIC             = registerPrimedExplosives(BlastEvent.Sonic::new,               ItemReg.EXPLOSIVES_SONIC);
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_BREACHING         = registerPrimedExplosives(BlastEvent.Breaching::new,           ItemReg.EXPLOSIVES_BREACHING);
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_REJUVENATION      = registerPrimedExplosives(BlastEvent.Rejuvenation::new,        ItemReg.EXPLOSIVES_REJUVENATION);
@@ -60,7 +56,7 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ATTRACTIVE        = registerMissile(BlastEvent.Attractive::new,           ItemReg.MISSILE_ATTRACTIVE);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NIGHTMARE         = registerMissile(BlastEvent.Nightmare::new,            ItemReg.MISSILE_NIGHTMARE);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_FRAGMENTATION     = registerMissile(BlastEvent.Fragmentation::new,        ItemReg.MISSILE_FRAGMENTATION, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONTAGIOUS        = registerMissile(BlastEvent.Contagious::new,           ItemReg.MISSILE_CONTAGIOUS, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONTAGION         = registerMissile(BlastEvent.Contagion::new,            ItemReg.MISSILE_CONTAGION, 1F, 5F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SONIC             = registerMissile(BlastEvent.Sonic::new,                ItemReg.MISSILE_SONIC, 1F, 5F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_BREACHING         = registerMissile(BlastEvent.Breaching::new,            ItemReg.MISSILE_BREACHING, 1F, 5F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REJUVENATION      = registerMissile(BlastEvent.Rejuvenation::new,         ItemReg.MISSILE_REJUVENATION, 1F, 5F);
@@ -82,7 +78,7 @@ public final class EntityReg {
     // Blast Utility Entity Registration
     public static final RegistryObject<EntityType<EntityShrapnel>>       SHRAPNEL           = ENTITIES.register("shrapnel", ()->EntityType.Builder.<EntityShrapnel>of(EntityShrapnel::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("shrapnel"));
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
-    public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CONTAGIOUS   = registerBlastUtilityEntity("blast_contagious",   EntityLingeringBlastContagious::new);
+    public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CONTAGION    = registerBlastUtilityEntity("blast_contagion",    EntityLingeringBlastContagion::new);
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_DEBILITATION = registerBlastUtilityEntity("blast_debilitation", EntityLingeringBlastDebilitation::new);
 
     public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {

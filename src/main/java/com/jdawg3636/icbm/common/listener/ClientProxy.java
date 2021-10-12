@@ -59,7 +59,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_ATTRACTIVE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_ATTRACTIVE.get().defaultBlockState()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_NIGHTMARE.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_NIGHTMARE.get().defaultBlockState()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_FRAGMENTATION.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_FRAGMENTATION.get().defaultBlockState()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONTAGIOUS.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONTAGIOUS.get().defaultBlockState()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONTAGION.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONTAGION.get().defaultBlockState()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_SONIC.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_SONIC.get().defaultBlockState()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_BREACHING.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_BREACHING.get().defaultBlockState()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_REJUVENATION.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_REJUVENATION.get().defaultBlockState()));
@@ -87,7 +87,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_ATTRACTIVE.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_ATTRACTIVE.get().getDefaultInstance()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_NIGHTMARE.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_NIGHTMARE.get().getDefaultInstance()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_FRAGMENTATION.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_FRAGMENTATION.get().getDefaultInstance()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CONTAGIOUS.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CONTAGIOUS.get().getDefaultInstance()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CONTAGION.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CONTAGION.get().getDefaultInstance()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_SONIC.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_SONIC.get().getDefaultInstance()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_BREACHING.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_BREACHING.get().getDefaultInstance()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_REJUVENATION.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_REJUVENATION.get().getDefaultInstance()));
@@ -108,7 +108,7 @@ public class ClientProxy extends CommonProxy {
 
         // Register Blast Utility Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityLingeringBlastRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGIOUS.get(), EntityLingeringBlastRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGION.get(), EntityLingeringBlastRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityLingeringBlastRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 

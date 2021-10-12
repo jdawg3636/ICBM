@@ -108,8 +108,8 @@ public class BlastEvent extends Event {
             super(blastPosition, blastWorld, blastType);
         }
     }
-    public static class Contagious extends BlastEvent {
-        public Contagious(BlockPos blastPosition, ServerWorld blastWorld, BlastEvent.Type blastType) {
+    public static class Contagion extends BlastEvent {
+        public Contagion(BlockPos blastPosition, ServerWorld blastWorld, BlastEvent.Type blastType) {
             super(blastPosition, blastWorld, blastType);
         }
     }

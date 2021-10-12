@@ -6,14 +6,14 @@
   ],
   "key": {
     "A": {
-      "item": "icbm:explosives_contagious"
+      "item": "icbm:explosives_contagion"
     },
     "B": {
       "item": "minecraft:minecart"
     }
   },
   "result": {
-    "item": "icbm:minecart_contagious",
+    "item": "icbm:minecart_contagion",
     "count": 1
   }
 }
