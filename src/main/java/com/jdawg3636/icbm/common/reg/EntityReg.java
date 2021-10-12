@@ -1,17 +1,20 @@
 package com.jdawg3636.icbm.common.reg;
 
-import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
+import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.blast.event.BlastEvent;
-import com.jdawg3636.icbm.common.entity.EntityShrapnel;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = ICBMReference.MODID)
 public final class EntityReg {
@@ -76,8 +79,11 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER           = registerMissile(BlastEvent::new, /*TODO*/             ItemReg.MISSILE_CLUSTER, 1F, 5F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile(BlastEvent::new, /*TODO*/             ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
 
-    // Misc Registration
-    public static final RegistryObject<EntityType<EntityShrapnel>> SHRAPNEL = ENTITIES.register("shrapnel", ()->EntityType.Builder.<EntityShrapnel>of(EntityShrapnel::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("shrapnel"));
+    // Blast Utility Entity Registration
+    public static final RegistryObject<EntityType<EntityShrapnel>>       SHRAPNEL           = ENTITIES.register("shrapnel", ()->EntityType.Builder.<EntityShrapnel>of(EntityShrapnel::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("shrapnel"));
+    public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
+    public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CONTAGIOUS   = registerBlastUtilityEntity("blast_contagious",   EntityLingeringBlastContagious::new);
+    public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_DEBILITATION = registerBlastUtilityEntity("blast_debilitation", EntityLingeringBlastDebilitation::new);
 
     public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
         return registerPrimedExplosives(blastEventProvider, itemForm, 0.98F, 0.98F);
@@ -122,6 +128,16 @@ public final class EntityReg {
                     .updateInterval(2)
                     .build(itemForm.getId().getPath());
                 }
+        );
+    }
+
+    public static <T extends Entity> RegistryObject<EntityType<T>> registerBlastUtilityEntity(String entityName, EntityType.IFactory<T> entityConstructor) {
+        return ENTITIES.register(
+                entityName,
+                ()->EntityType.Builder.<T>of(
+                        entityConstructor,
+                        EntityClassification.MISC
+                ).build(entityName)
         );
     }
 

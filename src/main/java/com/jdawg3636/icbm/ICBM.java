@@ -23,6 +23,7 @@ public final class ICBM {
         ContainerReg.CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
         EntityReg.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ItemReg.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ParticleTypeReg.PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
         TileReg.TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
     }

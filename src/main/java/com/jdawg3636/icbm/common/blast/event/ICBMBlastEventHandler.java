@@ -1,6 +1,8 @@
 package com.jdawg3636.icbm.common.blast.event;
 
+import com.jdawg3636.icbm.common.entity.EntityLingeringBlast;
 import com.jdawg3636.icbm.common.entity.EntityShrapnel;
+import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -169,6 +171,26 @@ public class ICBMBlastEventHandler {
     }
 
     @SubscribeEvent
+    public static void onBlastDebilitation(BlastEvent.Debilitation event) {
+        onBlast(event);
+        doVanillaExplosion(event);
+        EntityLingeringBlast entity = EntityReg.BLAST_DEBILITATION.get().create(event.getBlastWorld());
+        entity.setPos(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ());
+        entity.ticksRemaining = 400;
+        event.getBlastWorld().addFreshEntity(entity);
+    }
+
+    @SubscribeEvent
+    public static void onBlastChemical(BlastEvent.Chemical event) {
+        onBlast(event);
+        doVanillaExplosion(event);
+        EntityLingeringBlast entity = EntityReg.BLAST_CHEMICAL.get().create(event.getBlastWorld());
+        entity.setPos(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ());
+        entity.ticksRemaining = 100;
+        event.getBlastWorld().addFreshEntity(entity);
+    }
+
+    @SubscribeEvent
     public static void onBlastFragmentation(BlastEvent.Fragmentation event) {
         onBlast(event);
         doVanillaExplosion(event);
@@ -180,6 +202,16 @@ public class ICBMBlastEventHandler {
                 event.getBlastWorld().addFreshEntity(shrapnelEntity);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onBlastContagion(BlastEvent.Contagious event) {
+        onBlast(event);
+        doVanillaExplosion(event);
+        EntityLingeringBlast entity = EntityReg.BLAST_CONTAGIOUS.get().create(event.getBlastWorld());
+        entity.setPos(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ());
+        entity.ticksRemaining = 400;
+        event.getBlastWorld().addFreshEntity(entity);
     }
 
     // Implements the explosion when shrapnel from a fragmentation explosive impacts a block/player

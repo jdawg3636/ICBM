@@ -9,18 +9,19 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherCont
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
-import com.jdawg3636.icbm.common.entity.EntityPrimedExplosivesRenderer;
-import com.jdawg3636.icbm.common.entity.EntityMissileRenderer;
+import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
-import com.jdawg3636.icbm.common.entity.EntityShrapnelRenderer;
+import com.jdawg3636.icbm.common.particle.ColoredSmokeParticle;
 import com.jdawg3636.icbm.common.reg.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -105,7 +106,10 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER.get().getDefaultInstance()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER_NUCLEAR.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER_NUCLEAR.get().getDefaultInstance()));
 
-        // Register Misc Entity Rendering Handlers
+        // Register Blast Utility Entity Rendering Handlers
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityLingeringBlastRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGIOUS.get(), EntityLingeringBlastRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityLingeringBlastRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 
         // Register Tile Entity Renderers
@@ -145,6 +149,28 @@ public class ClientProxy extends CommonProxy {
         if (Minecraft.getInstance().screen instanceof ScreenLauncherControlPanel) {
             ((ScreenLauncherControlPanel)Minecraft.getInstance().screen).updateGui();
         }
+    }
+
+    public void onParticleFactoryRegisterEvent(ParticleFactoryRegisterEvent event) {
+
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_DEBILITATION_A.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0xFF, 0xFF, 0xFF));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_DEBILITATION_B.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0xBC, 0xBC, 0xBC));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_DEBILITATION_C.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x4B, 0x4B, 0x4B));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_DEBILITATION_D.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x2C, 0x2C, 0x2C));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_DEBILITATION_E.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x02, 0x02, 0x02));
+
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CHEMICAL_A.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0xB2, 0xB2, 0x00));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CHEMICAL_B.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x9D, 0x9D, 0x00));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CHEMICAL_C.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x6A, 0x6A, 0x00));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CHEMICAL_D.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x3C, 0x3C, 0x00));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CHEMICAL_E.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x05, 0x05, 0x00));
+
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_A.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x43, 0xB3, 0x00));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_B.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x38, 0x96, 0x00));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_C.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x2D, 0x7B, 0x00));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_D.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x20, 0x56, 0x00));
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_E.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x08, 0x16, 0x00));
+
     }
 
 }

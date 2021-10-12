@@ -280,7 +280,8 @@
   "entity.icbm.missile_cluster_nuclear": "Nuclear Cluster Missile",
   "entity.icbm.missile_homing": "Homing Missile",
 
-  # Other Entities
+  # Blast Utility Entities
+  "entity.icbm.blast_debilitation": "Debilitation Blast",
   "entity.icbm.shrapnel": "Shrapnel",
 
   # Explosive Minecarts

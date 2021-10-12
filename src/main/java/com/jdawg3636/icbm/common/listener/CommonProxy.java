@@ -13,6 +13,7 @@ import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -57,6 +58,8 @@ public class CommonProxy {
                 () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_URANIUM.get().defaultBlockState(), 9)).range(64).squared().count(20)
         );
     }
+
+    public void onParticleFactoryRegisterEvent(ParticleFactoryRegisterEvent event) {}
 
     public void onTickEvent(final TickEvent.WorldTickEvent event) {
         BlastController.onTickEvent(event);
