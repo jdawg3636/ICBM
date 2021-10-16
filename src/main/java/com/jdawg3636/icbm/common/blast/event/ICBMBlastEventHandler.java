@@ -6,14 +6,21 @@ import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SExplosionPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.ArrayList;
 
 /**
  * Separate Event Handler for Mod's Own Events
@@ -21,8 +28,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public class ICBMBlastEventHandler {
 
-    // Not Subscribed - Called Directly by Subclass Events to ensure this is triggered before the rest of the blast code
-    public static void onBlast(BlastEvent event) {
+    public static void doBlastSoundAndParticles(BlastEvent event) {
         // Loosely Based on net.minecraft.world.Explosion.doExplosionB(boolean spawnParticles)
         if (!event.getBlastWorld().isClientSide) {
             // Sound
@@ -42,7 +48,7 @@ public class ICBMBlastEventHandler {
 
     @SubscribeEvent
     public static void onBlastAnvil(BlastEvent.Anvil event) {
-        onBlast(event);
+        doBlastSoundAndParticles(event);
         doVanillaExplosion(event);
         for(double i = -0.5; i <= 0.5; i += 0.0625) {
             for(double j = -0.5; j <= 0.5; j += 0.0625) {
@@ -61,7 +67,7 @@ public class ICBMBlastEventHandler {
     @SubscribeEvent
     public static void onBlastAntimatter(BlastEvent.Antimatter event) {
 
-        onBlast(event);
+        doBlastSoundAndParticles(event);
 
         if (!event.getBlastWorld().isClientSide) {
             int radius = 50;
@@ -85,7 +91,7 @@ public class ICBMBlastEventHandler {
 
     @SubscribeEvent
     public static void onBlastShrapnel(BlastEvent.Shrapnel event) {
-        onBlast(event);
+        doBlastSoundAndParticles(event);
         doVanillaExplosion(event);
         for(double i = -0.5; i <= 0.5; i += 0.0625) {
             for(double j = -0.5; j <= 0.5; j += 0.0625) {
@@ -100,7 +106,7 @@ public class ICBMBlastEventHandler {
     @SubscribeEvent
     public static void onBlastIncendiary(BlastEvent.Incendiary event) {
 
-        onBlast(event);
+        doBlastSoundAndParticles(event);
         doVanillaExplosion(event);
 
         // Copied (with slight modifications) from old icbm.content.blast.BlastFire
@@ -172,7 +178,7 @@ public class ICBMBlastEventHandler {
 
     @SubscribeEvent
     public static void onBlastDebilitation(BlastEvent.Debilitation event) {
-        onBlast(event);
+        doBlastSoundAndParticles(event);
         doVanillaExplosion(event);
         EntityLingeringBlast entity = EntityReg.BLAST_DEBILITATION.get().create(event.getBlastWorld());
         entity.setPos(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ());
@@ -182,7 +188,7 @@ public class ICBMBlastEventHandler {
 
     @SubscribeEvent
     public static void onBlastChemical(BlastEvent.Chemical event) {
-        onBlast(event);
+        doBlastSoundAndParticles(event);
         doVanillaExplosion(event);
         EntityLingeringBlast entity = EntityReg.BLAST_CHEMICAL.get().create(event.getBlastWorld());
         entity.setPos(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ());
@@ -192,7 +198,7 @@ public class ICBMBlastEventHandler {
 
     @SubscribeEvent
     public static void onBlastFragmentation(BlastEvent.Fragmentation event) {
-        onBlast(event);
+        doBlastSoundAndParticles(event);
         doVanillaExplosion(event);
         for(double i = -0.5; i <= 0.5; i += 0.0625) {
             for(double j = -0.5; j <= 0.5; j += 0.0625) {
@@ -204,9 +210,15 @@ public class ICBMBlastEventHandler {
         }
     }
 
+    // Implements the explosion when shrapnel from a fragmentation explosive impacts a block/player
+    @SubscribeEvent
+    public static void onShrapnelImpact(BlastEvent.ShrapnelImpact event) {
+        doVanillaExplosion(event, 0.5F * 4.0F);
+    }
+
     @SubscribeEvent
     public static void onBlastContagion(BlastEvent.Contagion event) {
-        onBlast(event);
+        doBlastSoundAndParticles(event);
         doVanillaExplosion(event);
         EntityLingeringBlast entity = EntityReg.BLAST_CONTAGION.get().create(event.getBlastWorld());
         entity.setPos(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ());
@@ -214,10 +226,42 @@ public class ICBMBlastEventHandler {
         event.getBlastWorld().addFreshEntity(entity);
     }
 
-    // Implements the explosion when shrapnel from a fragmentation explosive impacts a block/player
+    public static void doMovementBlast(BlastEvent event, double movementMultiplier) {
+        doBlastSoundAndParticles(event);
+        doVanillaExplosion(event, 4.0F / 2F);
+
+        double radius = 10;
+
+        event.getBlastWorld().getEntities(null, new AxisAlignedBB(event.getBlastPosition()).inflate(radius)).forEach(
+                (Entity entity) -> {
+
+                    double deltaX = entity.getX() - event.getBlastPosition().getX();
+                    double deltaY = entity.getY() - event.getBlastPosition().getY();
+                    double deltaZ = entity.getZ() - event.getBlastPosition().getZ();
+                    double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+                    double basePushDistance = movementMultiplier * 10D;
+
+                    Vector3d deltaMovement = new Vector3d(basePushDistance * deltaX / distance, basePushDistance * deltaY / distance / 3, basePushDistance * deltaZ / distance);
+                    entity.setDeltaMovement(entity.getDeltaMovement().add(deltaMovement));
+                    if (entity instanceof ServerPlayerEntity) {
+                        // Player movement (other than teleportation) is controlled exclusively client-side (which is dumb, but it's a vanilla mechanic that we can't control)
+                        // so we trick the client into moving for us by telling it that there is a vanilla explosion that destroys no blocks and moves the player by our desired amount.
+                        // This is handled client-side by net.minecraft.client.network.play.ClientPlayNetHandler::handleExplosion (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5).
+                        ((ServerPlayerEntity) entity).connection.send(new SExplosionPacket(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), 0F, new ArrayList<BlockPos>(), deltaMovement));
+                    }
+
+                }
+        );
+    }
+
     @SubscribeEvent
-    public static void onShrapnelImpact(BlastEvent.ShrapnelImpact event) {
-        doVanillaExplosion(event, 0.5F * 4.0F);
+    public static void onBlastRepulsive(BlastEvent.Repulsive event) {
+        doMovementBlast(event, 1);
+    }
+
+    @SubscribeEvent
+    public static void onBlastAttractive(BlastEvent.Attractive event) {
+        doMovementBlast(event, -1);
     }
 
     @SubscribeEvent
