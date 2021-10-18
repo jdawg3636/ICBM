@@ -210,6 +210,64 @@ public class ICBMBlastEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onBlastSonic(BlastEvent.Sonic event) {
+
+        ArrayList<BlockPos> results = new ArrayList<>();
+
+        // Parameters (different for sonic/hypersonic)
+        double radius = 6; // think this was 15 in 1.7.10?
+        double energy = 30;
+
+        // Identify Target Blocks
+        int steps = (int) Math.ceil(Math.PI / Math.atan(1.0D / radius));
+        for (int phi_n = 0; phi_n < 2 * steps; phi_n++)
+        {
+            for (int theta_n = 0; theta_n < steps; theta_n++)
+            {
+                double phi = Math.PI * 2 / steps * phi_n;
+                double theta = Math.PI / steps * theta_n;
+
+                Vector3d delta = new Vector3d(Math.sin(theta) * Math.cos(phi), Math.cos(theta), Math.sin(theta) * Math.sin(phi));
+                double power = energy - (energy * event.getBlastWorld().random.nextDouble() / 2);
+
+                Vector3d t = new Vector3d(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ());
+
+                for (double d = 0.3F; power > 0f; power -= d * 0.75F * 10)
+                {
+                    if (t.distanceTo(t) > radius)
+                    {
+                        break;
+                    }
+
+                    BlockState block = event.getBlastWorld().getBlockState(event.getBlastPosition());
+
+                    if (block.getBlock().getExplosionResistance() >= 0)
+                    {
+                        power -= block.getBlock().getExplosionResistance();
+
+                        if (power > 0f)
+                        {
+                            results.add(new BlockPos(t));
+                        }
+                    }
+                    t = t.add(delta);
+                }
+            }
+        }
+
+        // Affect Blocks
+        for(BlockPos blockPos : results) {
+            FallingBlockEntity fallingBlockEntity = new FallingBlockEntity(event.getBlastWorld(), blockPos.getX(), blockPos.getY(), blockPos.getZ(), event.getBlastWorld().getBlockState(blockPos));
+            fallingBlockEntity.time = 1;
+            fallingBlockEntity.push(0D, 4D, 0D);
+            event.getBlastWorld().setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3);
+            if(!event.getBlastWorld().getBlockState(blockPos).hasTileEntity())
+                event.getBlastWorld().addFreshEntity(fallingBlockEntity);
+        }
+
+    }
+
     // Implements the explosion when shrapnel from a fragmentation explosive impacts a block/player
     @SubscribeEvent
     public static void onShrapnelImpact(BlastEvent.ShrapnelImpact event) {
