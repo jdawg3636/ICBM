@@ -55,7 +55,7 @@ public class CommonProxy {
         );
         // Uranium Ore
         event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
-                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_URANIUM.get().defaultBlockState(), 2)).range(16).squared().count(10)
+                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_URANIUM.get().defaultBlockState(), 8)).range(16).squared()
         );
     }
 
