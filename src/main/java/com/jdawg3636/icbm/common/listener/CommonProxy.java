@@ -1,10 +1,10 @@
 package com.jdawg3636.icbm.common.listener;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.blast.BlastController;
 import com.jdawg3636.icbm.common.capability.*;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.capability.blastcontroller.BlastControllerCapabilityProvider;
+import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import net.minecraft.util.ResourceLocation;
@@ -14,6 +14,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -62,7 +63,10 @@ public class CommonProxy {
     public void onParticleFactoryRegisterEvent(ParticleFactoryRegisterEvent event) {}
 
     public void onTickEvent(final TickEvent.WorldTickEvent event) {
-        BlastController.onTickEvent(event);
+        LazyOptional<IBlastControllerCapability> cap = event.world.getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
+        if(cap.isPresent()) {
+            cap.orElse(null).onWorldTickEvent(event);
+        }
     }
 
 }

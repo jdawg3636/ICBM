@@ -1,6 +1,9 @@
 package com.jdawg3636.icbm.common.blast.event;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.blast.thread.VanillaBlastManagerThread;
+import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
+import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
 import com.jdawg3636.icbm.common.entity.EntityLingeringBlast;
 import com.jdawg3636.icbm.common.entity.EntityShrapnel;
 import com.jdawg3636.icbm.common.reg.BlockReg;
@@ -22,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -219,6 +223,20 @@ public class ICBMBlastEventHandler {
         entity.setPos(event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ());
         entity.ticksRemaining = 100;
         event.getBlastWorld().addFreshEntity(entity);
+    }
+
+    // todo remove - this is just to test the blast multithreading system
+    @SubscribeEvent
+    public static void onBlastNightmare(BlastEvent.Nightmare event) {
+        VanillaBlastManagerThread blastManagerThread = new VanillaBlastManagerThread();
+        blastManagerThread.explosionCenterPosX = event.getBlastPosition().getX();
+        blastManagerThread.explosionCenterPosY = event.getBlastPosition().getY();
+        blastManagerThread.explosionCenterPosZ = event.getBlastPosition().getZ();
+        blastManagerThread.radius = 40.0F;
+        LazyOptional<IBlastControllerCapability> cap = event.getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
+        if(cap.isPresent()) {
+            cap.orElse(null).enqueueBlastThread(blastManagerThread);
+        }
     }
 
     @SubscribeEvent
