@@ -11,7 +11,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 public abstract class AbstractBlastManagerThread extends Thread implements INBTSerializable<CompoundNBT> {
 
     /**
-     * @return A function to be executed by the calling thread after this thread's completion
+     * @return null or a function to be executed by the calling thread after this thread's completion
      */
     public abstract Runnable getPostCompletionFunction(ServerWorld level);
 
@@ -20,9 +20,13 @@ public abstract class AbstractBlastManagerThread extends Thread implements INBTS
     @Override
     public abstract void run();
 
-    // Serialization (NYI)
+    /*
+     * INBTSerializable
+     */
+
     @Override
     public abstract CompoundNBT serializeNBT();
+
     @Override
     public abstract void deserializeNBT(CompoundNBT nbt);
 

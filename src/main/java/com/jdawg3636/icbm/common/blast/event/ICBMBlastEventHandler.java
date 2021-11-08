@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.blast.event;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.blast.thread.AntimatterBlastManagerThread;
 import com.jdawg3636.icbm.common.blast.thread.VanillaBlastManagerThread;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
@@ -98,18 +99,29 @@ public class ICBMBlastEventHandler {
 
         doBlastSoundAndParticles(event);
 
-        if (!event.getBlastWorld().isClientSide) {
-            int radius = 50;
-            int radiusSq = radius * radius;
-            for(int i = -radius; i <= radius; i++)
-                for(int j = -radius; j <= radius; j++)
-                    for(int k = -radius; k <= radius; k++) {
-                        BlockPos candidatePos = new BlockPos(event.getBlastPosition().getX() + i, event.getBlastPosition().getY() + j, event.getBlastPosition().getZ() + k);
-                        if (event.getBlastPosition().distSqr(candidatePos) < radiusSq) {
-                            event.getBlastWorld().setBlock(candidatePos, Blocks.AIR.defaultBlockState(), 3);
-                        }
-                    }
+        AntimatterBlastManagerThread blastManagerThread = new AntimatterBlastManagerThread();
+        blastManagerThread.explosionCenterPosX = event.getBlastPosition().getX();
+        blastManagerThread.explosionCenterPosY = event.getBlastPosition().getY();
+        blastManagerThread.explosionCenterPosZ = event.getBlastPosition().getZ();
+        blastManagerThread.radius = 50;
+        blastManagerThread.fuzzyEdgeThickness = 2;
+        LazyOptional<IBlastControllerCapability> cap = event.getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
+        if(cap.isPresent()) {
+            cap.orElse(null).enqueueBlastThread(blastManagerThread);
         }
+
+        //if (!event.getBlastWorld().isClientSide) {
+        //    int radius = 50;
+        //    int radiusSq = radius * radius;
+        //    for(int i = -radius; i <= radius; i++)
+        //        for(int j = -radius; j <= radius; j++)
+        //            for(int k = -radius; k <= radius; k++) {
+        //                BlockPos candidatePos = new BlockPos(event.getBlastPosition().getX() + i, event.getBlastPosition().getY() + j, event.getBlastPosition().getZ() + k);
+        //                if (event.getBlastPosition().distSqr(candidatePos) < radiusSq) {
+        //                    event.getBlastWorld().setBlock(candidatePos, Blocks.AIR.defaultBlockState(), 3);
+        //                }
+        //            }
+        //}
 
     }
 

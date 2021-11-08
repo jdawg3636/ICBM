@@ -54,7 +54,7 @@ public class VanillaBlastManagerThread extends AbstractBlastManagerThread {
             worker.explosionCenterPosX = explosionCenterPosX;
             worker.explosionCenterPosY = explosionCenterPosY;
             worker.explosionCenterPosZ = explosionCenterPosZ;
-            worker.radius = radius;
+            worker.explosionPower = radius;
             threadPool.add(worker);
         }
 
@@ -151,9 +151,10 @@ public class VanillaBlastManagerThread extends AbstractBlastManagerThread {
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putDouble("explosionCenterPosX", explosionCenterPosX);
-        nbt.putDouble("explosionCenterPosY", explosionCenterPosY);
-        nbt.putDouble("explosionCenterPosZ", explosionCenterPosZ);
+        nbt.putString("manager_thread_type", "icbm:antimatter");
+        nbt.putDouble("explosion_center_pos_x", explosionCenterPosX);
+        nbt.putDouble("explosion_center_pos_y", explosionCenterPosY);
+        nbt.putDouble("explosion_center_pos_z", explosionCenterPosZ);
         nbt.putFloat ("radius", radius);
         return nbt;
     }
@@ -161,10 +162,10 @@ public class VanillaBlastManagerThread extends AbstractBlastManagerThread {
     // Deserialization
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        explosionCenterPosX = nbt.getDouble("explosionCenterPosX");
-        explosionCenterPosY = nbt.getDouble("explosionCenterPosY");
-        explosionCenterPosZ = nbt.getDouble("explosionCenterPosZ");
-        radius = nbt.getFloat("radius");
+        explosionCenterPosX = nbt.getDouble("explosion_center_pos_x");
+        explosionCenterPosY = nbt.getDouble("explosion_center_pos_y");
+        explosionCenterPosZ = nbt.getDouble("explosion_center_pos_z");
+        radius              = nbt.getFloat("radius");
     };
 
 }

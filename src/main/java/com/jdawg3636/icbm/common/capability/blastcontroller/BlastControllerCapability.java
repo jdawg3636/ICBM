@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.capability.blastcontroller;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.blast.thread.AbstractBlastManagerThread;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class BlastControllerCapability implements IBlastControllerCapability {
 
-    public static final int MAX_THREAD_COUNT = 8; // todo replace with a value from config file
+    public static final int MAX_THREAD_COUNT = Integer.MAX_VALUE; // todo replace with a value from config file
 
     public static void register() {
         CapabilityManager.INSTANCE.register(IBlastControllerCapability.class, new BlastControllerCapabilityStorage(), BlastControllerCapability::new);
@@ -60,20 +61,21 @@ public class BlastControllerCapability implements IBlastControllerCapability {
                 thread.initializeLevelCallbacks((ServerWorld) event.world);
                 thread.start();
                 addBlastThread(thread);
-                System.out.printf("Activated Blast Thread, count = %s\n", activeBlastThreads.size());
+                /*todo remove debug*/ ICBMReference.logger().info("Activated thread, count = " + activeBlastThreads.size());
             }
 
             // Remove Completed Threads
             ArrayList<AbstractBlastManagerThread> inactiveBlastThreads = new ArrayList<>();
             for (AbstractBlastManagerThread thread : activeBlastThreads) {
                 if (!thread.isAlive()) {
-                    thread.getPostCompletionFunction((ServerWorld) event.world).run();
+                    Runnable postCompletionFunction = thread.getPostCompletionFunction((ServerWorld) event.world);
+                    if(postCompletionFunction != null) postCompletionFunction.run();
                     inactiveBlastThreads.add(thread);
                 }
             }
             for (AbstractBlastManagerThread thread : inactiveBlastThreads) {
                 removeBlastThread(thread);
-                System.out.printf("Deactivated thread, count = %s\n", activeBlastThreads.size());
+                /*todo remove debug*/ ICBMReference.logger().info("Deactivated thread, count = " + activeBlastThreads.size());
             }
 
         }
