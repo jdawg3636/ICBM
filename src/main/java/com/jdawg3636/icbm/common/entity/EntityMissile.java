@@ -352,7 +352,7 @@ public class EntityMissile extends Entity {
     @Override
     public Vector3d collide(Vector3d destination) {
         Vector3d result = super.collide(destination);
-        if(!MathHelper.equal(destination.x, result.x) || !MathHelper.equal(destination.z, result.z) || destination.y != result.y) shouldExplode = true;
+        if(!MathHelper.equal(destination.x, result.x) || !MathHelper.equal(destination.z, result.z) || !MathHelper.equal(destination.y, result.y)) shouldExplode = true;
         return result;
     }
 
