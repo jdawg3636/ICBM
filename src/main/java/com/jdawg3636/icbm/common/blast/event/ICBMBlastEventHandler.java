@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.blast.event;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.blast.thread.AntimatterBlastManagerThread;
+import com.jdawg3636.icbm.common.blast.thread.NuclearBlastManagerThread;
 import com.jdawg3636.icbm.common.blast.thread.VanillaBlastManagerThread;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
@@ -385,6 +386,7 @@ public class ICBMBlastEventHandler {
     @SubscribeEvent
     public static void onBlastNuclear(BlastEvent.Nuclear event) {
 
+        /*
         doBlastSoundAndParticles(event);
 
         if (!event.getBlastWorld().isClientSide) {
@@ -407,6 +409,17 @@ public class ICBMBlastEventHandler {
                     }
                 }
             }
+        }
+         */
+        NuclearBlastManagerThread blastManagerThread = new NuclearBlastManagerThread();
+        blastManagerThread.explosionCenterPosX = event.getBlastPosition().getX();
+        blastManagerThread.explosionCenterPosY = event.getBlastPosition().getY();
+        blastManagerThread.explosionCenterPosZ = event.getBlastPosition().getZ();
+        blastManagerThread.radius = 30.0F; //todo: make configurable, default to 30 if performance is acceptable
+        blastManagerThread.threadCount = 4;
+        LazyOptional<IBlastControllerCapability> cap = event.getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
+        if(cap.isPresent()) {
+            cap.orElse(null).enqueueBlastThread(blastManagerThread);
         }
 
     }
