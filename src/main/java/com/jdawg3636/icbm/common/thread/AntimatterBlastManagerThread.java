@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.blast.thread;
+package com.jdawg3636.icbm.common.thread;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

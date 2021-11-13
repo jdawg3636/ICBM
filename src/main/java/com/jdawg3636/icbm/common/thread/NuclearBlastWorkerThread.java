@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.blast.thread;
+package com.jdawg3636.icbm.common.thread;
 
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockState;

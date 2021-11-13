@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.blast.thread;
+package com.jdawg3636.icbm.common.thread;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.server.ServerWorld;

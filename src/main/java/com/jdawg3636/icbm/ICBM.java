@@ -1,6 +1,5 @@
 package com.jdawg3636.icbm;
 
-import com.jdawg3636.icbm.common.blast.event.ICBMBlastEventHandler;
 import com.jdawg3636.icbm.common.listener.ICBMForgeEventListener;
 import com.jdawg3636.icbm.common.listener.ICBMModEventListener;
 import com.jdawg3636.icbm.common.reg.*;
@@ -14,14 +13,15 @@ public final class ICBM {
 
     public ICBM() {
 
+        // Register Event Listeners
         MinecraftForge.EVENT_BUS.register(ICBMForgeEventListener.class);
         FMLJavaModLoadingContext.get().getModEventBus().register(ICBMModEventListener.class);
 
-        // TODO Redo this system to integrate with the main event listeners
-        MinecraftForge.EVENT_BUS.register(ICBMBlastEventHandler.class);
-
+        // Register Custom Registries
         BlastManagerThreadReg.BLAST_MANAGER_THREADS.makeRegistry("blast_manager_threads", RegistryBuilder::new);
         BlastManagerThreadReg.BLAST_MANAGER_THREADS.register(FMLJavaModLoadingContext.get().getModEventBus());
+
+        // Register Vanilla/Forge Registries
         BlockReg.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ContainerReg.CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
         EntityReg.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());

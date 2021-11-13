@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.entity;
 
-import com.jdawg3636.icbm.common.blast.event.BlastEvent;
+import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
@@ -10,7 +10,6 @@ import net.minecraft.network.IPacket;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -19,10 +18,10 @@ import javax.annotation.Nullable;
 
 public class EntityPrimedExplosives extends TNTEntity {
 
-    BlastEvent.BlastEventProvider blastEventProvider;
+    AbstractBlastEvent.BlastEventProvider blastEventProvider;
     RegistryObject<Item> itemForm;
 
-    public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter) {
+    public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter) {
         super(type, worldIn);
         this.blastEventProvider = blastEventProvider;
         this.itemForm = itemForm;
@@ -38,10 +37,9 @@ public class EntityPrimedExplosives extends TNTEntity {
 
     @Override
     protected void explode() {
-        if(!level.isClientSide())
-            MinecraftForge.EVENT_BUS.post(
-                    blastEventProvider.getBlastEvent(blockPosition(), (ServerWorld) level, BlastEvent.Type.EXPLOSIVES)
-            );
+        if(!level.isClientSide()) {
+            AbstractBlastEvent.fire(blastEventProvider, blockPosition(), (ServerWorld) level, AbstractBlastEvent.Type.EXPLOSIVES);
+        }
     }
 
     @Nonnull

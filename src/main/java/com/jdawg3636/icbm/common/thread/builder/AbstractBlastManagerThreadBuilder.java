@@ -1,6 +1,6 @@
-package com.jdawg3636.icbm.common.blast.threadbuilder;
+package com.jdawg3636.icbm.common.thread.builder;
 
-import com.jdawg3636.icbm.common.blast.thread.AbstractBlastManagerThread;
+import com.jdawg3636.icbm.common.thread.AbstractBlastManagerThread;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.IForgeRegistryEntry;

@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.capability.blastcontroller;
 
-import com.jdawg3636.icbm.common.blast.thread.AbstractBlastManagerThread;
+import com.jdawg3636.icbm.common.thread.AbstractBlastManagerThread;
 import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayList;

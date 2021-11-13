@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.blast.thread;
+package com.jdawg3636.icbm.common.thread;
 
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -20,7 +20,7 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class VanillaBlastManagerThread extends AbstractBlastManagerThread {
+public class NuclearBlastManagerThread extends AbstractBlastManagerThread {
 
     public Supplier<Random> randomSupplier;
     public Function<BlockPos, BlockState> blockStateSupplier;
@@ -32,7 +32,8 @@ public class VanillaBlastManagerThread extends AbstractBlastManagerThread {
 
     public float radius;
 
-    ArrayList<VanillaBlastWorkerThread> threadPool;
+    private ArrayList<NuclearBlastWorkerThread> threadPool;
+    public int threadCount;
 
     @Override
     public void initializeLevelCallbacks(ServerWorld level) {
@@ -47,26 +48,28 @@ public class VanillaBlastManagerThread extends AbstractBlastManagerThread {
 
         // Initialize Workers
         threadPool = new ArrayList<>();
-        for(int i = 0; i < 1; ++i) {
-            VanillaBlastWorkerThread worker = new VanillaBlastWorkerThread();
+        for(int threadNumber = 0; threadNumber < threadCount; ++threadNumber) {
+            NuclearBlastWorkerThread worker = new NuclearBlastWorkerThread();
             worker.randomSupplier = randomSupplier;
             worker.blockStateSupplier = blockStateSupplier;
             worker.explosionCenterPosX = explosionCenterPosX;
             worker.explosionCenterPosY = explosionCenterPosY;
             worker.explosionCenterPosZ = explosionCenterPosZ;
-            worker.explosionPower = radius;
+            worker.radius = radius;
+            worker.threadCount = threadCount;
+            worker.threadNumber = threadNumber;
             threadPool.add(worker);
         }
 
         // Begin Calculation
         boolean calculating = true;
-        threadPool.forEach(VanillaBlastWorkerThread::start);
+        threadPool.forEach(NuclearBlastWorkerThread::start);
 
         // Keep Thread Alive until All Workers have Completed
         while(calculating) {
             if(interrupted()) break;
             calculating = false;
-            for(VanillaBlastWorkerThread worker : threadPool) {
+            for(NuclearBlastWorkerThread worker : threadPool) {
                 if (worker.isAlive()) {
                     calculating = true;
                     break;
@@ -80,10 +83,12 @@ public class VanillaBlastManagerThread extends AbstractBlastManagerThread {
     public Runnable getPostCompletionFunction(final ServerWorld level) {
 
         return () -> {
-            for(VanillaBlastWorkerThread worker : threadPool) {
+            System.out.println("Post-Completion Nuclear");
+            for(NuclearBlastWorkerThread worker : threadPool) {
 
                 ArrayList<BlockPos> workerResults = new ArrayList<>(worker.blocksToBeDestroyed);
                 Collections.shuffle(workerResults, randomSupplier.get());
+                System.out.println("Worker Found " + workerResults.size() + " Results!");
 
                 // Remove Blocks and Calculate Items to Be Dropped
                 ObjectArrayList<Pair<ItemStack, BlockPos>> itemStacksToBeDropped = new ObjectArrayList<>();
@@ -151,7 +156,7 @@ public class VanillaBlastManagerThread extends AbstractBlastManagerThread {
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putString("manager_thread_type", "icbm:antimatter");
+        nbt.putString("manager_thread_type", "icbm:nuclear");
         nbt.putDouble("explosion_center_pos_x", explosionCenterPosX);
         nbt.putDouble("explosion_center_pos_y", explosionCenterPosY);
         nbt.putDouble("explosion_center_pos_z", explosionCenterPosZ);
@@ -165,7 +170,7 @@ public class VanillaBlastManagerThread extends AbstractBlastManagerThread {
         explosionCenterPosX = nbt.getDouble("explosion_center_pos_x");
         explosionCenterPosY = nbt.getDouble("explosion_center_pos_y");
         explosionCenterPosZ = nbt.getDouble("explosion_center_pos_z");
-        radius              = nbt.getFloat("radius");
+        radius              = nbt.getFloat ("radius");
     };
 
 }

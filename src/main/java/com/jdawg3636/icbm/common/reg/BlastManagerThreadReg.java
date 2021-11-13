@@ -1,10 +1,10 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.blast.thread.AntimatterBlastManagerThread;
-import com.jdawg3636.icbm.common.blast.thread.NuclearBlastManagerThread;
-import com.jdawg3636.icbm.common.blast.thread.VanillaBlastManagerThread;
-import com.jdawg3636.icbm.common.blast.threadbuilder.AbstractBlastManagerThreadBuilder;
+import com.jdawg3636.icbm.common.thread.AntimatterBlastManagerThread;
+import com.jdawg3636.icbm.common.thread.NuclearBlastManagerThread;
+import com.jdawg3636.icbm.common.thread.VanillaBlastManagerThread;
+import com.jdawg3636.icbm.common.thread.builder.AbstractBlastManagerThreadBuilder;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 

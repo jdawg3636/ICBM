@@ -1,13 +1,10 @@
 package com.jdawg3636.icbm.common.entity;
 
-import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
-import com.jdawg3636.icbm.common.blast.event.BlastEvent;
-import net.minecraft.block.BlockState;
+import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -19,18 +16,12 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -41,17 +32,17 @@ public class EntityMissile extends Entity {
 
     public enum MissileSourceType {
 
-        LAUNCHER_PLATFORM(BlastEvent.Type.PLATFORM_MISSILE),
-        CRUISE_LAUNCHER(BlastEvent.Type.CRUISE_MISSILE),
-        ROCKET_LAUNCHER(BlastEvent.Type.HANDHELD_ROCKET);
+        LAUNCHER_PLATFORM(AbstractBlastEvent.Type.PLATFORM_MISSILE),
+        CRUISE_LAUNCHER(AbstractBlastEvent.Type.CRUISE_MISSILE),
+        ROCKET_LAUNCHER(AbstractBlastEvent.Type.HANDHELD_ROCKET);
 
-        MissileSourceType(final BlastEvent.Type blastType) {
+        MissileSourceType(final AbstractBlastEvent.Type blastType) {
             this.blastType = blastType;
         }
 
-        private BlastEvent.Type blastType;
+        private AbstractBlastEvent.Type blastType;
 
-        public BlastEvent.Type getResultantBlastType() {
+        public AbstractBlastEvent.Type getResultantBlastType() {
             return blastType;
         }
 
@@ -70,7 +61,7 @@ public class EntityMissile extends Entity {
     public static final DataParameter<Float>    PEAK_HEIGHT          = EntityDataManager.defineId(EntityMissile.class, DataSerializers.FLOAT);
     public static final DataParameter<Integer>  TOTAL_FLIGHT_TICKS   = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
 
-    public BlastEvent.BlastEventProvider blastEventProvider;
+    public AbstractBlastEvent.BlastEventProvider blastEventProvider;
     public RegistryObject<Item> missileItem;
     public MissileSourceType missileSourceType = MissileSourceType.LAUNCHER_PLATFORM;
     public MissileLaunchPhase missileLaunchPhase = MissileLaunchPhase.STATIONARY;
@@ -84,7 +75,7 @@ public class EntityMissile extends Entity {
     public int ticksSinceLaunch = 0;
     public boolean shouldExplode = false;
 
-    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem) {
+    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem) {
         this(
                 entityTypeIn,
                 worldIn,
@@ -100,7 +91,7 @@ public class EntityMissile extends Entity {
         yRot = -90F;
     }
 
-    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, BlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase, BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks) {
+    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase, BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks) {
         super(entityTypeIn, worldIn);
         this.blastEventProvider = blastEventProvider;
         this.missileItem = missileItem;
@@ -358,9 +349,7 @@ public class EntityMissile extends Entity {
 
     public void explode() {
         if(!level.isClientSide()) {
-            MinecraftForge.EVENT_BUS.post(
-                    blastEventProvider.getBlastEvent(blockPosition(), (ServerWorld) level, missileSourceType.getResultantBlastType())
-            );
+            AbstractBlastEvent.fire(blastEventProvider, blockPosition(), (ServerWorld) level, missileSourceType.getResultantBlastType());
             this.kill();
         }
     }
