@@ -8,5 +8,5 @@
     "MixinClientRocketLauncherPose"
   ],
   "server": [],
-  "minVersion": "0.8"
+  "minVersion": "0.8.4"
 }

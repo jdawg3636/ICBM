@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
@@ -16,14 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 repositories {
-    maven { // JEI
-        url "https://dvs1.progwml6.com/files/maven"
-    }
-    maven { // The One Probe
-        name "tterrag maven"
-        url "http://maven.tterrag.com"
-    }
-    maven { // CurseForge, currently using for WorldEdit
+    maven { // CurseForge, currently using for JEI, The One Probe, and WorldEdit
         url "https://www.cursemaven.com"
     }
 }
@@ -144,6 +137,7 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', 'icbm', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
@@ -169,7 +163,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.9'
 
     // Mixin annotation processor - generates the refmap
-    annotationProcessor 'org.spongepowered:mixin:0.8:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
@@ -189,9 +183,9 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.72")
-    runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.7-13")
-    runtimeOnly fg.deobf("curse.maven:worldedit-225608:3172951")
+    runtimeOnly fg.deobf("curse.maven:jei-238222:3526055")
+    runtimeOnly fg.deobf("curse.maven:the-one-probe-245211:3319255")
+    runtimeOnly fg.deobf("curse.maven:worldedit-225608:3283693")
 
 }
 
