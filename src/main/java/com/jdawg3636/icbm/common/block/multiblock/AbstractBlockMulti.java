@@ -2,7 +2,6 @@ package com.jdawg3636.icbm.common.block.multiblock;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -117,9 +116,9 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      * this block
      */
     @Override
-    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        super.playerWillDestroy(worldIn, pos, state, player);
-        destroyMultiblock(worldIn, pos, state);
+    public void onRemove(BlockState originalState, World level, BlockPos blockPos, BlockState newState, boolean flag) {
+        super.onRemove(originalState, level, blockPos, newState, flag);
+        destroyMultiblock(level, blockPos, originalState);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.thread;
 
+import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,6 +10,7 @@ import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -43,11 +45,24 @@ public class AntimatterBlastManagerThread extends AbstractBlastManagerThread {
             }
             for(BlockPos result : results) {
                 // Clear BlockEntity Contents
-                TileEntity tileentity = level.getBlockEntity(result);
-                if(tileentity instanceof LockableLootTileEntity) {
-                    ((LockableLootTileEntity)tileentity).unpackLootTable((PlayerEntity)null);
+                BlockState existingBlockState = level.getBlockState(result);
+                TileEntity tileentity = (existingBlockState.getBlock() instanceof AbstractBlockMulti) // TODO: Look into making this compatible with other mods' multiblocks
+                        ? level.getBlockEntity(((AbstractBlockMulti)existingBlockState.getBlock()).getMultiblockCenter(level, result, existingBlockState))
+                        : level.getBlockEntity(result);
+                if(tileentity != null) {
+                    // Ensure contents generated before clearing (otherwise vanilla will automatically generate contents later when broken)
+                    if (tileentity instanceof LockableLootTileEntity) {
+                        ((LockableLootTileEntity) tileentity).unpackLootTable((PlayerEntity) null);
+                    }
+                    // Clear using Forge Item Handler Capability
+                    tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
+                        for (int i = 0; i < itemHandler.getSlots(); ++i) {
+                            itemHandler.extractItem(i, itemHandler.getStackInSlot(i).getCount(), false);
+                        }
+                    });
+                    // Clear using Vanilla Interface Method (redundant, but may catch some non-API inventory implementations from other mods)
+                    IClearable.tryClear(tileentity);
                 }
-                IClearable.tryClear(tileentity);
                 // Break Block and Update Neighbors - could probably optimize this by minimizing block updates
                 level.setBlock(result, Blocks.AIR.defaultBlockState(), 2);
                 level.blockUpdated(result, Blocks.AIR);
