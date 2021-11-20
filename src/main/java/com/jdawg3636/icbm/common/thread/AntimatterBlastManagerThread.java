@@ -2,8 +2,10 @@ package com.jdawg3636.icbm.common.thread;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IClearable;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -40,8 +42,13 @@ public class AntimatterBlastManagerThread extends AbstractBlastManagerThread {
                 results.addAll(worker.blocksToBeDestroyed);
             }
             for(BlockPos result : results) {
+                // Clear BlockEntity Contents
                 TileEntity tileentity = level.getBlockEntity(result);
+                if(tileentity instanceof LockableLootTileEntity) {
+                    ((LockableLootTileEntity)tileentity).unpackLootTable((PlayerEntity)null);
+                }
                 IClearable.tryClear(tileentity);
+                // Break Block and Update Neighbors - could probably optimize this by minimizing block updates
                 level.setBlock(result, Blocks.AIR.defaultBlockState(), 2);
                 level.blockUpdated(result, Blocks.AIR);
             }
