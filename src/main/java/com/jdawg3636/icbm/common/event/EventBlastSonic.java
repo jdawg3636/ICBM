@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.item.FallingBlockEntity;
@@ -12,11 +13,14 @@ import java.util.ArrayList;
 public class EventBlastSonic extends AbstractBlastEvent {
 
     public EventBlastSonic(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType) {
-        super(blastPosition, blastWorld, blastType);
+        super(blastPosition, blastWorld, blastType, SoundEventReg.EXPLOSION_SONIC);
     }
 
     @Override
     public boolean executeBlast() {
+
+        ICBMBlastEventUtil.doBlastSoundAndParticles(this);
+
         ArrayList<BlockPos> results = new ArrayList<>();
 
         // Parameters (different for sonic/hypersonic)

@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.thread;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.inventory.IClearable;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -38,9 +39,11 @@ public class AntimatterBlastManagerThread extends AbstractBlastManagerThread {
             for(AntimatterBlastWorkerThread worker : threadPool) {
                 results.addAll(worker.blocksToBeDestroyed);
             }
-            /*todo remove debug*/System.out.println("Pulled " + results.size() + " total results from Antimatter Worker Threads");
             for(BlockPos result : results) {
-                level.setBlockAndUpdate(result, Blocks.AIR.defaultBlockState());
+                TileEntity tileentity = level.getBlockEntity(result);
+                IClearable.tryClear(tileentity);
+                level.setBlock(result, Blocks.AIR.defaultBlockState(), 2);
+                level.blockUpdated(result, Blocks.AIR);
             }
         };
     }

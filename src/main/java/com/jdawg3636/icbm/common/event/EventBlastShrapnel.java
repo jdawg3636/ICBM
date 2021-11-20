@@ -13,7 +13,7 @@ public class EventBlastShrapnel extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        ICBMBlastEventUtil.doVanillaExplosion(this);
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition());
         for(double i = -0.5; i <= 0.5; i += 0.0625) {
             for(double j = -0.5; j <= 0.5; j += 0.0625) {
                 if(i * i + j * j > 0.5 * 0.5) continue; // Circle, not a square.

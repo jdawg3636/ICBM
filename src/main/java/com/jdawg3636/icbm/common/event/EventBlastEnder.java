@@ -11,6 +11,7 @@ public class EventBlastEnder extends AbstractBlastEvent {
 
     @Override
     public boolean executeBlast() {
+        ICBMBlastEventUtil.doBlastSoundAndParticles(this);
         //todo: implement
         return false;
     }

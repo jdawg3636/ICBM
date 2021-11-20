@@ -533,6 +533,26 @@
   "gps.error.pos.invalid.world": "Can't target another world",
   "gps.error.pos.invalid.null": "No target set",
   "gps.data.transferred": "Data transferred",
-  "gps.cleared": "GPS data cleared"
+  "gps.cleared": "GPS data cleared",
+
+  # Subtitles
+  "icbm.subtitle.effect_airstrike": "Airstrike Inbound",
+  "icbm.subtitle.effect_alarm": "Alarm sounds",
+  "icbm.subtitle.effect_beam_charge": "Beam charges",
+  "icbm.subtitle.effect_beam_discharge": "Beam discharges",
+  "icbm.subtitle.effect_block_crumble": "Block crumbles",
+  "icbm.subtitle.effect_gas_leak": "Gas released",
+  "icbm.subtitle.effect_missile_flight": "Missile flies",
+  "icbm.subtitle.effect_missile_launch": "Missile launches",
+  "icbm.subtitle.effect_redmatter": "Redmatter churns",
+  "icbm.subtitle.explosion_antigravitational": "Antigravitational Explosion",
+  "icbm.subtitle.explosion_antimatter": "Antimatter Explosion",
+  "icbm.subtitle.explosion_debilitation": "Debilitation Explosion",
+  "icbm.subtitle.explosion_emp": "EMP Explosion",
+  "icbm.subtitle.explosion_generic": "Large Explosion",
+  "icbm.subtitle.explosion_hypersonic": "Hypersonic Explosion",
+  "icbm.subtitle.explosion_incendiary": "Incendiary Explosion",
+  "icbm.subtitle.explosion_sonic": "Sonic Explosion",
+  "icbm.subtitle.tile_machine_hum": "Machine hums"
 
 }

@@ -15,17 +15,9 @@ public class EventBlastNightmare extends AbstractBlastEvent {
 
     @Override
     public boolean executeBlast() {
-        // todo remove - this is just to test the blast multithreading system
-        VanillaBlastManagerThread blastManagerThread = new VanillaBlastManagerThread();
-        blastManagerThread.explosionCenterPosX = getBlastPosition().getX();
-        blastManagerThread.explosionCenterPosY = getBlastPosition().getY();
-        blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
-        blastManagerThread.radius = 40.0F;
-        LazyOptional<IBlastControllerCapability> cap = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
-        if(cap.isPresent()) {
-            cap.orElse(null).enqueueBlastThread(blastManagerThread);
-        }
-        return true;
+        ICBMBlastEventUtil.doBlastSoundAndParticles(this);
+        // todo: implement
+        return false;
     }
 
 }

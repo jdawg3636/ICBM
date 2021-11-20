@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
@@ -15,6 +16,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -319,6 +321,10 @@ public class EntityMissile extends Entity {
                     if(getY() < 0) {
                         kill(); // Don't Explode, Just Disappear.
                         break;
+                    }
+
+                    if ((ticksSinceLaunch-1) % 40 == 0) {
+                        this.level.playSound((PlayerEntity) null, getX(), getY(), getZ(), SoundEventReg.EFFECT_MISSILE_FLIGHT.get(), SoundCategory.BLOCKS, 2.5F, 1.0F);
                     }
 
                     // TODO: if y > 255, then despawn missile and switch to simulation

@@ -11,7 +11,8 @@ public class EventBlastCondensed extends AbstractBlastEvent {
 
     @Override
     public boolean executeBlast() {
-        ICBMBlastEventUtil.doVanillaExplosion(this, 1.75F * 4.0F);
+        ICBMBlastEventUtil.doBlastSoundAndParticles(this);
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition(), 1.75F * 4.0F);
         return true;
     }
 

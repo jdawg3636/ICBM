@@ -1,10 +1,13 @@
 package com.jdawg3636.icbm.common.event;
 
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
+
+import java.util.function.Supplier;
 
 /**
  * Fired whenever an ICBM explosive is detonated
@@ -26,14 +29,32 @@ public abstract class AbstractBlastEvent extends Event {
     private final BlockPos blastPosition;
     private final ServerWorld blastWorld;
     private final AbstractBlastEvent.Type blastType;
+    private final Supplier<SoundEvent> soundEvent;
+    private final float soundEventRangeMultiplier; // 1.0F = Radius of 16 blocks
 
     /**
      * Don't call this directly; use AbstractBlastEvent.fire() instead (pass the appropriate blast's constructor as a parameter)
      */
     public AbstractBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType) {
+        this(blastPosition, blastWorld, blastType, null);
+    }
+
+    /**
+     * Don't call this directly; use AbstractBlastEvent.fire() instead (pass the appropriate blast's constructor as a parameter)
+     */
+    public AbstractBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Supplier<SoundEvent> soundEvent) {
+        this(blastPosition, blastWorld, blastType, soundEvent, 1.0F);
+    }
+
+    /**
+     * Don't call this directly; use AbstractBlastEvent.fire() instead (pass the appropriate blast's constructor as a parameter)
+     */
+    public AbstractBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Supplier<SoundEvent> soundEvent, float soundEventRangeMultiplier) {
         this.blastPosition = blastPosition;
         this.blastWorld = blastWorld;
         this.blastType = blastType;
+        this.soundEvent = soundEvent;
+        this.soundEventRangeMultiplier = soundEventRangeMultiplier;
     }
 
     /**
@@ -67,6 +88,14 @@ public abstract class AbstractBlastEvent extends Event {
 
     public AbstractBlastEvent.Type getBlastType() {
         return blastType;
+    }
+
+    public Supplier<SoundEvent> getSoundEvent() {
+        return soundEvent;
+    }
+
+    public float getSoundEventRangeMultiplier() {
+        return soundEventRangeMultiplier;
     }
 
     /**

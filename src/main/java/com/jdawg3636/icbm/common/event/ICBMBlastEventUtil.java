@@ -1,12 +1,13 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SExplosionPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -14,6 +15,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 /**
  * Utility Class for use in Blast Event implementations
@@ -24,7 +26,9 @@ public class ICBMBlastEventUtil {
         // Loosely Based on net.minecraft.world.Explosion::finalizeExplosion (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
         if (!event.getBlastWorld().isClientSide) {
             // Sound
-            event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), SoundEvents.GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (event.getBlastWorld().random.nextFloat() - event.getBlastWorld().random.nextFloat()) * 0.2F) * 0.7F);
+            Supplier<SoundEvent> soundEvent = event.getSoundEvent();
+            if(soundEvent == null) soundEvent = SoundEventReg.EXPLOSION_GENERIC;
+            event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), soundEvent.get(), SoundCategory.BLOCKS, event.getSoundEventRangeMultiplier(), 1.0F);
             // Particles - Handled Client Side by net.minecraft.client.network.play.ClientPlayNetHandler::handleParticleEvent (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
             event.getBlastWorld().sendParticles(ParticleTypes.EXPLOSION_EMITTER, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), 1, 0, 0, 0, 1.0D);
         }
@@ -44,6 +48,10 @@ public class ICBMBlastEventUtil {
 
     public static void doVanillaExplosion(ServerWorld level, double posX, double posY, double posZ, float explosionPower) {
         level.explode(null, posX, posY, posZ, explosionPower, Explosion.Mode.BREAK);
+    }
+
+    public static void doVanillaExplosionServerOnly(ServerWorld level, BlockPos blockPos) {
+        doVanillaExplosionServerOnly(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 4.0F);
     }
 
     public static void doVanillaExplosionServerOnly(ServerWorld level, BlockPos blockPos, float explosionPower) {

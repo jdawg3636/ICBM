@@ -14,6 +14,7 @@ public class EventBlastShrapnelImpact extends AbstractBlastEvent {
 
     @Override
     public boolean executeBlast() {
+        // Using vanilla sounds/particles
         ICBMBlastEventUtil.doVanillaExplosion(this, 0.5F * 4.0F);
         return true;
     }

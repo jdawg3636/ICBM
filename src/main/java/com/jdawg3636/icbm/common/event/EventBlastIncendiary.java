@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -9,7 +10,7 @@ import net.minecraft.world.server.ServerWorld;
 public class EventBlastIncendiary extends AbstractBlastEvent {
 
     public EventBlastIncendiary(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType) {
-        super(blastPosition, blastWorld, blastType);
+        super(blastPosition, blastWorld, blastType, SoundEventReg.EXPLOSION_INCENDIARY);
     }
 
     @Override
@@ -17,7 +18,7 @@ public class EventBlastIncendiary extends AbstractBlastEvent {
     public boolean executeBlast() {
 
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        ICBMBlastEventUtil.doVanillaExplosion(this);
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition());
 
         // Copied (with slight modifications) from old icbm.content.blast.BlastFire
         // Would like to clean this up a bit if possible

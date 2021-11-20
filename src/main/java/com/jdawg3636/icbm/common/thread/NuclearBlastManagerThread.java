@@ -20,6 +20,7 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+// todo: add generation of radioactive material to blast crater
 public class NuclearBlastManagerThread extends AbstractBlastManagerThread {
 
     public Supplier<Random> randomSupplier;
