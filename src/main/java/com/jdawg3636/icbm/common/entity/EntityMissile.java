@@ -318,7 +318,7 @@ public class EntityMissile extends Entity {
                         break;
                     }
 
-                    if(getY() < 0) {
+                    if(getY() < 0) { //todo: switch this to a variable for MC 1.17+
                         kill(); // Don't Explode, Just Disappear.
                         break;
                     }

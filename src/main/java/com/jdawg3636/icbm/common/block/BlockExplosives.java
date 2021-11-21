@@ -16,12 +16,10 @@ import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
@@ -58,9 +56,13 @@ public class BlockExplosives extends Block {
      * Normal Ignition Routine
      * */
     public void explode(World world, BlockPos pos, @Nullable LivingEntity igniter) {
+        explode(world, pos, igniter, null);
+    }
+
+    public void explode(World world, BlockPos pos, @Nullable LivingEntity igniter, @Nullable Direction blastDirection) {
         if (!world.isClientSide) {
             world.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
-            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter);
+            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter, blastDirection);
             world.addFreshEntity(explosives_entity);
             world.playSound((PlayerEntity)null, explosives_entity.getX(), explosives_entity.getY(), explosives_entity.getZ(), SoundEvents.TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
@@ -93,6 +95,38 @@ public class BlockExplosives extends Block {
         return state;
     }
 
+    @Nullable
+    public static Direction getDirectionBetweenBlockPos(BlockPos source, BlockPos dest) {
+        Vector3i delta = new Vector3i(dest.getX() - source.getX(), dest.getY() - source.getY(), dest.getZ() - source.getZ());
+        Direction direction = null;
+        for(Direction candidateDirection : Direction.values()) {
+            if(candidateDirection.getNormal().equals(delta)) {
+                direction = candidateDirection;
+                break;
+            }
+        }
+        return direction;
+    }
+
+    @Nullable
+    public static Direction getNeighborSignalDirection(World level, BlockPos blockPos) {
+        if (level.getSignal(blockPos.below(), Direction.DOWN) > 0) {
+            return Direction.DOWN;
+        } else if (level.getSignal(blockPos.above(), Direction.UP) > 0) {
+            return Direction.UP;
+        } else if (level.getSignal(blockPos.north(), Direction.NORTH) > 0) {
+            return Direction.NORTH;
+        } else if (level.getSignal(blockPos.south(), Direction.SOUTH) > 0) {
+            return Direction.SOUTH;
+        } else if (level.getSignal(blockPos.west(), Direction.WEST) > 0) {
+            return Direction.WEST;
+        } else if (level.getSignal(blockPos.east(), Direction.EAST) > 0) {
+            return Direction.EAST;
+        } else {
+            return null;
+        }
+    }
+
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
     // -- Begin Copy/Paste from net.minecraft.block.TNTBlock -- //
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -100,13 +134,18 @@ public class BlockExplosives extends Block {
     public static final BooleanProperty UNSTABLE = BlockStateProperties.UNSTABLE;
 
     public void catchFire(BlockState state, World world, BlockPos pos, @Nullable net.minecraft.util.Direction face, @Nullable LivingEntity igniter) {
-        explode(world, pos, igniter);
+        if (face == null) {
+            explode(world, pos, igniter);
+        } else {
+            explode(world, pos, igniter, face.getOpposite());
+        }
     }
 
     public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (!oldState.is(state.getBlock())) {
-            if (worldIn.hasNeighborSignal(pos)) {
-                catchFire(state, worldIn, pos, null, null);
+            Direction neighborSignalDirection = getNeighborSignalDirection(worldIn, pos);
+            if (neighborSignalDirection != null) {
+                explode(worldIn, pos, null, neighborSignalDirection.getOpposite());
                 worldIn.removeBlock(pos, false);
             }
         }
@@ -114,7 +153,7 @@ public class BlockExplosives extends Block {
 
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (worldIn.hasNeighborSignal(pos)) {
-            catchFire(state, worldIn, pos, null, null);
+            explode(worldIn, pos, null, getDirectionBetweenBlockPos(fromPos, pos));
             worldIn.removeBlock(pos, false);
         }
     }
