@@ -7,6 +7,7 @@ import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -18,8 +19,9 @@ import javax.annotation.Nullable;
 
 public class EntityPrimedExplosives extends TNTEntity {
 
-    AbstractBlastEvent.BlastEventProvider blastEventProvider;
-    RegistryObject<Item> itemForm;
+    public AbstractBlastEvent.BlastEventProvider blastEventProvider;
+    public RegistryObject<Item> itemForm;
+    public Direction blastDirection;
 
     public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter) {
         super(type, worldIn);
@@ -33,12 +35,13 @@ public class EntityPrimedExplosives extends TNTEntity {
         this.yo = y;
         this.zo = z;
         this.owner = igniter;
+        this.blastDirection = igniter == null ? Direction.getRandom(worldIn.random) : igniter.getDirection();
     }
 
     @Override
     protected void explode() {
         if(!level.isClientSide()) {
-            AbstractBlastEvent.fire(blastEventProvider, blockPosition(), (ServerWorld) level, AbstractBlastEvent.Type.EXPLOSIVES);
+            AbstractBlastEvent.fire(blastEventProvider, AbstractBlastEvent.Type.EXPLOSIVES, (ServerWorld) level, blockPosition(), blastDirection);
         }
     }
 

@@ -355,7 +355,7 @@ public class EntityMissile extends Entity {
 
     public void explode() {
         if(!level.isClientSide()) {
-            AbstractBlastEvent.fire(blastEventProvider, blockPosition(), (ServerWorld) level, missileSourceType.getResultantBlastType());
+            AbstractBlastEvent.fire(blastEventProvider, missileSourceType.getResultantBlastType(), (ServerWorld) level, blockPosition(), getDirection());
             this.kill();
         }
     }

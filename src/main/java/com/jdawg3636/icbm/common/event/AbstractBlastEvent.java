@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -29,30 +30,32 @@ public abstract class AbstractBlastEvent extends Event {
     private final BlockPos blastPosition;
     private final ServerWorld blastWorld;
     private final AbstractBlastEvent.Type blastType;
+    private final Direction blastDirection;
     private final Supplier<SoundEvent> soundEvent;
     private final float soundEventRangeMultiplier; // 1.0F = Radius of 16 blocks
 
     /**
      * Don't call this directly; use AbstractBlastEvent.fire() instead (pass the appropriate blast's constructor as a parameter)
      */
-    public AbstractBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType) {
-        this(blastPosition, blastWorld, blastType, null);
+    public AbstractBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection) {
+        this(blastPosition, blastWorld, blastType, blastDirection, null);
     }
 
     /**
      * Don't call this directly; use AbstractBlastEvent.fire() instead (pass the appropriate blast's constructor as a parameter)
      */
-    public AbstractBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Supplier<SoundEvent> soundEvent) {
-        this(blastPosition, blastWorld, blastType, soundEvent, 1.0F);
+    public AbstractBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection, Supplier<SoundEvent> soundEvent) {
+        this(blastPosition, blastWorld, blastType, blastDirection, soundEvent, 1.0F);
     }
 
     /**
      * Don't call this directly; use AbstractBlastEvent.fire() instead (pass the appropriate blast's constructor as a parameter)
      */
-    public AbstractBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Supplier<SoundEvent> soundEvent, float soundEventRangeMultiplier) {
+    public AbstractBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection, Supplier<SoundEvent> soundEvent, float soundEventRangeMultiplier) {
         this.blastPosition = blastPosition;
         this.blastWorld = blastWorld;
         this.blastType = blastType;
+        this.blastDirection = blastDirection;
         this.soundEvent = soundEvent;
         this.soundEventRangeMultiplier = soundEventRangeMultiplier;
     }
@@ -63,8 +66,8 @@ public abstract class AbstractBlastEvent extends Event {
      * @param blastEventProvider Blast Event Constructor
      * @return Blast was Executed Successfully
      */
-    public static boolean fire(BlastEventProvider blastEventProvider, BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType) {
-        AbstractBlastEvent blastEvent = blastEventProvider.getBlastEvent(blastPosition, blastWorld, blastType);
+    public static boolean fire(BlastEventProvider blastEventProvider, AbstractBlastEvent.Type blastType, ServerWorld blastWorld, BlockPos blastPosition, Direction blastDirection) {
+        AbstractBlastEvent blastEvent = blastEventProvider.getBlastEvent(blastPosition, blastWorld, blastType, blastDirection);
         boolean eventCancelled = MinecraftForge.EVENT_BUS.post(blastEvent);
         boolean success = false;
         if(!eventCancelled) {
@@ -90,6 +93,10 @@ public abstract class AbstractBlastEvent extends Event {
         return blastType;
     }
 
+    public Direction getBlastDirection() {
+        return blastDirection;
+    }
+
     public Supplier<SoundEvent> getSoundEvent() {
         return soundEvent;
     }
@@ -108,7 +115,7 @@ public abstract class AbstractBlastEvent extends Event {
      */
     @FunctionalInterface
     public interface BlastEventProvider {
-        AbstractBlastEvent getBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType);
+        AbstractBlastEvent getBlastEvent(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection);
     }
 
 }

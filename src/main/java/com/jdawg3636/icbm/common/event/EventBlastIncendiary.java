@@ -4,13 +4,14 @@ import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
 public class EventBlastIncendiary extends AbstractBlastEvent {
 
-    public EventBlastIncendiary(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType) {
-        super(blastPosition, blastWorld, blastType, SoundEventReg.EXPLOSION_INCENDIARY);
+    public EventBlastIncendiary(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection) {
+        super(blastPosition, blastWorld, blastType, blastDirection, SoundEventReg.EXPLOSION_INCENDIARY);
     }
 
     @Override

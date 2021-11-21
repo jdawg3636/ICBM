@@ -55,7 +55,7 @@ public class EntityShrapnel extends AbstractArrowEntity {
     protected void onHitBlock(BlockRayTraceResult blockRayTraceResult) {
         if(!level.isClientSide()) {
             this.playSound(this.getHitGroundSoundEvent(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-            if(isExplosive) AbstractBlastEvent.fire(EventBlastShrapnelImpact::new, new BlockPos(this.getX(), this.getY(), this.getZ()), (ServerWorld) this.level, this.blastType);
+            if(isExplosive) AbstractBlastEvent.fire(EventBlastShrapnelImpact::new, this.blastType, (ServerWorld) this.level, new BlockPos(this.getX(), this.getY(), this.getZ()), getDirection());
             this.kill();
         }
     }
@@ -63,7 +63,7 @@ public class EntityShrapnel extends AbstractArrowEntity {
     @Override
     protected void onHitEntity(EntityRayTraceResult entityRayTraceResult) {
         if(!level.isClientSide()) {
-            if(isExplosive) AbstractBlastEvent.fire(EventBlastShrapnelImpact::new, new BlockPos(this.getX(), this.getY(), this.getZ()), (ServerWorld) this.level, this.blastType);
+            if(isExplosive) AbstractBlastEvent.fire(EventBlastShrapnelImpact::new, this.blastType, (ServerWorld) this.level, new BlockPos(this.getX(), this.getY(), this.getZ()), getDirection());
         }
         super.onHitEntity(entityRayTraceResult);
     }

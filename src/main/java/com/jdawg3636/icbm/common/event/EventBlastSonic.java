@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 
 public class EventBlastSonic extends AbstractBlastEvent {
 
-    public EventBlastSonic(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType) {
-        super(blastPosition, blastWorld, blastType, SoundEventReg.EXPLOSION_SONIC);
+    public EventBlastSonic(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection) {
+        super(blastPosition, blastWorld, blastType, blastDirection, SoundEventReg.EXPLOSION_SONIC);
     }
 
     @Override

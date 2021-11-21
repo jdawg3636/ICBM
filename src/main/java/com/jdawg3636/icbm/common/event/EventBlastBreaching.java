@@ -1,12 +1,13 @@
 package com.jdawg3636.icbm.common.event;
 
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
 public class EventBlastBreaching extends AbstractBlastEvent {
 
-    public EventBlastBreaching(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType) {
-        super(blastPosition, blastWorld, blastType);
+    public EventBlastBreaching(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection) {
+        super(blastPosition, blastWorld, blastType, blastDirection);
     }
 
     @Override

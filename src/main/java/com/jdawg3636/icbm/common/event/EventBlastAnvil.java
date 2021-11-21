@@ -2,13 +2,14 @@ package com.jdawg3636.icbm.common.event;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
 public class EventBlastAnvil extends AbstractBlastEvent {
 
-    public EventBlastAnvil(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType) {
-        super(blastPosition, blastWorld, blastType);
+    public EventBlastAnvil(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection) {
+        super(blastPosition, blastWorld, blastType, blastDirection);
     }
 
     @Override
