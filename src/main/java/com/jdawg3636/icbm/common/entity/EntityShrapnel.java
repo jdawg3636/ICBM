@@ -25,6 +25,7 @@ public class EntityShrapnel extends AbstractArrowEntity {
 
     public EntityShrapnel(EntityType<? extends EntityShrapnel> entityType, World level) {
         super(entityType, level);
+        this.setBaseDamage(this.getBaseDamage() * 12D);
     }
 
     public EntityShrapnel(World level, double positionX, double positionY, double positionZ) {
@@ -35,6 +36,7 @@ public class EntityShrapnel extends AbstractArrowEntity {
         super(EntityReg.SHRAPNEL.get(), positionX, positionY, positionZ, level);
         this.isExplosive = isExplosive;
         this.blastType = blastType;
+        this.setBaseDamage(this.getBaseDamage() * 12D);
     }
 
     public EntityShrapnel(World level, LivingEntity entity) {
