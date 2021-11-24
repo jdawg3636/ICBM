@@ -107,9 +107,10 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MISSILE_CLUSTER_NUCLEAR.get(), (manager) -> new EntityMissileRenderer(manager, ItemReg.MISSILE_CLUSTER_NUCLEAR.get().getDefaultInstance()));
 
         // Register Blast Utility Entity Rendering Handlers
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityLingeringBlastRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGION.get(), EntityLingeringBlastRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityLingeringBlastRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityNOPRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGION.get(), EntityNOPRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityNOPRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_SONIC.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 
         // Register Tile Entity Renderers

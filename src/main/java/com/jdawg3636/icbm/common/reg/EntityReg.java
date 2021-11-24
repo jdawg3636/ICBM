@@ -80,6 +80,7 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CONTAGION    = registerBlastUtilityEntity("blast_contagion",    EntityLingeringBlastContagion::new);
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_DEBILITATION = registerBlastUtilityEntity("blast_debilitation", EntityLingeringBlastDebilitation::new);
+    public static final RegistryObject<EntityType<EntitySonicBlast>>     BLAST_SONIC        = registerBlastUtilityEntity("blast_sonic",        EntitySonicBlast::new);
 
     public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
         return registerPrimedExplosives(blastEventProvider, itemForm, 0.98F, 0.98F);

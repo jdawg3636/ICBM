@@ -34,7 +34,7 @@ public class NuclearBlastManagerThread extends AbstractBlastManagerThread {
     public float radius;
 
     private ArrayList<NuclearBlastWorkerThread> threadPool;
-    public int threadCount;
+    public int threadCount = 4;
 
     @Override
     public void initializeLevelCallbacks(ServerWorld level) {

@@ -126,6 +126,11 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         return isRootOfMultiblock(state);
     }
 
+    @Override
+    public boolean dropFromExplosion(Explosion explosion) {
+        return false;
+    }
+
     public void placeMultiblock(World world, BlockPos rootPos, BlockState rootState) {
 
         // Checks that the root position actually contains a root BlockState, otherwise could cause NPEs
