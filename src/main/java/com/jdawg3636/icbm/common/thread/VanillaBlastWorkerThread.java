@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class VanillaBlastWorkerThread extends Thread {
+public class VanillaBlastWorkerThread extends AbstractBlastWorkerThread {
 
     public Supplier<Random> randomSupplier;
     public Function<BlockPos, BlockState> blockStateSupplier;

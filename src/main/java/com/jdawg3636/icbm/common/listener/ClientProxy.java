@@ -29,6 +29,19 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientProxy extends CommonProxy {
 
+    // BlockEntity Models
+    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_DYNAMIC    = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_dynamic");
+    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_STATIC     = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_static");
+    public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE        = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
+    public static final ResourceLocation MODEL_EMP_TOWER_COUNTERCLOCKWISE = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_counterclockwise");
+    public static final ResourceLocation MODEL_EMP_TOWER_STATIC           = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_static");
+    public static final ResourceLocation MODEL_RADAR_STATION_DYNAMIC      = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_dynamic");
+    public static final ResourceLocation MODEL_RADAR_STATION_STATIC       = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_static");
+
+    // Entity Models
+    public static final ResourceLocation MODEL_REDMATTER_BLAST_ACCRETION_DISK = new ResourceLocation(ICBMReference.MODID + ":entity/redmatter_blast_accretion_disk");
+    public static final ResourceLocation MODEL_REDMATTER_BLAST_SPHERE         = new ResourceLocation(ICBMReference.MODID + ":entity/redmatter_blast_sphere");
+
     public void onClientSetupEvent(FMLClientSetupEvent event) {
 
         // Set Render Layers
@@ -110,6 +123,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGION.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityNOPRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_REDMATTER.get(), EntityRedmatterBlastRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_SONIC.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 
@@ -122,34 +136,19 @@ public class ClientProxy extends CommonProxy {
 
     public void onModelRegistryEvent(final ModelRegistryEvent event) {
 
+        // BlockEntity Models
         ModelLoader.addSpecialModel(MODEL_CRUISE_LAUNCHER_DYNAMIC);
         ModelLoader.addSpecialModel(MODEL_CRUISE_LAUNCHER_STATIC);
-
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_CLOCKWISE);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_COUNTERCLOCKWISE);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_STATIC);
-
         ModelLoader.addSpecialModel(MODEL_RADAR_STATION_DYNAMIC);
         ModelLoader.addSpecialModel(MODEL_RADAR_STATION_STATIC);
 
-    }
+        // Entity Models
+        ModelLoader.addSpecialModel(MODEL_REDMATTER_BLAST_ACCRETION_DISK);
+        ModelLoader.addSpecialModel(MODEL_REDMATTER_BLAST_SPHERE);
 
-    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_DYNAMIC    = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_dynamic");
-    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_STATIC     = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_static");
-    public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE        = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
-    public static final ResourceLocation MODEL_EMP_TOWER_COUNTERCLOCKWISE = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_counterclockwise");
-    public static final ResourceLocation MODEL_EMP_TOWER_STATIC           = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_static");
-    public static final ResourceLocation MODEL_RADAR_STATION_DYNAMIC      = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_dynamic");
-    public static final ResourceLocation MODEL_RADAR_STATION_STATIC       = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_static");
-
-    public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {
-        Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));
-    }
-
-    public void updateScreenLauncherControlPanel() {
-        if (Minecraft.getInstance().screen instanceof ScreenLauncherControlPanel) {
-            ((ScreenLauncherControlPanel)Minecraft.getInstance().screen).updateGui();
-        }
     }
 
     public void onParticleFactoryRegisterEvent(ParticleFactoryRegisterEvent event) {
@@ -172,6 +171,16 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_D.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x20, 0x56, 0x00));
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_E.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x08, 0x16, 0x00));
 
+    }
+
+    public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {
+        Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));
+    }
+
+    public void updateScreenLauncherControlPanel() {
+        if (Minecraft.getInstance().screen instanceof ScreenLauncherControlPanel) {
+            ((ScreenLauncherControlPanel)Minecraft.getInstance().screen).updateGui();
+        }
     }
 
 }

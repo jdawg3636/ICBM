@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class NuclearBlastWorkerThread extends Thread {
+public class NuclearBlastWorkerThread extends AbstractBlastWorkerThread {
 
     public Supplier<Random> randomSupplier;
     public Function<BlockPos, BlockState> blockStateSupplier;

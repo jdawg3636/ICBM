@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class AntimatterBlastWorkerThread extends Thread {
+public class AntimatterBlastWorkerThread extends AbstractBlastWorkerThread {
 
     public Supplier<Random> randomSupplier;
     public Function<BlockPos, BlockState> blockStateSupplier;

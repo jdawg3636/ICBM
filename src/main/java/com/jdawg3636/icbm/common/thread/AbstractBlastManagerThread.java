@@ -8,7 +8,12 @@ import net.minecraftforge.common.util.INBTSerializable;
  * Represents a "manager" thread for performing an asynchronous task.
  * May spawn "worker" threads to complete its tasks.
  */
-public abstract class AbstractBlastManagerThread extends Thread implements INBTSerializable<CompoundNBT> {
+public abstract class AbstractBlastManagerThread extends AbstractBlastWorkerThread implements INBTSerializable<CompoundNBT> {
+
+    public AbstractBlastManagerThread() {
+        super();
+        this.setPriority(Thread.MAX_PRIORITY);
+    }
 
     /**
      * @return null or a function to be executed by the calling thread after this thread's completion

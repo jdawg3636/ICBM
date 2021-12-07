@@ -43,7 +43,7 @@ public class SonicBlastManagerThread extends AbstractBlastManagerThread {
         // Initialize Workers
         threadPool = new ArrayList<>();
         for(int threadNumber = 0; threadNumber < threadCount; ++threadNumber) {
-            NuclearBlastWorkerThread worker = new NuclearBlastWorkerThread();
+            SonicBlastWorkerThread worker = new SonicBlastWorkerThread();
             worker.randomSupplier = randomSupplier;
             worker.blockStateSupplier = blockStateSupplier;
             worker.explosionCenterPosX = explosionCenterPosX;

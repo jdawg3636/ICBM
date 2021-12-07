@@ -76,11 +76,24 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile((a,b,c,d)->null, /*TODO*/            ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
 
     // Blast Utility Entity Registration
-    public static final RegistryObject<EntityType<EntityShrapnel>>       SHRAPNEL           = ENTITIES.register("shrapnel", ()->EntityType.Builder.<EntityShrapnel>of(EntityShrapnel::new, EntityClassification.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("shrapnel"));
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CONTAGION    = registerBlastUtilityEntity("blast_contagion",    EntityLingeringBlastContagion::new);
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_DEBILITATION = registerBlastUtilityEntity("blast_debilitation", EntityLingeringBlastDebilitation::new);
+    public static final RegistryObject<EntityType<EntityRedmatterBlast>> BLAST_REDMATTER    = registerBlastUtilityEntity("blast_redmatter",    EntityRedmatterBlast::new);
     public static final RegistryObject<EntityType<EntitySonicBlast>>     BLAST_SONIC        = registerBlastUtilityEntity("blast_sonic",        EntitySonicBlast::new);
+    public static final RegistryObject<EntityType<EntityShrapnel>>       SHRAPNEL           = ENTITIES.register(
+        "shrapnel",
+        () -> {
+            return EntityType.Builder.<EntityShrapnel>of(
+                    EntityShrapnel::new,
+                    EntityClassification.MISC
+            )
+            .sized(0.5F, 0.5F)
+            .clientTrackingRange(4)
+            .updateInterval(20)
+            .build("shrapnel");
+        }
+    );
 
     public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
         return registerPrimedExplosives(blastEventProvider, itemForm, 0.98F, 0.98F);
@@ -129,12 +142,19 @@ public final class EntityReg {
     }
 
     public static <T extends Entity> RegistryObject<EntityType<T>> registerBlastUtilityEntity(String entityName, EntityType.IFactory<T> entityConstructor) {
+        return registerBlastUtilityEntity(entityName, entityConstructor, 1F, 2F);
+    }
+
+    public static <T extends Entity> RegistryObject<EntityType<T>> registerBlastUtilityEntity(String entityName, EntityType.IFactory<T> entityConstructor, float width, float height) {
         return ENTITIES.register(
                 entityName,
                 ()->EntityType.Builder.<T>of(
                         entityConstructor,
                         EntityClassification.MISC
-                ).build(entityName)
+                )
+                .fireImmune()
+                .sized(width, height)
+                .build(entityName)
         );
     }
 
