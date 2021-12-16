@@ -49,6 +49,7 @@ public class BlastControllerCapabilityStorage implements Capability.IStorage<IBl
                 for(RegistryObject<AbstractBlastManagerThreadBuilder> blastManagerThreadBuilder : BlastManagerThreadReg.BLAST_MANAGER_THREADS.getEntries()) {
                     if(blastManagerThreadBuilder.getId().toString().equals(blastManagerThreadTypeName)) {
                         blastManagerThread = blastManagerThreadBuilder.get().build();
+                        break;
                     }
                 }
 

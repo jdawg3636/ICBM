@@ -37,6 +37,11 @@ public class AntimatterBlastManagerThread extends AbstractBlastManagerThread {
     ArrayList<AntimatterBlastWorkerThread> threadPool;
 
     @Override
+    public String getRegistryName() {
+        return "icbm:antimatter";
+    }
+
+    @Override
     public Runnable getPostCompletionFunction(ServerWorld level) {
         return () -> {
             ArrayList<BlockPos> results = new ArrayList<>();
@@ -124,7 +129,7 @@ public class AntimatterBlastManagerThread extends AbstractBlastManagerThread {
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putString("manager_thread_type", "icbm:antimatter");
+        nbt.putString("manager_thread_type", getRegistryName());
         nbt.putDouble("explosion_center_pos_x", explosionCenterPosX);
         nbt.putDouble("explosion_center_pos_y", explosionCenterPosY);
         nbt.putDouble("explosion_center_pos_z", explosionCenterPosZ);

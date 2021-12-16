@@ -22,6 +22,8 @@ public abstract class AbstractBlastManagerThread extends AbstractBlastWorkerThre
 
     public abstract void initializeLevelCallbacks(ServerWorld level);
 
+    public abstract String getRegistryName();
+
     @Override
     public abstract void run();
 

@@ -1,37 +1,37 @@
 package com.jdawg3636.icbm.common.thread;
 
-import com.jdawg3636.icbm.common.entity.EntitySonicBlast;
-import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class SonicBlastManagerThread extends AbstractBlastManagerThread {
+public class RaytracedBlastManagerThread extends AbstractBlastManagerThread {
 
     public Supplier<Random> randomSupplier;
     public Function<BlockPos, BlockState> blockStateSupplier;
     public Function<BlockPos, TileEntity> tileEntitySupplier;
+    public Consumer<BlockPos> decorationCallback;
 
     public double explosionCenterPosX;
     public double explosionCenterPosY;
     public double explosionCenterPosZ;
 
     public float radius;
-    public int blocksAffectedPerTick;
 
     private ArrayList<RaytracedBlastWorkerThread> threadPool;
     public int threadCount = 4;
 
     @Override
     public String getRegistryName() {
-        return "icbm:sonic";
+        return "icbm:raytraced";
     }
 
     @Override
@@ -39,7 +39,14 @@ public class SonicBlastManagerThread extends AbstractBlastManagerThread {
         randomSupplier = () -> level.random;
         blockStateSupplier = level::getBlockState;
         tileEntitySupplier = level::getBlockEntity;
+        decorationCallback = (BlockPos blockPos) -> decorate(level, blockPos);
     }
+
+    public RaytracedBlastWorkerThread getNewWorkerThread() {
+        return new RaytracedBlastWorkerThread();
+    }
+
+    public void decorate(World level, BlockPos blockPos) {}
 
     // Run on this thread once it is started
     @Override
@@ -48,7 +55,7 @@ public class SonicBlastManagerThread extends AbstractBlastManagerThread {
         // Initialize Workers
         threadPool = new ArrayList<>();
         for(int threadNumber = 0; threadNumber < threadCount; ++threadNumber) {
-            RaytracedBlastWorkerThread worker = new RaytracedBlastWorkerThread();
+            RaytracedBlastWorkerThread worker = getNewWorkerThread();
             worker.randomSupplier = randomSupplier;
             worker.blockStateSupplier = blockStateSupplier;
             worker.explosionCenterPosX = explosionCenterPosX;
@@ -80,54 +87,45 @@ public class SonicBlastManagerThread extends AbstractBlastManagerThread {
 
     @Override
     public Runnable getPostCompletionFunction(final ServerWorld level) {
+
         return () -> {
-
-            // Combine Worker Results
-            ArrayList<BlockPos> workerResults = new ArrayList<>();
             for(RaytracedBlastWorkerThread worker : threadPool) {
-                workerResults.addAll(worker.blocksToBeDestroyed);
+
+                // Remove Blocks in World
+                for (BlockPos blockPos : worker.blocksToBeDestroyed) {
+                    try {
+                        blockStateSupplier.apply(blockPos).onBlockExploded(level, blockPos, null);
+                    } catch (Exception ignored) {/* Using try/catch just in case the null-valued explosion parameter causes any issues */}
+                }
+
+                // Decorate Blast Crater
+                for (BlockPos blockPos : worker.blocksToBeDecorated) {
+                    decorationCallback.accept(blockPos);
+                }
+
             }
-
-            // Sort Results from Closest to Furthest
-            workerResults.sort((BlockPos a, BlockPos b) -> {
-                final double aDist = (explosionCenterPosX - a.getX()) * (explosionCenterPosX - a.getX()) + (explosionCenterPosY - a.getY()) * (explosionCenterPosY - a.getY()) + (explosionCenterPosZ - a.getZ()) * (explosionCenterPosZ - a.getZ());
-                final double bDist = (explosionCenterPosX - b.getX()) * (explosionCenterPosX - b.getX()) + (explosionCenterPosY - b.getY()) * (explosionCenterPosY - b.getY()) + (explosionCenterPosZ - b.getZ()) * (explosionCenterPosZ - b.getZ());
-                return Double.compare(aDist, bDist);
-            });
-
-            // Spawn Blast Entity
-            EntitySonicBlast entity = EntityReg.BLAST_SONIC.get().create(level);
-            if(entity != null) {
-                entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
-                entity.targetBlocks = workerResults;
-                entity.blocksAffectedPerTick = blocksAffectedPerTick;
-                level.addFreshEntity(entity);
-            }
-
         };
+
     }
 
     // Serialization
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putString("manager_thread_type", "icbm:sonic");
         nbt.putDouble("explosion_center_pos_x", explosionCenterPosX);
         nbt.putDouble("explosion_center_pos_y", explosionCenterPosY);
         nbt.putDouble("explosion_center_pos_z", explosionCenterPosZ);
         nbt.putFloat ("radius", radius);
-        nbt.putFloat ("blocksAffectedPerTick", blocksAffectedPerTick);
         return nbt;
     }
 
     // Deserialization
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        explosionCenterPosX   = nbt.getDouble("explosion_center_pos_x");
-        explosionCenterPosY   = nbt.getDouble("explosion_center_pos_y");
-        explosionCenterPosZ   = nbt.getDouble("explosion_center_pos_z");
-        radius                = nbt.getFloat ("radius");
-        blocksAffectedPerTick = nbt.getInt   ("blocksAffectedPerTick");
+        explosionCenterPosX = nbt.getDouble("explosion_center_pos_x");
+        explosionCenterPosY = nbt.getDouble("explosion_center_pos_y");
+        explosionCenterPosZ = nbt.getDouble("explosion_center_pos_z");
+        radius              = nbt.getFloat ("radius");
     };
 
 }

@@ -2,8 +2,11 @@ package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
+import com.jdawg3636.icbm.common.reg.BlastManagerThreadReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
+import com.jdawg3636.icbm.common.thread.AbstractBlastManagerThread;
 import com.jdawg3636.icbm.common.thread.SonicBlastManagerThread;
+import com.jdawg3636.icbm.common.thread.builder.AbstractBlastManagerThreadBuilder;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -17,8 +20,20 @@ public class EventBlastSonic extends AbstractBlastEvent {
 
     @Override
     public boolean executeBlast() {
+
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        SonicBlastManagerThread blastManagerThread = new SonicBlastManagerThread();
+
+        AbstractBlastManagerThreadBuilder abstractBlastManagerThreadBuilder = BlastManagerThreadReg.getBuilderFromID("icbm:sonic");
+        if(abstractBlastManagerThreadBuilder == null) {
+            return false;
+        }
+
+        AbstractBlastManagerThread abstractBlastManagerThread = abstractBlastManagerThreadBuilder.build();
+        if(!(abstractBlastManagerThread instanceof SonicBlastManagerThread)) {
+            return false;
+        }
+
+        SonicBlastManagerThread blastManagerThread = (SonicBlastManagerThread) abstractBlastManagerThread;
         blastManagerThread.explosionCenterPosX = getBlastPosition().getX();
         blastManagerThread.explosionCenterPosY = getBlastPosition().getY();
         blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
