@@ -1,31 +1,29 @@
 package com.jdawg3636.icbm.common.thread;
 
+import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-// todo: add generation of radioactive material to blast crater
 public class NuclearBlastManagerThread extends AbstractBlastManagerThread {
 
     public Supplier<Random> randomSupplier;
     public Function<BlockPos, BlockState> blockStateSupplier;
     public Function<BlockPos, TileEntity> tileEntitySupplier;
+    public Consumer<BlockPos> decorationCallback;
 
     public double explosionCenterPosX;
     public double explosionCenterPosY;
@@ -41,6 +39,7 @@ public class NuclearBlastManagerThread extends AbstractBlastManagerThread {
         randomSupplier = () -> level.random;
         blockStateSupplier = level::getBlockState;
         tileEntitySupplier = level::getBlockEntity;
+        decorationCallback = (BlockPos blockPos) -> level.setBlockAndUpdate(blockPos, BlockReg.RADIOACTIVE_MATERIAL.get().defaultBlockState());
     }
 
     // Run on this thread once it is started
@@ -91,66 +90,22 @@ public class NuclearBlastManagerThread extends AbstractBlastManagerThread {
                 Collections.shuffle(workerResults, randomSupplier.get());
                 System.out.println("Worker Found " + workerResults.size() + " Results!");
 
-                // Remove Blocks and Calculate Items to Be Dropped
+                // Remove Blocks in World
                 ObjectArrayList<Pair<ItemStack, BlockPos>> itemStacksToBeDropped = new ObjectArrayList<>();
-                for(BlockPos blockPos : workerResults) {
-                    BlockState blockState = blockStateSupplier.apply(blockPos);
-                    if (!blockState.isAir()) {
-
-                        boolean shouldDrop = false;
-                        try {
-                            shouldDrop = blockState.getBlock().dropFromExplosion(null);
-                        } catch (Exception ignored) {/* Using try/catch just in case the null-valued explosion parameter causes any issues */}
-
-                        // Update ItemStacks to be dropped
-                        if (shouldDrop) {
-
-                            TileEntity tileEntity = tileEntitySupplier.apply(blockPos);
-                            LootContext.Builder lootContextBuilder = (new LootContext.Builder(level)).withRandom(randomSupplier.get()).withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(blockPos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withOptionalParameter(LootParameters.BLOCK_ENTITY, tileEntity).withOptionalParameter(LootParameters.THIS_ENTITY, null);
-                            lootContextBuilder.withParameter(LootParameters.EXPLOSION_RADIUS, this.radius);
-
-                            blockState.getDrops(lootContextBuilder).forEach((itemStack) -> {
-                                addBlockDrops(itemStacksToBeDropped, itemStack, blockPos.immutable());
-                            });
-
-                        }
-
-                        // Destroy Block in World
-                        try {
-                            blockState.onBlockExploded(level, blockPos, null);
-                        } catch (Exception ignored) {/* Using try/catch just in case the null-valued explosion parameter causes any issues */}
-
-                    }
+                for(Iterator<BlockPos> it = worker.blocksToBeDestroyed.iterator(); it.hasNext(); /**/) {
+                    BlockPos blockPos = it.next();
+                    try {
+                        blockStateSupplier.apply(blockPos).onBlockExploded(level, blockPos, null);
+                    } catch (Exception ignored) {/* Using try/catch just in case the null-valued explosion parameter causes any issues */}
                 }
 
-                // Drop Items
-                for(Pair<ItemStack, BlockPos> pair : itemStacksToBeDropped) {
-                    Block.popResource(level, pair.getSecond(), pair.getFirst());
+                // Decorate Blast Crater
+                for(Iterator<BlockPos> it = worker.blocksToBeDecorated.iterator(); it.hasNext(); /**/) {
+                    decorationCallback.accept(it.next());
                 }
 
             }
         };
-    }
-
-    // Utility Function Copied from Vanilla, used to merge ItemStacks prior to dropping them
-    private static void addBlockDrops(ObjectArrayList<Pair<ItemStack, BlockPos>> itemStacksToBeDropped, ItemStack newItemStack, BlockPos blockPos) {
-
-        int i = itemStacksToBeDropped.size();
-
-        for(int j = 0; j < i; ++j) {
-            Pair<ItemStack, BlockPos> pair = itemStacksToBeDropped.get(j);
-            ItemStack oldItemStack = pair.getFirst();
-            if (ItemEntity.areMergable(oldItemStack, newItemStack)) {
-                ItemStack mergedItemStack = ItemEntity.merge(oldItemStack, newItemStack, 16);
-                itemStacksToBeDropped.set(j, Pair.of(mergedItemStack, pair.getSecond()));
-                if (newItemStack.isEmpty()) {
-                    return;
-                }
-            }
-        }
-
-        itemStacksToBeDropped.add(Pair.of(newItemStack, blockPos));
-
     }
 
     // Serialization
