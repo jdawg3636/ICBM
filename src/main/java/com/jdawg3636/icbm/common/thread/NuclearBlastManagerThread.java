@@ -22,11 +22,4 @@ public class NuclearBlastManagerThread extends RaytracedBlastManagerThread {
         level.setBlockAndUpdate(blockPos, BlockReg.RADIOACTIVE_MATERIAL.get().defaultBlockState());
     }
 
-    @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = super.serializeNBT();
-        nbt.putString("manager_thread_type", "icbm:nuclear");
-        return nbt;
-    }
-
 }

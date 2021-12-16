@@ -32,7 +32,11 @@ public abstract class AbstractBlastManagerThread extends AbstractBlastWorkerThre
      */
 
     @Override
-    public abstract CompoundNBT serializeNBT();
+    public CompoundNBT serializeNBT() {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putString("manager_thread_type", getRegistryName());
+        return nbt;
+    }
 
     @Override
     public abstract void deserializeNBT(CompoundNBT nbt);

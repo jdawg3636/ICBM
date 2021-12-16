@@ -111,7 +111,7 @@ public class RaytracedBlastManagerThread extends AbstractBlastManagerThread {
     // Serialization
     @Override
     public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundNBT nbt = super.serializeNBT();
         nbt.putDouble("explosion_center_pos_x", explosionCenterPosX);
         nbt.putDouble("explosion_center_pos_y", explosionCenterPosY);
         nbt.putDouble("explosion_center_pos_z", explosionCenterPosZ);
