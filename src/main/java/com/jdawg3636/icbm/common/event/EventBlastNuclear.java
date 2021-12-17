@@ -4,7 +4,6 @@ import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
 import com.jdawg3636.icbm.common.reg.BlastManagerThreadReg;
 import com.jdawg3636.icbm.common.thread.AbstractBlastManagerThread;
-import com.jdawg3636.icbm.common.thread.AntimatterBlastManagerThread;
 import com.jdawg3636.icbm.common.thread.NuclearBlastManagerThread;
 import com.jdawg3636.icbm.common.thread.builder.AbstractBlastManagerThreadBuilder;
 import net.minecraft.util.Direction;
@@ -44,6 +43,7 @@ public class EventBlastNuclear extends AbstractBlastEvent {
             cap.orElse(null).enqueueBlastThread(blastManagerThread);
         }
         return true;
+
     }
 
 }

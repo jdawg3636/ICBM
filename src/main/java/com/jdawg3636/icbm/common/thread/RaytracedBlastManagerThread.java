@@ -26,7 +26,7 @@ public class RaytracedBlastManagerThread extends AbstractBlastManagerThread {
 
     public float radius;
 
-    private ArrayList<RaytracedBlastWorkerThread> threadPool;
+    public ArrayList<RaytracedBlastWorkerThread> threadPool;
     public int threadCount = 4;
 
     @Override

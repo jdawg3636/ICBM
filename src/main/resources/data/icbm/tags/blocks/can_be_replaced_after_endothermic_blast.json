@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:stone",
+    "#forge:dirt",
+    "#forge:netherrack",
+    "#forge:sand",
+    "#forge:sandstone"
+  ]
+}

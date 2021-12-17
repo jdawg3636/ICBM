@@ -11,7 +11,7 @@ public class NuclearBlastWorkerThread extends RaytracedBlastWorkerThread {
 
     @Override
     public boolean shouldDecorate(BlockPos blockPos) {
-        ITag<Block> tag = BlockTags.getAllTags().getTag(new ResourceLocation(ICBMReference.MODID, "can_become_radioactive_material"));
+        ITag<Block> tag = BlockTags.getAllTags().getTag(new ResourceLocation(ICBMReference.MODID, "can_be_replaced_after_nuclear_blast"));
         return tag != null && tag.contains(blockStateSupplier.apply(blockPos).getBlock()) && randomSupplier.get().nextFloat() < 0.05F;
     }
 
