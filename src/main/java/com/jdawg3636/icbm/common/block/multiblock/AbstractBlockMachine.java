@@ -7,7 +7,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -25,6 +28,7 @@ import javax.annotation.Nullable;
 public abstract class AbstractBlockMachine extends Block {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public AbstractBlockMachine() {
         this(getMultiblockMachineBlockProperties());
@@ -32,7 +36,7 @@ public abstract class AbstractBlockMachine extends Block {
 
     public AbstractBlockMachine(AbstractBlock.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
     // Properties Copied(ish) from registration for GLASS in net.minecraft.block.Blocks
@@ -52,6 +56,7 @@ public abstract class AbstractBlockMachine extends Block {
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(FACING);
+        builder.add(WATERLOGGED);
     }
 
     /**
@@ -60,7 +65,7 @@ public abstract class AbstractBlockMachine extends Block {
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
+        return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
     }
 
     /**
@@ -70,6 +75,14 @@ public abstract class AbstractBlockMachine extends Block {
     @Override
     public BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
+
+    /**
+     * Override to take into account the {@link this.WATERLOGGED} property
+     */
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     /**

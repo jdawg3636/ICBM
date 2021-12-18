@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.block.multiblock;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -73,9 +74,10 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         builder.add(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE);
     }
 
-    public BlockState getStateWithOffset(Vector3i offset, Direction facing) {
+    public BlockState getStateWithOffset(Vector3i offset, Direction facing, boolean waterlogged) {
         return this.defaultBlockState()
             .setValue(FACING, facing)
+            .setValue(WATERLOGGED, waterlogged)
             .setValue(MULTIBLOCK_OFFSET_HORIZONTAL, Math.abs(offset.getX()))
             .setValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE, offset.getX() < 0)
             .setValue(MULTIBLOCK_OFFSET_HEIGHT, Math.abs(offset.getY()))
@@ -145,7 +147,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
             BlockPos worldPos = multiblockWorldPositions[i];
 
             if(world.getBlockState(new BlockPos(worldPos)).getMaterial().isReplaceable()) {
-                world.setBlock(worldPos, getStateWithOffset(offset, rootState.getValue(FACING)), 3);
+                world.setBlock(worldPos, getStateWithOffset(offset, rootState.getValue(FACING), world.getFluidState(worldPos).getType() == Fluids.WATER), 3);
             }
 
         }
