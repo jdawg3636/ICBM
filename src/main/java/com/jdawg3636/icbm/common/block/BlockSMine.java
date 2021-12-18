@@ -50,9 +50,9 @@ public class BlockSMine extends BlockExplosives {
         if(!(entityIn.getType().equals(entityForm.get()))) {
             worldIn.playSound((PlayerEntity)null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
             if (entityIn instanceof LivingEntity)
-                explode(worldIn, pos, (LivingEntity) entityIn);
+                explode(worldIn, pos, (LivingEntity) entityIn, null, 10);
             else
-                explode(worldIn, pos, null);
+                explode(worldIn, pos, null, null, 10);
         }
     }
 

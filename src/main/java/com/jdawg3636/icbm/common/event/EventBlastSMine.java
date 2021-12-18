@@ -13,8 +13,8 @@ public class EventBlastSMine extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        //todo: implement
-        return false;
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition(), 1.75F * 4.0F);
+        return true;
     }
 
 }

@@ -38,9 +38,10 @@ public class EntityPrimedExplosives extends TNTEntity {
         this.blastDirection = igniter == null ? Direction.getRandom(worldIn.random) : igniter.getDirection();
     }
 
-    public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter, Direction blastDirection) {
+    public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter, Direction blastDirection, int fuse) {
         this(type, worldIn, blastEventProvider, itemForm, x, y, z, igniter);
         if(blastDirection != null) this.blastDirection = blastDirection;
+        this.setFuse(fuse);
     }
 
     @Override

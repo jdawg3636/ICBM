@@ -60,9 +60,13 @@ public class BlockExplosives extends Block {
     }
 
     public void explode(World world, BlockPos pos, @Nullable LivingEntity igniter, @Nullable Direction blastDirection) {
+        explode(world, pos, igniter, blastDirection, 80);
+    }
+
+    public void explode(World world, BlockPos pos, @Nullable LivingEntity igniter, @Nullable Direction blastDirection, int fuse) {
         if (!world.isClientSide) {
             world.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
-            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter, blastDirection);
+            EntityPrimedExplosives explosives_entity = new EntityPrimedExplosives(entityForm.get(), world, blastEventProvider, itemForm, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, igniter, blastDirection, fuse);
             world.addFreshEntity(explosives_entity);
             world.playSound((PlayerEntity)null, explosives_entity.getX(), explosives_entity.getY(), explosives_entity.getZ(), SoundEvents.TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
