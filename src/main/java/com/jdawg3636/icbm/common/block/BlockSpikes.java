@@ -2,8 +2,10 @@ package com.jdawg3636.icbm.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FluidState;
@@ -14,6 +16,10 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
@@ -28,7 +34,7 @@ public class BlockSpikes extends Block {
         super(Block.Properties.of((new Material.Builder(MaterialColor.METAL)).nonSolid().build()).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(2F, 2F).noCollission().noOcclusion());
         this.registerDefaultState(
                 this.stateDefinition.any()
-                .setValue(WATERLOGGED, true)
+                .setValue(WATERLOGGED, false)
         );
     }
 
@@ -62,11 +68,7 @@ public class BlockSpikes extends Block {
         return null;
     }
 
-    // Copied from net.minecraft.block.CakeBlock
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos.below()).getMaterial().isSolid();
-    }
-
+    @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
@@ -74,6 +76,26 @@ public class BlockSpikes extends Block {
     @Override
     public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity) entity.hurt(DamageSource.CACTUS, 1);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        return worldIn.getBlockState(pos.below()).isFaceSturdy(worldIn, pos, Direction.UP);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+        return facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D);
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction(BlockState state) {
+        return PushReaction.DESTROY;
     }
 
 }
