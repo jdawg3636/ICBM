@@ -1,7 +1,9 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
@@ -14,21 +16,25 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.Tuple;
+import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class EntityMissile extends Entity {
 
@@ -348,9 +354,61 @@ public class EntityMissile extends Entity {
 
     @Override
     public Vector3d collide(Vector3d destination) {
-        Vector3d result = super.collide(destination);
+        Vector3d result = collideFiltered(destination);
         if(!MathHelper.equal(destination.x, result.x) || !MathHelper.equal(destination.z, result.z) || !MathHelper.equal(destination.y, result.y)) shouldExplode = true;
         return result;
+    }
+
+    /**
+     * Modified version of vanilla collide()
+     * Swap calls to collideBoundingBoxHeuristically() with calls to collideBoundingBoxFiltered()
+     */
+    public Vector3d collideFiltered(Vector3d pVec) {
+        AxisAlignedBB axisalignedbb = this.getBoundingBox();
+        ISelectionContext iselectioncontext = ISelectionContext.of(this);
+        VoxelShape voxelshape = this.level.getWorldBorder().getCollisionShape();
+        Stream<VoxelShape> stream = VoxelShapes.joinIsNotEmpty(voxelshape, VoxelShapes.create(axisalignedbb.deflate(1.0E-7D)), IBooleanFunction.AND) ? Stream.empty() : Stream.of(voxelshape);
+        Stream<VoxelShape> stream1 = this.level.getEntityCollisions(this, axisalignedbb.expandTowards(pVec), (p_233561_0_) -> {
+            return true;
+        });
+        ReuseableStream<VoxelShape> reuseablestream = new ReuseableStream<>(Stream.concat(stream1, stream));
+        Vector3d vector3d = pVec.lengthSqr() == 0.0D ? pVec : collideBoundingBoxFiltered(this, pVec, axisalignedbb, this.level, iselectioncontext, reuseablestream);
+        boolean flag = pVec.x != vector3d.x;
+        boolean flag1 = pVec.y != vector3d.y;
+        boolean flag2 = pVec.z != vector3d.z;
+        boolean flag3 = this.onGround || flag1 && pVec.y < 0.0D;
+        if (this.maxUpStep > 0.0F && flag3 && (flag || flag2)) {
+            Vector3d vector3d1 = collideBoundingBoxFiltered(this, new Vector3d(pVec.x, (double)this.maxUpStep, pVec.z), axisalignedbb, this.level, iselectioncontext, reuseablestream);
+            Vector3d vector3d2 = collideBoundingBoxFiltered(this, new Vector3d(0.0D, (double)this.maxUpStep, 0.0D), axisalignedbb.expandTowards(pVec.x, 0.0D, pVec.z), this.level, iselectioncontext, reuseablestream);
+            if (vector3d2.y < (double)this.maxUpStep) {
+                Vector3d vector3d3 = collideBoundingBoxFiltered(this, new Vector3d(pVec.x, 0.0D, pVec.z), axisalignedbb.move(vector3d2), this.level, iselectioncontext, reuseablestream).add(vector3d2);
+                if (getHorizontalDistanceSqr(vector3d3) > getHorizontalDistanceSqr(vector3d1)) {
+                    vector3d1 = vector3d3;
+                }
+            }
+
+            if (getHorizontalDistanceSqr(vector3d1) > getHorizontalDistanceSqr(vector3d)) {
+                return vector3d1.add(collideBoundingBoxHeuristically(this, new Vector3d(0.0D, -vector3d1.y + pVec.y, 0.0D), axisalignedbb.move(vector3d1), this.level, iselectioncontext, reuseablestream));
+            }
+        }
+
+        return vector3d;
+    }
+
+    /**
+     * Modified version of vanilla collideBoundingBoxHeuristically()
+     * Filters Block Collisions to omit blocks which implement IMissileLaunchApparatus
+     */
+    public static Vector3d collideBoundingBoxFiltered(@Nullable Entity pEntity, Vector3d pVec, AxisAlignedBB pCollisionBox, World pLevel, ISelectionContext pContext, ReuseableStream<VoxelShape> pPotentialHits) {
+        boolean flag = pVec.x == 0.0D;
+        boolean flag1 = pVec.y == 0.0D;
+        boolean flag2 = pVec.z == 0.0D;
+        if ((!flag || !flag1) && (!flag || !flag2) && (!flag1 || !flag2)) {
+            ReuseableStream<VoxelShape> reuseablestream = new ReuseableStream<>(Stream.concat(pPotentialHits.getStream(), pLevel.getBlockCollisions(pEntity, pCollisionBox.expandTowards(pVec), (BlockState blockState, BlockPos blockPos) -> !(blockState.getBlock() instanceof IMissileLaunchApparatus))));
+            return collideBoundingBoxLegacy(pVec, pCollisionBox, reuseablestream);
+        } else {
+            return collideBoundingBox(pVec, pCollisionBox, pLevel, pContext, pPotentialHits);
+        }
     }
 
     public void explode() {
