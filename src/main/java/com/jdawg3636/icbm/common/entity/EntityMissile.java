@@ -241,8 +241,9 @@ public class EntityMissile extends Entity {
         // ax^2 + bx + c = y
         // Somewhat inverted as x^2, x, and 1 are the known coefficients while a, b, c are being solved for.
 
-        // Includes logic to ensure that that the First Equation (x1Squared * a + x1 * b + x1Const * c = y1) has the
-        // highest x value (and therefore highest x^2 value) as otherwise a value of 0 could cause serious problems
+        // Ensure that that the First Equation (x1Squared * a + x1 * b + x1Const * c = y1) has the higher absolute value
+        // of x (and therefore higher x^2) as otherwise a value of 0 could cause serious problems
+        final boolean sourceHorizAbsIsGreater = Math.abs(sourceHoriz) > Math.abs(targetHoriz);
 
         // Coefficients for 'c'
         double x1Const = 1;
@@ -250,9 +251,9 @@ public class EntityMissile extends Entity {
         double x3Const = 1;
 
         // Coefficients for 'b'
-        double x1 = (sourceHoriz > targetHoriz) ? sourceHoriz : targetHoriz;
+        double x1 = sourceHorizAbsIsGreater  ? sourceHoriz : targetHoriz;
         double x2 = (sourceHoriz + targetHoriz) / 2d;
-        double x3 = (sourceHoriz < targetHoriz) ? sourceHoriz : targetHoriz;
+        double x3 = !sourceHorizAbsIsGreater ? sourceHoriz : targetHoriz;
 
         // Coefficients for 'a'
         double x1Squared = x1 * x1;
@@ -260,9 +261,9 @@ public class EntityMissile extends Entity {
         double x3Squared = x3 * x3;
 
         // Right Side of Equations
-        double y1 = (sourceHoriz > targetHoriz) ? sourceHeight : targetHeight;
+        double y1 = sourceHorizAbsIsGreater  ? sourceHeight : targetHeight;
         double y2 = peakHeightIn;
-        double y3 = (sourceHoriz < targetHoriz) ? sourceHeight : targetHeight;
+        double y3 = !sourceHorizAbsIsGreater ? sourceHeight : targetHeight;
 
         // Reused Temp Var for Scaling Process
         double multiple;
