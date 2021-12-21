@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +32,6 @@ public class ScreenLauncherControlPanel extends Screen {
     public static final ITextComponent LABEL_TARGET_Z           = new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel.target_z");
     public static final ITextComponent LABEL_TARGET_Y           = new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel.target_y");
     public static final ITextComponent LABEL_RADIO_FREQUENCY    = new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel.radio_frequency");
-    public final Button BUTTON_UPDATE = new Button(((width - imageWidth) / 2) + 7, imageHeight + ((height - imageHeight) / 2) - 7, imageWidth / 2 - 7*4, 20, new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel.button_update"), (ignored) -> this.sendUpdatePacketToServer());
     public TextFieldWidget textFieldTargetX;
     public TextFieldWidget textFieldTargetZ;
     public TextFieldWidget textFieldTargetY;
@@ -48,8 +46,15 @@ public class ScreenLauncherControlPanel extends Screen {
         this.tileEntity = tileEntity;
     }
 
+    public static boolean stringIsNumeric(String in) {
+        if(in.equals("")) return true;
+        try { Double.parseDouble(in); } catch (Exception e) { return false; }
+        return true;
+    }
+
     @Override
     protected void init() {
+
         this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
         int verticalIncrement = 1;
@@ -62,6 +67,12 @@ public class ScreenLauncherControlPanel extends Screen {
         verticalIncrement++;
         this.textFieldRadioFrequency = new TextFieldWidget(this.font, this.width / 2 + 7, ((height - imageHeight) / 2) + 20 + (15 * verticalIncrement++), widthTextField, 12, new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_control_panel.radio_frequency"));
 
+        textFieldTargetX.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
+        textFieldTargetZ.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
+        textFieldTargetY.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
+        textFieldRadioFrequency.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
+
+        this.textFieldTargetX.setMaxLength(32500);
         this.textFieldTargetX.setMaxLength(32500);
         this.textFieldTargetZ.setMaxLength(32500);
         this.textFieldTargetY.setMaxLength(32500);
@@ -71,6 +82,13 @@ public class ScreenLauncherControlPanel extends Screen {
         this.textFieldTargetZ.setValue(String.valueOf(tileEntity.getTargetZ()));
         this.textFieldTargetY.setValue(String.valueOf(tileEntity.getTargetY()));
         this.textFieldRadioFrequency.setValue(String.valueOf(tileEntity.getRadioFrequency()));
+
+        if(!(tileEntity instanceof TileLauncherControlPanelT2)) {
+            textFieldTargetY.setEditable(false);
+        }
+        if(!(tileEntity instanceof TileLauncherControlPanelT3)) {
+            textFieldRadioFrequency.setEditable(false);
+        }
 
         this.children.add(this.textFieldTargetX);
         this.children.add(this.textFieldTargetZ);
@@ -146,7 +164,6 @@ public class ScreenLauncherControlPanel extends Screen {
         this.textFieldTargetZ.render(matrixStack, mouseX, mouseY, partialTicks);
         this.textFieldTargetY.render(matrixStack, mouseX, mouseY, partialTicks);
         this.textFieldRadioFrequency.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.BUTTON_UPDATE.render(matrixStack, mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
