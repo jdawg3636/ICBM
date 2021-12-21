@@ -1,13 +1,15 @@
-# ICBM
-ICBM is a Minecraft Mod that introduces intercontinental ballistic missiles to Minecraft. But the fun doesn't end there! This mod also features many different explosives, missiles and machines classified in four different tiers. If strategic warfare, carefully coordinated airstrikes, messing with matter and general destruction are up your alley, then this mod is for you!
+# ICBM Reborn
+The mod adds over twenty custom explosives, each of which are also available as missiles, minecarts, and sometimes even grenades. Some of the explosions have some pretty exotic effects, including nuclear fallout, contagious virus deployment, and all-consuming black holes! Combined with a few added features like poisonous spikes and player tracking, the mod creates an utterly unique experience that strikes the perfect balance of pushing boundaries without losing the spirit of the vanilla game.
 
-# Download
-ICBM: Heavily WIP, not yet available  
+# Download Now on CurseForge!
+ICBM: https://www.curseforge.com/minecraft/mc-mods/icbm-reborn
+
+# Original Versions:
 ICBM Classic: https://www.curseforge.com/minecraft/mc-mods/icbm-classic  
 ICBM (Original): https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/1283215-1-2-icbm-missiles-and-military-tech-6-000-000  
 
 # Developers of Original Versions:
-* DarkGuardsman (Author ICBM Classic)
+* DarkGuardsman (AKA QueenOfMissiles) (Author ICBM Classic)
 * Calcalvia (Author ICBM)
 * tgame14
 * bl4ckscor3
