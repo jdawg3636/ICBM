@@ -11,6 +11,7 @@ import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
+import com.jdawg3636.icbm.common.item.ItemTracker;
 import com.jdawg3636.icbm.common.particle.ColoredSmokeParticle;
 import com.jdawg3636.icbm.common.reg.*;
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -131,6 +133,9 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileEMPTower>) TileReg.EMP_TOWER.get(), TEREMPTower::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileRadarStation>) TileReg.RADAR_STATION.get(), TERRadarStation::new);
+
+        // Register Item Model Properties
+        ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation("angle"), ItemTracker::getAngleFromItemStack);
 
     }
 
