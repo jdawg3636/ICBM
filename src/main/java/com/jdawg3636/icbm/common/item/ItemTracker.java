@@ -1,6 +1,8 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
+import com.jdawg3636.icbm.common.capability.trackingmanager.ITrackingManagerCapability;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -15,9 +17,15 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
+import java.util.Random;
+import java.util.UUID;
 
 public class ItemTracker extends Item {
 
@@ -30,39 +38,67 @@ public class ItemTracker extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack itemStack, World level, Entity entity, int slot, boolean isSelected) {
-        super.inventoryTick(itemStack, level, entity, slot, isSelected);
+    public void inventoryTick(ItemStack itemStack, World levelCurrent, Entity entity, int slot, boolean isSelected) {
+        super.inventoryTick(itemStack, levelCurrent, entity, slot, isSelected);
         CompoundNBT existingData = itemStack.getOrCreateTag();
-        if(existingData.contains("tracking_ticket")) {
-            // todo: set angle based on
+        World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
+        if(levelCurrent != null && !levelCurrent.isClientSide() && levelOverworld != null && !levelOverworld.isClientSide() && (isSelected || entity instanceof PlayerEntity && ((PlayerEntity)entity).getOffhandItem() == itemStack) && existingData.contains("tracking_ticket") && levelCurrent instanceof ServerWorld) {
+            LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+            if(cap.isPresent()) {
+                Vector3d targetPos = cap.orElse(null).getPos((ServerWorld) levelCurrent, existingData.getUUID("tracking_ticket"));
+                if(targetPos != null) {
+                    itemStack.getOrCreateTag().put("target_x", DoubleNBT.valueOf(targetPos.x));
+                    itemStack.getOrCreateTag().put("target_z", DoubleNBT.valueOf(targetPos.z));
+                }
+                else {
+                    itemStack.getOrCreateTag().remove("target_x");
+                    itemStack.getOrCreateTag().remove("target_z");
+                }
+            }
         }
     }
 
     @Override
     public ActionResultType interactLivingEntity(ItemStack itemStack, PlayerEntity player, LivingEntity target, Hand hand) {
 
-        // todo: set tracking ticket
+        if(player != null && player.level != null && !player.level.isClientSide()) {
+            World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
+            LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+            if(cap.isPresent()) {
 
-        // Debug
-        if(player != null && player.level != null) {
-            if(!player.level.isClientSide()) {
+                // Register with Ticket Manager
+                try {
+                    final UUID oldTicketID = itemStack.getOrCreateTag().getUUID("tracking_ticket");
+                    cap.orElse(null).deleteTicket(oldTicketID);
+                } catch (Exception ignored) { /* thrown when no previous ticket exists */ }
+                final UUID ticketID = cap.orElse(null).createTicket(target.getUUID());
+
+                // Update ItemStack
                 ItemStack itemStack1 = itemStack;
                 player.inventory.removeItem(itemStack);
-                itemStack1.addTagElement("target_x", DoubleNBT.valueOf(target.getX()));
-                itemStack1.addTagElement("target_z", DoubleNBT.valueOf(target.getZ()));
+                itemStack1.getOrCreateTag().putUUID("tracking_ticket", ticketID);
                 if (hand == Hand.MAIN_HAND) {
                     player.inventory.setItem(player.inventory.selected, itemStack1);
                 } else {
                     player.inventory.offhand.set(0, itemStack1);
                 }
+
+                // Return
+                return ActionResultType.sidedSuccess(player.level.isClientSide());
+
             }
-            return ActionResultType.sidedSuccess(player.level.isClientSide());
         }
 
-        // Default
         return ActionResultType.PASS;
-        //return super.interactLivingEntity(itemStack, player, target, hand);
 
+    }
+
+    public static float getHasTargetFromItemStack(ItemStack itemStack, @Nullable ClientWorld level, @Nullable LivingEntity livingEntity) {
+        final CompoundNBT itemStackData = itemStack.getOrCreateTag();
+        if(itemStackData.contains("target_x") && itemStackData.contains("target_z")) {
+            return 1F;
+        }
+        return 0F;
     }
 
     // Implements functional interface net.minecraft.item.IItemPropertyGetter (Minecraft 1.16, MCP Class Name)
@@ -75,20 +111,21 @@ public class ItemTracker extends Item {
         }
 
         final CompoundNBT itemStackData = itemStack.getOrCreateTag();
-        final double targetX = itemStackData.contains("target_x") ? itemStackData.getDouble("target_x") : 0F;
-        final double targetZ = itemStackData.contains("target_z") ? itemStackData.getDouble("target_z") : 0F;
+        final Random random = new Random();
+        final double targetX = itemStackData.contains("target_x") ? itemStackData.getDouble("target_x") : 0D;
+        final double targetZ = itemStackData.contains("target_z") ? itemStackData.getDouble("target_z") : 0D;
 
         double angleOfSource = 0.0D;
-        if (livingEntity instanceof PlayerEntity && ((PlayerEntity)livingEntity).isLocalPlayer()) {
+        if(livingEntity instanceof PlayerEntity && ((PlayerEntity)livingEntity).isLocalPlayer()) {
             angleOfSource = livingEntity.yRot;
-        } else if (sourceEntity instanceof ItemFrameEntity) {
+        } else if(sourceEntity instanceof ItemFrameEntity) {
             final ItemFrameEntity itemFrameEntity = (ItemFrameEntity) sourceEntity;
             final Direction direction = itemFrameEntity.getDirection();
             final int j = direction.getAxis().isVertical() ? 90 * direction.getAxisDirection().getStep() : 0;
             angleOfSource = MathHelper.wrapDegrees(180 + direction.get2DDataValue() * 90L + itemFrameEntity.getRotation() * 45L + j);
-        } else if (sourceEntity instanceof ItemEntity) {
+        } else if(sourceEntity instanceof ItemEntity) {
             angleOfSource = 180.0F - ((ItemEntity)sourceEntity).getSpin(0.5F) / ((float)Math.PI * 2F) * 360.0F;
-        } else if (livingEntity != null) {
+        } else if(livingEntity != null) {
             angleOfSource = livingEntity.yBodyRot;
         }
 
@@ -97,6 +134,12 @@ public class ItemTracker extends Item {
 
         return MathHelper.positiveModulo((float)adjustedAngleToTarget, 1.0F);
 
+    }
+
+    // Prevent Reequip Animation when Target Position is Updated
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return slotChanged || !oldStack.getItem().equals(newStack.getItem());
     }
 
 }

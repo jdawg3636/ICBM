@@ -135,7 +135,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileRadarStation>) TileReg.RADAR_STATION.get(), TERRadarStation::new);
 
         // Register Item Model Properties
-        ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation("angle"), ItemTracker::getAngleFromItemStack);
+        ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation("angle"),          ItemTracker::getAngleFromItemStack);
+        ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation("icbm:hastarget"), ItemTracker::getHasTargetFromItemStack);
 
     }
 

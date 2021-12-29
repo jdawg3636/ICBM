@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.listener;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -21,6 +22,11 @@ public class ICBMForgeEventListener {
     @SubscribeEvent
     public static void onBiomeLoadingEvent(final BiomeLoadingEvent event) {
         proxy.onBiomeLoadingEvent(event);
+    }
+
+    @SubscribeEvent
+    public static void onLivingDeathEvent(final LivingDeathEvent event) {
+        proxy.onLivingDeathEvent(event);
     }
 
     @SubscribeEvent
