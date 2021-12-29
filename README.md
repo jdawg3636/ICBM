@@ -1,16 +1,20 @@
-# ICBM Reborn
+# Intercontinental Ballistic Redux
 The mod adds over twenty custom explosives, each of which are also available as missiles, minecarts, and sometimes even grenades. Some of the explosions have some pretty exotic effects, including nuclear fallout, contagious virus deployment, and all-consuming black holes! Combined with a few added features like poisonous spikes and player tracking, the mod creates an utterly unique experience that strikes the perfect balance of pushing boundaries without losing the spirit of the vanilla game.
 
 # Download Now on CurseForge!
-ICBM: https://www.curseforge.com/minecraft/mc-mods/icbm-reborn
+ICBM: https://www.curseforge.com/minecraft/mc-mods/intercontinental-ballistic-redux
 
-# Original Versions:
+# Based on the ICBM Mod:
 ICBM Classic: https://www.curseforge.com/minecraft/mc-mods/icbm-classic  
 ICBM (Original): https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/1283215-1-2-icbm-missiles-and-military-tech-6-000-000  
 
+## Licensing:
+* All code is available under the MIT License (See LICENSE file for details)
+* All models/texture/sound licenses are ambiguous and inherited. All rights reserved.
+
 # Developers of Original Versions:
 * DarkGuardsman (AKA QueenOfMissiles) (Author ICBM Classic)
-* Calcalvia (Author ICBM)
+* Calclavia (Author ICBM)
 * tgame14
 * bl4ckscor3
 * GHXX
