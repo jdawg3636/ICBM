@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "BCB",
+    "BDB"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:compass"
+    },
+    "B": {
+      "tag": "forge:ingots/steel"
+    },
+    "C": {
+      "tag": "forge:batteries"
+    },
+    "D": {
+      "tag": "forge:circuits/basic"
+    }
+  },
+  "result": {
+    "item": "icbm:tracker",
+    "count": 1
+  }
+}
