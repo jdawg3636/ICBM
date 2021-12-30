@@ -84,6 +84,9 @@
   "item.icbm.tracker": "Tracker",
   "item.icbm.tracker.info": "Track entities and set homing missiles",
 
+  "item.icbm.scanner": "Scanner",
+  "item.icbm.scanner.info": "Clears active trackers",
+
   "item.icbm.signal_disruptor": "Signal Disruptor",
   "item.icbm.signal_disruptor.info": "Jam frequencies to prevent detection or missile launches",
 
@@ -491,6 +494,9 @@
   "chat.launcher.toolWorldNotMatch": "Target data's world is not the same as this one!",
   "chat.launcher.noTargetInTool": "Tool does not contain any target data!",
   "chat.launcher.toolFrequencySet": "Frequency set to %s",
+
+  "chat.icbm.scannerconfirm.other": "Cleared %s of any active trackers!",
+  "chat.icbm.scannerconfirm.self": "You have been cleared of any active trackers!",
 
   "gui.icbm.coordinator": "Missile Coordinator",
   "gui.icbm.coordinator.sim": "Path Simulator",

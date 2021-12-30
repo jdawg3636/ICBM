@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.reg;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.item.ItemMissile;
 import com.jdawg3636.icbm.common.item.ItemRocketLauncher;
+import com.jdawg3636.icbm.common.item.ItemScanner;
 import com.jdawg3636.icbm.common.item.ItemTracker;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItem;
@@ -155,6 +156,7 @@ public class ItemReg {
     public static final RegistryObject<Item> RADAR_GUN                      = ITEMS.register("radar_gun",                       () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> REMOTE_DETONATOR               = ITEMS.register("remote_detonator",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> ROCKET_LAUNCHER                = ITEMS.register("rocket_launcher",                 () -> new ItemRocketLauncher(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> SCANNER                        = ITEMS.register("scanner",                         ItemScanner::new);
     public static final RegistryObject<Item> SIGNAL_DISRUPTOR               = ITEMS.register("signal_disruptor",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> TRACKER                        = ITEMS.register("tracker",                         ItemTracker::new);
 

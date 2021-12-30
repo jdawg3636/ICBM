@@ -50,8 +50,8 @@ public class TrackingManagerCapability implements ITrackingManagerCapability {
 
     @Override
     public void clearTickets(UUID targetEntityID) {
-        tickets.forEach((ticketID, storedTargetEntityID) -> {
-            if(storedTargetEntityID.equals(targetEntityID)) tickets.remove(ticketID);
+        tickets.keySet().iterator().forEachRemaining((UUID ticketID) -> {
+            if(tickets.get(ticketID).equals(targetEntityID)) tickets.remove(ticketID);
         });
     }
 

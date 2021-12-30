@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "BCB",
+    "BDB"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:copper_wire"
+    },
+    "B": {
+      "tag": "forge:ingots/steel"
+    },
+    "C": {
+      "tag": "forge:batteries"
+    },
+    "D": {
+      "tag": "forge:circuits/elite"
+    }
+  },
+  "result": {
+    "item": "icbm:scanner",
+    "count": 1
+  }
+}

@@ -9,6 +9,7 @@ import com.jdawg3636.icbm.common.capability.trackingmanager.ITrackingManagerCapa
 import com.jdawg3636.icbm.common.capability.trackingmanager.TrackingManagerCapabilityProvider;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
@@ -71,10 +72,13 @@ public class CommonProxy {
 
     public void onLivingDeathEvent(final LivingDeathEvent event) {
         // Remove Tracking Tickets on Death
-        World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
-        if(levelOverworld != null) {
-            LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
-            cap.orElse(null).clearTickets(event.getEntity().getUUID());
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if(server != null) {
+            World levelOverworld = server.getLevel(World.OVERWORLD);
+            if (levelOverworld != null) {
+                LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+                cap.orElse(null).clearTickets(event.getEntity().getUUID());
+            }
         }
     }
 
