@@ -5,8 +5,11 @@ import com.jdawg3636.icbm.common.capability.*;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.capability.blastcontroller.BlastControllerCapabilityProvider;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
+import com.jdawg3636.icbm.common.capability.trackingmanager.ITrackingManagerCapability;
+import com.jdawg3636.icbm.common.capability.trackingmanager.TrackingManagerCapabilityProvider;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
@@ -17,9 +20,11 @@ import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class CommonProxy {
 
@@ -38,7 +43,12 @@ public class CommonProxy {
     }
 
     public void onAttachCapabilitiesEventWorld(final AttachCapabilitiesEvent<World> event) {
-        event.addCapability(new ResourceLocation(ICBMReference.MODID, "blastcontroller"), new BlastControllerCapabilityProvider());
+        if(!event.getObject().isClientSide()) {
+            event.addCapability(new ResourceLocation(ICBMReference.MODID, "blastcontroller"), new BlastControllerCapabilityProvider());
+            if(event.getObject().dimension().equals(World.OVERWORLD)) {
+                event.addCapability(new ResourceLocation(ICBMReference.MODID, "trackingmanager"), new TrackingManagerCapabilityProvider());
+            }
+        }
     }
 
     public void onBiomeLoadingEvent(final BiomeLoadingEvent event) {
@@ -58,6 +68,18 @@ public class CommonProxy {
         event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
                 () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_URANIUM.get().defaultBlockState(), 8)).range(16).squared()
         );
+    }
+
+    public void onLivingDeathEvent(final LivingDeathEvent event) {
+        // Remove Tracking Tickets on Death
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if(server != null) {
+            World levelOverworld = server.getLevel(World.OVERWORLD);
+            if (levelOverworld != null) {
+                LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+                cap.orElse(null).clearTickets(event.getEntity().getUUID());
+            }
+        }
     }
 
     public void onParticleFactoryRegisterEvent(ParticleFactoryRegisterEvent event) {}

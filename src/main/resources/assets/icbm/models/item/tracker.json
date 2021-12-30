@@ -1,6 +1,41 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "icbm:item/tracker"
-  }
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "icbm:item/tracker"
+    },
+    "overrides": [
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.000000 }, "model": "icbm:item/tracker_16" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.015625 }, "model": "icbm:item/tracker_17" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.046875 }, "model": "icbm:item/tracker_18" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.078125 }, "model": "icbm:item/tracker_19" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.109375 }, "model": "icbm:item/tracker_20" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.140625 }, "model": "icbm:item/tracker_21" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.171875 }, "model": "icbm:item/tracker_22" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.203125 }, "model": "icbm:item/tracker_23" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.234375 }, "model": "icbm:item/tracker_24" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.265625 }, "model": "icbm:item/tracker_25" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.296875 }, "model": "icbm:item/tracker_26" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.328125 }, "model": "icbm:item/tracker_27" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.359375 }, "model": "icbm:item/tracker_28" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.390625 }, "model": "icbm:item/tracker_29" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.421875 }, "model": "icbm:item/tracker_30" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.453125 }, "model": "icbm:item/tracker_31" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.484375 }, "model": "icbm:item/tracker_00" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.515625 }, "model": "icbm:item/tracker_01" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.546875 }, "model": "icbm:item/tracker_02" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.578125 }, "model": "icbm:item/tracker_03" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.609375 }, "model": "icbm:item/tracker_04" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.640625 }, "model": "icbm:item/tracker_05" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.671875 }, "model": "icbm:item/tracker_06" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.703125 }, "model": "icbm:item/tracker_07" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.734375 }, "model": "icbm:item/tracker_08" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.765625 }, "model": "icbm:item/tracker_09" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.796875 }, "model": "icbm:item/tracker_10" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.828125 }, "model": "icbm:item/tracker_11" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.859375 }, "model": "icbm:item/tracker_12" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.890625 }, "model": "icbm:item/tracker_13" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.921875 }, "model": "icbm:item/tracker_14" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.953125 }, "model": "icbm:item/tracker_15" },
+        { "predicate": { "icbm:hastarget": 1, "angle": 0.984375 }, "model": "icbm:item/tracker_16" }
+    ]
 }
