@@ -18,48 +18,25 @@ issueTrackerURL="https://github.com/jdawg3636/ICBM/issues" #optional
 modId="icbm" #mandatory
 
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="1.0.0" #mandatory
+version="1.1.0" #mandatory
 
  # A display name for the mod
-displayName="ICBM" #mandatory
+displayName="Intercontinental Ballistic Redux" #mandatory
 
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://icbm.jdawg3636.com/" #optional
 
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="icbm_logo.png" #optional
+logoFile="intercontinental-ballistic-redux-banner.png" #optional
 
 # A text field displayed in the mod UI (#optional)
-credits='''
-
-jdawg3636 (Author ICBM Reborn)
-DarkGuardsman (Author ICBM Classic)
-Calcalvia (Author ICBM)
-tgame14
-bl4ckscor3
-GHXX
-dmodoomsirius
-AFlyingCar
-clienthax
-kmecpp
-Quant1um
-suoliangao
-CraftalotReloaded
-michasrutek
-gravityfox
-Vexatos
-Nowp
-Hennamann
-Bogdan2003
-'''
+#credits='''
+#'''
 
 # A text field displayed in the mod UI
 authors="jdawg3636" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-ICBM is a Minecraft Mod that introduces intercontinental ballistic missiles to Minecraft.
-But the fun doesn't end there! This mod also features many different explosives, missiles and machines
-classified in three different tiers. If strategic warfare, carefully coordinated airstrikes, messing
-with matter and general destruction are up your alley, then this mod is for you!
+Intercontinental Ballistic Redux is a Minecraft Mod that adds over twenty custom explosives, each of which are also available as missiles, minecarts, and sometimes even grenades. Some of the explosions have some pretty exotic effects, including nuclear fallout, contagious virus deployment, and all-consuming black holes! Combined with a few added features like poisonous spikes and player tracking, the mod creates an utterly unique experience that strikes the perfect balance of pushing boundaries without losing the spirit of the vanilla game.
 '''
