@@ -40,19 +40,20 @@ public class ItemTracker extends Item {
     @Override
     public void inventoryTick(ItemStack itemStack, World levelCurrent, Entity entity, int slot, boolean isSelected) {
         super.inventoryTick(itemStack, levelCurrent, entity, slot, isSelected);
-        CompoundNBT existingData = itemStack.getOrCreateTag();
-        World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
-        if(levelCurrent != null && !levelCurrent.isClientSide() && levelOverworld != null && !levelOverworld.isClientSide() && (isSelected || entity instanceof PlayerEntity && ((PlayerEntity)entity).getOffhandItem() == itemStack) && existingData.contains("tracking_ticket") && levelCurrent instanceof ServerWorld) {
-            LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
-            if(cap.isPresent()) {
-                Vector3d targetPos = cap.orElse(null).getPos((ServerWorld) levelCurrent, existingData.getUUID("tracking_ticket"));
-                if(targetPos != null) {
-                    itemStack.getOrCreateTag().put("target_x", DoubleNBT.valueOf(targetPos.x));
-                    itemStack.getOrCreateTag().put("target_z", DoubleNBT.valueOf(targetPos.z));
-                }
-                else {
-                    itemStack.getOrCreateTag().remove("target_x");
-                    itemStack.getOrCreateTag().remove("target_z");
+        if(levelCurrent != null && !levelCurrent.isClientSide() && ServerLifecycleHooks.getCurrentServer() != null) {
+            CompoundNBT existingData = itemStack.getOrCreateTag();
+            World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
+            if (levelOverworld != null && !levelOverworld.isClientSide() && (isSelected || entity instanceof PlayerEntity && ((PlayerEntity) entity).getOffhandItem() == itemStack) && existingData.contains("tracking_ticket") && levelCurrent instanceof ServerWorld) {
+                LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+                if (cap.isPresent()) {
+                    Vector3d targetPos = cap.orElse(null).getPos((ServerWorld) levelCurrent, existingData.getUUID("tracking_ticket"));
+                    if (targetPos != null) {
+                        itemStack.getOrCreateTag().put("target_x", DoubleNBT.valueOf(targetPos.x));
+                        itemStack.getOrCreateTag().put("target_z", DoubleNBT.valueOf(targetPos.z));
+                    } else {
+                        itemStack.getOrCreateTag().remove("target_x");
+                        itemStack.getOrCreateTag().remove("target_z");
+                    }
                 }
             }
         }
