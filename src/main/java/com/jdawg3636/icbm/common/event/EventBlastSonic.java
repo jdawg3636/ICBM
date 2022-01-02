@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
 import com.jdawg3636.icbm.common.reg.BlastManagerThreadReg;
@@ -37,7 +38,7 @@ public class EventBlastSonic extends AbstractBlastEvent {
         blastManagerThread.explosionCenterPosX = getBlastPosition().getX();
         blastManagerThread.explosionCenterPosY = getBlastPosition().getY();
         blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
-        blastManagerThread.radius = 9F; //todo: make configurable
+        blastManagerThread.radius = (float)ICBMReference.COMMON_CONFIG.getBlastRadiusSonic();
         blastManagerThread.blocksAffectedPerTick = 24;
         blastManagerThread.threadCount = 4;
         LazyOptional<IBlastControllerCapability> cap = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);

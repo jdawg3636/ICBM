@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import net.minecraft.block.*;
@@ -87,16 +88,18 @@ public class BlockExplosives extends Block {
 
     /**
      * Easter Egg for Redcoats
-     * todo: make this configurable
      */
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState state = super.getStateForPlacement(context);
-        if(state != null && context.getPlayer() != null) {
-            String playerName = context.getPlayer().getName().getString();
-            if(playerName.equals("SlushierZeus69") || playerName.equals("dig_dug__"))
-                state = state.setValue(UNSTABLE, Boolean.TRUE);
+        if(ICBMReference.COMMON_CONFIG.getEnableEasterEggForRedcoats()) {
+            if (state != null && context.getPlayer() != null) {
+                String playerName = context.getPlayer().getName().getString();
+                if (playerName.equals("SlushierZeus69") || playerName.equals("dig_dug__")) {
+                    state = state.setValue(UNSTABLE, Boolean.TRUE);
+                }
+            }
         }
         return state;
     }

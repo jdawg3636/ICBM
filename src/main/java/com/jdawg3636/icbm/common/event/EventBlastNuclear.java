@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
 import com.jdawg3636.icbm.common.reg.BlastManagerThreadReg;
@@ -36,7 +37,7 @@ public class EventBlastNuclear extends AbstractBlastEvent {
         blastManagerThread.explosionCenterPosX = getBlastPosition().getX();
         blastManagerThread.explosionCenterPosY = getBlastPosition().getY();
         blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
-        blastManagerThread.radius = 30.0F; //todo: make configurable, default to 30 if performance is acceptable
+        blastManagerThread.radius = (float)ICBMReference.COMMON_CONFIG.getBlastRadiusNuclear();
         blastManagerThread.threadCount = 4;
         LazyOptional<IBlastControllerCapability> cap = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
         if(cap.isPresent()) {

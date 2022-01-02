@@ -82,8 +82,10 @@ public class ItemRocketLauncher extends ShootableItem {
                 // Spawn Entity
                 level.addFreshEntity(entity);
 
-                // todo: make this printout toggleable in config
-                ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from source '%s' at (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), EntityMissile.MissileSourceType.ROCKET_LAUNCHER.toString(), sourcePosX, sourcePosY, sourcePosZ, destPosX, destPosY, destPosZ, totalFlightTicks);
+                // Log Missile Path
+                if(ICBMReference.COMMON_CONFIG.getDoLogMissilePathsHandheld()) {
+                    ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from source '%s' at (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), EntityMissile.MissileSourceType.ROCKET_LAUNCHER.toString(), sourcePosX, sourcePosY, sourcePosZ, destPosX, destPosY, destPosZ, totalFlightTicks);
+                }
 
             }
             return ActionResult.consume(player.getItemInHand(hand));

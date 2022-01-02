@@ -14,6 +14,7 @@ public final class ICBMReference {
 
     public static final String MODID = "icbm";
 
+    public static final String CONFIG_FILE_PREFIX = "intercontinentalballisticredux";
     public static final ICBMConfig.Client CLIENT_CONFIG = new ICBMConfig.Client();
     public static final ICBMConfig.Common COMMON_CONFIG = new ICBMConfig.Common();
     public static final ICBMConfig.Server SERVER_CONFIG = new ICBMConfig.Server();

@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.ICBMReference;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +15,7 @@ public class EventBlastBreaching extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        int depth = 7; // todo: make configurable
+        int depth = ICBMReference.COMMON_CONFIG.getBlastDepthBreaching();
         BlockPos currentPos = getBlastPosition();
         while(depth >= 0) {
             if(getBlastWorld().getBlockState(currentPos).getBlock().getExplosionResistance() > Blocks.OBSIDIAN.getExplosionResistance()) {

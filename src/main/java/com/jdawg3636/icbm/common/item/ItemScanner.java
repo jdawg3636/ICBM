@@ -26,8 +26,6 @@ public class ItemScanner extends Item {
         super(properties.stacksTo(1).tab(ICBMReference.CREATIVE_TAB));
     }
 
-    // todo: add proper localization for chat confirmations
-
     @Override
     public ActionResultType interactLivingEntity(ItemStack itemStack, PlayerEntity player, LivingEntity target, Hand hand) {
         if(player.level != null && !player.level.isClientSide()) {

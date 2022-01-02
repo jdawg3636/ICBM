@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
@@ -319,8 +320,7 @@ public class EntityMissile extends Entity {
 
                     if(shouldExplode) explode();
 
-                    // TODO make timeout user-configurable
-                    if(missileSourceType != MissileSourceType.LAUNCHER_PLATFORM && ticksSinceLaunch > 100) {
+                    if(missileSourceType != MissileSourceType.LAUNCHER_PLATFORM && ticksSinceLaunch > ICBMReference.COMMON_CONFIG.getMaxNumTicksAliveForLinearMissiles()) {
                         explode();
                         break;
                     }

@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.thread;
 
 import com.google.common.collect.Sets;
+import com.jdawg3636.icbm.ICBMReference;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 
@@ -47,7 +48,7 @@ public class AntimatterBlastWorkerThread extends AbstractBlastWorkerThread {
                         if(distanceFromCenterSquared < (radius - fuzzyEdgeThickness) * (radius - fuzzyEdgeThickness)) {
                             blocksToBeDestroyed.add(blockPos);
                         }
-                        else if(distanceFromCenterSquared < radius * radius && randomSupplier.get().nextFloat() < 0.4F/*todo make this percentage configurable*/) {
+                        else if(distanceFromCenterSquared < radius * radius && randomSupplier.get().nextFloat() < ICBMReference.COMMON_CONFIG.getAntimatterFuzzinessPercentage()) {
                             blocksToBeDestroyed.add(blockPos);
                         }
                     }
