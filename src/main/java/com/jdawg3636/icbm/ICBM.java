@@ -4,7 +4,9 @@ import com.jdawg3636.icbm.common.listener.ICBMForgeEventListener;
 import com.jdawg3636.icbm.common.listener.ICBMModEventListener;
 import com.jdawg3636.icbm.common.reg.*;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -13,6 +15,11 @@ import net.minecraftforge.registries.RegistryBuilder;
 public final class ICBM {
 
     public ICBM() {
+
+        // Register Configs
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ICBMReference.CLIENT_CONFIG.spec);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ICBMReference.COMMON_CONFIG.spec);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ICBMReference.SERVER_CONFIG.spec);
 
         // Register Event Listeners
         MinecraftForge.EVENT_BUS.register(ICBMForgeEventListener.class);
