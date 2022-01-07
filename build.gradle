@@ -99,7 +99,7 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory project.file('runserver')
 
             // Export mixin-changed classes
             property 'mixin.debug.export', 'true'
