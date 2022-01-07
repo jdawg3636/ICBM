@@ -65,10 +65,6 @@ public class EntityMissile extends Entity {
 
     public static final DataParameter<Integer>  MISSILE_SOURCE_TYPE  = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
     public static final DataParameter<Integer>  MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
-    public static final DataParameter<BlockPos> SOURCE_POS           = EntityDataManager.defineId(EntityMissile.class, DataSerializers.BLOCK_POS);
-    public static final DataParameter<BlockPos> DEST_POS             = EntityDataManager.defineId(EntityMissile.class, DataSerializers.BLOCK_POS);
-    public static final DataParameter<Float>    PEAK_HEIGHT          = EntityDataManager.defineId(EntityMissile.class, DataSerializers.FLOAT);
-    public static final DataParameter<Integer>  TOTAL_FLIGHT_TICKS   = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
 
     public AbstractBlastEvent.BlastEventProvider blastEventProvider;
     public RegistryObject<Item> missileItem;
@@ -344,8 +340,8 @@ public class EntityMissile extends Entity {
                     this.setRot((float)newRot.y, (float)newRot.x);
 
                 } else {
-                    Vector3d newPos = pathFunction.apply(ticksSinceLaunch);
-                    spawnParticles(getX() - newPos.x(), getY() - newPos.y(), getZ() - newPos.z());
+                    Vector3d viewVector = getViewVector(0F);
+                    spawnParticles(-viewVector.x, -viewVector.y, -viewVector.z);
                 }
 
                 break;
@@ -423,10 +419,6 @@ public class EntityMissile extends Entity {
     protected void defineSynchedData() {
         entityData.define(MISSILE_SOURCE_TYPE, MissileSourceType.LAUNCHER_PLATFORM.ordinal());
         entityData.define(MISSILE_LAUNCH_PHASE, MissileLaunchPhase.STATIONARY.ordinal());
-        entityData.define(SOURCE_POS, BlockPos.ZERO);
-        entityData.define(DEST_POS, BlockPos.ZERO.offset(100, 0, 0));
-        entityData.define(PEAK_HEIGHT, 256F);
-        entityData.define(TOTAL_FLIGHT_TICKS, 300);
     }
 
     @Override
@@ -457,17 +449,19 @@ public class EntityMissile extends Entity {
         int sourcePosX = compound.getInt("SourcePosX");
         int sourcePosY = compound.getInt("SourcePosY");
         int sourcePosZ = compound.getInt("SourcePosZ");
-        entityData.set(SOURCE_POS, new BlockPos(sourcePosX, sourcePosY, sourcePosZ));
+        sourcePos = new BlockPos(sourcePosX, sourcePosY, sourcePosZ);
 
         int destPosX = compound.getInt("DestPosX");
         int destPosY = compound.getInt("DestPosY");
         int destPosZ = compound.getInt("DestPosZ");
-        entityData.set(DEST_POS, new BlockPos(destPosX, destPosY, destPosZ));
+        destPos = new BlockPos(destPosX, destPosY, destPosZ);
 
-        entityData.set(PEAK_HEIGHT, compound.getFloat("PeakHeight"));
-        entityData.set(TOTAL_FLIGHT_TICKS, compound.getInt("TotalFlightTicks"));
+        peakHeight = compound.getFloat("PeakHeight");
+        totalFlightTicks = compound.getInt("TotalFlightTicks");
 
-        updatePathFunctions();
+        if(level != null && !level.isClientSide()) {
+            updatePathFunctions();
+        }
 
     }
 
@@ -475,15 +469,6 @@ public class EntityMissile extends Entity {
     public void onSyncedDataUpdated(DataParameter<?> dataParameter) {
         if(MISSILE_SOURCE_TYPE.equals(dataParameter))  missileSourceType  = MissileSourceType.values()[entityData.get(MISSILE_SOURCE_TYPE)];
         if(MISSILE_LAUNCH_PHASE.equals(dataParameter)) missileLaunchPhase = MissileLaunchPhase.values()[entityData.get(MISSILE_LAUNCH_PHASE)];
-        if(SOURCE_POS.equals(dataParameter))           sourcePos          = entityData.get(SOURCE_POS);
-        if(DEST_POS.equals(dataParameter))             destPos            = entityData.get(DEST_POS);
-        if(PEAK_HEIGHT.equals(dataParameter))          peakHeight         = entityData.get(PEAK_HEIGHT);
-        if(TOTAL_FLIGHT_TICKS.equals(dataParameter))   totalFlightTicks   = entityData.get(TOTAL_FLIGHT_TICKS);
-        if(level.isClientSide) {
-            //System.out.print("[ICBM DEBUG] Syncing Missile Save Data!");
-            //System.out.println(" Side = " + ((level.isClientSide) ? "Client" : "Server"));
-            updatePathFunctions();
-        }
     }
 
     @Override
@@ -535,11 +520,6 @@ public class EntityMissile extends Entity {
         else {
             return ActionResultType.PASS;
         }
-    }
-
-    @Override
-    public void setRot(float yRot, float xRot) {
-        super.setRot(yRot, xRot);
     }
 
 }
