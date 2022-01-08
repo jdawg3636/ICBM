@@ -522,4 +522,10 @@ public class EntityMissile extends Entity {
         }
     }
 
+    // Override to Expand Access to Public
+    @Override
+    public void setRot(float yRot, float xRot) {
+        super.setRot(yRot, xRot);
+    }
+
 }
