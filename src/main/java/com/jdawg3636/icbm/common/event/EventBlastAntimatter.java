@@ -38,7 +38,7 @@ public class EventBlastAntimatter extends AbstractBlastEvent {
         blastManagerThread.explosionCenterPosY = getBlastPosition().getY();
         blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
         blastManagerThread.radius = 50; // todo: make configurable
-        blastManagerThread.fuzzyEdgeThickness = 2;
+        blastManagerThread.fuzzyEdgeThickness = 2; // todo: make configurable
         LazyOptional<IBlastControllerCapability> cap = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
         if(cap.isPresent()) {
             cap.orElse(null).enqueueBlastThread(blastManagerThread);
