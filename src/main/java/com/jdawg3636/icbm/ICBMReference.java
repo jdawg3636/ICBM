@@ -10,8 +10,6 @@ import net.minecraftforge.fml.DistExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.security.MessageDigest;
-
 public final class ICBMReference {
 
     public static final String MODID = "icbm";
@@ -34,14 +32,6 @@ public final class ICBMReference {
 
     public static Logger logger() {
         return logger;
-    }
-
-    public static MessageDigest SHA1_INSTANCE;
-
-    static {
-        try {
-            SHA1_INSTANCE = MessageDigest.getInstance("SHA-1");
-        } catch (Exception ignored) {}
     }
 
 }

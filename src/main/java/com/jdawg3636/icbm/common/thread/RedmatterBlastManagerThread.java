@@ -57,13 +57,8 @@ public class RedmatterBlastManagerThread extends AntimatterBlastManagerThread {
         return Math.sqrt((explosionCenterPosX - pos.getX()) * (explosionCenterPosX - pos.getX()) + (explosionCenterPosY - pos.getY()) * (explosionCenterPosY - pos.getY()) + (explosionCenterPosZ - pos.getZ()) * (explosionCenterPosZ - pos.getZ()));
     }
 
-    private int hashBlockPos(BlockPos pos) {
-        if(hashCache.containsKey(pos)) {
-            return hashCache.get(pos);
-        }
-        int toReturn = Integer.parseInt(DigestUtils.sha1Hex("" + pos.getX() + pos.getY() + pos.getZ()).substring(0,4).toUpperCase(), 16);
-        hashCache.put(pos, toReturn);
-        return toReturn;
+    private int hashBlockPos(BlockPos pos) { 
+        return ((31 + pos.getX()) * 31 + pos.getY()) * 31 + pos.getZ();
     }
 
 }
