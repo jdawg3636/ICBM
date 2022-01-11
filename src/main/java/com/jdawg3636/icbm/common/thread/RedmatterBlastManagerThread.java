@@ -4,7 +4,6 @@ import com.jdawg3636.icbm.common.entity.EntityRedmatterBlast;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,8 +56,15 @@ public class RedmatterBlastManagerThread extends AntimatterBlastManagerThread {
         return Math.sqrt((explosionCenterPosX - pos.getX()) * (explosionCenterPosX - pos.getX()) + (explosionCenterPosY - pos.getY()) * (explosionCenterPosY - pos.getY()) + (explosionCenterPosZ - pos.getZ()) * (explosionCenterPosZ - pos.getZ()));
     }
 
-    private int hashBlockPos(BlockPos pos) { 
-        return ((31 + pos.getX()) * 31 + pos.getY()) * 31 + pos.getZ();
+    private int hashBlockPos(BlockPos pos) {
+        return hash(pos.getX()) + hash(pos.getY()) + hash(pos.getZ());
+    }
+
+    private static int hash(int x) {
+        x = ((x >> 16) ^ x) * 0x119de1f3;
+        x = ((x >> 16) ^ x) * 0x119de1f3;
+        x = (x >> 16) ^ x;
+        return x;
     }
 
 }
