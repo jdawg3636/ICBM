@@ -59,7 +59,7 @@ public class EntityMissile extends Entity {
 
     public enum MissileLaunchPhase {
         STATIONARY,
-        STATIONARY_ACTIVATED, // Generate Particles/Sounds while still on the platform
+        STATIONARY_ACTIVATED, // Generate Particles/Sounds while still on the platform // todo: use this or remove it
         LAUNCHED
     }
 

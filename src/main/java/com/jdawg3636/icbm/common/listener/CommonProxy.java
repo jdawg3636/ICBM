@@ -85,6 +85,7 @@ public class CommonProxy {
     public void onParticleFactoryRegisterEvent(ParticleFactoryRegisterEvent event) {}
 
     public void onTickEvent(final TickEvent.WorldTickEvent event) {
+    	if(event.phase != TickEvent.Phase.START) return;
         LazyOptional<IBlastControllerCapability> cap = event.world.getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
         if(cap.isPresent()) {
             cap.orElse(null).onWorldTickEvent(event);
