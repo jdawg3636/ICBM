@@ -45,7 +45,7 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> S_MINE                       = registerPrimedExplosives(EventBlastSMine::new,               ItemReg.S_MINE, 0.875F, 0.125F);
 
     // Missile Registration
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_MODULE            = registerMissile((a,b,c,d)->null, /*TODO*/            ItemReg.MISSILE_MODULE);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_MODULE            = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_MODULE);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONVENTIONAL      = registerMissile(EventBlastCondensed::new,            ItemReg.MISSILE_CONVENTIONAL);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SHRAPNEL          = registerMissile(EventBlastShrapnel::new,             ItemReg.MISSILE_SHRAPNEL);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_INCENDIARY        = registerMissile(EventBlastIncendiary::new,           ItemReg.MISSILE_INCENDIARY);
@@ -70,10 +70,10 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HYPERSONIC        = registerMissile(EventBlastHypersonic::new,           ItemReg.MISSILE_HYPERSONIC, 1F, 7F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIMATTER        = registerMissile(EventBlastAntimatter::new,           ItemReg.MISSILE_ANTIMATTER);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REDMATTER         = registerMissile(EventBlastRedmatter::new,            ItemReg.MISSILE_REDMATTER);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HOMING            = registerMissile((a,b,c,d)->null, /*TODO*/            ItemReg.MISSILE_HOMING);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC     = registerMissile((a,b,c,d)->null, /*TODO*/            ItemReg.MISSILE_ANTIBALLISTIC, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER           = registerMissile((a,b,c,d)->null, /*TODO*/            ItemReg.MISSILE_CLUSTER, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile((a,b,c,d)->null, /*TODO*/            ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HOMING            = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_HOMING);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC     = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_ANTIBALLISTIC, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER           = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_CLUSTER, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
 
     // Blast Utility Entity Registration
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
