@@ -16,9 +16,10 @@ public class EventBlastAnvil extends AbstractBlastEvent {
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
         ICBMBlastEventUtil.doVanillaExplosion(this);
-        for(double i = -0.5; i <= 0.5; i += 0.0625) {
-            for(double j = -0.5; j <= 0.5; j += 0.0625) {
-                if(i * i + j * j > 0.5 * 0.5) continue; // Truncate to Circle from Square
+        final double range = (getBlastType() == AbstractBlastEvent.Type.GRENADE ? 0.3125 : 0.5);
+        for(double i = -range; i <= range; i += 0.0625) {
+            for(double j = -range; j <= range; j += 0.0625) {
+                if(i * i + j * j > range * range) continue; // Truncate to Circle from Square
                 FallingBlockEntity fallingblockentity = new FallingBlockEntity(getBlastWorld(), (double)getBlastPosition().getX() + 0.5D, (double)getBlastPosition().getY() + 1, (double)getBlastPosition().getZ() + 0.5D, Blocks.DAMAGED_ANVIL.defaultBlockState());
                 fallingblockentity.time = 1;
                 fallingblockentity.cancelDrop = true;

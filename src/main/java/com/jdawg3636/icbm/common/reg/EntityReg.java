@@ -75,6 +75,16 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER           = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_CLUSTER, 1F, 5F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
 
+    // Grenade Entities
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_CONVENTIONAL = registerGrenade(EventBlastCondensed::new,    ItemReg.GRENADE_CONVENTIONAL);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_SHRAPNEL     = registerGrenade(EventBlastShrapnel::new,     ItemReg.GRENADE_SHRAPNEL);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_INCENDIARY   = registerGrenade(EventBlastIncendiary::new,   ItemReg.GRENADE_INCENDIARY);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_DEBILITATION = registerGrenade(EventBlastDebilitation::new, ItemReg.GRENADE_DEBILITATION);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_CHEMICAL     = registerGrenade(EventBlastChemical::new,     ItemReg.GRENADE_CHEMICAL);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_ANVIL        = registerGrenade(EventBlastAnvil::new,        ItemReg.GRENADE_ANVIL);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_REPULSIVE    = registerGrenade(EventBlastRepulsive::new,    ItemReg.GRENADE_REPULSIVE);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_ATTRACTIVE   = registerGrenade(EventBlastAttractive::new,   ItemReg.GRENADE_ATTRACTIVE);
+
     // Blast Utility Entity Registration
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
     public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CONTAGION    = registerBlastUtilityEntity("blast_contagion",    EntityLingeringBlastContagion::new);
@@ -136,6 +146,21 @@ public final class EntityReg {
                     .sized(width, height)
                     .clientTrackingRange(10)
                     .updateInterval(2)
+                    .build(itemForm.getId().getPath());
+                }
+        );
+    }
+
+    public static <T extends EntityGrenade> RegistryObject<EntityType<EntityGrenade>> registerGrenade(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+        return ENTITIES.register(
+                itemForm.getId().getPath(),
+                () -> {
+                    return EntityType.Builder.<EntityGrenade>of(
+                            (type, world) -> new EntityGrenade(type, world, blastEventProvider, itemForm),
+                            EntityClassification.MISC
+                    )
+                    .fireImmune()
+                    .sized(0.25F, 0.25F)
                     .build(itemForm.getId().getPath());
                 }
         );

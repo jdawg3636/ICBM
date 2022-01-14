@@ -1,10 +1,7 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.item.ItemMissile;
-import com.jdawg3636.icbm.common.item.ItemRocketLauncher;
-import com.jdawg3636.icbm.common.item.ItemScanner;
-import com.jdawg3636.icbm.common.item.ItemTracker;
+import com.jdawg3636.icbm.common.item.*;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -119,14 +116,14 @@ public class ItemReg {
     public static final RegistryObject<Item> MINECART_REDMATTER             = ITEMS.register("minecart_redmatter",              () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
 
     // Grenades
-    public static final RegistryObject<Item> GRENADE_CONVENTIONAL           = ITEMS.register("grenade_conventional",            () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_SHRAPNEL               = ITEMS.register("grenade_shrapnel",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_INCENDIARY             = ITEMS.register("grenade_incendiary",              () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_DEBILITATION           = ITEMS.register("grenade_debilitation",            () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_CHEMICAL               = ITEMS.register("grenade_chemical",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_ANVIL                  = ITEMS.register("grenade_anvil",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_REPULSIVE              = ITEMS.register("grenade_repulsive",               () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_ATTRACTIVE             = ITEMS.register("grenade_attractive",              () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> GRENADE_CONVENTIONAL           = ITEMS.register("grenade_conventional",            () -> new ItemGrenade(EntityReg.GRENADE_CONVENTIONAL));
+    public static final RegistryObject<Item> GRENADE_SHRAPNEL               = ITEMS.register("grenade_shrapnel",                () -> new ItemGrenade(EntityReg.GRENADE_SHRAPNEL));
+    public static final RegistryObject<Item> GRENADE_INCENDIARY             = ITEMS.register("grenade_incendiary",              () -> new ItemGrenade(EntityReg.GRENADE_INCENDIARY));
+    public static final RegistryObject<Item> GRENADE_DEBILITATION           = ITEMS.register("grenade_debilitation",            () -> new ItemGrenade(EntityReg.GRENADE_DEBILITATION));
+    public static final RegistryObject<Item> GRENADE_CHEMICAL               = ITEMS.register("grenade_chemical",                () -> new ItemGrenade(EntityReg.GRENADE_CHEMICAL));
+    public static final RegistryObject<Item> GRENADE_ANVIL                  = ITEMS.register("grenade_anvil",                   () -> new ItemGrenade(EntityReg.GRENADE_ANVIL));
+    public static final RegistryObject<Item> GRENADE_REPULSIVE              = ITEMS.register("grenade_repulsive",               () -> new ItemGrenade(EntityReg.GRENADE_REPULSIVE));
+    public static final RegistryObject<Item> GRENADE_ATTRACTIVE             = ITEMS.register("grenade_attractive",              () -> new ItemGrenade(EntityReg.GRENADE_ATTRACTIVE));
 
     // Spikes
     public static final RegistryObject<Item> SPIKES                         = ITEMS.register("spikes",                          () -> new BlockItem(BlockReg.SPIKES.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
