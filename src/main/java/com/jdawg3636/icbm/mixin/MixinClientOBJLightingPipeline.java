@@ -53,15 +53,15 @@ public class MixinClientOBJLightingPipeline extends BlockModelRenderer {
         }
     }
 
-    @Shadow @Final
+    @Shadow(remap = false) @Final
     private ThreadLocal<VertexLighterFlat> lighterFlat;
-    @Shadow @Final
+    @Shadow(remap = false) @Final
     private ThreadLocal<VertexLighterSmoothAo> lighterSmooth;
-    @Shadow @Final
+    @Shadow(remap = false) @Final
     private ThreadLocal<VertexBufferConsumer> consumerFlat;
-    @Shadow @Final
+    @Shadow(remap = false) @Final
     private ThreadLocal<VertexBufferConsumer> consumerSmooth;
-    @Shadow
+    @Shadow(remap = false)
     public static boolean render(VertexLighterFlat lighter, IBlockDisplayReader world, IBakedModel model, BlockState state, BlockPos pos, MatrixStack matrixStack, boolean checkSides, Random rand, long seed, IModelData modelData) {
         return true;
     }

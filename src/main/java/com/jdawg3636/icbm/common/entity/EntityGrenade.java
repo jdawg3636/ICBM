@@ -12,9 +12,15 @@ import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+@OnlyIn(
+        value = Dist.CLIENT,
+        _interface = IRendersAsItem.class
+)
 public class EntityGrenade extends ThrowableEntity implements IRendersAsItem {
 
     public AbstractBlastEvent.BlastEventProvider blastEventProvider;
