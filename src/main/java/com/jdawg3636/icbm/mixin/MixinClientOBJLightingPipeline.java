@@ -34,7 +34,8 @@ public class MixinClientOBJLightingPipeline extends BlockModelRenderer {
     @Inject(method = "renderModelSmooth", at = @At("HEAD"), cancellable = true, remap = false)
     public void onRenderModelSmooth(IBlockDisplayReader world, IBakedModel model, BlockState state, BlockPos pos, MatrixStack matrixStack, IVertexBuilder buffer, boolean checkSides, Random rand, long seed, int combinedOverlayIn, IModelData modelData, CallbackInfoReturnable<Boolean> callback) {
         ResourceLocation registryName = state.getBlock().getRegistryName();
-        if(registryName != null && registryName.getNamespace().equals(ICBMReference.MODID)) {
+        Package optifinePackage = Package.getPackage("net.optifine");
+        if(registryName != null && registryName.getNamespace().equals(ICBMReference.MODID) && optifinePackage == null) {
 
             /*
              * All of this code is copied from vanilla, with the exception of the condition being swapped.
