@@ -320,6 +320,35 @@
   "item.icbm.minecart_antimatter": "Antimatter Minecart",
   "item.icbm.minecart_redmatter": "Red Matter Minecart",
 
+  # Explosive Minecart Entities
+  "entity.icbm.minecart_explosive": "Explosive Cart",
+  "entity.icbm.minecart_shrapnel": "Shrapnel Minecart",
+  "entity.icbm.minecart_incendiary": "Incendiary Minecart",
+  "entity.icbm.minecart_debilitation": "Debilitation Minecart",
+  "entity.icbm.minecart_chemical": "Chemical Minecart",
+  "entity.icbm.minecart_anvil": "Anvil Minecart",
+  "entity.icbm.minecart_repulsive": "Repulsive Minecart",
+  "entity.icbm.minecart_attractive": "Attractive Minecart",
+  "entity.icbm.minecart_nightmare": "Nightmare Minecart",
+
+  "entity.icbm.minecart_fragmentation": "Fragmentation Minecart",
+  "entity.icbm.minecart_contagion": "Contagion Minecart",
+  "entity.icbm.minecart_sonic": "Sonic Minecart",
+  "entity.icbm.minecart_breaching": "Breaching Minecart",
+  "entity.icbm.minecart_rejuvenation": "Rejuvenation Minecart",
+  "entity.icbm.minecart_thermobaric": "Thermobaric Minecart",
+
+  "entity.icbm.minecart_nuclear": "Nuclear Minecart",
+  "entity.icbm.minecart_emp": "EMP Minecart",
+  "entity.icbm.minecart_exothermic": "Exothermic Minecart",
+  "entity.icbm.minecart_endothermic": "Endothermic Minecart",
+  "entity.icbm.minecart_antigravitational": "Anti-Gravitational Minecart",
+  "entity.icbm.minecart_ender": "Ender Minecart",
+  "entity.icbm.minecart_hypersonic": "Hypersonic Minecart",
+
+  "entity.icbm.minecart_antimatter": "Antimatter Minecart",
+  "entity.icbm.minecart_redmatter": "Red Matter Minecart",
+
   # Explosive Info
   "explosive.icbm.condensed.info": "Slightly more destructive version of TNT",
   "explosive.icbm.shrapnel.info": "Erupts in a barrage of metal fragments",

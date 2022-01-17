@@ -20,6 +20,7 @@ import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
+import net.minecraft.client.renderer.entity.TNTMinecartRenderer;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
@@ -131,6 +132,32 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.GRENADE_ANVIL.get(), (manager) -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.GRENADE_REPULSIVE.get(), (manager) -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.GRENADE_ATTRACTIVE.get(), (manager) -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
+
+        // Register Minecart Entity Rendering Handlers
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_EXPLOSIVE.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_SHRAPNEL.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_INCENDIARY.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_DEBILITATION.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_CHEMICAL.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_ANVIL.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_REPULSIVE.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_ATTRACTIVE.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_NIGHTMARE.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_FRAGMENTATION.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_CONTAGION.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_SONIC.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_BREACHING.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_REJUVENATION.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_THERMOBARIC.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_NUCLEAR.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_EMP.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_EXOTHERMIC.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_ENDOTHERMIC.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_ANTIGRAVITATIONAL.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_ENDER.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_HYPERSONIC.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_ANTIMATTER.get(), TNTMinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_REDMATTER.get(), TNTMinecartRenderer::new);
 
         // Register Blast Utility Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityNOPRenderer::new);

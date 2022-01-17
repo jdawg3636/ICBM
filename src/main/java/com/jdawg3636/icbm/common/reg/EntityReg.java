@@ -1,8 +1,9 @@
 package com.jdawg3636.icbm.common.reg;
 
-import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.common.event.*;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -75,7 +76,33 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER           = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_CLUSTER, 1F, 5F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
 
-    // Grenade Entities
+    // Minecart Registration
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_EXPLOSIVE         = registerMinecart("minecart_explosive",         BlockReg.EXPLOSIVES_CONDENSED,         ItemReg.MINECART_EXPLOSIVE);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_SHRAPNEL          = registerMinecart("minecart_shrapnel",          BlockReg.EXPLOSIVES_SHRAPNEL,          ItemReg.MINECART_SHRAPNEL);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_INCENDIARY        = registerMinecart("minecart_incendiary",        BlockReg.EXPLOSIVES_INCENDIARY,        ItemReg.MINECART_INCENDIARY);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_DEBILITATION      = registerMinecart("minecart_debilitation",      BlockReg.EXPLOSIVES_DEBILITATION,      ItemReg.MINECART_DEBILITATION);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_CHEMICAL          = registerMinecart("minecart_chemical",          BlockReg.EXPLOSIVES_CHEMICAL,          ItemReg.MINECART_CHEMICAL);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_ANVIL             = registerMinecart("minecart_anvil",             BlockReg.EXPLOSIVES_ANVIL,             ItemReg.MINECART_ANVIL);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_REPULSIVE         = registerMinecart("minecart_repulsive",         BlockReg.EXPLOSIVES_REPULSIVE,         ItemReg.MINECART_REPULSIVE);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_ATTRACTIVE        = registerMinecart("minecart_attractive",        BlockReg.EXPLOSIVES_ATTRACTIVE,        ItemReg.MINECART_ATTRACTIVE);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_NIGHTMARE         = registerMinecart("minecart_nightmare",         BlockReg.EXPLOSIVES_NIGHTMARE,         ItemReg.MINECART_NIGHTMARE);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_FRAGMENTATION     = registerMinecart("minecart_fragmentation",     BlockReg.EXPLOSIVES_FRAGMENTATION,     ItemReg.MINECART_FRAGMENTATION);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_CONTAGION         = registerMinecart("minecart_contagion",         BlockReg.EXPLOSIVES_CONTAGION,         ItemReg.MINECART_CONTAGION);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_SONIC             = registerMinecart("minecart_sonic",             BlockReg.EXPLOSIVES_SONIC,             ItemReg.MINECART_SONIC);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_BREACHING         = registerMinecart("minecart_breaching",         BlockReg.EXPLOSIVES_BREACHING,         ItemReg.MINECART_BREACHING);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_REJUVENATION      = registerMinecart("minecart_rejuvenation",      BlockReg.EXPLOSIVES_REJUVENATION,      ItemReg.MINECART_REJUVENATION);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_THERMOBARIC       = registerMinecart("minecart_thermobaric",       BlockReg.EXPLOSIVES_THERMOBARIC,       ItemReg.MINECART_THERMOBARIC);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_NUCLEAR           = registerMinecart("minecart_nuclear",           BlockReg.EXPLOSIVES_NUCLEAR,           ItemReg.MINECART_NUCLEAR);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_EMP               = registerMinecart("minecart_emp",               BlockReg.EXPLOSIVES_EMP,               ItemReg.MINECART_EMP);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_EXOTHERMIC        = registerMinecart("minecart_exothermic",        BlockReg.EXPLOSIVES_EXOTHERMIC,        ItemReg.MINECART_EXOTHERMIC);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_ENDOTHERMIC       = registerMinecart("minecart_endothermic",       BlockReg.EXPLOSIVES_ENDOTHERMIC,       ItemReg.MINECART_ENDOTHERMIC);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_ANTIGRAVITATIONAL = registerMinecart("minecart_antigravitational", BlockReg.EXPLOSIVES_ANTIGRAVITATIONAL, ItemReg.MINECART_ANTIGRAVITATIONAL);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_ENDER             = registerMinecart("minecart_ender",             BlockReg.EXPLOSIVES_ENDER,             ItemReg.MINECART_ENDER);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_HYPERSONIC        = registerMinecart("minecart_hypersonic",        BlockReg.EXPLOSIVES_HYPERSONIC,        ItemReg.MINECART_HYPERSONIC);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_ANTIMATTER        = registerMinecart("minecart_antimatter",        BlockReg.EXPLOSIVES_ANTIMATTER,        ItemReg.MINECART_ANTIMATTER);
+    public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_REDMATTER         = registerMinecart("minecart_redmatter",         BlockReg.EXPLOSIVES_REDMATTER,         ItemReg.MINECART_REDMATTER);
+
+    // Grenade Registration
     public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_CONVENTIONAL = registerGrenade(EventBlastCondensed::new,    ItemReg.GRENADE_CONVENTIONAL);
     public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_SHRAPNEL     = registerGrenade(EventBlastShrapnel::new,     ItemReg.GRENADE_SHRAPNEL);
     public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_INCENDIARY   = registerGrenade(EventBlastIncendiary::new,   ItemReg.GRENADE_INCENDIARY);
@@ -147,6 +174,21 @@ public final class EntityReg {
                     .clientTrackingRange(10)
                     .updateInterval(2)
                     .build(itemForm.getId().getPath());
+                }
+        );
+    }
+
+    public static <T extends EntityMinecartExplosives> RegistryObject<EntityType<EntityMinecartExplosives>> registerMinecart(String entityName, RegistryObject<Block> blockForm, RegistryObject<Item> itemForm) {
+        return ENTITIES.register(
+                entityName,
+                () -> {
+                    return EntityType.Builder.<EntityMinecartExplosives>of(
+                            (type, world) -> new EntityMinecartExplosives(type, world, blockForm, itemForm),
+                            EntityClassification.MISC
+                    )
+                    .sized(0.98F, 0.7F)
+                    .clientTrackingRange(8)
+                    .build(entityName);
                 }
         );
     }
