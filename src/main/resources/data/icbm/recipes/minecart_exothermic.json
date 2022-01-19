@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:explosives_exothermic"
+    },
+    "B": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "result": {
+    "item": "icbm:minecart_exothermic",
+    "count": 1
+  }
+}

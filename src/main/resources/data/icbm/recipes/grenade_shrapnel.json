@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:string"
+    },
+    {
+      "item": "icbm:explosives_shrapnel"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:grenade_shrapnel",
+    "count": 1
+  }
+}
