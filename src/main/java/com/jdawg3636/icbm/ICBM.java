@@ -3,8 +3,11 @@ package com.jdawg3636.icbm;
 import com.jdawg3636.icbm.common.listener.ICBMForgeEventListener;
 import com.jdawg3636.icbm.common.listener.ICBMModEventListener;
 import com.jdawg3636.icbm.common.reg.*;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -13,6 +16,11 @@ import net.minecraftforge.registries.RegistryBuilder;
 public final class ICBM {
 
     public ICBM() {
+
+        // Register Configs
+        //registerConfigFile(ModConfig.Type.CLIENT, ICBMReference.CLIENT_CONFIG.spec);
+        registerConfigFile(ModConfig.Type.COMMON, ICBMReference.COMMON_CONFIG.spec);
+        //registerConfigFile(ModConfig.Type.SERVER, ICBMReference.SERVER_CONFIG.spec);
 
         // Register Event Listeners
         MinecraftForge.EVENT_BUS.register(ICBMForgeEventListener.class);
@@ -39,6 +47,10 @@ public final class ICBM {
                 SoundEventReg.SOUND_EVENTS,
                 TileReg.TILES
         };
+    }
+
+    public static void registerConfigFile(ModConfig.Type type, ForgeConfigSpec spec) {
+        ModLoadingContext.get().registerConfig(type, spec, String.format("%s-%s.toml", ICBMReference.CONFIG_FILE_PREFIX, type.extension()));
     }
 
 }

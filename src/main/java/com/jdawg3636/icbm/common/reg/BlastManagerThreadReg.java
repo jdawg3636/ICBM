@@ -28,6 +28,7 @@ public class BlastManagerThreadReg {
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> HYPERSONIC  = BLAST_MANAGER_THREADS.register("hypersonic",  () -> new AbstractBlastManagerThreadBuilder(() -> new SonicBlastManagerThread() { public String getRegistryName() { return "icbm:hypersonic"; } }));
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> NUCLEAR     = BLAST_MANAGER_THREADS.register("nuclear",     () -> new AbstractBlastManagerThreadBuilder(NuclearBlastManagerThread::new));
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> RAYTRACED   = BLAST_MANAGER_THREADS.register("raytraced",   () -> new AbstractBlastManagerThreadBuilder(RaytracedBlastManagerThread::new));
+    public static final RegistryObject<AbstractBlastManagerThreadBuilder> REDMATTER   = BLAST_MANAGER_THREADS.register("redmatter",   () -> new AbstractBlastManagerThreadBuilder(RedmatterBlastManagerThread::new));
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> SONIC       = BLAST_MANAGER_THREADS.register("sonic",       () -> new AbstractBlastManagerThreadBuilder(SonicBlastManagerThread::new));
 
 }

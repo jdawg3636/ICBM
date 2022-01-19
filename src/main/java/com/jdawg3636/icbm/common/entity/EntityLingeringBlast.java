@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
@@ -10,6 +11,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public abstract class EntityLingeringBlast extends Entity {
 
     public int ticksRemaining = 0;
+    // Note: blastType is never updated for EntityRedmatterBlast
+    public AbstractBlastEvent.Type blastType = AbstractBlastEvent.Type.EXPLOSIVES;
 
     public EntityLingeringBlast(EntityType<?> entityType, World level) {
         this(entityType, level, 20);

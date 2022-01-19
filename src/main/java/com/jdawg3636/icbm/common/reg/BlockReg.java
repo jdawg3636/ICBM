@@ -51,7 +51,7 @@ public class BlockReg {
     });
 
     // Explosives
-    public static final RegistryObject<Block> EXPLOSIVES_CONDENSED          = BLOCKS.register("explosives_condensed",           () -> new BlockExplosives(EntityReg.EXPLOSIVES_CONDENSED,           EventBlastCondensed::new,                   ItemReg.EXPLOSIVES_CONDENSED));
+    public static final RegistryObject<Block> EXPLOSIVES_CONDENSED          = BLOCKS.register("explosives_condensed",           () -> new BlockExplosives(EntityReg.EXPLOSIVES_CONDENSED,           EventBlastCondensed::new,          ItemReg.EXPLOSIVES_CONDENSED));
     public static final RegistryObject<Block> EXPLOSIVES_SHRAPNEL           = BLOCKS.register("explosives_shrapnel",            () -> new BlockExplosives(EntityReg.EXPLOSIVES_SHRAPNEL,            EventBlastShrapnel::new,           ItemReg.EXPLOSIVES_SHRAPNEL));
     public static final RegistryObject<Block> EXPLOSIVES_INCENDIARY         = BLOCKS.register("explosives_incendiary",          () -> new BlockExplosives(EntityReg.EXPLOSIVES_INCENDIARY,          EventBlastIncendiary::new,         ItemReg.EXPLOSIVES_INCENDIARY));
     public static final RegistryObject<Block> EXPLOSIVES_DEBILITATION       = BLOCKS.register("explosives_debilitation",        () -> new BlockExplosives(EntityReg.EXPLOSIVES_DEBILITATION,        EventBlastDebilitation::new,       ItemReg.EXPLOSIVES_DEBILITATION));

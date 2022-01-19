@@ -18,10 +18,14 @@ public class EventBlastChemical extends AbstractBlastEvent {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
         ICBMBlastEventUtil.doVanillaExplosion(this);
         EntityLingeringBlast entity = EntityReg.BLAST_CHEMICAL.get().create(getBlastWorld());
-        entity.setPos(getBlastPosition().getX(), getBlastPosition().getY(), getBlastPosition().getZ());
-        entity.ticksRemaining = 100;
-        getBlastWorld().addFreshEntity(entity);
-        return true;
+        if(entity != null) {
+            entity.setPos(getBlastPosition().getX(), getBlastPosition().getY(), getBlastPosition().getZ());
+            entity.ticksRemaining = 100;
+            entity.blastType = getBlastType();
+            getBlastWorld().addFreshEntity(entity);
+            return true;
+        }
+        return false;
     }
 
 }

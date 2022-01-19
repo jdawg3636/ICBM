@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.reg.ParticleTypeReg;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -29,7 +30,7 @@ public class EntityLingeringBlastDebilitation extends EntityLingeringBlast {
                 return;
             }
             // Particles
-            int radius = 9;
+            int radius = blastType == AbstractBlastEvent.Type.GRENADE ? 6 : 9;
             for(int i = -radius; i <= radius; i+=3) {
                 for(int j = -radius; j <= radius; j+=3) {
                     for(int k = -radius; k <= radius; k+=3) {

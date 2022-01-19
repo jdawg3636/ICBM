@@ -1,14 +1,9 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.item.ItemMissile;
-import com.jdawg3636.icbm.common.item.ItemRocketLauncher;
-import com.jdawg3636.icbm.common.item.ItemScanner;
-import com.jdawg3636.icbm.common.item.ItemTracker;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import com.jdawg3636.icbm.common.item.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.MinecartItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -93,40 +88,40 @@ public class ItemReg {
     public static final RegistryObject<Item> MISSILE_CLUSTER_NUCLEAR        = ITEMS.register("missile_cluster_nuclear",         () -> new ItemMissile(EntityReg.MISSILE_CLUSTER_NUCLEAR));
 
     // Minecarts
-    public static final RegistryObject<Item> MINECART_EXPLOSIVE             = ITEMS.register("minecart_explosive",              () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_SHRAPNEL              = ITEMS.register("minecart_shrapnel",               () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_INCENDIARY            = ITEMS.register("minecart_incendiary",             () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_DEBILITATION          = ITEMS.register("minecart_debilitation",           () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_CHEMICAL              = ITEMS.register("minecart_chemical",               () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_ANVIL                 = ITEMS.register("minecart_anvil",                  () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_REPULSIVE             = ITEMS.register("minecart_repulsive",              () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_ATTRACTIVE            = ITEMS.register("minecart_attractive",             () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_NIGHTMARE             = ITEMS.register("minecart_nightmare",              () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_FRAGMENTATION         = ITEMS.register("minecart_fragmentation",          () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_CONTAGION             = ITEMS.register("minecart_contagion",              () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_SONIC                 = ITEMS.register("minecart_sonic",                  () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_BREACHING             = ITEMS.register("minecart_breaching",              () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_REJUVENATION          = ITEMS.register("minecart_rejuvenation",           () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_THERMOBARIC           = ITEMS.register("minecart_thermobaric",            () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_NUCLEAR               = ITEMS.register("minecart_nuclear",                () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_EMP                   = ITEMS.register("minecart_emp",                    () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_EXOTHERMIC            = ITEMS.register("minecart_exothermic",             () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_ENDOTHERMIC           = ITEMS.register("minecart_endothermic",            () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_ANTIGRAVITATIONAL     = ITEMS.register("minecart_antigravitational",      () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_ENDER                 = ITEMS.register("minecart_ender",                  () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_HYPERSONIC            = ITEMS.register("minecart_hypersonic",             () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_ANTIMATTER            = ITEMS.register("minecart_antimatter",             () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> MINECART_REDMATTER             = ITEMS.register("minecart_redmatter",              () -> new MinecartItem(AbstractMinecartEntity.Type.TNT, (new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> MINECART_EXPLOSIVE             = ITEMS.register("minecart_explosive",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_EXPLOSIVE));
+    public static final RegistryObject<Item> MINECART_SHRAPNEL              = ITEMS.register("minecart_shrapnel",               () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_SHRAPNEL));
+    public static final RegistryObject<Item> MINECART_INCENDIARY            = ITEMS.register("minecart_incendiary",             () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_INCENDIARY));
+    public static final RegistryObject<Item> MINECART_DEBILITATION          = ITEMS.register("minecart_debilitation",           () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_DEBILITATION));
+    public static final RegistryObject<Item> MINECART_CHEMICAL              = ITEMS.register("minecart_chemical",               () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_CHEMICAL));
+    public static final RegistryObject<Item> MINECART_ANVIL                 = ITEMS.register("minecart_anvil",                  () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_ANVIL));
+    public static final RegistryObject<Item> MINECART_REPULSIVE             = ITEMS.register("minecart_repulsive",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_REPULSIVE));
+    public static final RegistryObject<Item> MINECART_ATTRACTIVE            = ITEMS.register("minecart_attractive",             () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_ATTRACTIVE));
+    public static final RegistryObject<Item> MINECART_NIGHTMARE             = ITEMS.register("minecart_nightmare",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_NIGHTMARE));
+    public static final RegistryObject<Item> MINECART_FRAGMENTATION         = ITEMS.register("minecart_fragmentation",          () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_FRAGMENTATION));
+    public static final RegistryObject<Item> MINECART_CONTAGION             = ITEMS.register("minecart_contagion",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_CONTAGION));
+    public static final RegistryObject<Item> MINECART_SONIC                 = ITEMS.register("minecart_sonic",                  () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_SONIC));
+    public static final RegistryObject<Item> MINECART_BREACHING             = ITEMS.register("minecart_breaching",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_BREACHING));
+    public static final RegistryObject<Item> MINECART_REJUVENATION          = ITEMS.register("minecart_rejuvenation",           () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_REJUVENATION));
+    public static final RegistryObject<Item> MINECART_THERMOBARIC           = ITEMS.register("minecart_thermobaric",            () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_THERMOBARIC));
+    public static final RegistryObject<Item> MINECART_NUCLEAR               = ITEMS.register("minecart_nuclear",                () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_NUCLEAR));
+    public static final RegistryObject<Item> MINECART_EMP                   = ITEMS.register("minecart_emp",                    () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_EMP));
+    public static final RegistryObject<Item> MINECART_EXOTHERMIC            = ITEMS.register("minecart_exothermic",             () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_EXOTHERMIC));
+    public static final RegistryObject<Item> MINECART_ENDOTHERMIC           = ITEMS.register("minecart_endothermic",            () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_ENDOTHERMIC));
+    public static final RegistryObject<Item> MINECART_ANTIGRAVITATIONAL     = ITEMS.register("minecart_antigravitational",      () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_ANTIGRAVITATIONAL));
+    public static final RegistryObject<Item> MINECART_ENDER                 = ITEMS.register("minecart_ender",                  () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_ENDER));
+    public static final RegistryObject<Item> MINECART_HYPERSONIC            = ITEMS.register("minecart_hypersonic",             () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_HYPERSONIC));
+    public static final RegistryObject<Item> MINECART_ANTIMATTER            = ITEMS.register("minecart_antimatter",             () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_ANTIMATTER));
+    public static final RegistryObject<Item> MINECART_REDMATTER             = ITEMS.register("minecart_redmatter",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_REDMATTER));
 
     // Grenades
-    public static final RegistryObject<Item> GRENADE_CONVENTIONAL           = ITEMS.register("grenade_conventional",            () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_SHRAPNEL               = ITEMS.register("grenade_shrapnel",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_INCENDIARY             = ITEMS.register("grenade_incendiary",              () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_DEBILITATION           = ITEMS.register("grenade_debilitation",            () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_CHEMICAL               = ITEMS.register("grenade_chemical",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_ANVIL                  = ITEMS.register("grenade_anvil",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_REPULSIVE              = ITEMS.register("grenade_repulsive",               () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> GRENADE_ATTRACTIVE             = ITEMS.register("grenade_attractive",              () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> GRENADE_CONVENTIONAL           = ITEMS.register("grenade_conventional",            () -> new ItemGrenade(EntityReg.GRENADE_CONVENTIONAL));
+    public static final RegistryObject<Item> GRENADE_SHRAPNEL               = ITEMS.register("grenade_shrapnel",                () -> new ItemGrenade(EntityReg.GRENADE_SHRAPNEL));
+    public static final RegistryObject<Item> GRENADE_INCENDIARY             = ITEMS.register("grenade_incendiary",              () -> new ItemGrenade(EntityReg.GRENADE_INCENDIARY));
+    public static final RegistryObject<Item> GRENADE_DEBILITATION           = ITEMS.register("grenade_debilitation",            () -> new ItemGrenade(EntityReg.GRENADE_DEBILITATION));
+    public static final RegistryObject<Item> GRENADE_CHEMICAL               = ITEMS.register("grenade_chemical",                () -> new ItemGrenade(EntityReg.GRENADE_CHEMICAL));
+    public static final RegistryObject<Item> GRENADE_ANVIL                  = ITEMS.register("grenade_anvil",                   () -> new ItemGrenade(EntityReg.GRENADE_ANVIL));
+    public static final RegistryObject<Item> GRENADE_REPULSIVE              = ITEMS.register("grenade_repulsive",               () -> new ItemGrenade(EntityReg.GRENADE_REPULSIVE));
+    public static final RegistryObject<Item> GRENADE_ATTRACTIVE             = ITEMS.register("grenade_attractive",              () -> new ItemGrenade(EntityReg.GRENADE_ATTRACTIVE));
 
     // Spikes
     public static final RegistryObject<Item> SPIKES                         = ITEMS.register("spikes",                          () -> new BlockItem(BlockReg.SPIKES.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

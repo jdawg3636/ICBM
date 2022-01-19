@@ -56,7 +56,7 @@ public class RaytracedBlastWorkerThread extends AbstractBlastWorkerThread {
                         deltaZ /= unnormalizedRayMagnitude;
 
                         // Process Ray
-                        double rayPower = radius - 3 * randomSupplier.get().nextFloat(); // todo: make variance configurable
+                        double rayPower = radius - 3 * randomSupplier.get().nextFloat();
                         Vector3d currentPos = new Vector3d(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
                         BlockPos currentBlockPos = new BlockPos(currentPos);
                         while (rayPower > 0) {

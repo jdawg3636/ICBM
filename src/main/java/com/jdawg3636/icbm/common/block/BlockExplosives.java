@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import net.minecraft.block.*;
@@ -20,8 +21,12 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 
@@ -30,6 +35,9 @@ import javax.annotation.Nullable;
 // Pretty much this entire class is directly copy/pasted from net.minecraft.block.TNTBlock
 // Had to be duplicated rather than extended because the explode() method is static
 public class BlockExplosives extends Block {
+
+    public VoxelShape customShape = null;
+    public boolean useCustomShape = false;
 
     public RegistryObject<EntityType<EntityPrimedExplosives>> entityForm;
     public AbstractBlastEvent.BlastEventProvider blastEventProvider;
@@ -43,6 +51,16 @@ public class BlockExplosives extends Block {
     }
 
     /**
+     * Custom Shape Constructor
+     * */
+    // TODO: use this for S-Mine instead of directly overriding getShape()
+    public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, VoxelShape customShape) {
+        this(entityForm, blastEventProvider, itemForm);
+        this.customShape = customShape;
+        this.useCustomShape = true;
+    }
+
+    /**
      * Verbose Constructor (Used by S-Mine to implement a custom material)
      * */
     public BlockExplosives(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
@@ -51,6 +69,21 @@ public class BlockExplosives extends Block {
         this.entityForm = entityForm;
         this.blastEventProvider = blastEventProvider;
         this.itemForm = itemForm;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
+        return useCustomShape ? customShape : super.getShape(state, level, pos, context);
+    }
+
+    @Override
+    public VoxelShape getOcclusionShape(BlockState state, IBlockReader level, BlockPos pos) {
+        return useCustomShape ? customShape : super.getOcclusionShape(state, level, pos);
+    }
+
+    @Override
+    public boolean useShapeForLightOcclusion(BlockState state) {
+        return useCustomShape;
     }
 
     /**
@@ -87,16 +120,18 @@ public class BlockExplosives extends Block {
 
     /**
      * Easter Egg for Redcoats
-     * todo: make this configurable
      */
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState state = super.getStateForPlacement(context);
-        if(state != null && context.getPlayer() != null) {
-            String playerName = context.getPlayer().getName().getString();
-            if(playerName.equals("SlushierZeus69") || playerName.equals("dig_dug__"))
-                state = state.setValue(UNSTABLE, Boolean.TRUE);
+        if(ICBMReference.COMMON_CONFIG.getEnableEasterEggForRedcoats()) {
+            if (state != null && context.getPlayer() != null) {
+                String playerName = context.getPlayer().getName().getString();
+                if (playerName.equals("SlushierZeus69") || playerName.equals("dig_dug__")) {
+                    state = state.setValue(UNSTABLE, Boolean.TRUE);
+                }
+            }
         }
         return state;
     }
@@ -214,6 +249,15 @@ public class BlockExplosives extends Block {
 
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(UNSTABLE);
+    }
+
+    public static VoxelShape combine(VoxelShape... shapes) {
+        if(shapes.length == 0) return null;
+        VoxelShape combined = shapes[0];
+        for(int i = 1; i < shapes.length; ++i) {
+            combined = VoxelShapes.or(combined, shapes[i]);
+        }
+        return combined;
     }
 
 }

@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 public class BlastControllerCapability implements IBlastControllerCapability {
 
-    public static final int MAX_THREAD_COUNT = Integer.MAX_VALUE; // todo replace with a value from config file
-
     public static void register() {
         CapabilityManager.INSTANCE.register(IBlastControllerCapability.class, new BlastControllerCapabilityStorage(), BlastControllerCapability::new);
     }
@@ -56,12 +54,11 @@ public class BlastControllerCapability implements IBlastControllerCapability {
         if(event.world instanceof ServerWorld) {
 
             // Start Enqueued Threads if a Slot is Available
-            if (activeBlastThreads.size() < MAX_THREAD_COUNT && queuedBlastThreads.size() > 0) {
+            if (activeBlastThreads.size() < ICBMReference.COMMON_CONFIG.getMaxBlastManagerThreadCountPerLevel() && queuedBlastThreads.size() > 0) {
                 AbstractBlastManagerThread thread = queuedBlastThreads.remove(0);
                 thread.initializeLevelCallbacks((ServerWorld) event.world);
                 thread.start();
                 addBlastThread(thread);
-                /*todo remove debug*/ ICBMReference.logger().info("Activated thread, count = " + activeBlastThreads.size());
             }
 
             // Remove Completed Threads
@@ -75,7 +72,6 @@ public class BlastControllerCapability implements IBlastControllerCapability {
             }
             for (AbstractBlastManagerThread thread : inactiveBlastThreads) {
                 removeBlastThread(thread);
-                /*todo remove debug*/ ICBMReference.logger().info("Deactivated thread, count = " + activeBlastThreads.size());
             }
 
         }

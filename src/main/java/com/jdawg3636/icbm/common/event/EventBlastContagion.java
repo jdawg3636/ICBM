@@ -18,10 +18,14 @@ public class EventBlastContagion extends AbstractBlastEvent {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
         ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition());
         EntityLingeringBlast entity = EntityReg.BLAST_CONTAGION.get().create(getBlastWorld());
-        entity.setPos(getBlastPosition().getX(), getBlastPosition().getY(), getBlastPosition().getZ());
-        entity.ticksRemaining = 400;
-        getBlastWorld().addFreshEntity(entity);
-        return true;
+        if(entity != null) {
+            entity.setPos(getBlastPosition().getX(), getBlastPosition().getY(), getBlastPosition().getZ());
+            entity.ticksRemaining = 400;
+            entity.blastType = getBlastType();
+            getBlastWorld().addFreshEntity(entity);
+            return true;
+        }
+        return false;
     }
 
 }
