@@ -1,9 +1,10 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.listener.ClientProxy;
-import com.jdawg3636.icbm.common.reg.ItemReg;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -12,7 +13,6 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
@@ -47,7 +47,7 @@ public class EntityRedmatterBlastRenderer extends EntityRenderer<EntityRedmatter
         matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), -animationRadians, false));
 
         // Render Accretion Disk
-        Minecraft.getInstance().getItemRenderer().render(new ItemStack(ItemReg.ROCKET_LAUNCHER.get()), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, OverlayTexture.NO_OVERLAY, MODEL_ACCRETION_DISK);
+        Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matrixStack.last(), renderBuffer.getBuffer(Atlases.translucentItemSheet()), Blocks.BLACK_STAINED_GLASS.defaultBlockState(), MODEL_ACCRETION_DISK, 1F, 1F, 1F, combinedLight, OverlayTexture.NO_OVERLAY, net.minecraftforge.client.model.data.EmptyModelData.INSTANCE);
 
         // Outer Pop
         matrixStack.popPose();
