@@ -4,6 +4,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -22,6 +23,11 @@ public class ICBMForgeEventListener {
     @SubscribeEvent
     public static void onBiomeLoadingEvent(final BiomeLoadingEvent event) {
         proxy.onBiomeLoadingEvent(event);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerInteractEvent(final PlayerInteractEvent.EntityInteractSpecific event) {
+        proxy.onPlayerInteractEvent(event);
     }
 
     @SubscribeEvent
