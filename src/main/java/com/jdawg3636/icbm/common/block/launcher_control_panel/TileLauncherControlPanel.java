@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public abstract class TileLauncherControlPanel extends TileEntity {
+public abstract class TileLauncherControlPanel extends TileEntity implements ILaunchControlPanel {
 
     public TileLauncherControlPanel(TileEntityType<?> tileEntityType) {
         super(tileEntityType);

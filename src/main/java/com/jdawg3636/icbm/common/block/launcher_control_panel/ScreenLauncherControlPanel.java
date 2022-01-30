@@ -83,6 +83,11 @@ public class ScreenLauncherControlPanel extends Screen {
         this.textFieldTargetY.setValue(String.valueOf(tileEntity.getTargetY()));
         this.textFieldRadioFrequency.setValue(String.valueOf(tileEntity.getRadioFrequency()));
 
+        this.textFieldTargetX.moveCursorToStart();
+        this.textFieldTargetZ.moveCursorToStart();
+        this.textFieldTargetY.moveCursorToStart();
+        this.textFieldRadioFrequency.moveCursorToStart();
+
         if(!(tileEntity instanceof TileLauncherControlPanelT2)) {
             textFieldTargetY.setEditable(false);
         }
@@ -102,6 +107,10 @@ public class ScreenLauncherControlPanel extends Screen {
         this.textFieldTargetZ.setValue(String.valueOf(tileEntity.getTargetZ()));
         this.textFieldTargetY.setValue(String.valueOf(tileEntity.getTargetY()));
         this.textFieldRadioFrequency.setValue(String.valueOf(tileEntity.getRadioFrequency()));
+        this.textFieldTargetX.moveCursorToStart();
+        this.textFieldTargetZ.moveCursorToStart();
+        this.textFieldTargetY.moveCursorToStart();
+        this.textFieldRadioFrequency.moveCursorToStart();
     }
 
     @Override

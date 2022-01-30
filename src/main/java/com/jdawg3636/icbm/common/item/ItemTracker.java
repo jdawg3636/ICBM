@@ -30,11 +30,11 @@ import java.util.UUID;
 public class ItemTracker extends Item {
 
     public ItemTracker() {
-        this(new Item.Properties());
+        this(new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB));
     }
 
     public ItemTracker(Item.Properties properties) {
-        super(properties.stacksTo(1).tab(ICBMReference.CREATIVE_TAB));
+        super(properties);
     }
 
     @Override
