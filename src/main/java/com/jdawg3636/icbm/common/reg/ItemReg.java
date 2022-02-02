@@ -147,7 +147,7 @@ public class ItemReg {
     // Functional Items
     public static final RegistryObject<Item> BATTERY                        = ITEMS.register("battery",                         () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> DEFUSER                        = ITEMS.register("defuser",                         ItemDefuser::new);
-    public static final RegistryObject<Item> LASER_DESIGNATOR               = ITEMS.register("laser_designator",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> LASER_DESIGNATOR               = ITEMS.register("laser_designator",                ItemLaserDesignator::new);
     public static final RegistryObject<Item> RADAR_GUN                      = ITEMS.register("radar_gun",                       ItemRadarGun::new);
     public static final RegistryObject<Item> REMOTE_DETONATOR               = ITEMS.register("remote_detonator",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> ROCKET_LAUNCHER                = ITEMS.register("rocket_launcher",                 () -> new ItemRocketLauncher(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

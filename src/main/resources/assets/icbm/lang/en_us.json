@@ -445,6 +445,10 @@
   "message.designator.nopower": "Laser designator out of electricity!",
   "message.designator.noFreq": "Laser designator frequency not set!",
 
+  "message.icbm.laser_designator.launched": "Ordered Launch on Frequency %s! Target: X:%s Y:%s Z:%s - Distance: %s",
+  "message.icbm.laser_designator.invalid_frequency": "Error: Frequency %s is outside the allowed range!",
+  "message.icbm.laser_designator.frequency_set": "Set Frequency to %s!",
+
   "message.radarGun.scanned": "Scanned coordinates: X:%s Y:%s Z:%s - Distance: %s",
   "message.radarGun.nopower": "Radar Gun out of electricity!",
   "message.radarGun.transfer": "Coordinate information transferred!",
