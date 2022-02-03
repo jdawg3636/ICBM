@@ -53,7 +53,7 @@ public class ItemLaserDesignator extends Item {
                                 ((ILaunchControlPanel)blockEntityInLevel).launchMissile();
                             }
                         }
-                        final double distanceToTarget = target.distanceTo(player.getPosition(0F));
+                        final double distanceToTarget = target.distanceTo(player.position());
                         player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.launched", itemStackFrequency, targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), (((int)(distanceToTarget*1000))/1000D)), Util.NIL_UUID);
                     }
                 }
