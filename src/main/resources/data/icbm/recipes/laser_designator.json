@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A  ",
+    " B ",
+    "  C"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:radar_gun"
+    },
+    "B": {
+      "tag": "forge:circuits/elite"
+    },
+    "C": {
+      "item": "icbm:remote_detonator"
+    }
+  },
+  "result": {
+    "item": "icbm:laser_designator",
+    "count": 1
+  }
+}
