@@ -1,12 +1,13 @@
 package com.jdawg3636.icbm.common.listener;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.capability.*;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
+import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.BlastControllerCapabilityProvider;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
 import com.jdawg3636.icbm.common.capability.trackingmanager.ITrackingManagerCapability;
 import com.jdawg3636.icbm.common.capability.trackingmanager.TrackingManagerCapabilityProvider;
+import com.jdawg3636.icbm.common.item.ItemDefuser;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import net.minecraft.server.MinecraftServer;
@@ -21,6 +22,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -68,6 +70,12 @@ public class CommonProxy {
         event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
                 () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_URANIUM.get().defaultBlockState(), 8)).range(16).squared()
         );
+    }
+
+    public void onPlayerInteractEvent(final PlayerInteractEvent.EntityInteractSpecific event) {
+        if(event.getPlayer().getItemInHand(event.getHand()).getItem() instanceof ItemDefuser) {
+            ItemDefuser.onInteractWithEntity(event);
+        }
     }
 
     public void onLivingDeathEvent(final LivingDeathEvent event) {

@@ -24,11 +24,11 @@ import java.util.List;
 public class ItemScanner extends Item {
 
     public ItemScanner() {
-        this(new Item.Properties());
+        this(new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB));
     }
 
     public ItemScanner(Item.Properties properties) {
-        super(properties.stacksTo(1).tab(ICBMReference.CREATIVE_TAB));
+        super(properties);
         DispenserBlock.registerBehavior(this, DISPENSE_ITEM_BEHAVIOR);
     }
 

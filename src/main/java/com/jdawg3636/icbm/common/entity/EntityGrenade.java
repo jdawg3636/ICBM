@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -72,12 +73,22 @@ public class EntityGrenade extends ThrowableEntity implements IRendersAsItem {
 
     @Override
     public ItemStack getItem() {
-        return itemForm.get().getDefaultInstance();
+        return getPickedResult(null);
     }
 
     @Override
     protected void defineSynchedData() {
         // NOP
+    }
+
+    @Override
+    public boolean isPickable() {
+        return true;
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return itemForm.get().getDefaultInstance();
     }
 
     @Override
