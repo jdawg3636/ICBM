@@ -22,6 +22,10 @@ import java.util.function.Predicate;
 
 public class ItemRocketLauncher extends ShootableItem {
 
+    public ItemRocketLauncher() {
+        this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB));
+    }
+
     public ItemRocketLauncher(Properties properties) {
         super(properties);
     }

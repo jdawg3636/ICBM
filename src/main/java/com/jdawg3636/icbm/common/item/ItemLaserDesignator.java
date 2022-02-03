@@ -1,7 +1,9 @@
 package com.jdawg3636.icbm.common.item;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ILaunchControlPanel;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
@@ -14,10 +16,10 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class ItemLaserDesignator extends ItemRadarGun {
+public class ItemLaserDesignator extends Item {
 
     public ItemLaserDesignator() {
-        super();
+        this(new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB));
     }
 
     public ItemLaserDesignator(Properties properties) {
