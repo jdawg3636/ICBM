@@ -50,7 +50,7 @@ public class ItemRadarGun extends Item {
                     player.getItemInHand(hand).getOrCreateTag().putDouble("target_x", target.x);
                     player.getItemInHand(hand).getOrCreateTag().putDouble("target_y", target.y);
                     player.getItemInHand(hand).getOrCreateTag().putDouble("target_z", target.z);
-                    final double distanceToTarget = target.distanceTo(player.getPosition(0F));
+                    final double distanceToTarget = target.distanceTo(player.position());
                     player.sendMessage(new TranslationTextComponent("message.radarGun.scanned", targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), (((int)(distanceToTarget*1000))/1000D)), Util.NIL_UUID);
                 }
             }
