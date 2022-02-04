@@ -10,6 +10,7 @@ import com.jdawg3636.icbm.common.capability.trackingmanager.TrackingManagerCapab
 import com.jdawg3636.icbm.common.item.ItemDefuser;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -19,6 +20,7 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -54,21 +56,15 @@ public class CommonProxy {
     }
 
     public void onBiomeLoadingEvent(final BiomeLoadingEvent event) {
-        // Copper Ore
-        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
-                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_COPPER.get().defaultBlockState(), 9)).range(64).squared().count(20)
-        );
-        // Sulfur Ore
-        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
-                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_SULFUR.get().defaultBlockState(), 16)).range(11).squared().count(20)
-        );
-        // Tin Ore
-        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
-                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_TIN.get().defaultBlockState(), 6)).range(48).squared().count(20)
-        );
-        // Uranium Ore
-        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES ).add(
-                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockReg.ORE_URANIUM.get().defaultBlockState(), 8)).range(16).squared()
+        if(ICBMReference.COMMON_CONFIG.getOreCopperCount() != 0)  registerOreGenFeature(event.getGeneration(), BlockReg.ORE_COPPER.get().defaultBlockState(),  ICBMReference.COMMON_CONFIG.getOreCopperSize(),  ICBMReference.COMMON_CONFIG.getOreCopperRange(),  ICBMReference.COMMON_CONFIG.getOreCopperCount());
+        if(ICBMReference.COMMON_CONFIG.getOreSulfurCount() != 0)  registerOreGenFeature(event.getGeneration(), BlockReg.ORE_SULFUR.get().defaultBlockState(),  ICBMReference.COMMON_CONFIG.getOreSulfurSize(),  ICBMReference.COMMON_CONFIG.getOreSulfurRange(),  ICBMReference.COMMON_CONFIG.getOreSulfurCount());
+        if(ICBMReference.COMMON_CONFIG.getOreTinCount() != 0)     registerOreGenFeature(event.getGeneration(), BlockReg.ORE_TIN.get().defaultBlockState(),     ICBMReference.COMMON_CONFIG.getOreTinSize(),     ICBMReference.COMMON_CONFIG.getOreTinRange(),     ICBMReference.COMMON_CONFIG.getOreTinCount());
+        if(ICBMReference.COMMON_CONFIG.getOreUraniumCount() != 0) registerOreGenFeature(event.getGeneration(), BlockReg.ORE_URANIUM.get().defaultBlockState(), ICBMReference.COMMON_CONFIG.getOreUraniumSize(), ICBMReference.COMMON_CONFIG.getOreUraniumRange(), ICBMReference.COMMON_CONFIG.getOreUraniumCount());
+    }
+
+    public static void registerOreGenFeature(BiomeGenerationSettingsBuilder builder, BlockState oreBlockState, int size, int range, int count) {
+        builder.getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(
+                () -> Feature.ORE.configured(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, oreBlockState, size)).range(range).squared().count(count)
         );
     }
 
