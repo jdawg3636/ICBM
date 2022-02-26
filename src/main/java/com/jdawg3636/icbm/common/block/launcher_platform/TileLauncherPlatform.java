@@ -42,6 +42,14 @@ public class TileLauncherPlatform extends TileEntity {
         return 5D/16D;
     }
 
+    public boolean usesControlPanel() {
+        return true;
+    }
+
+    public EntityMissile.MissileSourceType getMissileSourceType() {
+        return EntityMissile.MissileSourceType.LAUNCHER_PLATFORM;
+    }
+
     public void launchMissile(BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
         if(missileEntityID != null && level != null && !level.isClientSide()) {
             Item item = itemHandler.getStackInSlot(0).getItem();
@@ -61,6 +69,7 @@ public class TileLauncherPlatform extends TileEntity {
                 data.putInt("DestPosZ", destPos.getZ());
                 data.putFloat("PeakHeight", peakHeight);
                 data.putInt("TotalFlightTicks", totalFlightTicks);
+                data.putInt("MissileSourceType", getMissileSourceType().ordinal());
                 data.putInt("MissileLaunchPhase", EntityMissile.MissileLaunchPhase.LAUNCHED.ordinal());
                 try { entityDataAccessor.setData(data); } catch (Exception e) { e.printStackTrace(); }
 

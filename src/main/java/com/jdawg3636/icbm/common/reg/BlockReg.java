@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.reg;
 
-import com.jdawg3636.icbm.common.block.*;
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.*;
 import com.jdawg3636.icbm.common.block.cruise_launcher.BlockCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.BlockEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherControlPanel;

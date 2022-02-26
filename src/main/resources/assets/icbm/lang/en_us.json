@@ -513,6 +513,10 @@
   "gui.icbm.launcher_control_panel.radio_frequency": "Radio Frequency:",
 
   "gui.icbm.cruise_launcher": "Cruise Launcher",
+  "gui.icbm.cruise_launcher.target_x": "Target X:",
+  "gui.icbm.cruise_launcher.target_z": "Target Z:",
+  "gui.icbm.cruise_launcher.target_y": "Target Y:",
+  "gui.icbm.cruise_launcher.radio_frequency": "Frequency:",
 
   "gui.icbm.cruise_launcher.statusNoPower": "No Power!",
   "gui.icbm.cruise_launcher.statusEmpty": "No Missile!",

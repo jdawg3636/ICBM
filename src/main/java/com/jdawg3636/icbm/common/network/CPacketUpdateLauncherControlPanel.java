@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.network;
 
-import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
+import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -62,11 +62,11 @@ public class CPacketUpdateLauncherControlPanel {
             try {
                 ServerWorld senderWorld = sender.getLevel();
                 TileEntity tileEntity = senderWorld.getBlockEntity(packet.pos);
-                if(tileEntity instanceof TileLauncherControlPanel && sender.position().distanceToSqr(packet.pos.getX(), packet.pos.getY(), packet.pos.getZ()) <=  36) {
-                    if((packet.shouldUpdate & 0b0001) != 0) ((TileLauncherControlPanel) tileEntity).setTargetX(packet.targetX);
-                    if((packet.shouldUpdate & 0b0010) != 0) ((TileLauncherControlPanel) tileEntity).setTargetZ(packet.targetZ);
-                    if((packet.shouldUpdate & 0b0100) != 0) ((TileLauncherControlPanel) tileEntity).setTargetY(packet.targetY);
-                    if((packet.shouldUpdate & 0b1000) != 0) ((TileLauncherControlPanel) tileEntity).setRadioFrequency(packet.radioFrequency);
+                if(tileEntity instanceof ITileLaunchControlPanel && sender.position().distanceToSqr(packet.pos.getX(), packet.pos.getY(), packet.pos.getZ()) <=  36) {
+                    if((packet.shouldUpdate & 0b0001) != 0) ((ITileLaunchControlPanel) tileEntity).setTargetX(packet.targetX);
+                    if((packet.shouldUpdate & 0b0010) != 0) ((ITileLaunchControlPanel) tileEntity).setTargetZ(packet.targetZ);
+                    if((packet.shouldUpdate & 0b0100) != 0) ((ITileLaunchControlPanel) tileEntity).setTargetY(packet.targetY);
+                    if((packet.shouldUpdate & 0b1000) != 0) ((ITileLaunchControlPanel) tileEntity).setRadioFrequency(packet.radioFrequency);
                 }
             } catch (NullPointerException ignored) {
                 ignored.printStackTrace();

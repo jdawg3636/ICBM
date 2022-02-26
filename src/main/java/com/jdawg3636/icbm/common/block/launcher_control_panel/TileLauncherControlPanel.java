@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public abstract class TileLauncherControlPanel extends TileEntity implements ILaunchControlPanel {
+public abstract class TileLauncherControlPanel extends TileEntity implements ITileLaunchControlPanel {
 
     public TileLauncherControlPanel(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
@@ -46,7 +46,9 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ILa
         BlockPos platformPos = getBlockPos().offset(getBlockState().getValue(BlockLauncherControlPanel.FACING).getOpposite().getNormal());
         TileEntity platformTile = level.getBlockEntity(platformPos);
         BlockPos targetPos = new BlockPos(getTargetX(), getTargetY(), getTargetZ());
-        if(platformTile instanceof TileLauncherPlatform) ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, level.getHeight(), (int)Math.sqrt((platformPos.getX() - getTargetX()) * (platformPos.getX() - getTargetX()) + (platformPos.getZ() - getTargetZ()) * (platformPos.getZ() - getTargetZ())));
+        if(platformTile instanceof TileLauncherPlatform && ((TileLauncherPlatform) platformTile).usesControlPanel()) {
+            ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, level.getHeight(), (int)Math.sqrt((platformPos.getX() - getTargetX()) * (platformPos.getX() - getTargetX()) + (platformPos.getZ() - getTargetZ()) * (platformPos.getZ() - getTargetZ())));
+        }
     }
 
     @Override

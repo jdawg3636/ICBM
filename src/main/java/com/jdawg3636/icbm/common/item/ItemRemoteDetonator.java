@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.launcher_control_panel.ILaunchControlPanel;
+import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,8 +33,8 @@ public class ItemRemoteDetonator extends Item {
             }
             else {
                 for (TileEntity blockEntityInLevel : level.blockEntityList) {
-                    if(blockEntityInLevel instanceof ILaunchControlPanel && ((ILaunchControlPanel)blockEntityInLevel).getRadioFrequency() == itemStackFrequency) {
-                        ((ILaunchControlPanel)blockEntityInLevel).launchMissile();
+                    if(blockEntityInLevel instanceof ITileLaunchControlPanel && ((ITileLaunchControlPanel)blockEntityInLevel).getRadioFrequency() == itemStackFrequency) {
+                        ((ITileLaunchControlPanel)blockEntityInLevel).launchMissile();
                     }
                 }
                 player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launched", itemStackFrequency), Util.NIL_UUID);
@@ -46,9 +46,9 @@ public class ItemRemoteDetonator extends Item {
     @Override
     public ActionResultType useOn(ItemUseContext context) {
         TileEntity targetTileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-        if(targetTileEntity instanceof ILaunchControlPanel) {
+        if(targetTileEntity instanceof ITileLaunchControlPanel) {
             if(!context.getLevel().isClientSide && context.getPlayer() != null) {
-                final int frequency = ((ILaunchControlPanel)targetTileEntity).getRadioFrequency();
+                final int frequency = ((ITileLaunchControlPanel)targetTileEntity).getRadioFrequency();
                 context.getPlayer().getItemInHand(context.getHand()).getOrCreateTag().putInt("frequency", frequency);
                 context.getPlayer().sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.frequency_set", frequency), Util.NIL_UUID);
             }

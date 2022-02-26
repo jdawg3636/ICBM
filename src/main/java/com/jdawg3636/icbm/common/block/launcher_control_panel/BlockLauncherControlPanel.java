@@ -1,6 +1,5 @@
 package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
-import com.jdawg3636.icbm.ICBM;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachineTile;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
@@ -64,7 +63,7 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
             if (flagHasSignal && !flagStateTriggered) {
                 level.setBlock(blockPos, blockState.setValue(TRIGGERED, Boolean.TRUE), 4);
                 TileEntity tileentity = level.getBlockEntity(blockPos);
-                if (tileentity instanceof TileLauncherControlPanel) ((TileLauncherControlPanel)tileentity).launchMissile();
+                if (tileentity instanceof ITileLaunchControlPanel) ((ITileLaunchControlPanel)tileentity).launchMissile();
             } else if (!flagHasSignal && flagStateTriggered) {
                 level.setBlock(blockPos, blockState.setValue(TRIGGERED, Boolean.FALSE), 4);
             }
