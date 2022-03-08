@@ -68,8 +68,8 @@ public class CPacketUpdateLauncherControlPanel {
                     if((packet.shouldUpdate & 0b0100) != 0) ((ITileLaunchControlPanel) tileEntity).setTargetY(packet.targetY);
                     if((packet.shouldUpdate & 0b1000) != 0) ((ITileLaunchControlPanel) tileEntity).setRadioFrequency(packet.radioFrequency);
                 }
-            } catch (NullPointerException ignored) {
-                ignored.printStackTrace();
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
             }
 
         });
