@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -48,6 +49,14 @@ public class TileLauncherPlatform extends TileEntity {
 
     public EntityMissile.MissileSourceType getMissileSourceType() {
         return EntityMissile.MissileSourceType.LAUNCHER_PLATFORM;
+    }
+
+    public double getYawRadians() {
+        return 0D;
+    }
+
+    public double getPitchRadians() {
+        return 0D;
     }
 
     public void launchMissile(BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
@@ -109,6 +118,7 @@ public class TileLauncherPlatform extends TileEntity {
                     if(item instanceof ItemMissile) {
                         EntityMissile entity = ((ItemMissile)item).getMissileEntity().get().create(level);
                         if(entity != null) {
+                            entity.missileSourceType = getMissileSourceType();
                             entity.setRot(0, -90F);
                             entity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + getMissileEntityYOffset(), getBlockPos().getZ() + 0.5);
                             level.addFreshEntity(entity);

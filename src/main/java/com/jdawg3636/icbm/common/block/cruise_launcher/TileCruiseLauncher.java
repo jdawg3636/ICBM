@@ -70,10 +70,12 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
 
     }
 
+    @Override
     public double getYawRadians() {
         return level != null && level.isClientSide() ? MathHelper.rotLerp((float)MathHelper.clamp((level.getGameTime() - tickAnimationStarted) / 40D, 0D, 1D), (float)yawRadiansSrc, (float)yawRadiansDst) : yawRadiansDst;
     }
 
+    @Override
     public double getPitchRadians() {
         return level != null && level.isClientSide() ? MathHelper.rotLerp((float)MathHelper.clamp((level.getGameTime() - tickAnimationStarted) / 40D, 0D, 1D), (float)pitchRadiansSrc, (float)pitchRadiansDst) : pitchRadiansDst;
     }
