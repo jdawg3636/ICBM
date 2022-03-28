@@ -106,7 +106,7 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
 
     @Override
     public void setRadioFrequency(int radioFrequency) {
-        this.radioFrequency = radioFrequency;
+        if(radioFrequency >= 0) this.radioFrequency = radioFrequency;
     }
 
     @Override

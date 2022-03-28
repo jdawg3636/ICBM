@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.block.cruise_launcher;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.IScreenLaunchControlPanel;
+import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
 import com.jdawg3636.icbm.common.network.CPacketUpdateLauncherControlPanel;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -48,12 +49,6 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
         this.tileEntity = tileEntity;
     }
 
-    public static boolean stringIsNumeric(String in) {
-        if(in.equals("")) return true;
-        try { Double.parseDouble(in); } catch (Exception e) { return false; }
-        return true;
-    }
-
     @Override
     protected void init() {
 
@@ -69,10 +64,10 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
         this.textFieldTargetY        = new TextFieldWidget(this.font, this.width / 2 - 20, ((height - imageHeight) / 2) + 6 + (15 * verticalIncrement++), widthTextField, 12, new TranslationTextComponent("gui." + ICBMReference.MODID + ".cruise_launcher.target_y"));
         this.textFieldRadioFrequency = new TextFieldWidget(this.font, this.width / 2 - 20, ((height - imageHeight) / 2) + 6 + (15 * verticalIncrement++), widthTextField, 12, new TranslationTextComponent("gui." + ICBMReference.MODID + ".cruise_launcher.radio_frequency"));
 
-        textFieldTargetX.setFilter(ScreenCruiseLauncher::stringIsNumeric);
-        textFieldTargetZ.setFilter(ScreenCruiseLauncher::stringIsNumeric);
-        textFieldTargetY.setFilter(ScreenCruiseLauncher::stringIsNumeric);
-        textFieldRadioFrequency.setFilter(ScreenCruiseLauncher::stringIsNumeric);
+        textFieldTargetX.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
+        textFieldTargetZ.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
+        textFieldTargetY.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
+        textFieldRadioFrequency.setFilter(ScreenLauncherControlPanel::stringIsPositiveInteger);
 
         this.textFieldTargetX.setMaxLength(32500);
         this.textFieldTargetX.setMaxLength(32500);

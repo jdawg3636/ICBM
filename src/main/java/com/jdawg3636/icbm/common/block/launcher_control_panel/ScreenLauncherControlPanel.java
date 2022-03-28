@@ -48,7 +48,17 @@ public class ScreenLauncherControlPanel extends Screen implements IScreenLaunchC
 
     public static boolean stringIsNumeric(String in) {
         if(in.equals("")) return true;
+        if(in.equals("-")) return true;
         try { Double.parseDouble(in); } catch (Exception e) { return false; }
+        return true;
+    }
+
+    public static boolean stringIsPositiveInteger(String in) {
+        if(in.equals("")) return true;
+        try {
+            int val = Integer.parseInt(in);
+            if(val < 0) return false;
+        } catch (Exception e) { return false; }
         return true;
     }
 
@@ -70,7 +80,7 @@ public class ScreenLauncherControlPanel extends Screen implements IScreenLaunchC
         textFieldTargetX.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
         textFieldTargetZ.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
         textFieldTargetY.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
-        textFieldRadioFrequency.setFilter(ScreenLauncherControlPanel::stringIsNumeric);
+        textFieldRadioFrequency.setFilter(ScreenLauncherControlPanel::stringIsPositiveInteger);
 
         this.textFieldTargetX.setMaxLength(32500);
         this.textFieldTargetX.setMaxLength(32500);
