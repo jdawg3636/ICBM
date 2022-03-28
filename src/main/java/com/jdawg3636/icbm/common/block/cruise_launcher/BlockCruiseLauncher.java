@@ -1,10 +1,12 @@
 package com.jdawg3636.icbm.common.block.cruise_launcher;
 
+import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachineTile;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.item.ItemMissile;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,6 +17,9 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
@@ -29,12 +34,22 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMissileLaunchApparatus {
 
+    public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
+
     public BlockCruiseLauncher(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
         super(tileEntityType);
+        this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
     }
 
     public BlockCruiseLauncher(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
         super(properties, tileEntityType);
+        this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(TRIGGERED);
     }
 
     @Override
@@ -73,13 +88,31 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
 
     @Override
     public void onRemove(BlockState originalState, World level, BlockPos blockPos, BlockState newState, boolean flag) {
-        TileEntity tileEntity = level.getBlockEntity(blockPos);
-        if(tileEntity instanceof TileCruiseLauncher) ((TileCruiseLauncher)tileEntity).onPlatformDestroyed();
+        if(originalState.getBlock() != newState.getBlock()) {
+            TileEntity tileEntity = level.getBlockEntity(blockPos);
+            if (tileEntity instanceof TileCruiseLauncher) ((TileCruiseLauncher) tileEntity).onPlatformDestroyed();
+        }
         super.onRemove(originalState, level, blockPos, newState, flag);
     }
 
     public ContainerType<? extends Container> getContainerType() {
         return ContainerReg.CRUISE_LAUNCHER.get();
+    }
+
+    @Override
+    public void neighborChanged(BlockState blockState, World level, BlockPos blockPos, Block p_220069_4_, BlockPos p_220069_5_, boolean p_220069_6_) {
+        if (!level.isClientSide) {
+            boolean flagHasSignal = level.hasNeighborSignal(blockPos) || level.hasNeighborSignal(blockPos.above());
+            boolean flagStateTriggered = blockState.getValue(TRIGGERED);
+            if (flagHasSignal && !flagStateTriggered) {
+                level.setBlock(blockPos, blockState.setValue(TRIGGERED, Boolean.TRUE), 4);
+                TileEntity tileentity = level.getBlockEntity(blockPos);
+                if (tileentity instanceof ITileLaunchControlPanel) ((ITileLaunchControlPanel)tileentity).launchMissile();
+            } else if (!flagHasSignal && flagStateTriggered) {
+                level.setBlock(blockPos, blockState.setValue(TRIGGERED, Boolean.FALSE), 4);
+            }
+
+        }
     }
 
 }
