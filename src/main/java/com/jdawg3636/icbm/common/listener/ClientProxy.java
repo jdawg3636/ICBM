@@ -231,4 +231,9 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    public double getTileEntityUpdateDistance() {
+        double l1Distance = (Minecraft.getInstance().options.renderDistance + 1) * 16;
+        return Math.sqrt(l1Distance * l1Distance + l1Distance * l1Distance);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.emp_tower;
 
+import com.jdawg3636.icbm.ICBMReference;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -33,6 +34,11 @@ public class TileEMPTower extends TileEntity implements ITickableTileEntity {
     @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         return super.getRenderBoundingBox().expandTowards(0, 1, 0).inflate(1D/16D, 0, 1D/16D);
+    }
+
+    @Override
+    public double getViewDistance() {
+        return ICBMReference.proxy.getTileEntityUpdateDistance();
     }
 
 }

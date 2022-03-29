@@ -64,8 +64,7 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
         // Update Nearby Clients
         SUpdateTileEntityPacket updatePacket = this.getUpdatePacket();
         if(updatePacket != null && level != null && level.getServer() != null) {
-            // Using radius of 64 to match the client-side view distance (can't call this::getViewDistance because it would crash on servers)
-            level.getServer().getPlayerList().broadcast(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 64D, level.dimension(), updatePacket);
+            level.getServer().getPlayerList().broadcast(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), ICBMReference.proxy.getTileEntityUpdateDistance(), level.dimension(), updatePacket);
         }
 
     }
@@ -181,6 +180,11 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
             handleUpdateTag(getBlockState(), pkt.getTag());
             ICBMReference.proxy.updateScreenLauncherControlPanel();
         }
+    }
+
+    @Override
+    public double getViewDistance() {
+        return ICBMReference.proxy.getTileEntityUpdateDistance();
     }
 
 }

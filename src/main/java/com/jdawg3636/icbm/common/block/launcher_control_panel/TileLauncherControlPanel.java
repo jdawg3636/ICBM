@@ -71,4 +71,9 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
         }
     }
 
+    @Override
+    public double getViewDistance() {
+        return ICBMReference.proxy.getTileEntityUpdateDistance();
+    }
+
 }

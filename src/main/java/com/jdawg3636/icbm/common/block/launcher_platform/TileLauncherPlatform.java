@@ -154,4 +154,9 @@ public class TileLauncherPlatform extends TileEntity {
         return super.save(tag);
     }
 
+    @Override
+    public double getViewDistance() {
+        return ICBMReference.proxy.getTileEntityUpdateDistance();
+    }
+
 }
