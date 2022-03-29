@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
+
 import javax.annotation.Nonnull;
 
 // Copied almost one-to-one from net.minecraft.client.renderer.entity.TNTRenderer

@@ -28,7 +28,7 @@ public class TileLauncherControlPanelT3 extends TileLauncherControlPanelT2 {
 
     @Override
     public void setRadioFrequency(int radioFrequency) {
-        this.radioFrequency = radioFrequency;
+        if(radioFrequency >= 0) this.radioFrequency = radioFrequency;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
-
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;

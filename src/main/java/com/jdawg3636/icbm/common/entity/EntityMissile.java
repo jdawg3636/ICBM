@@ -5,6 +5,7 @@ import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.BlockState;
+import net.minecraft.command.impl.data.EntityDataAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
@@ -416,12 +417,6 @@ public class EntityMissile extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(MISSILE_SOURCE_TYPE, MissileSourceType.LAUNCHER_PLATFORM.ordinal());
-        entityData.define(MISSILE_LAUNCH_PHASE, MissileLaunchPhase.STATIONARY.ordinal());
-    }
-
-    @Override
     protected void addAdditionalSaveData(CompoundNBT compound) {
 
         compound.putInt("MissileSourceType", missileSourceType.ordinal());
@@ -466,9 +461,39 @@ public class EntityMissile extends Entity {
     }
 
     @Override
+    protected void defineSynchedData() {
+        entityData.define(MISSILE_SOURCE_TYPE, MissileSourceType.LAUNCHER_PLATFORM.ordinal());
+        entityData.define(MISSILE_LAUNCH_PHASE, MissileLaunchPhase.STATIONARY.ordinal());
+    }
+
+    @Override
     public void onSyncedDataUpdated(DataParameter<?> dataParameter) {
-        if(MISSILE_SOURCE_TYPE.equals(dataParameter))  missileSourceType  = MissileSourceType.values()[entityData.get(MISSILE_SOURCE_TYPE)];
-        if(MISSILE_LAUNCH_PHASE.equals(dataParameter)) missileLaunchPhase = MissileLaunchPhase.values()[entityData.get(MISSILE_LAUNCH_PHASE)];
+        if(MISSILE_SOURCE_TYPE.equals(dataParameter)) {
+            missileSourceType = MissileSourceType.values()[entityData.get(MISSILE_SOURCE_TYPE)];
+        }
+        if(MISSILE_LAUNCH_PHASE.equals(dataParameter)) {
+            missileLaunchPhase = MissileLaunchPhase.values()[entityData.get(MISSILE_LAUNCH_PHASE)];
+        }
+    }
+
+    public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase) {
+        EntityDataAccessor entityDataAccessor = new EntityDataAccessor(this);
+        CompoundNBT data = entityDataAccessor.getData();
+        if(sourcePos != null) {
+            data.putInt("SourcePosX", sourcePos.getX());
+            data.putInt("SourcePosY", sourcePos.getY());
+            data.putInt("SourcePosZ", sourcePos.getZ());
+        }
+        if(destPos != null) {
+            data.putInt("DestPosX", destPos.getX());
+            data.putInt("DestPosY", destPos.getY());
+            data.putInt("DestPosZ", destPos.getZ());
+        }
+        if(peakHeight != null) data.putFloat("PeakHeight", peakHeight);
+        if(totalFlightTicks != null) data.putInt("TotalFlightTicks", totalFlightTicks);
+        if(missileSourceType != null) data.putInt("MissileSourceType", missileSourceType.ordinal());
+        if(missileLaunchPhase != null) data.putInt("MissileLaunchPhase", missileLaunchPhase.ordinal());
+        try { entityDataAccessor.setData(data); } catch (Exception e) { e.printStackTrace(); }
     }
 
     @Override

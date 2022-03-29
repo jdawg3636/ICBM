@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.radar_station;
 
+import com.jdawg3636.icbm.ICBMReference;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -33,6 +34,11 @@ public class TileRadarStation extends TileEntity implements ITickableTileEntity 
     @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         return super.getRenderBoundingBox().expandTowards(0, 1, 0).inflate(1, 0, 1);
+    }
+
+    @Override
+    public double getViewDistance() {
+        return ICBMReference.proxy.getTileEntityUpdateDistance();
     }
 
 }

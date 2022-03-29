@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.launcher_control_panel.ILaunchControlPanel;
+import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,12 +34,12 @@ public class ItemRadarGun extends Item {
                 final Vector3d target = rayTraceResult.getLocation();
                 final BlockPos targetBlockPos = ((BlockRayTraceResult)rayTraceResult).getBlockPos();
                 final TileEntity targetTileEntity = level.getBlockEntity(targetBlockPos);
-                if(targetTileEntity instanceof ILaunchControlPanel) {
+                if(targetTileEntity instanceof ITileLaunchControlPanel) {
                     final ItemStack itemStackInHand = player.getItemInHand(hand);
                     if(hasCoordinates(itemStackInHand)) {
-                        ((ILaunchControlPanel)targetTileEntity).setTargetX(itemStackInHand.getOrCreateTag().getDouble("target_x"));
-                        ((ILaunchControlPanel)targetTileEntity).setTargetY(itemStackInHand.getOrCreateTag().getDouble("target_y"));
-                        ((ILaunchControlPanel)targetTileEntity).setTargetZ(itemStackInHand.getOrCreateTag().getDouble("target_z"));
+                        ((ITileLaunchControlPanel)targetTileEntity).setTargetX(itemStackInHand.getOrCreateTag().getDouble("target_x"));
+                        ((ITileLaunchControlPanel)targetTileEntity).setTargetY(itemStackInHand.getOrCreateTag().getDouble("target_y"));
+                        ((ITileLaunchControlPanel)targetTileEntity).setTargetZ(itemStackInHand.getOrCreateTag().getDouble("target_z"));
                         player.sendMessage(new TranslationTextComponent("message.radarGun.transfer"), Util.NIL_UUID);
                     }
                     else {

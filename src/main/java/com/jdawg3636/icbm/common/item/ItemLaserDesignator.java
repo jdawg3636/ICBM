@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.launcher_control_panel.ILaunchControlPanel;
+import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,8 +34,8 @@ public class ItemLaserDesignator extends Item {
                 final Vector3d target = rayTraceResult.getLocation();
                 final BlockPos targetBlockPos = ((BlockRayTraceResult)rayTraceResult).getBlockPos();
                 final TileEntity targetTileEntity = level.getBlockEntity(targetBlockPos);
-                if(targetTileEntity instanceof ILaunchControlPanel) {
-                    final int frequency = ((ILaunchControlPanel)targetTileEntity).getRadioFrequency();
+                if(targetTileEntity instanceof ITileLaunchControlPanel) {
+                    final int frequency = ((ITileLaunchControlPanel)targetTileEntity).getRadioFrequency();
                     player.getItemInHand(hand).getOrCreateTag().putInt("frequency", frequency);
                     player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.frequency_set", frequency), Util.NIL_UUID);
                 }
@@ -46,11 +46,11 @@ public class ItemLaserDesignator extends Item {
                     }
                     else {
                         for (TileEntity blockEntityInLevel : level.blockEntityList) {
-                            if(blockEntityInLevel instanceof ILaunchControlPanel && ((ILaunchControlPanel)blockEntityInLevel).getRadioFrequency() == itemStackFrequency) {
-                                ((ILaunchControlPanel)blockEntityInLevel).setTargetX(target.x);
-                                ((ILaunchControlPanel)blockEntityInLevel).setTargetY(target.y);
-                                ((ILaunchControlPanel)blockEntityInLevel).setTargetZ(target.z);
-                                ((ILaunchControlPanel)blockEntityInLevel).launchMissile();
+                            if(blockEntityInLevel instanceof ITileLaunchControlPanel && ((ITileLaunchControlPanel)blockEntityInLevel).getRadioFrequency() == itemStackFrequency) {
+                                ((ITileLaunchControlPanel)blockEntityInLevel).setTargetX(target.x);
+                                ((ITileLaunchControlPanel)blockEntityInLevel).setTargetY(target.y);
+                                ((ITileLaunchControlPanel)blockEntityInLevel).setTargetZ(target.z);
+                                ((ITileLaunchControlPanel)blockEntityInLevel).launchMissile();
                             }
                         }
                         final double distanceToTarget = target.distanceTo(player.position());

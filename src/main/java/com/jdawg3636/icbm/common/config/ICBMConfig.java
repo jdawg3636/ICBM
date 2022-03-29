@@ -78,7 +78,7 @@ public class ICBMConfig {
                             "Defines the amount of time, in game ticks (20 ticks = 1 second), that a missile launched from",
                             "a handheld launcher or a cruise launcher (rather than from a launcher platform) can be in flight",
                             "before automatically detonating.")
-                    .defineInRange("maxNumTicksAliveForLinearMissiles", 100, 0, Integer.MAX_VALUE);
+                    .defineInRange("maxNumTicksAliveForLinearMissiles", 200, 0, Integer.MAX_VALUE);
             this.doLogMissilePathsHandheld = builder
                     .comment("",
                             "Enables logging to console of missile launches from handheld Rocket Launchers.")

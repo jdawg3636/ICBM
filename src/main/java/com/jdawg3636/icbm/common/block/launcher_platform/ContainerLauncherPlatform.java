@@ -33,8 +33,20 @@ public class ContainerLauncherPlatform extends Container {
         this.tileEntity = world.getBlockEntity(pos);
         this.playerInventory = new InvWrapper(playerInventory);
         if(tileEntity != null)
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> addSlot(new SlotItemHandler(h, 0, 84, 47)));
+            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> addSlot(new SlotItemHandler(h, 0, getMissileSlotX(), getMissileSlotY())));
         layoutPlayerInventorySlots(8, 84);
+    }
+
+    public int getMissileSlotX() {
+        return 84;
+    }
+
+    public int getMissileSlotY() {
+        return 47;
+    }
+
+    public TileEntity getBlockEntity() {
+        return tileEntity;
     }
 
     @Override

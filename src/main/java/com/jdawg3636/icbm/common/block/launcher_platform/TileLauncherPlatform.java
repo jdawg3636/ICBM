@@ -5,7 +5,6 @@ import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.item.ItemMissile;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.BlockState;
-import net.minecraft.command.impl.data.EntityDataAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -42,6 +41,22 @@ public class TileLauncherPlatform extends TileEntity {
         return 5D/16D;
     }
 
+    public boolean usesControlPanel() {
+        return true;
+    }
+
+    public EntityMissile.MissileSourceType getMissileSourceType() {
+        return EntityMissile.MissileSourceType.LAUNCHER_PLATFORM;
+    }
+
+    public double getYawRadians() {
+        return 0D;
+    }
+
+    public double getPitchRadians() {
+        return 0D;
+    }
+
     public void launchMissile(BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
         if(missileEntityID != null && level != null && !level.isClientSide()) {
             Item item = itemHandler.getStackInSlot(0).getItem();
@@ -51,18 +66,7 @@ public class TileLauncherPlatform extends TileEntity {
                 missileEntityID = null; // Necessary to disconnect, otherwise ItemStackHandler would kill the entity when the slot is cleared
                 itemHandler.setStackInSlot(0, ItemStack.EMPTY);
 
-                EntityDataAccessor entityDataAccessor = new EntityDataAccessor(entity);
-                CompoundNBT data = entityDataAccessor.getData();
-                data.putInt("SourcePosX", sourcePos.getX());
-                data.putInt("SourcePosY", sourcePos.getY());
-                data.putInt("SourcePosZ", sourcePos.getZ());
-                data.putInt("DestPosX", destPos.getX());
-                data.putInt("DestPosY", destPos.getY());
-                data.putInt("DestPosZ", destPos.getZ());
-                data.putFloat("PeakHeight", peakHeight);
-                data.putInt("TotalFlightTicks", totalFlightTicks);
-                data.putInt("MissileLaunchPhase", EntityMissile.MissileLaunchPhase.LAUNCHED.ordinal());
-                try { entityDataAccessor.setData(data); } catch (Exception e) { e.printStackTrace(); }
+                entity.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, getMissileSourceType(), EntityMissile.MissileLaunchPhase.LAUNCHED);
 
                 this.level.playSound((PlayerEntity) null, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), SoundEventReg.EFFECT_MISSILE_LAUNCH.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 
@@ -102,6 +106,7 @@ public class TileLauncherPlatform extends TileEntity {
                         if(entity != null) {
                             entity.setRot(0, -90F);
                             entity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + getMissileEntityYOffset(), getBlockPos().getZ() + 0.5);
+                            entity.updateMissileData(null, null, null, null, getMissileSourceType(), null);
                             level.addFreshEntity(entity);
                             missileEntityID = entity.getUUID();
                         }
@@ -147,6 +152,11 @@ public class TileLauncherPlatform extends TileEntity {
         tag.put("inv", itemHandler.serializeNBT());
         tag.putString("missileEntity", missileEntityID == null ? "Empty" : missileEntityID.toString());
         return super.save(tag);
+    }
+
+    @Override
+    public double getViewDistance() {
+        return ICBMReference.proxy.getTileEntityUpdateDistance();
     }
 
 }

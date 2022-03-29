@@ -1,10 +1,13 @@
 package com.jdawg3636.icbm.common.listener;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
+import com.jdawg3636.icbm.common.block.cruise_launcher.ScreenCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TERCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TileCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.TEREMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
+import com.jdawg3636.icbm.common.block.launcher_control_panel.IScreenLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
@@ -61,6 +64,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.cutout());
 
         // Register Container Screens
+        ScreenManager.<ContainerCruiseLauncher, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
@@ -222,9 +226,14 @@ public class ClientProxy extends CommonProxy {
     }
 
     public void updateScreenLauncherControlPanel() {
-        if (Minecraft.getInstance().screen instanceof ScreenLauncherControlPanel) {
-            ((ScreenLauncherControlPanel)Minecraft.getInstance().screen).updateGui();
+        if (Minecraft.getInstance().screen instanceof IScreenLaunchControlPanel) {
+            ((IScreenLaunchControlPanel)Minecraft.getInstance().screen).updateGui();
         }
+    }
+
+    public double getTileEntityUpdateDistance() {
+        double l1Distance = (Minecraft.getInstance().options.renderDistance + 1) * 16;
+        return Math.sqrt(l1Distance * l1Distance + l1Distance * l1Distance);
     }
 
 }
