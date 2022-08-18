@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.network;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.PacketDirection;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -55,7 +56,7 @@ public class CPacketUpdateLauncherControlPanel {
 
         contextSupplier.get().enqueueWork(() -> {
 
-            if(contextSupplier.get().getDirection() != NetworkDirection.PLAY_TO_SERVER) return;
+            if(contextSupplier.get().getDirection() != NetworkDirection.PLAY_TO_SERVER || contextSupplier.get().getNetworkManager().getDirection() != PacketDirection.SERVERBOUND) return;
 
             ServerPlayerEntity sender = contextSupplier.get().getSender();
 

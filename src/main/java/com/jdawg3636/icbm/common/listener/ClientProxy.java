@@ -49,6 +49,7 @@ public class ClientProxy extends CommonProxy {
     public static final ResourceLocation MODEL_REDMATTER_BLAST_ACCRETION_DISK = new ResourceLocation(ICBMReference.MODID + ":entity/redmatter_blast_accretion_disk");
     public static final ResourceLocation MODEL_REDMATTER_BLAST_SPHERE         = new ResourceLocation(ICBMReference.MODID + ":entity/redmatter_blast_sphere");
 
+    @SuppressWarnings("unchecked")
     public void onClientSetupEvent(FMLClientSetupEvent event) {
 
         // Set Render Layers
