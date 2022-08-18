@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "icbm:item/hazmat_mask",
+    "layer1": "icbm:item/hazmat_mask_overlay"
+  }
+}

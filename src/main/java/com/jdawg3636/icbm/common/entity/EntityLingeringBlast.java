@@ -11,7 +11,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public abstract class EntityLingeringBlast extends Entity {
 
     public int ticksRemaining = 0;
-    // Note: blastType is never updated for EntityRedmatterBlast
+    // Note: blastType is never updated for EntityRedmatterBlast or EntityLingeringBlastRadiation
     public AbstractBlastEvent.Type blastType = AbstractBlastEvent.Type.EXPLOSIVES;
 
     public EntityLingeringBlast(EntityType<?> entityType, World level) {

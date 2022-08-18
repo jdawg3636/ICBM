@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.item.*;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
@@ -176,5 +177,11 @@ public class ItemReg {
     public static final RegistryObject<Item> ANTIDOTE                       = ITEMS.register("antidote",                        () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> GLASS_BUTTON                   = ITEMS.register("glass_button",                    () -> new BlockItem(BlockReg.GLASS_BUTTON.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> GLASS_PRESSURE_PLATE           = ITEMS.register("glass_pressure_plate",            () -> new BlockItem(BlockReg.GLASS_PRESSURE_PLATE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+
+    // Armor
+    public static final RegistryObject<Item> HAZMAT_MASK    = ITEMS.register("hazmat_mask",   () -> new ItemHazmatArmor(EquipmentSlotType.HEAD));
+    public static final RegistryObject<Item> HAZMAT_JACKET  = ITEMS.register("hazmat_jacket", () -> new ItemHazmatArmor(EquipmentSlotType.CHEST));
+    public static final RegistryObject<Item> HAZMAT_PANTS   = ITEMS.register("hazmat_pants",  () -> new ItemHazmatArmor(EquipmentSlotType.LEGS));
+    public static final RegistryObject<Item> HAZMAT_BOOTS   = ITEMS.register("hazmat_boots",  () -> new ItemHazmatArmor(EquipmentSlotType.FEET));
 
 }

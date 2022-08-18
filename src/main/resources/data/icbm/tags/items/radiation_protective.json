@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "icbm:hazmat_mask",
+    "icbm:hazmat_jacket",
+    "icbm:hazmat_pants",
+    "icbm:hazmat_boots"
+  ]
+}

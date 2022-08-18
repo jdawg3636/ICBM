@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.entity.TNTMinecartRenderer;
+import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
@@ -168,6 +169,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGION.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityNOPRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_RADIATION.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_REDMATTER.get(), EntityRedmatterBlastRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_SONIC.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
@@ -180,6 +182,17 @@ public class ClientProxy extends CommonProxy {
         // Register Item Model Properties
         ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation("angle"),          ItemTracker::getAngleFromItemStack);
         ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation("icbm:hastarget"), ItemTracker::getHasTargetFromItemStack);
+
+        // Register ItemColors for Dyeable Armor
+        Minecraft.getInstance().getItemColors().register(
+                (itemStack, tintIndex) -> {
+                    return tintIndex > 0 ? -1 : ((IDyeableArmorItem)itemStack.getItem()).getColor(itemStack);
+                },
+                ItemReg.HAZMAT_MASK.get(),
+                ItemReg.HAZMAT_JACKET.get(),
+                ItemReg.HAZMAT_PANTS.get(),
+                ItemReg.HAZMAT_BOOTS.get()
+        );
 
     }
 

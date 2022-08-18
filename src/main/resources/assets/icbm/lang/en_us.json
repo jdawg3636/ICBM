@@ -52,7 +52,7 @@
   "potion.toxin": "Toxin",
   "potion.virus": "Virus",
   "potion.frostBite": "Frost Bite",
-  "potion.radiation": "Radiation",
+  "effect.icbm.radiation": "Radiation",
 
   # Items
   "item.icbm.battery": "Battery",
@@ -113,6 +113,12 @@
   "item.icbm.circuit_basic": "Basic Circuit",
   "item.icbm.circuit_advanced": "Advanced Circuit",
   "item.icbm.circuit_elite": "Elite Circuit",
+
+  # ICBM Armor
+  "item.icbm.hazmat_mask": "Hazmat Mask",
+  "item.icbm.hazmat_jacket": "Hazmat Jacket",
+  "item.icbm.hazmat_pants": "Hazmat Pants",
+  "item.icbm.hazmat_boots": "Hazmat Boots",
 
   # ICBM Machines
   "block.icbm.launcher_platform_t1": "Launcher Platform T1",
@@ -574,6 +580,7 @@
   "info.tracker.tooltip": "Left-click on a mob (players aswell) and I will point to it.",
 
   # Death messages
+  "death.attack.icbm.radiation": "%s succumbed to radiation poisoning",
   "death.attack.icbm.redmatter": "%s was crushed by the immense mass of the mighty black hole.",
   "death.attack.icbm.chemical": "%s suddenly started feeling not so well.",
   "death.attack.icbm.contagion": "%s breathed in too much of the green stuff.",
