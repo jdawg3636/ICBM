@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "AAA",
+      " B ",
+      "ACA"
+    ],
+    "key": {
+      "A": {
+        "tag": "minecraft:wool"
+      },
+      "B": {
+        "item": "minecraft:leather_leggings"
+      },
+      "C": {
+        "tag": "forge:circuits/basic"
+      }
+    },
+    "result": {
+      "item": "icbm:hazmat_pants",
+      "count": 1
+    }
+  }
