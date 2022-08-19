@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class BlastControllerCapabilityProvider implements ICapabilitySerializable<INBT> {
 
-    private IBlastControllerCapability capabilityInstance = new BlastControllerCapability();
+    public final IBlastControllerCapability capabilityInstance = new BlastControllerCapability();
 
     @Nonnull
     @Override

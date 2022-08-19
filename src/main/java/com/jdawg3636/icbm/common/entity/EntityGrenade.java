@@ -24,8 +24,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 )
 public class EntityGrenade extends ThrowableEntity implements IRendersAsItem {
 
-    public AbstractBlastEvent.BlastEventProvider blastEventProvider;
-    public RegistryObject<Item> itemForm;
+    public final AbstractBlastEvent.BlastEventProvider blastEventProvider;
+    public final RegistryObject<Item> itemForm;
     public int fuse = 40;
 
     public EntityGrenade(EntityType<? extends EntityGrenade> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {

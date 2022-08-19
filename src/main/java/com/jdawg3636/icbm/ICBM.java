@@ -41,6 +41,7 @@ public final class ICBM {
                 BlastManagerThreadReg.BLAST_MANAGER_THREADS,
                 BlockReg.BLOCKS,
                 ContainerReg.CONTAINERS,
+                EffectReg.EFFECTS,
                 EntityReg.ENTITIES,
                 ItemReg.ITEMS,
                 ParticleTypeReg.PARTICLES,

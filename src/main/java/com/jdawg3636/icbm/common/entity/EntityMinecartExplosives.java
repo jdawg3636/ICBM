@@ -2,8 +2,6 @@ package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.block.BlockExplosives;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
-import com.jdawg3636.icbm.common.reg.BlockReg;
-import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
@@ -24,8 +22,8 @@ import javax.annotation.Nonnull;
 
 public class EntityMinecartExplosives extends TNTMinecartEntity {
 
-    RegistryObject<Block> blockForm = BlockReg.EXPLOSIVES_CONDENSED;
-    RegistryObject<Item> itemForm = ItemReg.MINECART_EXPLOSIVE;
+    public final RegistryObject<Block> blockForm;
+    public final RegistryObject<Item> itemForm;
 
     public EntityMinecartExplosives(EntityType<? extends TNTMinecartEntity> entityType, World level, RegistryObject<Block> blockForm, RegistryObject<Item> itemForm) {
         super(entityType, level);

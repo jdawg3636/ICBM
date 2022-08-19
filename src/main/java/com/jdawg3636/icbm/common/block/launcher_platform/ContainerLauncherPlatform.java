@@ -25,8 +25,8 @@ import javax.annotation.Nullable;
 
 public class ContainerLauncherPlatform extends Container {
 
-    private TileEntity tileEntity;
-    private IItemHandler playerInventory;
+    private final TileEntity tileEntity;
+    private final IItemHandler playerInventory;
 
     public ContainerLauncherPlatform(@Nullable ContainerType<?> type, Block block, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
         super(type, windowId);
@@ -51,6 +51,8 @@ public class ContainerLauncherPlatform extends Container {
 
     @Override
     public boolean stillValid(PlayerEntity playerEntity) {
+        if(tileEntity == null) return false;
+        if(tileEntity.getLevel() == null) return false;
         return stillValid(IWorldPosCallable.create(tileEntity.getLevel(), tileEntity.getBlockPos()), playerEntity, tileEntity.getBlockState().getBlock());
     }
 
@@ -106,6 +108,7 @@ public class ContainerLauncherPlatform extends Container {
         return index;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private int addSlotBox(IItemHandler handler, int index, int x, int y, int horAmount, int dx, int verAmount, int dy) {
         for (int j = 0 ; j < verAmount ; j++) {
             index = addSlotRange(handler, index, x, y, horAmount, dx);
@@ -117,7 +120,6 @@ public class ContainerLauncherPlatform extends Container {
     private void layoutPlayerInventorySlots(int leftCol, int topRow) {
         // Player inventory
         addSlotBox(playerInventory, 9, leftCol, topRow, 9, 18, 3, 18);
-
         // Hotbar
         topRow += 58;
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);

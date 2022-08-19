@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
@@ -66,7 +66,7 @@ public class EntityRedmatterBlastRenderer extends EntityRenderer<EntityRedmatter
     @Nonnull
     @Override
     public ResourceLocation getTextureLocation(@Nonnull EntityRedmatterBlast entity) {
-        return AtlasTexture.LOCATION_BLOCKS;
+        return PlayerContainer.BLOCK_ATLAS;
     }
 
 }

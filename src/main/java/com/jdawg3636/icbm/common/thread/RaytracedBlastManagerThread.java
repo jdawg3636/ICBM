@@ -126,6 +126,6 @@ public class RaytracedBlastManagerThread extends AbstractBlastManagerThread {
         explosionCenterPosY = nbt.getDouble("explosion_center_pos_y");
         explosionCenterPosZ = nbt.getDouble("explosion_center_pos_z");
         radius              = nbt.getFloat ("radius");
-    };
+    }
 
 }

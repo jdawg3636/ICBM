@@ -31,13 +31,14 @@ public class BlockReinforcedGlass extends Block {
      */
     @OnlyIn(Dist.CLIENT)
     @Override
-    public float getShadeBrightness(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
+    public float getShadeBrightness(BlockState state, IBlockReader level, BlockPos blockPos) {
         return 1.0F;
     }
 
     /**
      * Prevents the rendering of internal faces when multiple blocks of the same type are placed next to each other
      */
+    @SuppressWarnings("deprecation")
     @Override
     @OnlyIn(Dist.CLIENT)
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {

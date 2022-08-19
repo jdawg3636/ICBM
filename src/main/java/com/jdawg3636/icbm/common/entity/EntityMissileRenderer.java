@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 
 public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
 
-    public ItemStack missileItem;
+    public final ItemStack missileItem;
 
     public EntityMissileRenderer(EntityRendererManager renderManagerIn, ItemStack missileItem) {
         super(renderManagerIn);
@@ -83,7 +83,7 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
     @Nonnull
     @Override
     public ResourceLocation getTextureLocation(@Nonnull EntityMissile entity) {
-        return AtlasTexture.LOCATION_BLOCKS;
+        return PlayerContainer.BLOCK_ATLAS;
     }
 
 }

@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public class TrackingManagerCapabilityProvider implements ICapabilitySerializable<INBT> {
 
-    private ITrackingManagerCapability capabilityInstance = new TrackingManagerCapability();
+    private final ITrackingManagerCapability capabilityInstance = new TrackingManagerCapability();
 
     @Nonnull
     @Override

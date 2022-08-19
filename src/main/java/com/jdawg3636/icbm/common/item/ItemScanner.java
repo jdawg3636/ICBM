@@ -34,25 +34,32 @@ public class ItemScanner extends Item {
 
     @Override
     public ActionResultType interactLivingEntity(ItemStack itemStack, PlayerEntity player, LivingEntity target, Hand hand) {
-        if(player.level != null && !player.level.isClientSide()) {
-            World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
-            LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
-            if(cap.isPresent()) {
-                cap.orElse(null).clearTickets(target.getUUID());
-                player.sendMessage(new TranslationTextComponent("chat.icbm.scannerconfirm.other", target.getName()), Util.NIL_UUID);
+        if(player.level != null) {
+            if(!player.level.isClientSide()) {
+                World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
+                if (levelOverworld != null) {
+                    LazyOptional<ITrackingManagerCapability> capOptional = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+                    capOptional.ifPresent((ITrackingManagerCapability cap) -> {
+                        cap.clearTickets(target.getUUID());
+                        player.sendMessage(new TranslationTextComponent("chat.icbm.scannerconfirm.other", target.getName()), Util.NIL_UUID);
+                    });
+                }
             }
+            return ActionResultType.sidedSuccess(player.level.isClientSide());
         }
-        return ActionResultType.sidedSuccess(player.level.isClientSide());
+        return ActionResultType.PASS;
     }
 
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         if(!level.isClientSide()) {
             World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
-            LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
-            if(cap.isPresent()) {
-                cap.orElse(null).clearTickets(player.getUUID());
-                player.sendMessage(new TranslationTextComponent("chat.icbm.scannerconfirm.self", player.getName()), Util.NIL_UUID);
+            if(levelOverworld != null) {
+                LazyOptional<ITrackingManagerCapability> capOptional = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+                capOptional.ifPresent((ITrackingManagerCapability cap) -> {
+                    cap.clearTickets(player.getUUID());
+                    player.sendMessage(new TranslationTextComponent("chat.icbm.scannerconfirm.self", player.getName()), Util.NIL_UUID);
+                });
             }
         }
         return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
@@ -72,15 +79,16 @@ public class ItemScanner extends Item {
 
         if (candidateTargetList.isEmpty()) return;
 
-        LivingEntity target = (LivingEntity)candidateTargetList.get(0);
+        final LivingEntity target = (LivingEntity)candidateTargetList.get(0);
         World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
-        if(levelOverworld == null) return;
-        LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
-        if(cap.isPresent()) {
-            cap.orElse(null).clearTickets(target.getUUID());
-            if(target instanceof PlayerEntity) {
-                target.sendMessage(new TranslationTextComponent("chat.icbm.scannerconfirm.self", target.getName()), Util.NIL_UUID);
-            }
+        if(levelOverworld != null) {
+            LazyOptional<ITrackingManagerCapability> capOptional = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+            capOptional.ifPresent((ITrackingManagerCapability cap) -> {
+                cap.clearTickets(target.getUUID());
+                if (target instanceof PlayerEntity) {
+                    target.sendMessage(new TranslationTextComponent("chat.icbm.scannerconfirm.self", target.getName()), Util.NIL_UUID);
+                }
+            });
         }
 
     }

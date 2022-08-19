@@ -23,18 +23,20 @@ public class RedmatterBlastManagerThread extends AntimatterBlastManagerThread {
         return () -> {
             // Create Entity
             EntityRedmatterBlast entity = EntityReg.BLAST_REDMATTER.get().create(level);
-            entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
-            // Pull Results from Worker Threads
-            entity.blocksToDestroy = new ArrayList<>();
-            for(AntimatterBlastWorkerThread worker : threadPool) {
-                entity.blocksToDestroy.addAll(worker.blocksToBeDestroyed);
+            if(entity != null) {
+                entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
+                // Pull Results from Worker Threads
+                entity.blocksToDestroy = new ArrayList<>();
+                for (AntimatterBlastWorkerThread worker : threadPool) {
+                    entity.blocksToDestroy.addAll(worker.blocksToBeDestroyed);
+                }
+                // Sort Results
+                hashCache = new HashMap<>();
+                entity.blocksToDestroy.sort(this::compareBlockPosDistanceWithFuzziness);
+                hashCache = null;
+                // Spawn Entity
+                level.addFreshEntity(entity);
             }
-            // Sort Results
-            hashCache = new HashMap<>();
-            entity.blocksToDestroy.sort(this::compareBlockPosDistanceWithFuzziness);
-            hashCache = null;
-            // Spawn Entity
-            level.addFreshEntity(entity);
         };
     }
 

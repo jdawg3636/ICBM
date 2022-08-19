@@ -5,6 +5,7 @@ import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.item.ItemMissile;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -29,8 +30,8 @@ import java.util.UUID;
 
 public class TileLauncherPlatform extends TileEntity {
 
-    public ItemStackHandler itemHandler = createHandler();
-    public LazyOptional<IItemHandler> itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
+    public final ItemStackHandler itemHandler = createHandler();
+    public final LazyOptional<IItemHandler> itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
     public UUID missileEntityID = null;
 
     public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn) {
@@ -94,9 +95,10 @@ public class TileLauncherPlatform extends TileEntity {
                 if(level != null && !level.isClientSide()) {
 
                     // Kill Previous Entity (If it Exists)
-                    try {
-                        ((ServerWorld)level).getEntity(missileEntityID).kill();
-                    } catch (Exception ignored) {}
+                    Entity previousEntity = ((ServerWorld)level).getEntity(missileEntityID);
+                    if(previousEntity != null) {
+                        previousEntity.kill();
+                    }
                     missileEntityID = null;
 
                     // Spawn New Entity (If Applicable)

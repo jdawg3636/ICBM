@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public class TrackingManagerCapability implements ITrackingManagerCapability {
 
-    HashMap<UUID, UUID> tickets = new HashMap<>();
-    Random random = new Random();
+    private final HashMap<UUID, UUID> tickets = new HashMap<>();
+    private final Random random = new Random();
 
     public static void register() {
         CapabilityManager.INSTANCE.register(ITrackingManagerCapability.class, new TrackingManagerCapabilityStorage(), TrackingManagerCapability::new);

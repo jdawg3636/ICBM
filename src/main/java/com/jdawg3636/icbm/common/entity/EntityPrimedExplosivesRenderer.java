@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.TNTMinecartRenderer;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 // Copied almost one-to-one from net.minecraft.client.renderer.entity.TNTRenderer
 public class EntityPrimedExplosivesRenderer extends EntityRenderer<EntityPrimedExplosives> {
 
-    public BlockState blockState;
+    public final BlockState blockState;
 
     public EntityPrimedExplosivesRenderer(EntityRendererManager renderManagerIn, BlockState blockState) {
         super(renderManagerIn);
@@ -47,7 +47,7 @@ public class EntityPrimedExplosivesRenderer extends EntityRenderer<EntityPrimedE
     @Nonnull
     @Override
     public ResourceLocation getTextureLocation(@Nonnull EntityPrimedExplosives entity) {
-        return AtlasTexture.LOCATION_BLOCKS;
+        return PlayerContainer.BLOCK_ATLAS;
     }
 
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "icbm:item/hazmat_boots",
+    "layer1": "icbm:item/hazmat_boots_overlay"
+  }
+}

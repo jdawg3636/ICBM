@@ -113,12 +113,13 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_ATTRACTIVE   = registerGrenade(EventBlastAttractive::new,   ItemReg.GRENADE_ATTRACTIVE);
 
     // Blast Utility Entity Registration
-    public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
-    public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_CONTAGION    = registerBlastUtilityEntity("blast_contagion",    EntityLingeringBlastContagion::new);
-    public static final RegistryObject<EntityType<EntityLingeringBlast>> BLAST_DEBILITATION = registerBlastUtilityEntity("blast_debilitation", EntityLingeringBlastDebilitation::new);
-    public static final RegistryObject<EntityType<EntityRedmatterBlast>> BLAST_REDMATTER    = registerBlastUtilityEntity("blast_redmatter",    EntityRedmatterBlast::new);
-    public static final RegistryObject<EntityType<EntitySonicBlast>>     BLAST_SONIC        = registerBlastUtilityEntity("blast_sonic",        EntitySonicBlast::new);
-    public static final RegistryObject<EntityType<EntityShrapnel>>       SHRAPNEL           = ENTITIES.register(
+    public static final RegistryObject<EntityType<EntityLingeringBlast>>          BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
+    public static final RegistryObject<EntityType<EntityLingeringBlast>>          BLAST_CONTAGION    = registerBlastUtilityEntity("blast_contagion",    EntityLingeringBlastContagion::new);
+    public static final RegistryObject<EntityType<EntityLingeringBlast>>          BLAST_DEBILITATION = registerBlastUtilityEntity("blast_debilitation", EntityLingeringBlastDebilitation::new);
+    public static final RegistryObject<EntityType<EntityLingeringBlastRadiation>> BLAST_RADIATION    = registerBlastUtilityEntity("blast_radiation",    EntityLingeringBlastRadiation::new);
+    public static final RegistryObject<EntityType<EntityRedmatterBlast>>          BLAST_REDMATTER    = registerBlastUtilityEntity("blast_redmatter",    EntityRedmatterBlast::new);
+    public static final RegistryObject<EntityType<EntitySonicBlast>>              BLAST_SONIC        = registerBlastUtilityEntity("blast_sonic",        EntitySonicBlast::new);
+    public static final RegistryObject<EntityType<EntityShrapnel>>                SHRAPNEL           = ENTITIES.register(
         "shrapnel",
         () -> {
             return EntityType.Builder.<EntityShrapnel>of(
@@ -213,6 +214,7 @@ public final class EntityReg {
     }
 
     public static <T extends Entity> RegistryObject<EntityType<T>> registerBlastUtilityEntity(String entityName, EntityType.IFactory<T> entityConstructor, float width, float height) {
+        //noinspection RedundantTypeArguments
         return ENTITIES.register(
                 entityName,
                 ()->EntityType.Builder.<T>of(

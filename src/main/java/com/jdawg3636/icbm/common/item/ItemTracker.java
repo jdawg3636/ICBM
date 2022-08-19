@@ -24,7 +24,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 import java.util.UUID;
 
 public class ItemTracker extends Item {
@@ -40,13 +39,13 @@ public class ItemTracker extends Item {
     @Override
     public void inventoryTick(ItemStack itemStack, World levelCurrent, Entity entity, int slot, boolean isSelected) {
         super.inventoryTick(itemStack, levelCurrent, entity, slot, isSelected);
-        if(levelCurrent != null && !levelCurrent.isClientSide() && ServerLifecycleHooks.getCurrentServer() != null) {
+        if(!levelCurrent.isClientSide() && ServerLifecycleHooks.getCurrentServer() != null) {
             CompoundNBT existingData = itemStack.getOrCreateTag();
             World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
             if (levelOverworld != null && !levelOverworld.isClientSide() && (isSelected || entity instanceof PlayerEntity && ((PlayerEntity) entity).getOffhandItem() == itemStack) && existingData.contains("tracking_ticket") && levelCurrent instanceof ServerWorld) {
-                LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
-                if (cap.isPresent()) {
-                    Vector3d targetPos = cap.orElse(null).getPos((ServerWorld) levelCurrent, existingData.getUUID("tracking_ticket"));
+                LazyOptional<ITrackingManagerCapability> capOptional = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+                capOptional.ifPresent((ITrackingManagerCapability cap) -> {
+                    Vector3d targetPos = cap.getPos((ServerWorld) levelCurrent, existingData.getUUID("tracking_ticket"));
                     if (targetPos != null) {
                         itemStack.getOrCreateTag().put("target_x", DoubleNBT.valueOf(targetPos.x));
                         itemStack.getOrCreateTag().put("target_z", DoubleNBT.valueOf(targetPos.z));
@@ -54,7 +53,7 @@ public class ItemTracker extends Item {
                         itemStack.getOrCreateTag().remove("target_x");
                         itemStack.getOrCreateTag().remove("target_z");
                     }
-                }
+                });
             }
         }
     }
@@ -62,30 +61,36 @@ public class ItemTracker extends Item {
     @Override
     public ActionResultType interactLivingEntity(ItemStack itemStack, PlayerEntity player, LivingEntity target, Hand hand) {
 
-        if(player != null && player.level != null && !player.level.isClientSide()) {
+        if(player.level != null && !player.level.isClientSide()) {
             World levelOverworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
-            LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
-            if(cap.isPresent()) {
+            if(levelOverworld != null) {
+                LazyOptional<ITrackingManagerCapability> capOptional = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+                capOptional.ifPresent((ITrackingManagerCapability cap) -> {
 
-                // Register with Ticket Manager
-                try {
-                    final UUID oldTicketID = itemStack.getOrCreateTag().getUUID("tracking_ticket");
-                    cap.orElse(null).deleteTicket(oldTicketID);
-                } catch (Exception ignored) { /* thrown when no previous ticket exists */ }
-                final UUID ticketID = cap.orElse(null).createTicket(target.getUUID());
+                    // Register with Ticket Manager
+                    try {
+                        final UUID oldTicketID = itemStack.getOrCreateTag().getUUID("tracking_ticket");
+                        cap.deleteTicket(oldTicketID);
+                    } catch (Exception ignored) { /* thrown when no previous ticket exists */ }
+                    final UUID ticketID = cap.createTicket(target.getUUID());
 
-                // Update ItemStack
-                ItemStack itemStack1 = itemStack;
-                player.inventory.removeItem(itemStack);
-                itemStack1.getOrCreateTag().putUUID("tracking_ticket", ticketID);
-                if (hand == Hand.MAIN_HAND) {
-                    player.inventory.setItem(player.inventory.selected, itemStack1);
-                } else {
-                    player.inventory.offhand.set(0, itemStack1);
-                }
+                    // Update ItemStack
+                    // TODO: Evaluate whether it is necessary to perform this copy/replacement, or if we could instead just modify the original ItemStack in-place. This could also remove the need to override IForgeItem::shouldCauseReequipAnimation
+                    ItemStack itemStack1 = itemStack.copy();
+                    player.inventory.removeItem(itemStack);
+                    itemStack1.getOrCreateTag().putUUID("tracking_ticket", ticketID);
+                    if (hand == Hand.MAIN_HAND) {
+                        player.inventory.setItem(player.inventory.selected, itemStack1);
+                    } else {
+                        player.inventory.offhand.set(0, itemStack1);
+                    }
+
+                });
 
                 // Return
-                return ActionResultType.sidedSuccess(player.level.isClientSide());
+                if(capOptional.isPresent()) {
+                    return ActionResultType.sidedSuccess(player.level.isClientSide());
+                }
 
             }
         }
@@ -112,7 +117,6 @@ public class ItemTracker extends Item {
         }
 
         final CompoundNBT itemStackData = itemStack.getOrCreateTag();
-        final Random random = new Random();
         final double targetX = itemStackData.contains("target_x") ? itemStackData.getDouble("target_x") : 0D;
         final double targetZ = itemStackData.contains("target_z") ? itemStackData.getDouble("target_z") : 0D;
 

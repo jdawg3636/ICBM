@@ -15,7 +15,7 @@ import net.minecraftforge.fml.RegistryObject;
 
 public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
-    RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType;
+    public final RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType;
 
     public AbstractBlockMultiTile(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
         this(getMultiblockMachineBlockProperties(), tileEntityType);

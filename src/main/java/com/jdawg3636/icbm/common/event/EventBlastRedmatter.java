@@ -39,11 +39,8 @@ public class EventBlastRedmatter extends AbstractBlastEvent {
         blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
         blastManagerThread.radius = getBlastType() == Type.GRENADE ? 30 : 50; // todo: make configurable
         blastManagerThread.fuzzyEdgeThickness = 2; // todo: make configurable
-        LazyOptional<IBlastControllerCapability> cap = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
-        if(cap.isPresent()) {
-            cap.orElse(null).enqueueBlastThread(blastManagerThread);
-        }
-
+        LazyOptional<IBlastControllerCapability> capOptional = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
+        capOptional.ifPresent((IBlastControllerCapability cap) -> cap.enqueueBlastThread(blastManagerThread));
         return true;
 
     }

@@ -40,6 +40,7 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
         builder.add(TRIGGERED);
     }
 
+    @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockRayTraceResult blockRayTraceResult) {
         TileEntity tileEntity = world.getBlockEntity(blockPos);
         if (tileEntity instanceof TileLauncherControlPanel) {
@@ -55,6 +56,7 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(BlockState blockState, World level, BlockPos blockPos, Block p_220069_4_, BlockPos p_220069_5_, boolean p_220069_6_) {
         if (!level.isClientSide) {

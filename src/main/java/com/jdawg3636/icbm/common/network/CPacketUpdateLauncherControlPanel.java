@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.network;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.PacketDirection;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -15,12 +16,12 @@ import java.util.function.Supplier;
 // Server -> Client is sent using a vanilla SUpdateTileEntityPacket handled in TileLauncherControlPanel::onDataPacket
 public class CPacketUpdateLauncherControlPanel {
 
-    public BlockPos pos;
-    public int shouldUpdate;
-    public double targetX;
-    public double targetZ;
-    public double targetY;
-    public int radioFrequency;
+    public final BlockPos pos;
+    public final int shouldUpdate;
+    public final double targetX;
+    public final double targetZ;
+    public final double targetY;
+    public final int radioFrequency;
 
     public CPacketUpdateLauncherControlPanel(BlockPos pos, int shouldUpdate, double targetX, double targetZ, double targetY, int radioFrequency) {
         this.pos = pos;
@@ -55,11 +56,11 @@ public class CPacketUpdateLauncherControlPanel {
 
         contextSupplier.get().enqueueWork(() -> {
 
-            if(contextSupplier.get().getDirection() != NetworkDirection.PLAY_TO_SERVER) return;
+            if(contextSupplier.get().getDirection() != NetworkDirection.PLAY_TO_SERVER || contextSupplier.get().getNetworkManager().getDirection() != PacketDirection.SERVERBOUND) return;
 
             ServerPlayerEntity sender = contextSupplier.get().getSender();
 
-            try {
+            if(sender != null) {
                 ServerWorld senderWorld = sender.getLevel();
                 TileEntity tileEntity = senderWorld.getBlockEntity(packet.pos);
                 if(tileEntity instanceof ITileLaunchControlPanel && sender.position().distanceToSqr(packet.pos.getX(), packet.pos.getY(), packet.pos.getZ()) <=  36) {
@@ -68,8 +69,6 @@ public class CPacketUpdateLauncherControlPanel {
                     if((packet.shouldUpdate & 0b0100) != 0) ((ITileLaunchControlPanel) tileEntity).setTargetY(packet.targetY);
                     if((packet.shouldUpdate & 0b1000) != 0) ((ITileLaunchControlPanel) tileEntity).setRadioFrequency(packet.radioFrequency);
                 }
-            } catch (NullPointerException npe) {
-                npe.printStackTrace();
             }
 
         });

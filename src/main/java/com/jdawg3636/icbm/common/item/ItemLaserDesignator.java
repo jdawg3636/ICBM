@@ -30,7 +30,7 @@ public class ItemLaserDesignator extends Item {
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         if(!level.isClientSide()) {
             RayTraceResult rayTraceResult = player.pick(1000, 0F, false);
-            if(rayTraceResult != null && rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
+            if(rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
                 final Vector3d target = rayTraceResult.getLocation();
                 final BlockPos targetBlockPos = ((BlockRayTraceResult)rayTraceResult).getBlockPos();
                 final TileEntity targetTileEntity = level.getBlockEntity(targetBlockPos);

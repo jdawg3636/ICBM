@@ -28,10 +28,6 @@ public class EntityShrapnel extends AbstractArrowEntity {
         this.setBaseDamage(this.getBaseDamage() * 12D);
     }
 
-    public EntityShrapnel(World level, double positionX, double positionY, double positionZ) {
-        this(level, positionX, positionY, positionZ, false, AbstractBlastEvent.Type.EXPLOSIVES);
-    }
-
     public EntityShrapnel(World level, double positionX, double positionY, double positionZ, boolean isExplosive, AbstractBlastEvent.Type blastType) {
         super(EntityReg.SHRAPNEL.get(), positionX, positionY, positionZ, level);
         this.isExplosive = isExplosive;

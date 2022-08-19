@@ -117,6 +117,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      * Called before the Block is set to air in the world. Called regardless of if the player's tool can actually collect
      * this block
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState originalState, World level, BlockPos blockPos, BlockState newState, boolean flag) {
         super.onRemove(originalState, level, blockPos, newState, flag);
@@ -128,6 +129,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         return isRootOfMultiblock(state);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean dropFromExplosion(Explosion explosion) {
         return false;
@@ -205,11 +207,13 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         return pos.offset(-offsetX, -offsetY, -offsetZ);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BlockRenderType getRenderShape(BlockState state) {
         return isRootOfMultiblock(state) ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @OnlyIn(Dist.CLIENT)
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {

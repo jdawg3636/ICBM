@@ -39,10 +39,8 @@ public class EventBlastEndothermic extends AbstractBlastEvent {
         blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
         blastManagerThread.radius = (float)ICBMReference.COMMON_CONFIG.getBlastRadiusEndothermic();
         blastManagerThread.threadCount = 4;
-        LazyOptional<IBlastControllerCapability> cap = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
-        if(cap.isPresent()) {
-            cap.orElse(null).enqueueBlastThread(blastManagerThread);
-        }
+        LazyOptional<IBlastControllerCapability> capOptional = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
+        capOptional.ifPresent((IBlastControllerCapability cap) -> cap.enqueueBlastThread(blastManagerThread));
         return true;
 
     }

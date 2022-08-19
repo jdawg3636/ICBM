@@ -43,6 +43,7 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
 
     // TODO Implement Varying Accuracy Based on Support Frames
     public void launchMissile() {
+        if(level == null) return;
         BlockPos platformPos = getBlockPos().offset(getBlockState().getValue(BlockLauncherControlPanel.FACING).getOpposite().getNormal());
         TileEntity platformTile = level.getBlockEntity(platformPos);
         BlockPos targetPos = new BlockPos(getTargetX(), getTargetY(), getTargetZ());
