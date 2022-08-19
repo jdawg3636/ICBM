@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "BCB",
+    "BDB"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:copper_wire"
+    },
+    "B": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "tag": "forge:glass/colorless"
+    },
+    "D": {
+      "tag": "forge:circuits/advanced"
+    }
+  },
+  "result": {
+    "item": "icbm:defuser",
+    "count": 1
+  }
+}
