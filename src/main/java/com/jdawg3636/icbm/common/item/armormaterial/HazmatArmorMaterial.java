@@ -15,8 +15,8 @@ import java.util.function.Supplier;
 
 public class HazmatArmorMaterial implements IArmorMaterial {
 
-    public static HazmatArmorMaterial HAZMAT_MASK = new HazmatArmorMaterial("icbm_hazmat_mask", () -> Items.LEATHER);
-    public static HazmatArmorMaterial HAZMAT_SUIT = new HazmatArmorMaterial("icbm_hazmat_suit", () -> Items.IRON_INGOT);
+    public static final HazmatArmorMaterial HAZMAT_MASK = new HazmatArmorMaterial("icbm_hazmat_mask", () -> Items.LEATHER);
+    public static final HazmatArmorMaterial HAZMAT_SUIT = new HazmatArmorMaterial("icbm_hazmat_suit", () -> Items.IRON_INGOT);
 
     private HazmatArmorMaterial(String name, Supplier<Item> item) {
         this.item = item;
@@ -25,6 +25,8 @@ public class HazmatArmorMaterial implements IArmorMaterial {
 
     public final Supplier<Item> item;
     public final String name;
+
+    // Same as leather
     public final int[] slotProtections = {1, 2, 3, 1};
 
     @Override
@@ -65,7 +67,7 @@ public class HazmatArmorMaterial implements IArmorMaterial {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return Ingredient.of(Items.LEATHER);
+        return Ingredient.of(item.get());
     }
 
 }

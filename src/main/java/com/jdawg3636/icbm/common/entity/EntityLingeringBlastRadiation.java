@@ -18,11 +18,6 @@ public class EntityLingeringBlastRadiation extends EntityLingeringBlast {
         super(entityType, level);
     }
 
-    public EntityLingeringBlastRadiation(EntityType<?> entityType, World level, int ticksAlive, double radius) {
-        super(entityType, level, ticksAlive);
-        this.radius = radius;
-    }
-
     @Override
     public void tick() {
         // Check Lifetime

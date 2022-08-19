@@ -21,12 +21,10 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 
@@ -36,28 +34,15 @@ import javax.annotation.Nullable;
 // Had to be duplicated rather than extended because the explode() method is static
 public class BlockExplosives extends Block {
 
-    public VoxelShape customShape = null;
-    public boolean useCustomShape = false;
-
-    public RegistryObject<EntityType<EntityPrimedExplosives>> entityForm;
-    public AbstractBlastEvent.BlastEventProvider blastEventProvider;
-    public RegistryObject<Item> itemForm;
+    public final RegistryObject<EntityType<EntityPrimedExplosives>> entityForm;
+    public final AbstractBlastEvent.BlastEventProvider blastEventProvider;
+    public final RegistryObject<Item> itemForm;
 
     /**
      * Parameterless Constructor
      * */
     public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
         this(Block.Properties.of(Material.EXPLOSIVE).instabreak().sound(SoundType.GRASS), entityForm, blastEventProvider, itemForm);
-    }
-
-    /**
-     * Custom Shape Constructor
-     * */
-    // TODO: use this for S-Mine instead of directly overriding getShape()
-    public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, VoxelShape customShape) {
-        this(entityForm, blastEventProvider, itemForm);
-        this.customShape = customShape;
-        this.useCustomShape = true;
     }
 
     /**
@@ -69,21 +54,6 @@ public class BlockExplosives extends Block {
         this.entityForm = entityForm;
         this.blastEventProvider = blastEventProvider;
         this.itemForm = itemForm;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
-        return useCustomShape ? customShape : super.getShape(state, level, pos, context);
-    }
-
-    @Override
-    public VoxelShape getOcclusionShape(BlockState state, IBlockReader level, BlockPos pos) {
-        return useCustomShape ? customShape : super.getOcclusionShape(state, level, pos);
-    }
-
-    @Override
-    public boolean useShapeForLightOcclusion(BlockState state) {
-        return useCustomShape;
     }
 
     /**
@@ -182,6 +152,7 @@ public class BlockExplosives extends Block {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (!oldState.is(state.getBlock())) {
             Direction neighborSignalDirection = getNeighborSignalDirection(worldIn, pos);
@@ -192,6 +163,7 @@ public class BlockExplosives extends Block {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (worldIn.hasNeighborSignal(pos)) {
             explode(worldIn, pos, null, getDirectionBetweenBlockPos(fromPos, pos));
@@ -209,6 +181,7 @@ public class BlockExplosives extends Block {
         super.playerWillDestroy(worldIn, pos, state, player);
     }
 
+    @SuppressWarnings("deprecation")
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         ItemStack itemstack = player.getItemInHand(handIn);
         Item item = itemstack.getItem();
@@ -229,6 +202,7 @@ public class BlockExplosives extends Block {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void onProjectileHit(World worldIn, BlockState state, BlockRayTraceResult hit, ProjectileEntity projectile) {
         if (!worldIn.isClientSide) {
             Entity entity = projectile.getOwner();
@@ -243,6 +217,7 @@ public class BlockExplosives extends Block {
     /**
      * Return whether this block can drop from an explosion.
      */
+    @SuppressWarnings("deprecation")
     public boolean dropFromExplosion(Explosion explosionIn) {
         return false;
     }

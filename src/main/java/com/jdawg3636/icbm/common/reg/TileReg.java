@@ -14,6 +14,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+// Suppression required as IntelliJ is convinced that TileEntityType::build cannot accept null as a DataFixer, even though the vanilla game does this without issue.
+@SuppressWarnings("ConstantConditions")
 public class TileReg {
 
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, ICBMReference.MODID);

@@ -18,6 +18,8 @@ public class EventBlastBreaching extends AbstractBlastEvent {
         int depth = ICBMReference.COMMON_CONFIG.getBlastDepthBreaching();
         BlockPos currentPos = getBlastPosition();
         while(depth >= 0) {
+            // Using deprecated variant of Block::getExplosionResistance since the "proper" version requires an instance of Explosion. We could construct a placeholder, but that feels wasteful.
+            //noinspection deprecation
             if(getBlastWorld().getBlockState(currentPos).getBlock().getExplosionResistance() > Blocks.OBSIDIAN.getExplosionResistance()) {
                 break;
             }

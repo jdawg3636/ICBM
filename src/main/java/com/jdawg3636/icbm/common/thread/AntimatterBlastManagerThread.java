@@ -145,6 +145,6 @@ public class AntimatterBlastManagerThread extends AbstractBlastManagerThread {
         explosionCenterPosZ = nbt.getDouble("explosion_center_pos_z");
         radius              = nbt.getInt("radius");
         fuzzyEdgeThickness  = nbt.getInt("fuzzy_edge_thickness");
-    };
+    }
 
 }

@@ -140,6 +140,7 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
 
     @Override
     public void launchMissile() {
+        if(level == null) return;
         launchMissile(getBlockPos(), new BlockPos(targetX, targetY, targetZ), level.getHeight(), (int)Math.sqrt((getBlockPos().getX() - getTargetX()) * (getBlockPos().getX() - getTargetX()) + (getBlockPos().getZ() - getTargetZ()) * (getBlockPos().getZ() - getTargetZ())));
     }
 

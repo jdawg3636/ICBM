@@ -8,7 +8,7 @@ import net.minecraftforge.fml.RegistryObject;
 
 public class ItemMissile extends Item {
 
-    private RegistryObject<EntityType<EntityMissile>> missileEntity;
+    private final RegistryObject<EntityType<EntityMissile>> missileEntity;
 
     public ItemMissile(RegistryObject<EntityType<EntityMissile>> missileEntity) {
         this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB).stacksTo(1), missileEntity);

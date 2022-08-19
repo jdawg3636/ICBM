@@ -25,8 +25,8 @@ public class RaytracedBlastWorkerThread extends AbstractBlastWorkerThread {
 
     public double radius; // used to calculate power, effective radius will be less when encountering block resistances > 1
 
-    public Set<BlockPos> blocksToBeDestroyed = Sets.newHashSet();
-    public Set<BlockPos> blocksToBeDecorated = Sets.newHashSet();
+    public final Set<BlockPos> blocksToBeDestroyed = Sets.newHashSet();
+    public final Set<BlockPos> blocksToBeDecorated = Sets.newHashSet();
 
     public boolean shouldDecorate(BlockPos blockPos) {
         return false;
@@ -61,11 +61,15 @@ public class RaytracedBlastWorkerThread extends AbstractBlastWorkerThread {
                         BlockPos currentBlockPos = new BlockPos(currentPos);
                         while (rayPower > 0) {
 
+                            // Using deprecated variant of Block::getExplosionResistance since the "proper" version requires an instance of both World and Explosion. We have neither.
+                            //noinspection deprecation
                             float currentBlockPosExplosionResistance = blockStateSupplier.apply(currentBlockPos).getBlock() instanceof FlowingFluidBlock ? 0 : blockStateSupplier.apply(currentBlockPos).getBlock().getExplosionResistance();
 
                             double rayPowerReduction = Math.max(1F, (currentBlockPosExplosionResistance + 0.3F) * 0.3F);
                             rayPower -= rayPowerReduction;
 
+                            // Using deprecated variant of AbstractBlock::isAir since the "proper" version requires an instance of World, and this version will be undeprecated in 1.17 anyway.
+                            //noinspection deprecation
                             if ((!blockStateSupplier.apply(currentBlockPos).isAir()) && rayPower > 0) {
                                 blocksToBeDestroyed.add(currentBlockPos);
                             }

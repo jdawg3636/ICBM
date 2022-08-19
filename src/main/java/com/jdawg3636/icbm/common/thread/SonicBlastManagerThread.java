@@ -127,6 +127,6 @@ public class SonicBlastManagerThread extends AbstractBlastManagerThread {
         explosionCenterPosZ   = nbt.getDouble("explosion_center_pos_z");
         radius                = nbt.getFloat ("radius");
         blocksAffectedPerTick = nbt.getInt   ("blocksAffectedPerTick");
-    };
+    }
 
 }

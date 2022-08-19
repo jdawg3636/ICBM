@@ -16,12 +16,12 @@ import java.util.function.Supplier;
 // Server -> Client is sent using a vanilla SUpdateTileEntityPacket handled in TileLauncherControlPanel::onDataPacket
 public class CPacketUpdateLauncherControlPanel {
 
-    public BlockPos pos;
-    public int shouldUpdate;
-    public double targetX;
-    public double targetZ;
-    public double targetY;
-    public int radioFrequency;
+    public final BlockPos pos;
+    public final int shouldUpdate;
+    public final double targetX;
+    public final double targetZ;
+    public final double targetY;
+    public final int radioFrequency;
 
     public CPacketUpdateLauncherControlPanel(BlockPos pos, int shouldUpdate, double targetX, double targetZ, double targetY, int radioFrequency) {
         this.pos = pos;
@@ -60,7 +60,7 @@ public class CPacketUpdateLauncherControlPanel {
 
             ServerPlayerEntity sender = contextSupplier.get().getSender();
 
-            try {
+            if(sender != null) {
                 ServerWorld senderWorld = sender.getLevel();
                 TileEntity tileEntity = senderWorld.getBlockEntity(packet.pos);
                 if(tileEntity instanceof ITileLaunchControlPanel && sender.position().distanceToSqr(packet.pos.getX(), packet.pos.getY(), packet.pos.getZ()) <=  36) {
@@ -69,8 +69,6 @@ public class CPacketUpdateLauncherControlPanel {
                     if((packet.shouldUpdate & 0b0100) != 0) ((ITileLaunchControlPanel) tileEntity).setTargetY(packet.targetY);
                     if((packet.shouldUpdate & 0b1000) != 0) ((ITileLaunchControlPanel) tileEntity).setRadioFrequency(packet.radioFrequency);
                 }
-            } catch (NullPointerException npe) {
-                npe.printStackTrace();
             }
 
         });

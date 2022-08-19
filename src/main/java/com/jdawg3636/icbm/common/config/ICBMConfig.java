@@ -10,7 +10,7 @@ public class ICBMConfig {
      */
     public static class Client {
 
-        public ForgeConfigSpec spec;
+        public final ForgeConfigSpec spec;
 
         //private final ForgeConfigSpec.BooleanValue testValue;
 
@@ -33,7 +33,7 @@ public class ICBMConfig {
      */
     public static class Common {
 
-        public ForgeConfigSpec spec;
+        public final ForgeConfigSpec spec;
 
         private final ForgeConfigSpec.IntValue maxBlastManagerThreadCountPerLevel;
 
@@ -272,7 +272,7 @@ public class ICBMConfig {
      */
     public static class Server {
 
-        public ForgeConfigSpec spec;
+        public final ForgeConfigSpec spec;
 
         //private final ForgeConfigSpec.BooleanValue testValue;
 

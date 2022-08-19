@@ -214,6 +214,7 @@ public final class EntityReg {
     }
 
     public static <T extends Entity> RegistryObject<EntityType<T>> registerBlastUtilityEntity(String entityName, EntityType.IFactory<T> entityConstructor, float width, float height) {
+        //noinspection RedundantTypeArguments
         return ENTITIES.register(
                 entityName,
                 ()->EntityType.Builder.<T>of(

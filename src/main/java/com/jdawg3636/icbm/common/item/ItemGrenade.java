@@ -14,7 +14,7 @@ import net.minecraftforge.fml.RegistryObject;
 
 public class ItemGrenade extends Item {
 
-    public RegistryObject<EntityType<EntityGrenade>> entityForm;
+    public final RegistryObject<EntityType<EntityGrenade>> entityForm;
 
     public ItemGrenade(RegistryObject<EntityType<EntityGrenade>> entityForm) {
         super(new Item.Properties().tab(ICBMReference.CREATIVE_TAB).stacksTo(16));

@@ -28,9 +28,9 @@ public final class ICBMReference {
         }
     };
 
-    public static Logger logger = LogManager.getLogger(ICBMReference.MODID);
+    private static final Logger logger = LogManager.getLogger(ICBMReference.MODID);
 
-    public static CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+    public static final CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
     public static Logger logger() {
         return logger;

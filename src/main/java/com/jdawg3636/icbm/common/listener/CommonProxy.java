@@ -81,8 +81,8 @@ public class CommonProxy {
         if(server != null) {
             World levelOverworld = server.getLevel(World.OVERWORLD);
             if (levelOverworld != null) {
-                LazyOptional<ITrackingManagerCapability> cap = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
-                cap.orElse(null).clearTickets(event.getEntity().getUUID());
+                LazyOptional<ITrackingManagerCapability> capOptional = levelOverworld.getCapability(ICBMCapabilities.TRACKING_MANAGER_CAPABILITY);
+                capOptional.ifPresent((ITrackingManagerCapability cap) -> cap.clearTickets(event.getEntity().getUUID()));
             }
         }
     }
@@ -91,10 +91,8 @@ public class CommonProxy {
 
     public void onTickEvent(final TickEvent.WorldTickEvent event) {
     	if(event.phase != TickEvent.Phase.START) return;
-        LazyOptional<IBlastControllerCapability> cap = event.world.getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
-        if(cap.isPresent()) {
-            cap.orElse(null).onWorldTickEvent(event);
-        }
+        LazyOptional<IBlastControllerCapability> capOptional = event.world.getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
+        capOptional.ifPresent((IBlastControllerCapability cap) -> cap.onWorldTickEvent(event));
     }
 
     public double getTileEntityUpdateDistance() {

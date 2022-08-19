@@ -65,13 +65,15 @@ public abstract class AbstractBlockMachine extends Block {
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+        BlockState blockState = super.getStateForPlacement(context);
+        return (blockState == null) ? null : blockState.setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
     }
 
     /**
      * Override to take into account the {@link this.FACING} property
      * Copied from net.minecraft.block.AnvilBlock
      */
+    @SuppressWarnings("deprecation")
     @Override
     public BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
@@ -80,6 +82,7 @@ public abstract class AbstractBlockMachine extends Block {
     /**
      * Override to take into account the {@link this.WATERLOGGED} property
      */
+    @SuppressWarnings("deprecation")
     @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
@@ -88,6 +91,7 @@ public abstract class AbstractBlockMachine extends Block {
     /**
      * Override to Block Interaction with Pistons
      */
+    @SuppressWarnings("deprecation")
     @Override
     public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.BLOCK;
@@ -96,11 +100,13 @@ public abstract class AbstractBlockMachine extends Block {
     /**
      * Override to Block Levers/Buttons/etc. from being placed on this block
      */
+    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getBlockSupportShape(BlockState p_230335_1_, IBlockReader p_230335_2_, BlockPos p_230335_3_) {
         return VoxelShapes.empty();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @OnlyIn(Dist.CLIENT)
     public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {

@@ -52,11 +52,13 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
         builder.add(TRIGGERED);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
         TileEntity tileEntity = world.getBlockEntity(pos);
@@ -86,6 +88,7 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
         return ActionResultType.SUCCESS;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState originalState, World level, BlockPos blockPos, BlockState newState, boolean flag) {
         if(originalState.getBlock() != newState.getBlock()) {
@@ -99,6 +102,7 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
         return ContainerReg.CRUISE_LAUNCHER.get();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(BlockState blockState, World level, BlockPos blockPos, Block p_220069_4_, BlockPos p_220069_5_, boolean p_220069_6_) {
         if (!level.isClientSide) {

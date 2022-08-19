@@ -26,7 +26,7 @@ import net.minecraftforge.fml.RegistryObject;
  */
 public class ItemMinecartExplosives extends Item {
 
-    RegistryObject<EntityType<EntityMinecartExplosives>> entityForm;
+    public final RegistryObject<EntityType<EntityMinecartExplosives>> entityForm;
 
     public ItemMinecartExplosives(Item.Properties properties, RegistryObject<EntityType<EntityMinecartExplosives>> entityForm) {
         super(properties);
@@ -66,12 +66,13 @@ public class ItemMinecartExplosives extends Item {
         }
     }
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final IDispenseItemBehavior DISPENSE_ITEM_BEHAVIOR = new DefaultDispenseItemBehavior() {
 
         private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 
         /**
-         * Dispense the specified stack, play the dispense sound and spawn particles.
+         * Dispense the specified stack, play the dispense sound, and spawn particles.
          */
         public ItemStack execute(IBlockSource pSource, ItemStack pStack) {
             Direction direction = pSource.getBlockState().getValue(DispenserBlock.FACING);
@@ -90,12 +91,12 @@ public class ItemMinecartExplosives extends Item {
                     d3 = 0.1D;
                 }
             } else {
-                if (!blockstate.isAir() || !world.getBlockState(blockpos.below()).is(BlockTags.RAILS)) {
+                if (!blockstate.getBlock().isAir(blockstate, world, blockpos) || !world.getBlockState(blockpos.below()).is(BlockTags.RAILS)) {
                     return this.defaultDispenseItemBehavior.dispense(pSource, pStack);
                 }
 
                 BlockState blockstate1 = world.getBlockState(blockpos.below());
-                RailShape railshape1 = blockstate1.getBlock() instanceof AbstractRailBlock ? blockstate1.getValue(((AbstractRailBlock)blockstate1.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
+                RailShape railshape1 = blockstate1.getBlock() instanceof AbstractRailBlock ? ((AbstractRailBlock)blockstate1.getBlock()).getRailDirection(blockstate1, world, blockpos.below(), null) : RailShape.NORTH_SOUTH;
                 if (direction != Direction.DOWN && railshape1.isAscending()) {
                     d3 = -0.4D;
                 } else {

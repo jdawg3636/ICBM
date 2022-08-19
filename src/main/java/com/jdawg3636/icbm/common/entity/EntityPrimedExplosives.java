@@ -19,9 +19,9 @@ import javax.annotation.Nullable;
 
 public class EntityPrimedExplosives extends TNTEntity {
 
-    public AbstractBlastEvent.BlastEventProvider blastEventProvider;
-    public RegistryObject<Item> itemForm;
-    public Direction blastDirection;
+    public final AbstractBlastEvent.BlastEventProvider blastEventProvider;
+    public final RegistryObject<Item> itemForm;
+    public Direction blastDirection; // Can't be final - re-assigned by chained constructors
 
     public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter) {
         super(type, worldIn);
@@ -35,12 +35,12 @@ public class EntityPrimedExplosives extends TNTEntity {
         this.yo = y;
         this.zo = z;
         this.owner = igniter;
-        this.blastDirection = igniter == null ? Direction.getRandom(worldIn.random) : igniter.getDirection();
+        this.blastDirection = (igniter != null) ? igniter.getDirection() : Direction.getRandom(worldIn.random);
     }
 
     public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter, Direction blastDirection, int fuse) {
         this(type, worldIn, blastEventProvider, itemForm, x, y, z, igniter);
-        if(blastDirection != null) this.blastDirection = blastDirection;
+        if(blastDirection != null) this.blastDirection =  blastDirection;
         this.setFuse(fuse);
     }
 

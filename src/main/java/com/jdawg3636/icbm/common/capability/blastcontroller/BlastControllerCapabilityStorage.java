@@ -39,7 +39,6 @@ public class BlastControllerCapabilityStorage implements Capability.IStorage<IBl
     public void readNBT(Capability<IBlastControllerCapability> capability, IBlastControllerCapability instance, Direction side, INBT nbt) {
         if(!(nbt instanceof CompoundNBT)) return;
         try {
-            CompoundNBT nbtCasted = (CompoundNBT) nbt;
             CompoundNBT blasts = ((CompoundNBT) nbt).getCompound("blasts");
             for (String blastID : blasts.getAllKeys()) {
 

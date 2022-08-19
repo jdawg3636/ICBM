@@ -66,6 +66,7 @@ public abstract class AbstractBlastEvent extends Event {
      * @param blastEventProvider Blast Event Constructor
      * @return Blast was Executed Successfully
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static boolean fire(BlastEventProvider blastEventProvider, AbstractBlastEvent.Type blastType, ServerWorld blastWorld, BlockPos blastPosition, Direction blastDirection) {
         AbstractBlastEvent blastEvent = blastEventProvider.getBlastEvent(blastPosition, blastWorld, blastType, blastDirection);
         boolean eventCancelled = MinecraftForge.EVENT_BUS.post(blastEvent);

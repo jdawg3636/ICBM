@@ -31,10 +31,14 @@ import java.util.Random;
 @Mixin(ForgeBlockModelRenderer.class)
 public class MixinClientOBJLightingPipeline extends BlockModelRenderer {
 
+    @SuppressWarnings("unused")
     @Inject(method = "renderModelSmooth", at = @At("HEAD"), cancellable = true, remap = false)
     public void onRenderModelSmooth(IBlockDisplayReader world, IBakedModel model, BlockState state, BlockPos pos, MatrixStack matrixStack, IVertexBuilder buffer, boolean checkSides, Random rand, long seed, int combinedOverlayIn, IModelData modelData, CallbackInfoReturnable<Boolean> callback) {
         ResourceLocation registryName = state.getBlock().getRegistryName();
+        // Using this for compatibility with Java 8. In future versions (based on my current understanding), can switch to this.getClass().getClassLoader().getDefinedPackage("net.optifine");
+        @SuppressWarnings("deprecation")
         Package optifinePackage = Package.getPackage("net.optifine");
+
         if(registryName != null && registryName.getNamespace().equals(ICBMReference.MODID) && optifinePackage == null) {
 
             /*
@@ -62,12 +66,14 @@ public class MixinClientOBJLightingPipeline extends BlockModelRenderer {
     private ThreadLocal<VertexBufferConsumer> consumerFlat;
     @Shadow(remap = false) @Final
     private ThreadLocal<VertexBufferConsumer> consumerSmooth;
+    @SuppressWarnings({"SameReturnValue", "unused"})
     @Shadow(remap = false)
     public static boolean render(VertexLighterFlat lighter, IBlockDisplayReader world, IBakedModel model, BlockState state, BlockPos pos, MatrixStack matrixStack, boolean checkSides, Random rand, long seed, IModelData modelData) {
         return true;
     }
 
     // Constructor to Trick the Java Compiler
+    @SuppressWarnings("unused")
     public MixinClientOBJLightingPipeline(BlockColors blockColors) {
         super(blockColors);
     }

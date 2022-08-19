@@ -38,6 +38,7 @@ public class BlockReinforcedGlass extends Block {
     /**
      * Prevents the rendering of internal faces when multiple blocks of the same type are placed next to each other
      */
+    @SuppressWarnings("deprecation")
     @Override
     @OnlyIn(Dist.CLIENT)
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {

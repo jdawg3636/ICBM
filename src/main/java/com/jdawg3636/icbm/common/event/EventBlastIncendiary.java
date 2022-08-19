@@ -53,6 +53,8 @@ public class EventBlastIncendiary extends AbstractBlastEvent {
                                 Block block = blockState.getBlock();
 
                                 if (!block.isAir(blockState, getBlastWorld(), targetPosition))
+                                    // Using deprecated variant of Block::getExplosionResistance since the "proper" version requires an instance of Explosion. We could construct a placeholder, but that feels wasteful.
+                                    //noinspection deprecation
                                     var14 -= (block.getExplosionResistance() + 0.3F) * var21;
 
                                 if (var14 > 0.0F) {

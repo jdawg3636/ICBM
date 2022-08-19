@@ -9,7 +9,7 @@ import net.minecraftforge.fml.RegistryObject;
 
 public class AbstractBlockMachineTile extends AbstractBlockMachine {
 
-    RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType;
+    public final RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType;
 
     public AbstractBlockMachineTile(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
         this(getMultiblockMachineBlockProperties(), tileEntityType);
