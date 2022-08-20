@@ -102,7 +102,7 @@ public abstract class AbstractBlockMachine extends Block {
      */
     @SuppressWarnings("deprecation")
     @Override
-    public VoxelShape getBlockSupportShape(BlockState p_230335_1_, IBlockReader p_230335_2_, BlockPos p_230335_3_) {
+    public VoxelShape getBlockSupportShape(BlockState blockState, IBlockReader level, BlockPos blockPos) {
         return VoxelShapes.empty();
     }
 

@@ -106,9 +106,9 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
     }
 
     @Override
-    public void resize(Minecraft p_231152_1_, int p_231152_2_, int p_231152_3_) {
+    public void resize(Minecraft minecraft, int width, int height) {
         String s = this.textFieldTargetX.getValue();
-        this.init(p_231152_1_, p_231152_2_, p_231152_3_);
+        this.init(minecraft, width, height);
         this.textFieldTargetX.setValue(s);
     }
 

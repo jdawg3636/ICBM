@@ -49,7 +49,7 @@ public class BlockReinforcedGlass extends Block {
      * Copied from {@link net.minecraft.block.AbstractGlassBlock}
      */
     @Override
-    public boolean propagatesSkylightDown(BlockState p_200123_1_, IBlockReader p_200123_2_, BlockPos p_200123_3_) {
+    public boolean propagatesSkylightDown(BlockState blockState, IBlockReader level, BlockPos blockPos) {
         return true;
     }
 

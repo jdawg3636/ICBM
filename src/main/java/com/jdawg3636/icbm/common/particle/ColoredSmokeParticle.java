@@ -10,8 +10,13 @@ import net.minecraft.particles.BasicParticleType;
 // Based on net.minecraft.client.particle.SmokeParticle
 public class ColoredSmokeParticle extends RisingParticle {
 
-    public ColoredSmokeParticle(ClientWorld p_i232425_1_, double p_i232425_2_, double p_i232425_4_, double p_i232425_6_, double p_i232425_8_, double p_i232425_10_, double p_i232425_12_, float p_i232425_14_, IAnimatedSprite p_i232425_15_) {
-        super(p_i232425_1_, p_i232425_2_, p_i232425_4_, p_i232425_6_, 0.1F, 0.1F, 0.1F, p_i232425_8_, p_i232425_10_, p_i232425_12_, p_i232425_14_, p_i232425_15_, 0.3F, 8, 0.004D, true);
+    public ColoredSmokeParticle(ClientWorld level, double posX, double posY, double posZ, double speedXOffset, double speedYOffset, double speedZOffset, float quadSizeMultiplier, IAnimatedSprite sprites) {
+        this(level, posX, posY, posZ, 0.1F, 0.1F, 0.1F, speedXOffset, speedYOffset, speedZOffset, quadSizeMultiplier, sprites, 0.3F, 8, 0.004D, true);
+    }
+
+    // Provided speed multipliers and offsets are relative to a randomly-generated base speed. As of MC 1.16.5, this base speed is +/- 0.4F on each axis.
+    public ColoredSmokeParticle(ClientWorld level, double posX, double posY, double posZ, float speedXMultiplier, float speedYMultiplier, float speedZMultiplier, double speedXOffset, double speedYOffset, double speedZOffset, float quadSizeMultiplier, IAnimatedSprite sprites, float maxColorIntensity, int oneFifthOfMaximumLifetimeInTicks, double fallSpeed, boolean hasPhysics) {
+        super(level, posX, posY, posZ, speedXMultiplier, speedYMultiplier, speedZMultiplier, speedXOffset, speedYOffset, speedZOffset, quadSizeMultiplier, sprites, maxColorIntensity, oneFifthOfMaximumLifetimeInTicks, fallSpeed, hasPhysics);
     }
 
     public static class Factory implements IParticleFactory<BasicParticleType> {
@@ -29,8 +34,8 @@ public class ColoredSmokeParticle extends RisingParticle {
             this.colorBlue  = colorBlue  / (float)0xFF;
         }
 
-        public Particle createParticle(BasicParticleType p_199234_1_, ClientWorld p_199234_2_, double p_199234_3_, double p_199234_5_, double p_199234_7_, double p_199234_9_, double p_199234_11_, double p_199234_13_) {
-            Particle particle =  new ColoredSmokeParticle(p_199234_2_, p_199234_3_, p_199234_5_, p_199234_7_, p_199234_9_, p_199234_11_, p_199234_13_, 1.0F, this.sprites);
+        public Particle createParticle(BasicParticleType basicParticleType, ClientWorld level, double posX, double posY, double posZ, double speedXOffset, double speedYOffset, double speedZOffset) {
+            Particle particle =  new ColoredSmokeParticle(level, posX, posY, posZ, speedXOffset, speedYOffset, speedZOffset, 1.0F, this.sprites);
             particle.scale(10F);
             particle.setColor(colorRed, colorGreen, colorBlue);
             return particle;

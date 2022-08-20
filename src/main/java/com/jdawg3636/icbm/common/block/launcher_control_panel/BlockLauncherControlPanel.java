@@ -58,7 +58,7 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
 
     @SuppressWarnings("deprecation")
     @Override
-    public void neighborChanged(BlockState blockState, World level, BlockPos blockPos, Block p_220069_4_, BlockPos p_220069_5_, boolean p_220069_6_) {
+    public void neighborChanged(BlockState blockState, World level, BlockPos blockPos, Block block, BlockPos fromBlockPos, boolean isMoving) {
         if (!level.isClientSide) {
             boolean flagHasSignal = level.hasNeighborSignal(blockPos) || level.hasNeighborSignal(blockPos.above());
             boolean flagStateTriggered = blockState.getValue(TRIGGERED);
