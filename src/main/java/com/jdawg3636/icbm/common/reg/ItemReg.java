@@ -145,6 +145,11 @@ public class ItemReg {
     public static final RegistryObject<Item> EMP_TOWER                      = ITEMS.register("emp_tower",                       () -> new BlockItem(BlockReg.EMP_TOWER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> RADAR_STATION                  = ITEMS.register("radar_station",                   () -> new BlockItem(BlockReg.RADAR_STATION.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
+    // Particle Accelerator Components (Deliberately Non-Alphabetized so that the Particle Accelerator itself will appear first in the Creative Inventory)
+    public static final RegistryObject<Item> PARTICLE_ACCELERATOR           = ITEMS.register("particle_accelerator",            () -> new BlockItem(BlockReg.PARTICLE_ACCELERATOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> ELECTROMAGNET                  = ITEMS.register("electromagnet",                   () -> new BlockItem(BlockReg.ELECTROMAGNET.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> ELECTROMAGNETIC_GLASS          = ITEMS.register("electromagnetic_glass",           () -> new BlockItem(BlockReg.ELECTROMAGNETIC_GLASS.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+
     // Functional Items
     public static final RegistryObject<Item> BATTERY                        = ITEMS.register("battery",                         () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> DEFUSER                        = ITEMS.register("defuser",                         ItemDefuser::new);
@@ -165,6 +170,7 @@ public class ItemReg {
     public static final RegistryObject<Item> CIRCUIT_ELITE                  = ITEMS.register("circuit_elite",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> DUST_BRONZE                    = ITEMS.register("dust_bronze",                     () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> DUST_STEEL                     = ITEMS.register("dust_steel",                      () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> ELECTRIC_MOTOR                 = ITEMS.register("electric_motor",                  () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> INGOT_BRONZE                   = ITEMS.register("ingot_bronze",                    () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> INGOT_COPPER                   = ITEMS.register("ingot_copper",                    () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> INGOT_STEEL                    = ITEMS.register("ingot_steel",                     () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

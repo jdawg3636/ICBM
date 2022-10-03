@@ -19,7 +19,7 @@
       "tag": "forge:circuits/elite"
     },
     "E": {
-      "tag": "forge:dusts/redstone"
+      "item": "icbm:electric_motor"
     }
   },
   "result": {

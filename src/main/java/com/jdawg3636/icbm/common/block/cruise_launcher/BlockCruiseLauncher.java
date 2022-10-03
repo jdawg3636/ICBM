@@ -77,7 +77,7 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
 
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new ContainerCruiseLauncher(getContainerType(), state.getBlock(), i, world, pos, playerInventory, playerEntity);
+                        return new ContainerCruiseLauncher(getContainerType(), i, world, pos, playerInventory);
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());

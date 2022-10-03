@@ -65,7 +65,7 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile imple
 
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new ContainerLauncherPlatform(getContainerType(), state.getBlock(), i, world, getMultiblockCenter(world, pos, state), playerInventory, playerEntity);
+                        return new ContainerLauncherPlatform(getContainerType(), i, world, getMultiblockCenter(world, pos, state), playerInventory);
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());

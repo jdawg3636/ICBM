@@ -186,6 +186,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+    runtimeOnly fg.deobf("curse.maven:ctm-267602:3137659")
     runtimeOnly fg.deobf("curse.maven:jei-238222:3681294")
     runtimeOnly fg.deobf("curse.maven:hwyla-253449:3033593")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:3283693")

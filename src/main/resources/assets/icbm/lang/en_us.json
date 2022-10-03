@@ -58,6 +58,8 @@
   "item.icbm.battery": "Battery",
   "item.icbm.battery.info": "Used to store and transport power",
 
+  "item.icbm.electric_motor": "Electric Motor",
+
   "item.icbm.sulfur": "Sulfur",
   "item.icbm.sulfur.info": "Used in the creation of gunpowder",
 
@@ -154,6 +156,11 @@
 
   "block.icbm.redmatter.ore": "Redmatter Ore",
   "block.icbm.redmatter.ore.info": "Oh shiz, how did you get that? Put it down, it could explode!",
+
+  "block.icbm.particle_accelerator": "Particle Accelerator",
+  "block.icbm.electromagnet": "Electromagnet",
+  "block.icbm.electromagnetic_glass": "Electromagnetic Glass",
+
 
   # ICBM Explosives
 
@@ -296,6 +303,9 @@
   "entity.icbm.blast_debilitation": "Debilitation Blast",
   "entity.icbm.blast_redmatter": "Redmatter Blast",
   "entity.icbm.blast_sonic": "Sonic Blast",
+
+  # Other Entities
+  "entity.icbm.accelerating_particle": "Accelerating Particle",
 
   # Explosive Minecarts
   "item.icbm.minecart_explosive": "Explosive Cart",
@@ -533,6 +543,8 @@
   "gui.icbm.cruise_launcher.targetToClose": "Target to close!",
   "gui.icbm.cruise_launcher.noRoom": "3x3 not clear!",
   "gui.icbm.cruise_launcher.statusReady": "Ready!",
+
+  "gui.icbm.particle_accelerator": "Particle Accelerator",
 
   # Chat warning if user tries to fire by hand, %s is status message from GUI
   "chat.launcher.status": "Status: %s",

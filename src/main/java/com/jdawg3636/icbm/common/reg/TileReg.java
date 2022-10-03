@@ -7,6 +7,7 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherContro
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT2;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT3;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
+import com.jdawg3636.icbm.common.block.particle_accelerator.TileParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -57,5 +58,8 @@ public class TileReg {
     public static final RegistryObject<TileEntityType<? extends TileEntity>> CRUISE_LAUNCHER = TILES.register(BlockReg.CRUISE_LAUNCHER.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileCruiseLauncher(TileReg.CRUISE_LAUNCHER.get()), BlockReg.CRUISE_LAUNCHER.get()).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> EMP_TOWER       = TILES.register(BlockReg.EMP_TOWER.getId().getPath(),       () -> TileEntityType.Builder.of(() -> new TileEMPTower(TileReg.EMP_TOWER.get()),             BlockReg.EMP_TOWER.get()      ).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> RADAR_STATION   = TILES.register(BlockReg.RADAR_STATION.getId().getPath(),   () -> TileEntityType.Builder.of(() -> new TileRadarStation(TileReg.RADAR_STATION.get()),     BlockReg.RADAR_STATION.get()  ).build(null));
+
+    // Particle Accelerator Components
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> PARTICLE_ACCELERATOR = TILES.register(BlockReg.PARTICLE_ACCELERATOR.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileParticleAccelerator(TileReg.PARTICLE_ACCELERATOR.get()), BlockReg.PARTICLE_ACCELERATOR.get()).build(null));
 
 }

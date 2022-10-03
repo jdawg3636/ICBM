@@ -133,6 +133,9 @@ public final class EntityReg {
         }
     );
 
+    // Other Entity Registration
+    public static final RegistryObject<EntityType<EntityAcceleratingParticle>> ACCELERATING_PARTICLE = registerBlastUtilityEntity("accelerating_particle", EntityAcceleratingParticle::new, 1F, 1F);
+
     public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
         return registerPrimedExplosives(blastEventProvider, itemForm, 0.98F, 0.98F);
     }

@@ -1,40 +1,27 @@
 package com.jdawg3636.icbm.common.block.launcher_platform;
 
 import com.jdawg3636.icbm.ICBMReference;
-import net.minecraft.block.Block;
+import com.jdawg3636.icbm.common.block.multiblock.AbstractContainerMachine;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public class ContainerLauncherPlatform extends Container {
+public class ContainerLauncherPlatform extends AbstractContainerMachine {
 
-    private final TileEntity tileEntity;
-    private final IItemHandler playerInventory;
-
-    public ContainerLauncherPlatform(@Nullable ContainerType<?> type, Block block, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
-        super(type, windowId);
-        this.tileEntity = world.getBlockEntity(pos);
-        this.playerInventory = new InvWrapper(playerInventory);
-        if(tileEntity != null)
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> addSlot(new SlotItemHandler(h, 0, getMissileSlotX(), getMissileSlotY())));
-        layoutPlayerInventorySlots(8, 84);
+    public ContainerLauncherPlatform(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
+        super(containerType, windowId, level, blockPos, playerInventory);
+        addSlot(getMissileSlotX(), getMissileSlotY());
+        addPlayerInventorySlots(8, 84);
     }
 
     public int getMissileSlotX() {
@@ -45,17 +32,7 @@ public class ContainerLauncherPlatform extends Container {
         return 47;
     }
 
-    public TileEntity getBlockEntity() {
-        return tileEntity;
-    }
-
-    @Override
-    public boolean stillValid(PlayerEntity playerEntity) {
-        if(tileEntity == null) return false;
-        if(tileEntity.getLevel() == null) return false;
-        return stillValid(IWorldPosCallable.create(tileEntity.getLevel(), tileEntity.getBlockPos()), playerEntity, tileEntity.getBlockState().getBlock());
-    }
-
+    // TODO: All this does is limit which items are allowed to go into certain stacks. Should make a generic system for this in base class.
     @Override
     public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -97,32 +74,6 @@ public class ContainerLauncherPlatform extends Container {
         }
 
         return itemstack;
-    }
-
-    private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
-        for (int i = 0 ; i < amount ; i++) {
-            addSlot(new SlotItemHandler(handler, index, x, y));
-            x += dx;
-            index++;
-        }
-        return index;
-    }
-
-    @SuppressWarnings("UnusedReturnValue")
-    private int addSlotBox(IItemHandler handler, int index, int x, int y, int horAmount, int dx, int verAmount, int dy) {
-        for (int j = 0 ; j < verAmount ; j++) {
-            index = addSlotRange(handler, index, x, y, horAmount, dx);
-            y += dy;
-        }
-        return index;
-    }
-
-    private void layoutPlayerInventorySlots(int leftCol, int topRow) {
-        // Player inventory
-        addSlotBox(playerInventory, 9, leftCol, topRow, 9, 18, 3, 18);
-        // Hotbar
-        topRow += 58;
-        addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
     }
 
 }

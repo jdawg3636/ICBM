@@ -11,6 +11,7 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.IScreenLaunchContr
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
+import com.jdawg3636.icbm.common.block.particle_accelerator.ScreenParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.*;
@@ -54,6 +55,7 @@ public class ClientProxy extends CommonProxy {
     public void onClientSetupEvent(FMLClientSetupEvent event) {
 
         // Set Render Layers
+        RenderTypeLookup.setRenderLayer(BlockReg.ELECTROMAGNETIC_GLASS.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_PLATFORM_T3.get(), RenderType.cutout());
@@ -71,6 +73,7 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
+        ScreenManager.register(ContainerReg.PARTICLE_ACCELERATOR.get(), ScreenParticleAccelerator::new);
 
         // Register Explosives Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONDENSED.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONDENSED.get().defaultBlockState()));
@@ -174,6 +177,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_REDMATTER.get(), EntityRedmatterBlastRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_SONIC.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
+
+        // Register Other Entity Rendering Handlers
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.ACCELERATING_PARTICLE.get(), EntityAcceleratingParticleRenderer::new);
 
         // Register Tile Entity Renderers
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
