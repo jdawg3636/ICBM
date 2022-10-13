@@ -14,11 +14,14 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class TileParticleAccelerator extends TileEntity implements ITickableTileEntity {
 
     public final ItemStackHandler itemHandler = new ItemStackHandler(3);
     public final LazyOptional<IItemHandler> itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
+    public UUID particleEntityID = null;
+    public boolean isActive = false;
 
     public TileParticleAccelerator(TileEntityType<?> tileEntityType) {
         super(tileEntityType);

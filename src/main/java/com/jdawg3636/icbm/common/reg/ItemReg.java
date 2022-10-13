@@ -141,6 +141,7 @@ public class ItemReg {
     public static final RegistryObject<Item> LAUNCHER_SUPPORT_FRAME_T3      = ITEMS.register("launcher_support_frame_t3",       () -> new BlockItem(BlockReg.LAUNCHER_SUPPORT_FRAME_T3.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Other Machinery
+    public static final RegistryObject<Item> COAL_GENERATOR                 = ITEMS.register("coal_generator",                  () -> new BlockItem(BlockReg.COAL_GENERATOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CRUISE_LAUNCHER                = ITEMS.register("cruise_launcher",                 () -> new BlockItem(BlockReg.CRUISE_LAUNCHER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EMP_TOWER                      = ITEMS.register("emp_tower",                       () -> new BlockItem(BlockReg.EMP_TOWER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> RADAR_STATION                  = ITEMS.register("radar_station",                   () -> new BlockItem(BlockReg.RADAR_STATION.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

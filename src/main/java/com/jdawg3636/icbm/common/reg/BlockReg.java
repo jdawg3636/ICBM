@@ -7,6 +7,7 @@ import com.jdawg3636.icbm.common.block.emp_tower.BlockEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.BlockLauncherPlatform;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.block.particle_accelerator.BlockCoalGenerator;
 import com.jdawg3636.icbm.common.block.particle_accelerator.BlockParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.BlockRadarStation;
 import com.jdawg3636.icbm.common.event.*;
@@ -127,6 +128,7 @@ public class BlockReg {
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      BlockLauncherSupportFrame::new);
 
     // Other Machinery
+    public static final RegistryObject<Block> COAL_GENERATOR                = BLOCKS.register("coal_generator",                 () -> new BlockCoalGenerator(TileReg.COAL_GENERATOR));
     public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new BlockCruiseLauncher(TileReg.CRUISE_LAUNCHER));
     public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      () -> new BlockEMPTower(TileReg.EMP_TOWER));
     public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new BlockRadarStation(TileReg.RADAR_STATION));

@@ -150,6 +150,8 @@
   "block.icbm.missilecoordinator": "Missile Coordinator",
   "block.icbm.missilecoordinator.info": "Oversized calculator. Calculates flight paths",
 
+  "block.icbm.coal_generator": "Coal Generator",
+
   # Blocks
   "block.icbm.reinforcedRail": "Reinforced Rail",
   "block.icbm.reinforcedRail.info": "Hardened against explosives",

@@ -187,8 +187,11 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     runtimeOnly fg.deobf("curse.maven:ctm-267602:3137659")
-    runtimeOnly fg.deobf("curse.maven:jei-238222:3681294")
     runtimeOnly fg.deobf("curse.maven:hwyla-253449:3033593")
+    runtimeOnly fg.deobf("curse.maven:jei-238222:3681294")
+    runtimeOnly fg.deobf("curse.maven:mekanism-268560:3659389")
+    runtimeOnly fg.deobf("curse.maven:mekanism-generators-268566:3659391")
+    runtimeOnly fg.deobf("curse.maven:mekanism-tools-268567:3659392")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:3283693")
 
 }
