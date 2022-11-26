@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.block.launcher_platform;
 
-import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractContainerMachine;
+import com.jdawg3636.icbm.common.reg.ICBMTags;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
@@ -9,8 +9,6 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -46,8 +44,8 @@ public class ContainerLauncherPlatform extends AbstractContainerMachine {
                 }
                 slot.onQuickCraft(stack, itemstack);
             } else {
-            	ITag<Item> missileTag = ItemTags.getAllTags().getTag(new ResourceLocation(ICBMReference.MODID, "missiles"));
-                if (missileTag != null && missileTag.contains(stack.getItem())) {
+            	ITag<Item> missileTag = ICBMTags.Items.MISSILES;
+                if (stack.getItem().is(missileTag)) {
                     if (!this.moveItemStackTo(stack, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }

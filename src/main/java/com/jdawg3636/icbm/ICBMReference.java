@@ -4,8 +4,16 @@ import com.jdawg3636.icbm.common.config.ICBMConfig;
 import com.jdawg3636.icbm.common.listener.ClientProxy;
 import com.jdawg3636.icbm.common.listener.CommonProxy;
 import com.jdawg3636.icbm.common.reg.ItemReg;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.DistExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,6 +50,25 @@ public final class ICBMReference {
         try {
             SHA1_INSTANCE = MessageDigest.getInstance("SHA-1");
         } catch (Exception ignored) {}
+    }
+
+    @CapabilityInject(IEnergyStorage.class)
+    public static Capability<IEnergyStorage> FORGE_ENERGY_CAPABILITY;
+
+    public static void broadcastToChat(IWorldReader level, String message) {
+        if (level instanceof ServerWorld) {
+            ((ServerWorld) level).players().forEach(
+                    (ServerPlayerEntity p) -> p.sendMessage(new StringTextComponent(message), Util.NIL_UUID)
+            );
+        }
+    }
+
+    public static void broadcastToChat(IWorldReader level, String message, Object... messageArgs) {
+        String completeMessage = message;
+        try {
+            completeMessage = String.format(message, messageArgs);
+        } catch (Exception ignored) {}
+        broadcastToChat(level, completeMessage);
     }
 
 }

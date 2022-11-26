@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.block.particle_accelerator;
+package com.jdawg3636.icbm.common.block.coal_generator;
 
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachineTile;
 import net.minecraft.block.AbstractBlock;

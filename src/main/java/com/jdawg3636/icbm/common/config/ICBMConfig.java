@@ -65,6 +65,11 @@ public class ICBMConfig {
         private final ForgeConfigSpec.IntValue oreUraniumRange;
         private final ForgeConfigSpec.IntValue oreUraniumCount;
 
+        private final ForgeConfigSpec.IntValue particleAcceleratorEnergyUsagePerTick;
+        private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedIncreasePerTick;
+        private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedPenaltyForCollision;
+        private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedRequiredToGenerateAntimatter;
+
         public Common() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
             this.maxBlastManagerThreadCountPerLevel = builder
@@ -169,6 +174,22 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the 'count' parameter of Uranium Ore vein generation.")
                     .defineInRange("oreUraniumCount", 1, 0, Integer.MAX_VALUE);
+            this.particleAcceleratorEnergyUsagePerTick = builder
+                    .comment("",
+                            "Defines the amount of Forge Energy (FE) consumed per tick by a particle accelerator while it is active.")
+                    .defineInRange("particleAcceleratorEnergyUsagePerTick", 1000, 0, Integer.MAX_VALUE);
+            this.particleAcceleratorSpeedIncreasePerTick = builder
+                    .comment("",
+                            "Defines the speed increase in blocks per tick that is applied each tick to the particle in a particle accelerator.")
+                    .defineInRange("particleAcceleratorSpeedIncreasePerTick", 0.0005D, 0, Float.MAX_VALUE);
+            this.particleAcceleratorSpeedPenaltyForCollision = builder
+                    .comment("",
+                            "Defines the speed penalty in blocks per tick that is incurred to a particle when it collides with the walls of a particle accelerator.")
+                    .defineInRange("particleAcceleratorSpeedPenaltyForCollision", 0.025D, 0, Float.MAX_VALUE);
+            this.particleAcceleratorSpeedRequiredToGenerateAntimatter = builder
+                    .comment("",
+                            "Defines the speed in blocks per tick that is required for a particle to be converted into antimatter in a particle accelerator.")
+                    .defineInRange("particleAcceleratorSpeedRequiredToGenerateAntimatter", 2.5D, 0, Float.MAX_VALUE);
             this.spec = builder.build();
         }
 
@@ -262,6 +283,22 @@ public class ICBMConfig {
 
         public int getOreUraniumCount() {
             return oreUraniumCount.get();
+        }
+
+        public int getParticleAcceleratorEnergyUsagePerTick() {
+            return particleAcceleratorEnergyUsagePerTick.get();
+        }
+
+        public double getParticleAcceleratorSpeedIncreasePerTick() {
+            return particleAcceleratorSpeedIncreasePerTick.get();
+        }
+
+        public double getParticleAcceleratorSpeedPenaltyForCollision() {
+            return particleAcceleratorSpeedPenaltyForCollision.get();
+        }
+
+        public double getParticleAcceleratorSpeedRequiredToGenerateAntimatter() {
+            return particleAcceleratorSpeedRequiredToGenerateAntimatter.get();
         }
 
     }

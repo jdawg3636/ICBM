@@ -19,7 +19,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 repositories {
-    maven { // CurseForge, currently using for JEI, The One Probe, and WorldEdit
+    maven { // CurseForge, using for development runtime
         url "https://www.cursemaven.com"
     }
 }
