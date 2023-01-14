@@ -97,10 +97,10 @@ public class TileParticleAccelerator extends TileEntity implements ITickableTile
 
     @Override
     public void load(BlockState state, CompoundNBT tag) {
-        itemHandler.deserializeNBT(tag.getCompound("inv"));
-        energyStorage.deserializeNBT(tag.getCompound("energy"));
-        particleEntityID = tag.getUUID("particle_id");
-        acceleratorIsActive = tag.getBoolean("active");
+        if(tag.contains("inv"))         itemHandler.deserializeNBT(tag.getCompound("inv"));
+        if(tag.contains("energy"))      energyStorage.deserializeNBT(tag.getCompound("energy"));
+        if(tag.contains("particle_id")) particleEntityID = tag.getUUID("particle_id");
+        if(tag.contains("active"))      acceleratorIsActive = tag.getBoolean("active");
         super.load(state, tag);
     }
 

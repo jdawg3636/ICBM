@@ -181,15 +181,15 @@ public class ICBMConfig {
             this.particleAcceleratorSpeedIncreasePerTick = builder
                     .comment("",
                             "Defines the speed increase in blocks per tick that is applied each tick to the particle in a particle accelerator.")
-                    .defineInRange("particleAcceleratorSpeedIncreasePerTick", 0.0005D, 0, Float.MAX_VALUE);
+                    .defineInRange("particleAcceleratorSpeedIncreasePerTick", 0.004D, 0, Float.MAX_VALUE);
             this.particleAcceleratorSpeedPenaltyForCollision = builder
                     .comment("",
-                            "Defines the speed penalty in blocks per tick that is incurred to a particle when it collides with the walls of a particle accelerator.")
-                    .defineInRange("particleAcceleratorSpeedPenaltyForCollision", 0.025D, 0, Float.MAX_VALUE);
+                            "Defines the speed penalty in percent that is incurred to a particle when it collides with the walls of a particle accelerator.")
+                    .defineInRange("particleAcceleratorSpeedPenaltyForCollision", 0.05D, 0, 1D);
             this.particleAcceleratorSpeedRequiredToGenerateAntimatter = builder
                     .comment("",
                             "Defines the speed in blocks per tick that is required for a particle to be converted into antimatter in a particle accelerator.")
-                    .defineInRange("particleAcceleratorSpeedRequiredToGenerateAntimatter", 2.5D, 0, Float.MAX_VALUE);
+                    .defineInRange("particleAcceleratorSpeedRequiredToGenerateAntimatter", 1D, 0, Float.MAX_VALUE);
             this.spec = builder.build();
         }
 

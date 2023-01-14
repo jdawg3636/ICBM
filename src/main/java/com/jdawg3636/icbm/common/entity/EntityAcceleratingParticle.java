@@ -9,8 +9,12 @@ import com.jdawg3636.icbm.common.reg.ICBMTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -22,22 +26,29 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class EntityAcceleratingParticle extends Entity {
 
-    public BlockPos particleAcceleratorPosition = null;
-    public Direction particleDirection = null;
+    public static final DataParameter<Optional<BlockPos>> PARTICLE_ACCELERATOR_POSITION = EntityDataManager.defineId(EntityAcceleratingParticle.class, DataSerializers.OPTIONAL_BLOCK_POS);
+    public static final DataParameter<Direction> PARTICLE_DIRECTION = EntityDataManager.defineId(EntityAcceleratingParticle.class, DataSerializers.DIRECTION);
+    public static final DataParameter<Float> PARTICLE_SPEED = EntityDataManager.defineId(EntityAcceleratingParticle.class, DataSerializers.FLOAT);
+
+//    public BlockPos particleAcceleratorPosition = BlockPos.ZERO;
+//    public Direction particleDirection = Direction.DOWN;
     public boolean hasCollided = false;
-    public float particleSpeed = 0F;
+//    public float particleSpeed = 0F;
 
     public static EntityAcceleratingParticle getNewInstanceForAccelerator(TileParticleAccelerator particleAccelerator) {
         World level = particleAccelerator.getLevel();
         assert level != null;
         EntityAcceleratingParticle particleEntity = EntityReg.ACCELERATING_PARTICLE.get().create(level);
         if(particleEntity != null) {
-            particleEntity.particleAcceleratorPosition = particleAccelerator.getBlockPos();
-            particleEntity.particleDirection = particleAccelerator.getBlockState().getValue(BlockParticleAccelerator.FACING).getOpposite();
-            BlockPos particlePos = particleAccelerator.getBlockPos().relative(particleEntity.particleDirection);
+//            particleEntity.particleAcceleratorPosition = particleAccelerator.getBlockPos();
+//            particleEntity.particleDirection = particleAccelerator.getBlockState().getValue(BlockParticleAccelerator.FACING).getOpposite();
+            particleEntity.getEntityData().set(PARTICLE_ACCELERATOR_POSITION, Optional.of(particleAccelerator.getBlockPos()));
+            particleEntity.getEntityData().set(PARTICLE_DIRECTION, particleAccelerator.getBlockState().getValue(BlockParticleAccelerator.FACING).getOpposite());
+            BlockPos particlePos = particleEntity.getEntityData().get(PARTICLE_ACCELERATOR_POSITION).orElse(BlockPos.ZERO).relative(particleEntity.getEntityData().get(PARTICLE_DIRECTION));
             particleEntity.setPos(particlePos.getX()+0.5, particlePos.getY(), particlePos.getZ()+0.5);
         }
         return particleEntity;
@@ -91,11 +102,11 @@ public class EntityAcceleratingParticle extends Entity {
         super.tick();
         if(!level.isClientSide()) {
             // If no accelerator is assigned, do nothing.
-            if (particleAcceleratorPosition == null) {
+            if (!getEntityData().get(PARTICLE_ACCELERATOR_POSITION).isPresent()) {
                 return;
             }
             // Kill particle if an accelerator is assigned but no longer exists
-            TileEntity tileEntity = level.getBlockEntity(particleAcceleratorPosition);
+            TileEntity tileEntity = level.getBlockEntity(getEntityData().get(PARTICLE_ACCELERATOR_POSITION).orElse(BlockPos.ZERO));
             if (!(tileEntity instanceof TileParticleAccelerator)) {
                 kill();
                 return;
@@ -111,30 +122,45 @@ public class EntityAcceleratingParticle extends Entity {
                 explode();
                 return;
             }
-            // Update Physics
-            if (hasCollided) {
-                particleSpeed = (float)Math.max(0, particleSpeed - ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedPenaltyForCollision());
-                Direction newParticleDirection = getDirectionToGo(level, blockPosition(), particleDirection.getOpposite());
-                if (newParticleDirection != null) particleDirection = newParticleDirection;
-                else explode();
-                hasCollided = false;
-            } else {
-                particleSpeed += ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedIncreasePerTick();
-                Vector3i particleDirectionAsVecI = particleDirection.getNormal();
-                Vector3d particleDirectionAsVecD = new Vector3d(particleDirectionAsVecI.getX(), particleDirectionAsVecI.getY(), particleDirectionAsVecI.getZ());
-                particleDirectionAsVecD = particleDirectionAsVecD.scale(particleSpeed);
-                moveRelative(particleSpeed, particleDirectionAsVecD);
-                //setDeltaMovement(getDeltaMovement().add(particleDirectionAsVecD));
-                //setPos(getX() + particleDirectionAsVecD.x, getY() + particleDirectionAsVecD.y, getZ() + particleDirectionAsVecD.z);
-                //this.move(MoverType.SELF, this.getDeltaMovement());
+            // Explode and generate antimatter
+            if (getEntityData().get(PARTICLE_SPEED) >= ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedRequiredToGenerateAntimatter()) {
+                explode(true);
+                return;
             }
+        }
+        // Update Physics (Runs on both client and server)
+        if (hasCollided) {
+            float previousSpeed = getEntityData().get(PARTICLE_SPEED);
+            getEntityData().set(PARTICLE_SPEED, (float)Math.max(0, getEntityData().get(PARTICLE_SPEED) * (1 - ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedPenaltyForCollision())));
+            ICBMReference.broadcastToChat(level, "Imparting speed penalty for collision, '%s' -> '%s'", previousSpeed, getEntityData().get(PARTICLE_SPEED));
+//            particleSpeed = (float)Math.max(0, particleSpeed - ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedPenaltyForCollision());
+            Direction newParticleDirection = getDirectionToGo(level, blockPosition(), getEntityData().get(PARTICLE_DIRECTION).getOpposite());
+            if (newParticleDirection != null) getEntityData().set(PARTICLE_DIRECTION, newParticleDirection);
+            else explode();
+            hasCollided = false;
+        } else {
+            getEntityData().set(PARTICLE_SPEED, getEntityData().get(PARTICLE_SPEED) + (float)ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedIncreasePerTick());
+//            particleSpeed += ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedIncreasePerTick();
+            Vector3i particleDirectionAsVecI = getEntityData().get(PARTICLE_DIRECTION).getNormal();
+            Vector3d particleDirectionAsVecD = new Vector3d(particleDirectionAsVecI.getX(), particleDirectionAsVecI.getY(), particleDirectionAsVecI.getZ());
+            //particleDirectionAsVecD = particleDirectionAsVecD.scale(particleSpeed);
+            moveRelative(getEntityData().get(PARTICLE_SPEED), particleDirectionAsVecD);
+            //setDeltaMovement(getDeltaMovement().add(particleDirectionAsVecD));
+            //setPos(getX() + particleDirectionAsVecD.x, getY() + particleDirectionAsVecD.y, getZ() + particleDirectionAsVecD.z);
+            this.move(MoverType.SELF, this.getDeltaMovement());
         }
     }
 
     public void explode() {
+        explode(false);
+    }
+
+    public void explode(boolean canGenerateAntimatter) {
         if(level.isClientSide()) return;
-        // TODO: Find nearby particles to determine if red matter should be generated
         if(level instanceof ServerWorld) {
+            // TODO: Find nearby particles to determine if red matter should be generated
+//            if(level.getNearbyEntities(EntityAcceleratingParticle.class, EntityPredicate.DEFAULT, )) {
+//            }
             // TODO: *Maybe* add an event for this blast? Seems a bit excessive but may be useful for someone.
             ICBMBlastEventUtil.doVanillaExplosion((ServerWorld) level, blockPosition(), 1F);
             // TODO: If red matter wasn't generated, then generate antimatter
@@ -146,7 +172,7 @@ public class EntityAcceleratingParticle extends Entity {
     public Vector3d collide(Vector3d motionVector) {
         Vector3d result = super.collide(motionVector);
         if(!result.equals(motionVector)) {
-            ICBMReference.broadcastToChat(level, "Experienced Collision! Result = %s, Target = %s", result, motionVector);
+//            ICBMReference.broadcastToChat(level, "Experienced Collision! Result = %s, Target = %s", result, motionVector);
             hasCollided = true;
         }
         return result;
@@ -154,44 +180,53 @@ public class EntityAcceleratingParticle extends Entity {
 
     @Override
     protected void defineSynchedData() {
-        // todo: sync acceleration progress to display in GUI
+        entityData.define(PARTICLE_ACCELERATOR_POSITION, Optional.of(BlockPos.ZERO));
+        entityData.define(PARTICLE_DIRECTION, Direction.DOWN);
+        entityData.define(PARTICLE_SPEED, 0F);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(DataParameter<?> dataParameter) {
+//        if(PARTICLE_ACCELERATOR_POSITION.equals(dataParameter)) this.particleAcceleratorPosition = (BlockPos) this.getEntityData().get(dataParameter);
+//        if(PARTICLE_DIRECTION.equals(dataParameter)) this.particleDirection = (Direction) this.getEntityData().get(dataParameter);
+//        if(PARTICLE_SPEED.equals(dataParameter)) this.particleSpeed = (float) this.getEntityData().get(dataParameter);
+        super.onSyncedDataUpdated(dataParameter);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundNBT nbt) {
         if(nbt.contains("particle_accelerator_position")) {
             CompoundNBT nbtParticleAcceleratorPosition = nbt.getCompound("particle_accelerator_position");
-            particleAcceleratorPosition = new BlockPos(
+            getEntityData().set(PARTICLE_ACCELERATOR_POSITION, Optional.of(new BlockPos(
                     nbtParticleAcceleratorPosition.getInt("x"),
                     nbtParticleAcceleratorPosition.getInt("y"),
                     nbtParticleAcceleratorPosition.getInt("z")
-            );
+            )));
         }
         if(nbt.contains("particle_direction")) {
-            particleDirection = Direction.from3DDataValue(nbt.getInt("particle_direction"));
+            getEntityData().set(PARTICLE_DIRECTION, Direction.from3DDataValue(nbt.getInt("particle_direction")));
         }
         if(nbt.contains("has_collided")) {
             hasCollided = nbt.getBoolean("has_collided");
         }
         if(nbt.contains("particle_speed")) {
-            particleSpeed = nbt.getFloat("particle_speed");
+            getEntityData().set(PARTICLE_SPEED, nbt.getFloat("particle_speed"));
         }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundNBT nbt) {
-        if(particleAcceleratorPosition != null) {
+        if(getEntityData().get(PARTICLE_ACCELERATOR_POSITION).isPresent()) {
+            BlockPos particleAcceleratorPosition = getEntityData().get(PARTICLE_ACCELERATOR_POSITION).orElse(BlockPos.ZERO);
             CompoundNBT nbtParticleAcceleratorPosition = new CompoundNBT();
             nbtParticleAcceleratorPosition.putInt("x", particleAcceleratorPosition.getX());
             nbtParticleAcceleratorPosition.putInt("y", particleAcceleratorPosition.getY());
             nbtParticleAcceleratorPosition.putInt("z", particleAcceleratorPosition.getZ());
             nbt.put("particle_accelerator_position", nbtParticleAcceleratorPosition);
         }
-        if(particleDirection != null) {
-            nbt.putInt("particle_direction", particleDirection.get3DDataValue());
-        }
+        nbt.putInt("particle_direction", getEntityData().get(PARTICLE_DIRECTION).get3DDataValue());
         nbt.putBoolean("has_collided", hasCollided);
-        nbt.putFloat("particle_speed", particleSpeed);
+        nbt.putFloat("particle_speed", getEntityData().get(PARTICLE_SPEED));
     }
 
     @Override
