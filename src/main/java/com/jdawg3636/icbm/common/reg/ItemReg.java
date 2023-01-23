@@ -162,6 +162,11 @@ public class ItemReg {
     public static final RegistryObject<Item> SIGNAL_DISRUPTOR               = ITEMS.register("signal_disruptor",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> TRACKER                        = ITEMS.register("tracker",                         ItemTracker::new);
 
+    // Material Cells
+    public static final RegistryObject<Item> EMPTY_CELL                     = ITEMS.register("empty_cell",                      () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> ANTIMATTER_CELL                = ITEMS.register("antimatter_cell",                 () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> REDMATTER_CELL                 = ITEMS.register("redmatter_cell",                  () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+
     // Basic Crafting Items (No functionality)
     public static final RegistryObject<Item> POISON_POWDER                  = ITEMS.register("poison_powder",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> SULFUR                         = ITEMS.register("sulfur",                          () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

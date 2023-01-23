@@ -122,6 +122,11 @@
   "item.icbm.hazmat_pants": "Hazmat Pants",
   "item.icbm.hazmat_boots": "Hazmat Boots",
 
+  # ICBM Material Cells
+  "item.icbm.empty_cell": "Empty Cell",
+  "item.icbm.antimatter_cell": "Antimatter Cell",
+  "item.icbm.redmatter_cell": "Red Matter Cell",
+
   # ICBM Machines
   "block.icbm.launcher_platform_t1": "Launcher Platform T1",
   "block.icbm.launcher_platform_t2": "Launcher Platform T2",

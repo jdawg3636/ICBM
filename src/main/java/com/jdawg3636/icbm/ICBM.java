@@ -48,6 +48,7 @@ public final class ICBM {
                 EntityReg.ENTITIES,
                 ItemReg.ITEMS,
                 ParticleTypeReg.PARTICLES,
+                RecipeSerializerReg.RECIPE_SERIALIZERS,
                 SoundEventReg.SOUND_EVENTS,
                 TileReg.TILES
         };

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "ABA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/tin"
+    },
+    "B": {
+      "tag": "forge:glass/colorless"
+    }
+  },
+  "result": {
+    "item": "icbm:empty_cell",
+    "count": 1
+  }
+}

@@ -10,6 +10,7 @@ import com.jdawg3636.icbm.common.capability.trackingmanager.TrackingManagerCapab
 import com.jdawg3636.icbm.common.item.ItemDefuser;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
+import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -45,6 +46,7 @@ public class CommonProxy {
     public void onCommonSetupEvent(final FMLCommonSetupEvent event) {
         ICBMNetworking.init();
         ICBMCapabilities.register();
+        event.enqueueWork(ICBMRecipeTypes::registerAll);
     }
 
     public void onAttachCapabilitiesEventWorld(final AttachCapabilitiesEvent<World> event) {

@@ -1,0 +1,8 @@
+{
+  "type": "icbm:particle_accelerator",
+  "explosion_cause": "MAXIMUM_SPEED",
+  "result": {
+    "item": "icbm:antimatter_cell",
+    "count": 1
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "icbm:particle_accelerator",
+  "explosion_cause": "DESTROYED_BY_OTHER_PARTICLE",
+  "result": {
+    "item": "icbm:redmatter_cell",
+    "count": 1
+  }
+}

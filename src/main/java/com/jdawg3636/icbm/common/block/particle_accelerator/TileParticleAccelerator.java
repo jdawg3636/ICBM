@@ -3,7 +3,9 @@ package com.jdawg3636.icbm.common.block.particle_accelerator;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import com.jdawg3636.icbm.common.entity.EntityAcceleratingParticle;
+import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +18,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -23,7 +26,71 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class TileParticleAccelerator extends TileEntity implements ITickableTileEntity {
-    public final ItemStackHandler itemHandler = new ItemStackHandler(3);
+
+    public static enum SlotIDs {
+        PARTICLES,
+        EMPTY_CELLS,
+        RESULT_CELLS
+    }
+
+    static class ParticleAcceleratorItemStackHandler extends ItemStackHandler {
+        public ParticleAcceleratorItemStackHandler() {
+            super(3);
+        }
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            if(slot == SlotIDs.PARTICLES.ordinal()) {
+                return stack.getItem() != ItemReg.EMPTY_CELL.get();
+            }
+            if(slot == SlotIDs.EMPTY_CELLS.ordinal()) {
+                return stack.getItem() == ItemReg.EMPTY_CELL.get();
+            }
+            if(slot == SlotIDs.RESULT_CELLS.ordinal()) {
+                return false;
+            }
+            return true;
+        }
+        public ItemStack insertItemUnchecked(int slot, @Nonnull ItemStack stack, boolean simulate)
+        {
+            if (stack.isEmpty())
+                return ItemStack.EMPTY;
+
+            validateSlotIndex(slot);
+
+            ItemStack existing = this.stacks.get(slot);
+
+            int limit = getStackLimit(slot, stack);
+
+            if (!existing.isEmpty())
+            {
+                if (!ItemHandlerHelper.canItemStacksStack(stack, existing))
+                    return stack;
+
+                limit -= existing.getCount();
+            }
+
+            if (limit <= 0)
+                return stack;
+
+            boolean reachedLimit = stack.getCount() > limit;
+
+            if (!simulate)
+            {
+                if (existing.isEmpty())
+                {
+                    this.stacks.set(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
+                }
+                else
+                {
+                    existing.grow(reachedLimit ? limit : stack.getCount());
+                }
+                onContentsChanged(slot);
+            }
+
+            return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount()- limit) : ItemStack.EMPTY;
+        }
+    };
+    public final ParticleAcceleratorItemStackHandler itemHandler = new ParticleAcceleratorItemStackHandler();
     private final ICBMEnergyStorage energyStorage = new ICBMEnergyStorage().setCapacity(1_000_000_000, true).setMaxExtract(0).setCallbackOnChanged(this::setChanged);
     public final LazyOptional<IItemHandler> itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
     public final LazyOptional<IEnergyStorage> energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
@@ -40,7 +107,8 @@ public class TileParticleAccelerator extends TileEntity implements ITickableTile
             tickEnergy();
             // Most tick logic is handled within the entity itself, we just need to create it if one should exist but doesn't.
             EntityAcceleratingParticle particleEntity = (EntityAcceleratingParticle) (((ServerWorld) level).getEntity(particleEntityID));
-            if(acceleratorIsActive && particleEntity == null) {
+            if(acceleratorIsActive && particleEntity == null && itemHandler.extractItem(SlotIDs.PARTICLES.ordinal(), 1, true).getCount() != 0) {
+                itemHandler.extractItem(SlotIDs.PARTICLES.ordinal(), 1, false);
                 particleEntity = EntityAcceleratingParticle.getNewInstanceForAccelerator(this);
                 if(particleEntity != null) {
                     this.particleEntityID = particleEntity.getUUID();
@@ -85,6 +153,14 @@ public class TileParticleAccelerator extends TileEntity implements ITickableTile
             }
         }
         return maxAmount - totalRequesting;
+    }
+
+    public boolean tryProduceResult(ItemStack result) {
+        if(itemHandler.extractItem(SlotIDs.EMPTY_CELLS.ordinal(), 1, true).getItem() == ItemReg.EMPTY_CELL.get()) {
+            itemHandler.extractItem(SlotIDs.EMPTY_CELLS.ordinal(), 1, false);
+            return itemHandler.insertItemUnchecked(SlotIDs.RESULT_CELLS.ordinal(), result, false).getCount() == 0;
+        }
+        return false;
     }
 
     @Nonnull

@@ -3,13 +3,14 @@ package com.jdawg3636.icbm.common.entity;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.particle_accelerator.BlockParticleAccelerator;
 import com.jdawg3636.icbm.common.block.particle_accelerator.TileParticleAccelerator;
-import com.jdawg3636.icbm.common.event.ICBMBlastEventUtil;
+import com.jdawg3636.icbm.common.event.EventBlastAcceleratingParticle;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.ICBMTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -18,6 +19,8 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.IWorldReader;
@@ -27,6 +30,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.ArrayList;
 import java.util.Optional;
+
+import static com.jdawg3636.icbm.common.event.EventBlastAcceleratingParticle.ExplosionCause;
 
 public class EntityAcceleratingParticle extends Entity {
 
@@ -100,7 +105,7 @@ public class EntityAcceleratingParticle extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if(!level.isClientSide()) {
+        if(!level.isClientSide() && isAlive()) {
             // If no accelerator is assigned, do nothing.
             if (!getEntityData().get(PARTICLE_ACCELERATOR_POSITION).isPresent()) {
                 return;
@@ -119,12 +124,20 @@ public class EntityAcceleratingParticle extends Entity {
             }
             // Explode particle if position is not magnetically sealed
             if (!isMagneticallySealed(level, blockPosition(), 3)) {
-                explode();
+                explode(ExplosionCause.ELECTROMAGNETICALLY_UNSEALED);
                 return;
             }
-            // Explode and generate antimatter
+            // Explode particle if collided with another entity
+            final EntityRayTraceResult entityRayTraceResult = findHitEntity();
+            if(entityRayTraceResult != null && entityRayTraceResult.getType() == RayTraceResult.Type.ENTITY) {
+                explode(ExplosionCause.COLLISION_WITH_ENTITY);
+                if (entityRayTraceResult.getEntity() instanceof EntityAcceleratingParticle) {
+                    ((EntityAcceleratingParticle)entityRayTraceResult.getEntity()).explode(ExplosionCause.DESTROYED_BY_OTHER_PARTICLE);
+                }
+            }
+            // Explode particle if maximum speed reached
             if (getEntityData().get(PARTICLE_SPEED) >= ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedRequiredToGenerateAntimatter()) {
-                explode(true);
+                explode(ExplosionCause.MAXIMUM_SPEED);
                 return;
             }
         }
@@ -136,7 +149,7 @@ public class EntityAcceleratingParticle extends Entity {
 //            particleSpeed = (float)Math.max(0, particleSpeed - ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedPenaltyForCollision());
             Direction newParticleDirection = getDirectionToGo(level, blockPosition(), getEntityData().get(PARTICLE_DIRECTION).getOpposite());
             if (newParticleDirection != null) getEntityData().set(PARTICLE_DIRECTION, newParticleDirection);
-            else explode();
+            else explode(ExplosionCause.COLLISION_WITH_BLOCK);
             hasCollided = false;
         } else {
             getEntityData().set(PARTICLE_SPEED, getEntityData().get(PARTICLE_SPEED) + (float)ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedIncreasePerTick());
@@ -151,21 +164,16 @@ public class EntityAcceleratingParticle extends Entity {
         }
     }
 
-    public void explode() {
-        explode(false);
-    }
-
-    public void explode(boolean canGenerateAntimatter) {
-        if(level.isClientSide()) return;
-        if(level instanceof ServerWorld) {
-            // TODO: Find nearby particles to determine if red matter should be generated
-//            if(level.getNearbyEntities(EntityAcceleratingParticle.class, EntityPredicate.DEFAULT, )) {
-//            }
-            // TODO: *Maybe* add an event for this blast? Seems a bit excessive but may be useful for someone.
-            ICBMBlastEventUtil.doVanillaExplosion((ServerWorld) level, blockPosition(), 1F);
-            // TODO: If red matter wasn't generated, then generate antimatter
+    public void explode(ExplosionCause explosionCause) {
+        if(!level.isClientSide() && level instanceof ServerWorld) {
+            TileParticleAccelerator particleAccelerator = (TileParticleAccelerator)level.getBlockEntity(getEntityData().get(PARTICLE_ACCELERATOR_POSITION).orElse(BlockPos.ZERO));
+            if(particleAccelerator != null) EventBlastAcceleratingParticle.fire(blockPosition(), (ServerWorld)level, explosionCause, particleAccelerator);
             kill();
         }
+    }
+
+    protected EntityRayTraceResult findHitEntity() {
+        return ProjectileHelper.getEntityHitResult(this.level, this, position(), getDeltaMovement(), this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (otherEntity) -> !otherEntity.isSpectator());
     }
 
     @Override
