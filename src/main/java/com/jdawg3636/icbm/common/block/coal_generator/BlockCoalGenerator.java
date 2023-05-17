@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.block.coal_generator;
 
-import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachineTile;
+import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachineTile;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.block.cruise_launcher;
 
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
-import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachineTile;
+import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachineTile;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.item.ItemMissile;
 import com.jdawg3636.icbm.common.reg.ContainerReg;

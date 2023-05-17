@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.block.multiblock;
+package com.jdawg3636.icbm.common.block.machine;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;

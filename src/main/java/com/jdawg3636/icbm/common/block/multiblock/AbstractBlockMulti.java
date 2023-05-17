@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.multiblock;
 
+import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;

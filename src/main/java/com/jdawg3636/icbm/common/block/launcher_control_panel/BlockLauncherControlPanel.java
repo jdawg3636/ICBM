@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachineTile;
+import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachineTile;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
