@@ -26,6 +26,8 @@ import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.ArrayList;
@@ -104,7 +106,7 @@ public class EntityAcceleratingParticle extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
+//        super.tick();
         if(!level.isClientSide() && isAlive()) {
             // If no accelerator is assigned, do nothing.
             if (!getEntityData().get(PARTICLE_ACCELERATOR_POSITION).isPresent()) {
@@ -129,10 +131,12 @@ public class EntityAcceleratingParticle extends Entity {
             }
             // Explode particle if collided with another entity
             final EntityRayTraceResult entityRayTraceResult = findHitEntity();
-            if(entityRayTraceResult != null && entityRayTraceResult.getType() == RayTraceResult.Type.ENTITY) {
-                explode(ExplosionCause.COLLISION_WITH_ENTITY);
-                if (entityRayTraceResult.getEntity() instanceof EntityAcceleratingParticle) {
-                    ((EntityAcceleratingParticle)entityRayTraceResult.getEntity()).explode(ExplosionCause.DESTROYED_BY_OTHER_PARTICLE);
+            if(entityRayTraceResult != null) {
+                if(entityRayTraceResult.getType() == RayTraceResult.Type.ENTITY) {
+                    explode(ExplosionCause.COLLISION_WITH_ENTITY);
+                    if (entityRayTraceResult.getEntity() instanceof EntityAcceleratingParticle) {
+                        ((EntityAcceleratingParticle)entityRayTraceResult.getEntity()).explode(ExplosionCause.DESTROYED_BY_OTHER_PARTICLE, this);
+                    }
                 }
             }
             // Explode particle if maximum speed reached
@@ -165,15 +169,19 @@ public class EntityAcceleratingParticle extends Entity {
     }
 
     public void explode(ExplosionCause explosionCause) {
+        explode(explosionCause, null);
+    }
+
+    public void explode(ExplosionCause explosionCause, EntityAcceleratingParticle otherParticle) {
         if(!level.isClientSide() && level instanceof ServerWorld) {
             TileParticleAccelerator particleAccelerator = (TileParticleAccelerator)level.getBlockEntity(getEntityData().get(PARTICLE_ACCELERATOR_POSITION).orElse(BlockPos.ZERO));
-            if(particleAccelerator != null) EventBlastAcceleratingParticle.fire(blockPosition(), (ServerWorld)level, explosionCause, particleAccelerator);
+            if(particleAccelerator != null) EventBlastAcceleratingParticle.fire(blockPosition(), (ServerWorld)level, explosionCause, this.getEntityData().get(PARTICLE_SPEED), otherParticle == null ? Optional.empty() : Optional.of(otherParticle.getEntityData().get(PARTICLE_SPEED)), particleAccelerator);
             kill();
         }
     }
 
     protected EntityRayTraceResult findHitEntity() {
-        return ProjectileHelper.getEntityHitResult(this.level, this, position(), getDeltaMovement(), this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (otherEntity) -> !otherEntity.isSpectator());
+        return ProjectileHelper.getEntityHitResult(this.level, this, position(), position().add(getDeltaMovement()), this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (otherEntity) -> !otherEntity.isSpectator());
     }
 
     @Override
@@ -235,6 +243,11 @@ public class EntityAcceleratingParticle extends Entity {
         nbt.putInt("particle_direction", getEntityData().get(PARTICLE_DIRECTION).get3DDataValue());
         nbt.putBoolean("has_collided", hasCollided);
         nbt.putFloat("particle_speed", getEntityData().get(PARTICLE_SPEED));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean shouldRenderAtSqrDistance(double pDistance) {
+        return true;
     }
 
     @Override

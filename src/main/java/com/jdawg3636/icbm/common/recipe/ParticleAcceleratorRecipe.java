@@ -24,11 +24,15 @@ import java.util.function.Supplier;
 public class ParticleAcceleratorRecipe implements IRecipe<IInventory> {
     private final ResourceLocation recipeId;
     private EventBlastAcceleratingParticle.ExplosionCause explosionCause;
+    private float speedPercentRequired;
+    private float dropChance;
     private Supplier<ItemStack> result;
 
-    public ParticleAcceleratorRecipe(ResourceLocation recipeId, EventBlastAcceleratingParticle.ExplosionCause explosionCause, Supplier<ItemStack> result) {
+    public ParticleAcceleratorRecipe(ResourceLocation recipeId, EventBlastAcceleratingParticle.ExplosionCause explosionCause, float speedPercentRequired, float dropChance, Supplier<ItemStack> result) {
         this.recipeId = recipeId;
         this.explosionCause = explosionCause;
+        this.speedPercentRequired = speedPercentRequired;
+        this.dropChance = dropChance;
         this.result = result;
     }
 
@@ -80,26 +84,42 @@ public class ParticleAcceleratorRecipe implements IRecipe<IInventory> {
         return ICBMRecipeTypes.PARTICLE_ACCELERATOR;
     }
 
+    public EventBlastAcceleratingParticle.ExplosionCause getExplosionCause() {
+        return this.explosionCause;
+    }
+    public float getSpeedPercentRequired() {
+        return this.speedPercentRequired;
+    }
+    public float getDropChance() {
+        return this.dropChance;
+    }
+
     public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ParticleAcceleratorRecipe> {
 
         @Override
         public ParticleAcceleratorRecipe fromJson(ResourceLocation recipeId, JsonObject jsonObject) {
             EventBlastAcceleratingParticle.ExplosionCause explosionCause = EventBlastAcceleratingParticle.ExplosionCause.valueOf(JSONUtils.getAsString(jsonObject, "explosion_cause"));
+            float speedPercentRequired = JSONUtils.getAsFloat(jsonObject, "speed_percent_required");
+            float dropChance = JSONUtils.getAsFloat(jsonObject, "drop_chance");
             ItemStack result = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
-            return new ParticleAcceleratorRecipe(recipeId, explosionCause, result::copy);
+            return new ParticleAcceleratorRecipe(recipeId, explosionCause, speedPercentRequired, dropChance, result::copy);
         }
 
         @Nullable
         @Override
         public ParticleAcceleratorRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
             EventBlastAcceleratingParticle.ExplosionCause explosionCause = EventBlastAcceleratingParticle.ExplosionCause.valueOf(buffer.readUtf());
+            float speedPercentRequired = buffer.readFloat();
+            float dropChance = buffer.readFloat();
             ItemStack result = buffer.readItem();
-            return new ParticleAcceleratorRecipe(recipeId, explosionCause, result::copy);
+            return new ParticleAcceleratorRecipe(recipeId, explosionCause, speedPercentRequired, dropChance, result::copy);
         }
 
         @Override
         public void toNetwork(PacketBuffer buffer, ParticleAcceleratorRecipe recipe) {
             buffer.writeUtf(recipe.explosionCause.name());
+            buffer.writeFloat(recipe.speedPercentRequired);
+            buffer.writeFloat(recipe.dropChance);
             buffer.writeItem(recipe.result.get());
         }
 

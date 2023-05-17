@@ -24,22 +24,34 @@ public class EventBlastAcceleratingParticle extends AbstractBlastEvent {
     }
 
     private final ExplosionCause explosionCause;
+    private final float particleSpeed;
+    private final Optional<Float> otherParticleSpeed;
     private final TileParticleAccelerator particleAccelerator;
 
-    public EventBlastAcceleratingParticle(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection, ExplosionCause explosionCause, TileParticleAccelerator particleAccelerator) {
+    public EventBlastAcceleratingParticle(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection, ExplosionCause explosionCause, float particleSpeed, Optional<Float> otherParticleSpeed, TileParticleAccelerator particleAccelerator) {
         super(blastPosition, blastWorld, blastType, blastDirection);
         this.explosionCause = explosionCause;
+        this.particleSpeed = particleSpeed;
+        this.otherParticleSpeed = otherParticleSpeed;
         this.particleAccelerator = particleAccelerator;
     }
 
-    public static boolean fire(BlockPos blastPosition, ServerWorld blastWorld, ExplosionCause explosionCause, TileParticleAccelerator particleAccelerator) {
-        AbstractBlastEvent blastEvent = new EventBlastAcceleratingParticle(blastPosition, blastWorld, Type.EXPLOSIVES, Direction.DOWN, explosionCause, particleAccelerator);
+    public static boolean fire(BlockPos blastPosition, ServerWorld blastWorld, ExplosionCause explosionCause, float particleSpeed, Optional<Float> otherParticleSpeed, TileParticleAccelerator particleAccelerator) {
+        AbstractBlastEvent blastEvent = new EventBlastAcceleratingParticle(blastPosition, blastWorld, Type.EXPLOSIVES, Direction.DOWN, explosionCause, particleSpeed, otherParticleSpeed, particleAccelerator);
         boolean eventCancelled = MinecraftForge.EVENT_BUS.post(blastEvent);
         return !eventCancelled && blastEvent.executeBlast();
     }
 
     public ExplosionCause getExplosionCause() {
         return explosionCause;
+    }
+
+    public float getParticleSpeed() {
+        return particleSpeed;
+    }
+
+    public Optional<Float> getOtherParticleSpeed() {
+        return otherParticleSpeed;
     }
 
     public TileParticleAccelerator getParticleAccelerator() {
@@ -50,7 +62,12 @@ public class EventBlastAcceleratingParticle extends AbstractBlastEvent {
     public boolean executeBlast() {
         ICBMReference.logger().info(String.format("Detonating particle @ %s with cause %s", getBlastPosition(), getExplosionCause()));
         Optional<ParticleAcceleratorRecipe> recipeOptional = ParticleAcceleratorRecipe.getRecipeFor(ICBMRecipeTypes.PARTICLE_ACCELERATOR, getExplosionCause(), getBlastWorld());
-        recipeOptional.ifPresent((recipe)->particleAccelerator.tryProduceResult(recipe.getResultItem()));
+        recipeOptional.ifPresent((recipe)->{
+            float maxParticleSpeed = Math.max(getParticleSpeed(), getOtherParticleSpeed().orElse(Float.MIN_VALUE));
+            if(maxParticleSpeed >= ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedRequiredToGenerateAntimatter() * recipe.getSpeedPercentRequired() && getBlastWorld().getRandom().nextDouble() <= recipe.getDropChance()) {
+                getParticleAccelerator().tryProduceResult(recipe.getResultItem());
+            }
+        });
         ICBMBlastEventUtil.doVanillaExplosion(getBlastWorld(), getBlastPosition(), 1F);
         return true;
     }

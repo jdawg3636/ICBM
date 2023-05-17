@@ -5,6 +5,8 @@ import com.jdawg3636.icbm.common.item.*;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -164,7 +166,8 @@ public class ItemReg {
 
     // Material Cells
     public static final RegistryObject<Item> EMPTY_CELL                     = ITEMS.register("empty_cell",                      () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> ANTIMATTER_CELL                = ITEMS.register("antimatter_cell",                 () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> ANTIMATTER_CELL                = ITEMS.register("antimatter_cell",                 () -> new ItemCustomTooltip(new Item.Properties().tab(ICBMReference.CREATIVE_TAB), () -> new TranslationTextComponent("item.icbm.antimatter_cell.tooltip").withStyle(TextFormatting.GRAY)));
+    public static final RegistryObject<Item> ANTIMATTER_CELL_CONCENTRATED   = ITEMS.register("antimatter_cell_concentrated",    () -> new ItemCustomTooltip(new Item.Properties().tab(ICBMReference.CREATIVE_TAB), () -> new TranslationTextComponent("item.icbm.antimatter_cell_concentrated.tooltip").withStyle(TextFormatting.GRAY)));
     public static final RegistryObject<Item> REDMATTER_CELL                 = ITEMS.register("redmatter_cell",                  () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Basic Crafting Items (No functionality)
