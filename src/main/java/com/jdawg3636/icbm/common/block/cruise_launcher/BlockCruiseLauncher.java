@@ -88,16 +88,6 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
         return ActionResultType.SUCCESS;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onRemove(BlockState originalState, World level, BlockPos blockPos, BlockState newState, boolean flag) {
-        if(originalState.getBlock() != newState.getBlock()) {
-            TileEntity tileEntity = level.getBlockEntity(blockPos);
-            if (tileEntity instanceof TileCruiseLauncher) ((TileCruiseLauncher) tileEntity).onPlatformDestroyed();
-        }
-        super.onRemove(originalState, level, blockPos, newState, flag);
-    }
-
     public ContainerType<? extends Container> getContainerType() {
         return ContainerReg.CRUISE_LAUNCHER.get();
     }

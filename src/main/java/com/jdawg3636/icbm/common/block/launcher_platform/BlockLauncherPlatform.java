@@ -76,7 +76,7 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile imple
     @Override
     public void destroyMultiblock(World worldIn, BlockPos pos, BlockState sourceState) {
         TileEntity tileEntity = worldIn.getBlockEntity(getMultiblockCenter(worldIn, pos, sourceState));
-        if(tileEntity instanceof TileLauncherPlatform) ((TileLauncherPlatform)tileEntity).onPlatformDestroyed();
+        if(tileEntity instanceof TileLauncherPlatform) ((TileLauncherPlatform)tileEntity).onBlockDestroyed();
         super.destroyMultiblock(worldIn, pos, sourceState);
     }
 
