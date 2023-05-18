@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.block.multiblock;
+package com.jdawg3636.icbm.common.block.machine;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

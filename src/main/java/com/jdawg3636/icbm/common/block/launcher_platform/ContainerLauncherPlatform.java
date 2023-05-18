@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.block.launcher_platform;
 
-import com.jdawg3636.icbm.common.block.multiblock.AbstractContainerMachine;
+import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
 import com.jdawg3636.icbm.common.reg.ICBMTags;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

@@ -3,7 +3,7 @@ package com.jdawg3636.icbm.common.reg;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
-import com.jdawg3636.icbm.common.block.multiblock.AbstractContainerMachine;
+import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
 import com.jdawg3636.icbm.common.block.particle_accelerator.ContainerParticleAccelerator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerInventory;

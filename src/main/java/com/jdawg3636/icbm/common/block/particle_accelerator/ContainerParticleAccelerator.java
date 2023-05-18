@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.block.particle_accelerator;
 
-import com.jdawg3636.icbm.common.block.multiblock.AbstractContainerMachine;
+import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
