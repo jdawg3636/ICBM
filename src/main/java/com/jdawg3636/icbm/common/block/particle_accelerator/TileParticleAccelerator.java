@@ -105,7 +105,7 @@ public class TileParticleAccelerator extends TileEntity implements ITickableTile
     public void tick() {
         if(level != null && !level.isClientSide()) {
             tickEnergy();
-            // Most tick logic is handled within the entity itself, we just need to create it if one should exist but doesn't.
+            // Most tick logic is handled within the entity itself, we just need to create a particle entity if one should exist but doesn't.
             EntityAcceleratingParticle particleEntity = (EntityAcceleratingParticle) (((ServerWorld) level).getEntity(particleEntityID));
             if(acceleratorIsActive && particleEntity == null && itemHandler.extractItem(SlotIDs.PARTICLES.ordinal(), 1, true).getCount() != 0) {
                 itemHandler.extractItem(SlotIDs.PARTICLES.ordinal(), 1, false);

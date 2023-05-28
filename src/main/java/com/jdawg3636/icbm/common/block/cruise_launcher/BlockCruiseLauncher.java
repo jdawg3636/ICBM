@@ -31,6 +31,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMissileLaunchApparatus {
 
@@ -63,10 +64,10 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
         TileEntity tileEntity = world.getBlockEntity(pos);
         if(!world.isClientSide() && tileEntity instanceof TileCruiseLauncher) {
-            if (((TileCruiseLauncher)tileEntity).itemHandler.getStackInSlot(0).isEmpty() && player.getItemInHand(hand).getItem() instanceof ItemMissile) {
+            if (((TileCruiseLauncher)tileEntity).itemHandlerLazyOptional.isPresent() && ((TileCruiseLauncher)tileEntity).itemHandlerLazyOptional.orElse(null).getStackInSlot(0).isEmpty() && player.getItemInHand(hand).getItem() instanceof ItemMissile) {
                 ItemStack itemStack = player.getItemInHand(hand);
                 if(!player.isCreative()) player.inventory.removeItem(itemStack);
-                ((TileCruiseLauncher)tileEntity).itemHandler.setStackInSlot(0, itemStack);
+                ((ItemStackHandler)((TileCruiseLauncher)tileEntity).itemHandlerLazyOptional.orElse(null)).setStackInSlot(0, itemStack);
             }
             else {
                 INamedContainerProvider containerProvider = new INamedContainerProvider() {

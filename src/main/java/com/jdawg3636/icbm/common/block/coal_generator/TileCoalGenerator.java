@@ -18,7 +18,7 @@ public class TileCoalGenerator  extends TileEntity implements ITickableTileEntit
 
     @Override
     public double getViewDistance() {
-        return ICBMReference.proxy.getTileEntityUpdateDistance();
+        return ICBMReference.distProxy().getTileEntityUpdateDistance();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.block.machine;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -10,6 +11,8 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -19,14 +22,16 @@ import javax.annotation.Nullable;
 
 public class TileMachine extends TileEntity {
 
-    public final ItemStackHandler itemHandler;
+    private final ItemStackHandler itemHandler;
     public final LazyOptional<IItemHandler> itemHandlerLazyOptional;
+    private final ICBMEnergyStorage energyStorage;
+    public final LazyOptional<IEnergyStorage> energyStorageLazyOptional;
 
     public TileMachine(TileEntityType<?> tileEntityTypeIn) {
-        this(tileEntityTypeIn, 0);
+        this(tileEntityTypeIn, 0, 0, 0, 0);
     }
 
-    public TileMachine(TileEntityType<?> tileEntityTypeIn, int inventorySize) {
+    public TileMachine(TileEntityType<?> tileEntityTypeIn, int inventorySize, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut) {
         super(tileEntityTypeIn);
         if(inventorySize > 0) {
             itemHandler = createHandler(inventorySize);
@@ -36,6 +41,8 @@ public class TileMachine extends TileEntity {
             itemHandler = null;
             itemHandlerLazyOptional = LazyOptional.empty();
         }
+        this.energyStorage = new ICBMEnergyStorage().setCapacity(forgeEnergyCapacity, false).setMaxReceive(forgeEnergyPerTickIn).setMaxExtract(forgeEnergyPerTickOut).setCallbackOnChanged(this::setChanged);
+        this.energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
     }
 
     /*
@@ -86,28 +93,27 @@ public class TileMachine extends TileEntity {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if(itemHandlerLazyOptional.isPresent() && cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) return itemHandlerLazyOptional.cast();
+        if(energyStorageLazyOptional.isPresent() && cap.equals(CapabilityEnergy.ENERGY)) return energyStorageLazyOptional.cast();
         return super.getCapability(cap, side);
     }
 
     @Override
     public void load(BlockState state, CompoundNBT tag) {
-        if(itemHandlerLazyOptional.isPresent()) {
-            itemHandler.deserializeNBT(tag.getCompound("inv"));
-        }
+        if(tag.contains("inv") && itemHandlerLazyOptional.isPresent()) itemHandler.deserializeNBT(tag.getCompound("inv"));
+        if(tag.contains("energy") && energyStorageLazyOptional.isPresent()) energyStorage.deserializeNBT(tag.getCompound("energy"));
         super.load(state, tag);
     }
 
     @Override
     public CompoundNBT save(CompoundNBT tag) {
-        if(itemHandlerLazyOptional.isPresent()) {
-            tag.put("inv", itemHandler.serializeNBT());
-        }
+        if(itemHandlerLazyOptional.isPresent()) tag.put("inv", itemHandler.serializeNBT());
+        if(energyStorageLazyOptional.isPresent()) tag.put("energy", energyStorage.serializeNBT());
         return super.save(tag);
     }
 
     @Override
     public double getViewDistance() {
-        return ICBMReference.proxy.getTileEntityUpdateDistance();
+        return ICBMReference.distProxy().getTileEntityUpdateDistance();
     }
 
 }

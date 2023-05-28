@@ -45,7 +45,7 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
         TileEntity tileEntity = world.getBlockEntity(blockPos);
         if (tileEntity instanceof TileLauncherControlPanel) {
             if(world.isClientSide()) {
-                ICBMReference.proxy.setScreenLauncherControlPanel((TileLauncherControlPanel) tileEntity);
+                ICBMReference.distProxy().setScreenLauncherControlPanel((TileLauncherControlPanel) tileEntity);
             } else {
                 SUpdateTileEntityPacket supdatetileentitypacket = tileEntity.getUpdatePacket();
                 if (supdatetileentitypacket != null) ((ServerPlayerEntity) playerEntity).connection.send(supdatetileentitypacket);

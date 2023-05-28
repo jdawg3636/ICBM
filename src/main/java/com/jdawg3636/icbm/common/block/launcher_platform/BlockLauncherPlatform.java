@@ -23,6 +23,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.ItemStackHandler;
 
 public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile implements IMissileLaunchApparatus {
 
@@ -51,10 +52,12 @@ public abstract class BlockLauncherPlatform extends AbstractBlockMultiTile imple
     @Override
     public void onUseMultiblock(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
         if(!world.isClientSide() && tileEntity instanceof TileLauncherPlatform) {
-            if (((TileLauncherPlatform)tileEntity).itemHandler.getStackInSlot(0).isEmpty() && player.getItemInHand(hand).getItem() instanceof ItemMissile) {
+            final ItemStackHandler itemHandler = (ItemStackHandler)((TileLauncherPlatform)tileEntity).itemHandlerLazyOptional.orElse(null);
+            assert itemHandler != null;
+            if (itemHandler.getStackInSlot(0).isEmpty() && player.getItemInHand(hand).getItem() instanceof ItemMissile) {
                 ItemStack itemStack = player.getItemInHand(hand);
                 if(!player.isCreative()) player.inventory.removeItem(itemStack);
-                ((TileLauncherPlatform)tileEntity).itemHandler.setStackInSlot(0, itemStack);
+                itemHandler.setStackInSlot(0, itemStack);
             }
             else {
                 INamedContainerProvider containerProvider = new INamedContainerProvider() {

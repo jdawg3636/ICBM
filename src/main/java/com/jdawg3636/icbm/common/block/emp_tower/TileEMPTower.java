@@ -38,7 +38,7 @@ public class TileEMPTower extends TileEntity implements ITickableTileEntity {
 
     @Override
     public double getViewDistance() {
-        return ICBMReference.proxy.getTileEntityUpdateDistance();
+        return ICBMReference.distProxy().getTileEntityUpdateDistance();
     }
 
 }
