@@ -1,7 +1,10 @@
 package com.jdawg3636.icbm.common.block.multiblock;
 
 import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -167,8 +170,14 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      * @param sampleBlockState Used for calculating what direction the multiblock is facing, can be any member node.
      */
     private void destroyMultiblockInternal(World world, BlockPos rootPos, BlockPos exclude, BlockState sampleBlockState) {
-        if(!exclude.equals(rootPos)) world.setBlockAndUpdate(rootPos, Blocks.AIR.defaultBlockState());
-        for(BlockPos pos : getMultiblockWorldPositions(rootPos, sampleBlockState)) if((!exclude.equals(pos)) && world.getBlockState(new BlockPos(pos)).getBlock().defaultBlockState().equals(defaultBlockState())) world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        if(!exclude.equals(rootPos)) {
+            world.setBlockAndUpdate(rootPos, world.getBlockState(rootPos).getFluidState().createLegacyBlock());
+        }
+        for(BlockPos pos : getMultiblockWorldPositions(rootPos, sampleBlockState)) {
+            if ((!exclude.equals(pos)) && world.getBlockState(new BlockPos(pos)).getBlock().defaultBlockState().equals(defaultBlockState())) {
+                world.setBlockAndUpdate(pos, world.getBlockState(pos).getFluidState().createLegacyBlock());
+            }
+        }
     }
 
     public boolean isRootOfMultiblock(BlockState state) {

@@ -3,29 +3,34 @@ package com.jdawg3636.icbm.common.block.machine;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractBlockMachine extends Block {
+public abstract class AbstractBlockMachine extends Block implements IWaterLoggable {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -116,6 +121,16 @@ public abstract class AbstractBlockMachine extends Block {
     @Override
     public boolean propagatesSkylightDown(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return true;
+    }
+
+    @Override
+    public void setPlacedBy(World level, BlockPos blockPos, BlockState blockState, LivingEntity placer, ItemStack itemStack) {
+        if (itemStack.hasCustomHoverName()) {
+            TileEntity tileentity = level.getBlockEntity(blockPos);
+            if (tileentity instanceof TileMachine) {
+                ((TileMachine)tileentity).setCustomName(itemStack.getHoverName());
+            }
+        }
     }
 
 }

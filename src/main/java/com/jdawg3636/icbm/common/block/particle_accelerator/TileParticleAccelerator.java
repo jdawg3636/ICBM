@@ -1,8 +1,10 @@
 package com.jdawg3636.icbm.common.block.particle_accelerator;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import com.jdawg3636.icbm.common.entity.EntityAcceleratingParticle;
+import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -25,7 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class TileParticleAccelerator extends TileEntity implements ITickableTileEntity {
+public class TileParticleAccelerator extends TileMachine implements ITickableTileEntity {
 
     public static enum SlotIDs {
         PARTICLES,
@@ -45,10 +47,7 @@ public class TileParticleAccelerator extends TileEntity implements ITickableTile
             if(slot == SlotIDs.EMPTY_CELLS.ordinal()) {
                 return stack.getItem() == ItemReg.EMPTY_CELL.get();
             }
-            if(slot == SlotIDs.RESULT_CELLS.ordinal()) {
-                return false;
-            }
-            return true;
+            return slot != SlotIDs.RESULT_CELLS.ordinal();
         }
         public ItemStack insertItemUnchecked(int slot, @Nonnull ItemStack stack, boolean simulate)
         {
@@ -98,7 +97,7 @@ public class TileParticleAccelerator extends TileEntity implements ITickableTile
     public boolean acceleratorIsActive = false;
 
     public TileParticleAccelerator(TileEntityType<?> tileEntityType) {
-        super(tileEntityType);
+        super(tileEntityType, ContainerReg.PARTICLE_ACCELERATOR::get);
     }
 
     @Override

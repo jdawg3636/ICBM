@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
+import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -33,7 +34,7 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
     private int radioFrequency;
 
     public TileCruiseLauncher(TileEntityType<?> tileEntityType) {
-        super(tileEntityType);
+        super(tileEntityType, ContainerReg.CRUISE_LAUNCHER::get);
     }
 
     private void updateRotation(long tickAnimationStarted) {

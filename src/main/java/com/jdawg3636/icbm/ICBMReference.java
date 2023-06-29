@@ -27,6 +27,15 @@ public final class ICBMReference {
     public static final ICBMConfig.Common COMMON_CONFIG = new ICBMConfig.Common();
     public static final ICBMConfig.Server SERVER_CONFIG = new ICBMConfig.Server();
 
+    public static enum ICBMTextColors {
+        LIGHT_GRAY(0x8f8f8f),
+        DARK_GRAY(0x363636);
+        public final int code;
+        ICBMTextColors(int code) {
+            this.code = code;
+        }
+    }
+
     public static final ItemGroup CREATIVE_TAB = new ItemGroup(ICBMReference.MODID) {
         @Override
         public ItemStack makeIcon() {

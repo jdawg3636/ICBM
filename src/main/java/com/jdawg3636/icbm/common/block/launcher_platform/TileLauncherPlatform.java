@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.block.launcher_platform;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.item.ItemMissile;
@@ -8,24 +9,29 @@ import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.Level;
 
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class TileLauncherPlatform extends TileMachine {
 
+    public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.launcher_platform");
     public UUID missileEntityID = null;
 
-    public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn, 1, 0, 0, 0);
+    public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType) {
+        super(tileEntityTypeIn, containerType, 1, 0, 0, 0, DEFAULT_NAME);
     }
 
     public double getMissileEntityYOffset() {
@@ -103,7 +109,7 @@ public class TileLauncherPlatform extends TileMachine {
 
     @Override
     public boolean isInventoryItemValid(int slot, ItemStack stack) {
-        return stack.getItem() instanceof ItemMissile;
+        return super.isInventoryItemValid(slot, stack) && (stack.getItem() instanceof ItemMissile);
     }
 
     @Override

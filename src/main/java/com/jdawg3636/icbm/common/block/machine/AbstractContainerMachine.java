@@ -20,22 +20,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AbstractContainerMachine extends Container {
 
-    private final TileEntity tileEntity;
+    private final TileMachine tileEntity;
     private final IItemHandler playerInventoryWrapper;
     private int nextSlotIndex = 0;
+    boolean playerInventoryShown = false;
 
     public AbstractContainerMachine(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
         super(containerType, windowId);
-        this.tileEntity = level.getBlockEntity(blockPos);
+        this.tileEntity = (TileMachine) level.getBlockEntity(blockPos);
         this.playerInventoryWrapper = new InvWrapper(playerInventory);
     }
 
     public void addSlot(int xPos, int yPos) {
         if(tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
-                    (IItemHandler itemHandler) -> {
-                        addSlot(new SlotItemHandler(itemHandler, nextSlotIndex++, xPos, yPos));
-                    }
+                (IItemHandler itemHandler) -> addSlot(new SlotItemHandler(itemHandler, nextSlotIndex++, xPos, yPos))
             );
         }
     }
@@ -70,20 +69,26 @@ public class AbstractContainerMachine extends Container {
         if (slot != null && slot.hasItem()) {
             ItemStack stack = slot.getItem();
             itemstack = stack.copy();
+            // Moving Items From Inside
             if (index < getSlotCount()) {
                 if (!this.moveItemStackTo(stack, 1, 36 + nextSlotIndex, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(stack, itemstack);
-            } else {
+            }
+            // Moving Items From Outside
+            else if (playerInventoryShown) {
+                // Try to move into machine
                 if (!this.moveItemStackTo(stack, 0, nextSlotIndex, false)) {
                     return ItemStack.EMPTY;
                 }
+                // Try to move from inventory to hotbar
                 else if (index < 27 + nextSlotIndex) {
                     if (!this.moveItemStackTo(stack, 27 + nextSlotIndex, 36 + nextSlotIndex, false)) {
                         return ItemStack.EMPTY;
                     }
                 }
+                // Try to move from hotbar to inventory
                 else if (index < 36 + nextSlotIndex && !this.moveItemStackTo(stack, nextSlotIndex, 27 + nextSlotIndex, false)) {
                     return ItemStack.EMPTY;
                 }
@@ -122,9 +127,11 @@ public class AbstractContainerMachine extends Container {
     }
 
     public void addPlayerInventorySlots(int leftCol, int topRow) {
-        // Player inventory
+        // Set Flag
+        playerInventoryShown = true;
+        // Add Player inventory
         addSlotBox(playerInventoryWrapper, 9, leftCol, topRow, 9, 18, 3, 18);
-        // Hotbar
+        // Add Player Hotbar
         topRow += 58;
         addSlotRange(playerInventoryWrapper, 0, leftCol, topRow, 9, 18);
     }

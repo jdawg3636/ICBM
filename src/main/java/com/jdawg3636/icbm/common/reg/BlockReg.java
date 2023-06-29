@@ -7,7 +7,6 @@ import com.jdawg3636.icbm.common.block.cruise_launcher.BlockCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.BlockEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.BlockLauncherPlatform;
-import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.particle_accelerator.BlockParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.BlockRadarStation;
 import com.jdawg3636.icbm.common.event.*;
@@ -15,7 +14,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
@@ -101,25 +99,9 @@ public class BlockReg {
     });
 
     // Missile Launch Apparatus
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1) {
-        @Override
-        public ContainerType<ContainerLauncherPlatform> getContainerType() {
-            return ContainerReg.LAUNCHER_PLATFORM_T1.get();
-        }
-    });
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2) {
-        @Override
-        public ContainerType<ContainerLauncherPlatform> getContainerType() {
-            return ContainerReg.LAUNCHER_PLATFORM_T2.get();
-        }
-    });
-    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3) {
-        @Override
-        public ContainerType<ContainerLauncherPlatform> getContainerType() {
-            return ContainerReg.LAUNCHER_PLATFORM_T3.get();
-        }
-    });
-    // TODO: "Iron Dome"-style bulk missile launcher
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T1          = BLOCKS.register("launcher_platform_t1",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1));
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T2          = BLOCKS.register("launcher_platform_t2",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2));
+    public static final RegistryObject<Block> LAUNCHER_PLATFORM_T3          = BLOCKS.register("launcher_platform_t3",           () -> new BlockLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3));
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T1     = BLOCKS.register("launcher_control_panel_t1",      () -> new BlockLauncherControlPanel(TileReg.LAUNCHER_CONTROL_PANEL_T1));
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T2     = BLOCKS.register("launcher_control_panel_t2",      () -> new BlockLauncherControlPanel(TileReg.LAUNCHER_CONTROL_PANEL_T2));
     public static final RegistryObject<Block> LAUNCHER_CONTROL_PANEL_T3     = BLOCKS.register("launcher_control_panel_t3",      () -> new BlockLauncherControlPanel(TileReg.LAUNCHER_CONTROL_PANEL_T3));

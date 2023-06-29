@@ -530,6 +530,7 @@
   "gui.icbm.empTower.mode": "Mode:",
   "gui.icbm.empTower.ready": "Ready to blast!",
 
+  "gui.icbm.unspecialized_machine": "Machine",
   "gui.icbm.launcher_platform": "Launcher Platform",
   "gui.icbm.launcher_platform.place": "Place Missile",
   "gui.icbm.launcher_control_panel": "Launcher Control Panel",
