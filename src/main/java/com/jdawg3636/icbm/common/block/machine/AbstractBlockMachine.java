@@ -9,6 +9,7 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -24,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,14 +36,20 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public boolean waterloggable;
 
     public AbstractBlockMachine() {
-        this(getMultiblockMachineBlockProperties());
+        this(true);
     }
 
-    public AbstractBlockMachine(AbstractBlock.Properties properties) {
+    public AbstractBlockMachine(boolean waterloggable) {
+        this(getMultiblockMachineBlockProperties(), waterloggable);
+    }
+
+    public AbstractBlockMachine(AbstractBlock.Properties properties, boolean waterloggable) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+        this.waterloggable = waterloggable;
     }
 
     // Properties Copied(ish) from registration for GLASS in net.minecraft.block.Blocks
@@ -71,7 +79,7 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState blockState = super.getStateForPlacement(context);
-        return (blockState == null) ? null : blockState.setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+        return (blockState == null) ? null : blockState.setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, waterloggable && context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
     }
 
     /**
@@ -91,6 +99,24 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
     @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public boolean placeLiquid(IWorld level, BlockPos blockPos, BlockState blockState, FluidState fluidState) {
+        return waterloggable && IWaterLoggable.super.placeLiquid(level, blockPos, blockState, fluidState);
+    }
+
+    @Override
+    public boolean canPlaceLiquid(IBlockReader level, BlockPos blockPos, BlockState blockState, Fluid fluid) {
+        return waterloggable && IWaterLoggable.super.canPlaceLiquid(level, blockPos, blockState, fluid);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState blockState, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+        if (blockState.getValue(WATERLOGGED)) {
+            level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+        return super.updateShape(blockState, facing, facingState, level, currentPos, facingPos);
     }
 
     /**
@@ -125,6 +151,7 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
 
     @Override
     public void setPlacedBy(World level, BlockPos blockPos, BlockState blockState, LivingEntity placer, ItemStack itemStack) {
+        super.setPlacedBy(level, blockPos, blockState, placer, itemStack);
         if (itemStack.hasCustomHoverName()) {
             TileEntity tileentity = level.getBlockEntity(blockPos);
             if (tileentity instanceof TileMachine) {

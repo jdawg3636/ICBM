@@ -41,11 +41,15 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     public static final BooleanProperty MULTIBLOCK_OFFSET_DEPTH_NEGATIVE        = BooleanProperty.create("multiblock_offset_depth_negative");
 
     public AbstractBlockMulti() {
-        this(getMultiblockMachineBlockProperties());
+        this(true);
     }
 
-    public AbstractBlockMulti(AbstractBlock.Properties properties) {
-        super(properties);
+    public AbstractBlockMulti(boolean waterloggable) {
+        this(getMultiblockMachineBlockProperties(), waterloggable);
+    }
+
+    public AbstractBlockMulti(AbstractBlock.Properties properties, boolean waterloggable) {
+        super(properties, waterloggable);
         this.registerDefaultState(
                 this.defaultBlockState() // We know this isn't null, set in super.
                 .setValue(MULTIBLOCK_OFFSET_HORIZONTAL, 0)
@@ -96,14 +100,19 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-
         BlockState state = super.getStateForPlacement(context);
-
-        if(context.getClickedPos().getY() > context.getLevel().getMaxBuildHeight()-getMultiblockHeight()) return null;
-        for(BlockPos toCheck : getMultiblockWorldPositions(context.getClickedPos(), state)) if(!context.getLevel().getBlockState(toCheck).canBeReplaced(context)) return null;
-
+        // Prevent placing too high
+        if (context.getClickedPos().getY() > context.getLevel().getMaxBuildHeight() - getMultiblockHeight()) {
+            return null;
+        }
+        // Prevent if something is in the way
+        for (BlockPos toCheck : getMultiblockWorldPositions(context.getClickedPos(), state)) {
+            if(!context.getLevel().getBlockState(toCheck).canBeReplaced(context)) {
+                return null;
+            }
+        }
+        // All clear send it
         return state;
-
     }
 
     /**
@@ -124,13 +133,15 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState originalState, World level, BlockPos blockPos, BlockState newState, boolean flag) {
-        super.onRemove(originalState, level, blockPos, newState, flag);
-        destroyMultiblock(level, blockPos, originalState);
+        if (!originalState.is(newState.getBlock())) {
+            super.onRemove(originalState, level, blockPos, newState, flag);
+            destroyMultiblock(level, blockPos, originalState);
+        }
     }
 
     @Override
-    public boolean canDropFromExplosion(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
-        return isRootOfMultiblock(state);
+    public boolean canDropFromExplosion(BlockState state, IBlockReader level, BlockPos pos, Explosion explosion) {
+        return isRootOfMultiblock(state) && super.canDropFromExplosion(state, level, pos, explosion);
     }
 
     @SuppressWarnings("deprecation")

@@ -42,8 +42,13 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
         this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
     }
 
-    public BlockCruiseLauncher(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(properties, tileEntityType);
+    public BlockCruiseLauncher(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(tileEntityType, waterloggable);
+        this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
+    }
+
+    public BlockCruiseLauncher(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(properties, tileEntityType, waterloggable);
         this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
     }
 

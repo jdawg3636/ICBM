@@ -14,11 +14,15 @@ public class AbstractBlockMachineTile extends AbstractBlockMachine {
     public final RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType;
 
     public AbstractBlockMachineTile(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        this(getMultiblockMachineBlockProperties(), tileEntityType);
+        this(tileEntityType, true);
     }
 
-    public AbstractBlockMachineTile(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(properties);
+    public AbstractBlockMachineTile(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        this(getMultiblockMachineBlockProperties(), tileEntityType, waterloggable);
+    }
+
+    public AbstractBlockMachineTile(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(properties, waterloggable);
         this.tileEntityType = tileEntityType;
     }
 

@@ -26,11 +26,17 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
 
     public BlockLauncherControlPanel(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        this(getMultiblockMachineBlockProperties(), tileEntityType);
+        super(tileEntityType);
+        this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
     }
 
-    public BlockLauncherControlPanel(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(properties, tileEntityType);
+    public BlockLauncherControlPanel(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(tileEntityType, waterloggable);
+        this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
+    }
+
+    public BlockLauncherControlPanel(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(properties, tileEntityType, waterloggable);
         this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
     }
 

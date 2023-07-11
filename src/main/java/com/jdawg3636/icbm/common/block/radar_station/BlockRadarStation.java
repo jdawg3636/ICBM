@@ -24,8 +24,12 @@ public class BlockRadarStation extends AbstractBlockMultiTile {
         super(tileEntityType);
     }
 
-    public BlockRadarStation(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(properties, tileEntityType);
+    public BlockRadarStation(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(tileEntityType, waterloggable);
+    }
+
+    public BlockRadarStation(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(properties, tileEntityType, waterloggable);
     }
 
     @Override
@@ -40,7 +44,7 @@ public class BlockRadarStation extends AbstractBlockMultiTile {
 
     @Override
     public void onUseMultiblock(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-        // GUI/Screen NYI
+        // TODO GUI/Screen NYI
     }
 
 }

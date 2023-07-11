@@ -24,11 +24,15 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class BlockParticleAccelerator extends AbstractBlockMachineTile {
 
     public BlockParticleAccelerator(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(tileEntityType);
+        this(tileEntityType, false);
     }
 
-    public BlockParticleAccelerator(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(properties, tileEntityType);
+    public BlockParticleAccelerator(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(tileEntityType, waterloggable);
+    }
+
+    public BlockParticleAccelerator(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(properties, tileEntityType, waterloggable);
     }
 
     @SuppressWarnings("deprecation")

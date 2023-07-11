@@ -16,11 +16,15 @@ import net.minecraftforge.fml.RegistryObject;
 public class BlockCoalGenerator extends AbstractBlockMachineTile {
 
     public BlockCoalGenerator(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(tileEntityType);
+        this(tileEntityType, false);
+    }
+
+    public BlockCoalGenerator(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(tileEntityType, waterloggable);
     }
 
     public BlockCoalGenerator(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(properties, tileEntityType);
+        super(properties, tileEntityType, false);
     }
 
     @SuppressWarnings("deprecation")

@@ -24,8 +24,12 @@ public class BlockEMPTower extends AbstractBlockMultiTile {
         super(tileEntityType);
     }
 
-    public BlockEMPTower(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(properties, tileEntityType);
+    public BlockEMPTower(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(tileEntityType, waterloggable);
+    }
+
+    public BlockEMPTower(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(properties, tileEntityType, waterloggable);
     }
 
     @Override

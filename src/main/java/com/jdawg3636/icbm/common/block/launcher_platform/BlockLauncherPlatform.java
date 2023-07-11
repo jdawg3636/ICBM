@@ -32,11 +32,15 @@ public class BlockLauncherPlatform extends AbstractBlockMultiTile implements IMi
     };
 
     public BlockLauncherPlatform(RegistryObject<TileEntityType<? extends TileEntity>> tileEntity) {
-        this(getMultiblockMachineBlockProperties(), tileEntity);
+        super(tileEntity);
     }
 
-    public BlockLauncherPlatform(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntity) {
-        super(properties, tileEntity);
+    public BlockLauncherPlatform(RegistryObject<TileEntityType<? extends TileEntity>> tileEntity, boolean waterloggable) {
+        super(tileEntity, waterloggable);
+    }
+
+    public BlockLauncherPlatform(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntity, boolean waterloggable) {
+        super(properties, tileEntity, waterloggable);
     }
 
     @Override
