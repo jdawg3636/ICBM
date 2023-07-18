@@ -183,7 +183,7 @@ public class TileParticleAccelerator extends TileMachine implements ITickableTil
     public CompoundNBT save(CompoundNBT tag) {
         tag.put("inv", itemHandler.serializeNBT());
         tag.put("energy", energyStorage.serializeNBT());
-        tag.putUUID("particle_id", particleEntityID);
+        if(particleEntityID != null) tag.putUUID("particle_id", particleEntityID);
         tag.putBoolean("active", acceleratorIsActive);
         return super.save(tag);
     }

@@ -67,7 +67,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     * Note! This must be called by the block. This is done by default in AbstractBlockMachineTile.
     * */
     public void onBlockDestroyed() {
-        if(level != null) {
+        if(level != null && itemHandler != null) {
             for(int i = 0; i < itemHandler.getSlots(); ++i) {
                 ItemStack contents = itemHandler.getStackInSlot(0);
                 itemHandler.setStackInSlot(0, ItemStack.EMPTY);

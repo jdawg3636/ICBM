@@ -1,10 +1,7 @@
 package com.jdawg3636.icbm.common.block.multiblock;
 
 import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -14,6 +11,8 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
@@ -198,7 +197,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
             state.getValue(MULTIBLOCK_OFFSET_DEPTH) == 0;
     }
 
-    public BlockPos getMultiblockCenter(World worldIn, BlockPos pos, BlockState sourceState) {
+    public BlockPos getMultiblockCenter(IBlockReader worldIn, BlockPos pos, BlockState sourceState) {
         // Raw Data from BlockState
         int offsetX = sourceState.getValue(MULTIBLOCK_OFFSET_HORIZONTAL); if(sourceState.getValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE)) offsetX *= -1;
         int offsetY = sourceState.getValue(MULTIBLOCK_OFFSET_HEIGHT); if(sourceState.getValue(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE)) offsetY *= -1;
@@ -290,6 +289,15 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
 
         return positions;
 
+    }
+
+    @Override
+    public VoxelShape getShapeForFluidBlocking(BlockState blockState, IBlockReader level, BlockPos blockPos) {
+        if(!waterloggable)
+            return VoxelShapes.block();
+        if(blockPos.equals(getMultiblockCenter(level, blockPos, blockState)))
+            return SlabBlock.BOTTOM_AABB;
+        return VoxelShapes.empty();
     }
 
 }

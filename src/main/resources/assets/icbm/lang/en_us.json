@@ -483,6 +483,7 @@
   "message.radarGun.nopower": "Radar Gun out of electricity!",
   "message.radarGun.transfer": "Coordinate information transferred!",
   "message.radarGun.noCoords": "You must scan a coordinate!",
+  "message.radarGun.cleared": "No target in range; coordinates cleared!",
   "message.launcher.protected": "Region is being protected.",
   "message.detonator.locked": "Remote locked to: X:%s Y:%s Z:%s",
   "message.detonator.nopower": "Remote out of electricity!",
@@ -592,6 +593,7 @@
   "gui.icbm.platform.access": "User Access",
 
   # Tooltips
+  "icbm.info.radarGun.coordinates": "Scanned Coordinates:",
   "info.misc.freq": "Frequency:",
   "info.tracker.tracking": "Tracking:",
   "info.designator.noFreq": "Frequency: Not set",

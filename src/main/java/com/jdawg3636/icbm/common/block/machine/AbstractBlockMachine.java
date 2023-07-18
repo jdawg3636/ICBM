@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.machine;
 
+import com.jdawg3636.icbm.common.block.IHasCustomWallPassThroughLogic;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -32,7 +33,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractBlockMachine extends Block implements IWaterLoggable {
+public abstract class AbstractBlockMachine extends Block implements IWaterLoggable, IHasCustomWallPassThroughLogic {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -158,6 +159,11 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
                 ((TileMachine)tileentity).setCustomName(itemStack.getHoverName());
             }
         }
+    }
+
+    @Override
+    public VoxelShape getShapeForFluidBlocking(BlockState blockState, IBlockReader level, BlockPos blockPos) {
+        return this.waterloggable ? IHasCustomWallPassThroughLogic.super.getShapeForFluidBlocking(blockState, level, blockPos) : VoxelShapes.block();
     }
 
 }
