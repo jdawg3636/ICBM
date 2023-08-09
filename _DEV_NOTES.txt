@@ -1,0 +1,19 @@
+This file exists for informal notes/TODOs/etc. and may be outdated.
+Unless you are me (jdawg3636), please use GitHub's issue tracker to
+report/track any feature requests and bug reports.
+
+Missing Recipes:
+- Nightmare Explosives
+- Rejuvenation Explosives
+- EMP Explosives
+- Anti-Gravitational Explosives
+- Ender Explosives
+- (Red Matter Explosives)
+- (Antimatter Explosives)
+- EMP Tower
+- Radar Station
+- Signal Disruptor
+- Antidote
+
+** Defuser **
+** Hazmat Suit **

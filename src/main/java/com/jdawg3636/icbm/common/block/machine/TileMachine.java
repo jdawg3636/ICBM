@@ -85,26 +85,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     }
 
     private ItemStackHandler createHandler(int inventorySize) {
-        return new ItemStackHandler(inventorySize) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                onInventorySlotChanged(slot);
-            }
-
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return isInventoryItemValid(slot, stack);
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if(!isItemValid(slot, stack)) return stack;
-                return super.insertItem(slot, stack, simulate);
-            }
-
-        };
+        return new ICBMItemStackHandler(inventorySize, this::onInventorySlotChanged, this::isInventoryItemValid);
     }
 
     @Nonnull
@@ -129,6 +110,27 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         if(itemHandlerLazyOptional.isPresent()) tag.put("inv", itemHandler.serializeNBT());
         if(energyStorageLazyOptional.isPresent()) tag.put("energy", energyStorage.serializeNBT());
         return super.save(tag);
+    }
+
+    // ICBM Machines are non-ticking by default.
+    // Subclasses must implement ITickableTileEntity and override tick() to call tickMachine()
+    public void tickMachine() {
+        if(level != null && !level.isClientSide()) {
+            tickIngestEnergy();
+        }
+    }
+
+    public void tickIngestEnergy() {
+        // Assumes that side has already been checked - should only ever be called on the logical server
+        assert level != null && !level.isClientSide();
+        energyStorageLazyOptional.ifPresent(energyStorageUncast -> {
+            if(energyStorageUncast instanceof ICBMEnergyStorage) {
+                ICBMEnergyStorage energyStorage = (ICBMEnergyStorage)energyStorageUncast;
+                int remainingCapacity = energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
+                int amountIngested = ingestEnergy(Math.min(remainingCapacity, energyStorage.getMaxReceive()), Direction.values());
+                energyStorage.receiveEnergy(amountIngested, false);
+            }
+        });
     }
 
     @Override
@@ -177,6 +179,39 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         return new ContainerLauncherPlatform(getContainerType(), i, this.getLevel(), getPosOfTileEntity(), playerInventory);
+    }
+
+    public boolean redstoneSignalPresent() {
+        assert level != null;
+        return level.hasNeighborSignal(getBlockPos());
+    }
+
+    public int ingestEnergy(int maxAmount, Direction[] directions) {
+        if(level == null) return 0;
+        int totalRequesting = maxAmount;
+        for(int i = 0; totalRequesting > 0 && i < directions.length; ++i) {
+            Direction direction = directions[i];
+            TileEntity blockEntity = level.getBlockEntity(getBlockPos().relative(direction));
+            if(blockEntity != null) {
+                LazyOptional<IEnergyStorage> neighborCapOptional = blockEntity.getCapability(ICBMReference.FORGE_ENERGY_CAPABILITY, direction.getOpposite());
+                if(neighborCapOptional.isPresent()) {
+                    IEnergyStorage neighborCap = neighborCapOptional.orElse(null);
+                    totalRequesting -= neighborCap.extractEnergy(totalRequesting, false);
+                }
+            }
+        }
+        return maxAmount - totalRequesting;
+    }
+
+    public boolean tryConsumeEnergy(int energyToConsume) {
+        ICBMEnergyStorage energyStorage = (ICBMEnergyStorage)energyStorageLazyOptional.orElse(null);
+        int energyWouldBeConsumed = energyStorage.extractEnergyUnchecked(energyToConsume, true);
+        if(energyWouldBeConsumed >= energyToConsume) {
+            energyStorage.extractEnergyUnchecked(energyToConsume, false);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

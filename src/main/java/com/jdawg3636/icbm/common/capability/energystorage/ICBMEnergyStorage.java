@@ -40,6 +40,14 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
         return this;
     }
 
+    public int getMaxReceive() {
+        return this.maxReceive;
+    }
+
+    public int getMaxExtract() {
+        return this.maxExtract;
+    }
+
     public ICBMEnergyStorage setEnergy(int energy) {
         this.energy = Math.max(Math.min(energy, this.capacity), 0);
         callbackOnChanged.run();
@@ -58,6 +66,14 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
         int returnValue = super.extractEnergy(maxExtract, simulate);
         if(!simulate && returnValue != 0) callbackOnChanged.run();
         return returnValue;
+    }
+
+    // Doesn't enforce this.maxExtract, only limited by parameter and capacity
+    public int extractEnergyUnchecked(int maxExtract, boolean simulate) {
+        int energyExtracted = Math.min(energy, maxExtract);
+        if(!simulate) energy -= energyExtracted;
+        if(!simulate && energyExtracted != 0) callbackOnChanged.run();
+        return energyExtracted;
     }
 
     @Override

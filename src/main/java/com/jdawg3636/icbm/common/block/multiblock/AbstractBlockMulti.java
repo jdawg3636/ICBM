@@ -295,7 +295,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     public VoxelShape getShapeForFluidBlocking(BlockState blockState, IBlockReader level, BlockPos blockPos) {
         if(!waterloggable)
             return VoxelShapes.block();
-        if(blockPos.equals(getMultiblockCenter(level, blockPos, blockState)))
+        if(isRootOfMultiblock(blockState))
             return SlabBlock.BOTTOM_AABB;
         return VoxelShapes.empty();
     }

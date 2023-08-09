@@ -88,15 +88,15 @@ public class EntityAcceleratingParticle extends Entity {
     }
 
     public static Direction getDirectionToGo(IWorldReader level, BlockPos blockPos, Direction bannedDirection) {
-        ICBMReference.broadcastToChat(level, "BlockPos = %s, Banned Direction = %s", blockPos, bannedDirection);
+//        ICBMReference.broadcastToChat(level, "BlockPos = %s, Banned Direction = %s", blockPos, bannedDirection);
         for(Direction direction : Direction.values()) {
             if(direction == bannedDirection) continue;
             if(level.getBlockState(blockPos.relative(direction)).isAir()) {
-                ICBMReference.broadcastToChat(level, "Result = %s", direction);
+//                ICBMReference.broadcastToChat(level, "Result = %s", direction);
                 return direction;
             }
         }
-        ICBMReference.broadcastToChat(level, "Result = null");
+//        ICBMReference.broadcastToChat(level, "Result = null");
         return null;
     }
 
@@ -149,7 +149,7 @@ public class EntityAcceleratingParticle extends Entity {
         if (hasCollided) {
             float previousSpeed = getEntityData().get(PARTICLE_SPEED);
             getEntityData().set(PARTICLE_SPEED, (float)Math.max(0, getEntityData().get(PARTICLE_SPEED) * (1 - ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedPenaltyForCollision())));
-            ICBMReference.broadcastToChat(level, "Imparting speed penalty for collision, '%s' -> '%s'", previousSpeed, getEntityData().get(PARTICLE_SPEED));
+//            ICBMReference.broadcastToChat(level, "Imparting speed penalty for collision, '%s' -> '%s'", previousSpeed, getEntityData().get(PARTICLE_SPEED));
 //            particleSpeed = (float)Math.max(0, particleSpeed - ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedPenaltyForCollision());
             Direction newParticleDirection = getDirectionToGo(level, blockPosition(), getEntityData().get(PARTICLE_DIRECTION).getOpposite());
             if (newParticleDirection != null) getEntityData().set(PARTICLE_DIRECTION, newParticleDirection);
