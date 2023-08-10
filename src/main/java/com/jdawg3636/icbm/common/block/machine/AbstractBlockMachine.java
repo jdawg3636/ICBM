@@ -121,7 +121,7 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
     }
 
     /**
-     * Override to Block Interaction with Pistons
+     * Override to prevent interaction with pistons
      */
     @SuppressWarnings("deprecation")
     @Override
@@ -130,7 +130,7 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
     }
 
     /**
-     * Override to Block Levers/Buttons/etc. from being placed on this block
+     * Override to prevent levers/buttons/etc. from being placed on this block
      */
     @SuppressWarnings("deprecation")
     @Override
@@ -141,22 +141,22 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
     @SuppressWarnings("deprecation")
     @Override
     @OnlyIn(Dist.CLIENT)
-    public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public float getShadeBrightness(BlockState blockState, IBlockReader level, BlockPos blockPos) {
         return 1.0F;
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState blockState, IBlockReader level, BlockPos blockPos) {
         return true;
     }
 
     @Override
-    public void setPlacedBy(World level, BlockPos blockPos, BlockState blockState, LivingEntity placer, ItemStack itemStack) {
-        super.setPlacedBy(level, blockPos, blockState, placer, itemStack);
-        if (itemStack.hasCustomHoverName()) {
-            TileEntity tileentity = level.getBlockEntity(blockPos);
-            if (tileentity instanceof TileMachine) {
-                ((TileMachine)tileentity).setCustomName(itemStack.getHoverName());
+    public void setPlacedBy(World level, BlockPos blockPos, BlockState blockState, LivingEntity placer, ItemStack itemInHandOfPlacer) {
+        super.setPlacedBy(level, blockPos, blockState, placer, itemInHandOfPlacer);
+        if (itemInHandOfPlacer.hasCustomHoverName()) {
+            TileEntity tileEntity = level.getBlockEntity(blockPos);
+            if (tileEntity instanceof TileMachine) {
+                ((TileMachine)tileEntity).setCustomName(itemInHandOfPlacer.getHoverName());
             }
         }
     }

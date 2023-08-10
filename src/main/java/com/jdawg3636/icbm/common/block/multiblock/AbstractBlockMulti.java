@@ -119,8 +119,8 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      * Called by ItemBlocks after a block is set in the world, to allow post-place logic
      */
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemInHandOfPlacer) {
+        super.setPlacedBy(worldIn, pos, state, placer, itemInHandOfPlacer);
         placeMultiblock(worldIn, pos, state);
     }
 

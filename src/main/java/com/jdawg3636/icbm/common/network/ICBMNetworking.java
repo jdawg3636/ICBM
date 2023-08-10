@@ -32,6 +32,7 @@ public class ICBMNetworking {
 
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> void registerPacket(SimpleChannel channel, Class<T> packetClass, int packetID) {
         try {
             final Method writeMethod = packetClass.getDeclaredMethod("write", packetClass, PacketBuffer.class);
