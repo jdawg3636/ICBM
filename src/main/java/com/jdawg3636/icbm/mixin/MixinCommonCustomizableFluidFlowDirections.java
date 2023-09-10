@@ -15,7 +15,14 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(FlowingFluid.class)
 public class MixinCommonCustomizableFluidFlowDirections {
 
-    // TODO MC 1.18.2+ switch to (from my understanding) more compatible MixinExtras alternative https://gist.github.com/LlamaLad7/ec597b6d02d39b8a2e35559f9fcce42f
+    /**
+     * Changes the {@link VoxelShape} used for calculating whether fluids can pass through a block's face (or "wall" as it's referred to in {@link net.minecraft.fluid.FlowingFluid#canPassThroughWall the vanilla code that we're injecting into}) to be
+     * optionally distinct from the {@link VoxelShape} used for other purposes. This is useful for multiblocks, where we often want the hitbox to fill the full cube even though the model
+     * doesn't. Simply implement {@link IHasCustomWallPassThroughLogic} to enable (and override its {@link IHasCustomWallPassThroughLogic#getShapeForFluidBlocking
+     * getShapeForFluidBlocking} method for more control).
+     * <br>TODO MC 1.18.2+ switch to (from my understanding) more compatible MixinExtras alternative to {@link Redirect}
+     * @see <a href="https://gist.github.com/LlamaLad7/ec597b6d02d39b8a2e35559f9fcce42f"> https://gist.github.com/LlamaLad7/ec597b6d02d39b8a2e35559f9fcce42f </a>
+     */
     @Redirect(
             method = "canPassThroughWall",
             at = @At(

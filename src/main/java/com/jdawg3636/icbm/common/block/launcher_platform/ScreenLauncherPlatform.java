@@ -13,7 +13,7 @@ public class ScreenLauncherPlatform extends ScreenMachine<ContainerLauncherPlatf
     public static final ResourceLocation LAUNCHER_PLATFORM_BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_launcher.png");
 
     public ScreenLauncherPlatform(ContainerLauncherPlatform container, PlayerInventory inventory, ITextComponent name) {
-        super(container, inventory, name, LAUNCHER_PLATFORM_BACKGROUND_TEXTURE);
+        super(container, inventory, name, LAUNCHER_PLATFORM_BACKGROUND_TEXTURE, 176, 166);
     }
 
     @Override

@@ -4,14 +4,9 @@ import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 
 public class BlockEMPTower extends AbstractBlockMultiTile {
@@ -40,11 +35,6 @@ public class BlockEMPTower extends AbstractBlockMultiTile {
     @Override
     public BlockRenderType getRenderShape(BlockState state) {
         return isRootOfMultiblock(state) ? BlockRenderType.ENTITYBLOCK_ANIMATED : BlockRenderType.INVISIBLE;
-    }
-
-    @Override
-    public void onUseMultiblock(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-        // GUI/Screen NYI
     }
 
 }

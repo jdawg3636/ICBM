@@ -12,11 +12,24 @@ import net.minecraft.util.text.ITextComponent;
 
 public class ScreenMachine <T extends AbstractContainerMachine> extends ContainerScreen<T> {
 
+    public static final ResourceLocation DEFAULT_CONTAINER_BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_container.png");
+
     public final ResourceLocation TEXTURE;
 
-    public ScreenMachine(T container, PlayerInventory inventory, ITextComponent name, ResourceLocation backgroundTexture) {
+    public ScreenMachine(T container, PlayerInventory inventory, ITextComponent name) {
+        this(container, inventory, name, DEFAULT_CONTAINER_BACKGROUND_TEXTURE, 352/2, 434/2);
+    }
+
+    /**
+     * Note that slot positions are set by the container, not the screen.
+     * @see AbstractContainerMachine#addPlayerInventorySlots
+     * */
+    public ScreenMachine(T container, PlayerInventory inventory, ITextComponent name, ResourceLocation backgroundTexture, int imageWidth, int imageHeight) {
         super(container, inventory, name);
         this.TEXTURE = backgroundTexture;
+        this.imageWidth = imageWidth;
+        this.imageHeight = imageHeight;
+        this.inventoryLabelY = this.imageHeight - 94;
     }
 
     @Override

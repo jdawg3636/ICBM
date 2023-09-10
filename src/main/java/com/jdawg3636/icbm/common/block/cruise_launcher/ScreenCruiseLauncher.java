@@ -105,6 +105,7 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
         this.textFieldRadioFrequency.moveCursorToStart();
     }
 
+    // TODO: is this necessary? Why does it only update the X value? Same goes for the ScreenLauncherControlPanel.
     @Override
     public void resize(Minecraft minecraft, int width, int height) {
         String s = this.textFieldTargetX.getValue();

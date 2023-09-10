@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
+import com.jdawg3636.icbm.common.block.emp_tower.ContainerEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
 import com.jdawg3636.icbm.common.block.particle_accelerator.ContainerParticleAccelerator;
@@ -28,6 +29,7 @@ public class ContainerReg {
 
     // Other Machinery
     public static final RegistryObject<ContainerType<ContainerCruiseLauncher>> CRUISE_LAUNCHER = registerContainer(BlockReg.CRUISE_LAUNCHER, ContainerCruiseLauncher::new, () -> ContainerReg.CRUISE_LAUNCHER);
+    public static final RegistryObject<ContainerType<ContainerEMPTower>> EMP_TOWER = registerContainer(BlockReg.EMP_TOWER, ContainerEMPTower::new, () -> ContainerReg.EMP_TOWER);
 
     // Particle Accelerator Components
     public static final RegistryObject<ContainerType<ContainerParticleAccelerator>> PARTICLE_ACCELERATOR = registerContainer(BlockReg.PARTICLE_ACCELERATOR, ContainerParticleAccelerator::new, () -> ContainerReg.PARTICLE_ACCELERATOR);

@@ -37,7 +37,7 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
         boolean isLaunched = entity.missileLaunchPhase == EntityMissile.MissileLaunchPhase.LAUNCHED;
         boolean isFromCruiseLauncher = entity.missileSourceType == EntityMissile.MissileSourceType.CRUISE_LAUNCHER;
 
-        // Dirty Hack for Cruise Launcher Translation (This should really be defined by an overridable method in the BlockEntity)
+        // Dirty Hack for Cruise Launcher Translation (TODO: This should really be defined by an overridable method in the BlockEntity)
         if(isFromCruiseLauncher) {
             matrix.translate(0, 9D/16D, 0);
         }
@@ -74,6 +74,7 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
     /**
      * Ideally get rid of this (or at least make it less aggressive).
      * Implemented preemptively as a missile's hitbox will frequently not line up with its render.
+     * TODO: investigate
      */
     @Override
     public boolean shouldRender(EntityMissile livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {

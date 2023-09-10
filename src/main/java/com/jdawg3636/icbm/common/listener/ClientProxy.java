@@ -5,6 +5,8 @@ import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ScreenCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TERCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TileCruiseLauncher;
+import com.jdawg3636.icbm.common.block.emp_tower.ContainerEMPTower;
+import com.jdawg3636.icbm.common.block.emp_tower.ScreenEMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TEREMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.IScreenLaunchControlPanel;
@@ -70,6 +72,7 @@ public class ClientProxy extends CommonProxy {
         // Register Container Screens
         //noinspection RedundantTypeArguments
         ScreenManager.<ContainerCruiseLauncher, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
+        ScreenManager.<ContainerEMPTower, ScreenEMPTower>register(ContainerReg.EMP_TOWER.get(), ScreenEMPTower::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
