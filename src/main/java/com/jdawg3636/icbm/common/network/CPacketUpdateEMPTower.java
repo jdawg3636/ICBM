@@ -44,17 +44,22 @@ public class CPacketUpdateEMPTower {
 
         contextSupplier.get().enqueueWork(() -> {
 
+            // Direction Check
             if(contextSupplier.get().getDirection() != NetworkDirection.PLAY_TO_SERVER || contextSupplier.get().getNetworkManager().getDirection() != PacketDirection.SERVERBOUND) return;
 
+            // Get Sender and Check
             ServerPlayerEntity sender = contextSupplier.get().getSender();
+            if(sender == null) return;
+            if(sender.position().distanceToSqr(packet.pos.getX(), packet.pos.getY(), packet.pos.getZ()) > 36) return;
 
-            if(sender != null) {
-                ServerWorld senderWorld = sender.getLevel();
-                TileEntity tileEntity = senderWorld.getBlockEntity(packet.pos);
-                if(tileEntity instanceof TileEMPTower && sender.position().distanceToSqr(packet.pos.getX(), packet.pos.getY(), packet.pos.getZ()) <=  36) {
-                    ((TileEMPTower) tileEntity).setEMPRadius(packet.empRadius);
-                }
-            }
+            // Get TileEntity and Check
+            ServerWorld senderWorld = sender.getLevel();
+            TileEntity tileEntity = senderWorld.getBlockEntity(packet.pos);
+            if(!(tileEntity instanceof TileEMPTower)) return;
+
+            // If all checks passed, perform update
+            // Note: setter may have its own checks
+            ((TileEMPTower) tileEntity).setEMPRadius(packet.empRadius);
 
         });
 

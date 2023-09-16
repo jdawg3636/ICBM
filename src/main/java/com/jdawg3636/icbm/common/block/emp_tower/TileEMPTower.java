@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.emp_tower;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
@@ -33,6 +34,7 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
     }
 
     public void setEMPRadius(double empRadius) {
+        empRadius = Math.min(Math.max(empRadius, ICBMReference.COMMON_CONFIG.getEMPTowerRangeMinimum()), ICBMReference.COMMON_CONFIG.getEMPTowerRangeMaximum());
         this.empRadius = empRadius;
     }
 
@@ -47,7 +49,7 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
 
     @Override
     public void load(BlockState state, CompoundNBT tag) {
-        this.empRadius = tag.getDouble("emp_radius");
+        this.setEMPRadius(tag.getDouble("emp_radius"));
         super.load(state, tag);
     }
 

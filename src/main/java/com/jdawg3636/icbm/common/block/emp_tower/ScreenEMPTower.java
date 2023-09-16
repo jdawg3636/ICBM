@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.emp_tower;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.CustomizableSliderWidget;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
 import com.jdawg3636.icbm.common.network.CPacketUpdateEMPTower;
@@ -9,6 +10,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -16,8 +18,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
 
-    public static final double MIN_RANGE = 10D;
-    public static final double MAX_RANGE = 150D;
+    public final double MIN_RANGE;
+    public final double MAX_RANGE;
 
     public final TileEMPTower TILE_ENTITY;
     public CustomizableSliderWidget rangeSlider;
@@ -25,22 +27,25 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
     public ScreenEMPTower(ContainerEMPTower container, PlayerInventory inventory, ITextComponent name) {
         super(container, inventory, name);
         this.TILE_ENTITY = (TileEMPTower)super.TILE_ENTITY;
+        this.MIN_RANGE = ICBMReference.COMMON_CONFIG.getEMPTowerRangeMinimum();
+        this.MAX_RANGE = ICBMReference.COMMON_CONFIG.getEMPTowerRangeMaximum();
     }
 
-    // MASSIVE TODO: Set this range using a config file and implement server-side enforcement
     public double rawRangeToSliderValue(double range) {
         return (range - MIN_RANGE) / (MAX_RANGE - MIN_RANGE);
     }
 
-    // MASSIVE TODO: Set this range using a config file and implement server-side enforcement
     public double sliderValueToRawRange(double sliderValue) {
-        return MathHelper.lerp(sliderValue, 10, 150);
+        return MathHelper.lerp(sliderValue, MIN_RANGE, MAX_RANGE);
     }
 
     @Override
     protected void init() {
         super.init();
-        this.rangeSlider = new CustomizableSliderWidget((this.width / 2) - 75, ((height - imageHeight) / 2) + 100, 150, 20, new TranslationTextComponent("gui.icbm.emp_tower.radius"), rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()), (a) -> System.out.println("SLIDER SET TO: " + a.getValue()));
+        this.rangeSlider = new CustomizableSliderWidget((this.width / 2) - 75, ((height - imageHeight) / 2) + 100, 150, 20, new TranslationTextComponent("gui.icbm.emp_tower.radius"), rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()), (slider) -> {}, (slider) -> {
+            ITextComponent sliderValueAsText = new StringTextComponent(String.format("%.2f", sliderValueToRawRange(slider.getValue())));
+            slider.setMessage(slider.defaultMessage.copy().append(": ").append(sliderValueAsText));
+        });
         addButton(this.rangeSlider);
         this.children.add(this.rangeSlider);
     }

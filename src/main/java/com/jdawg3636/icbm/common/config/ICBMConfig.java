@@ -70,6 +70,9 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedPenaltyForCollision;
         private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedRequiredToGenerateAntimatter;
 
+        private final ForgeConfigSpec.DoubleValue empTowerRangeMinimum;
+        private final ForgeConfigSpec.DoubleValue empTowerRangeMaximum;
+
         public Common() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
             this.maxBlastManagerThreadCountPerLevel = builder
@@ -190,6 +193,14 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the speed in blocks per tick that is required for a particle to be converted into antimatter in a particle accelerator.")
                     .defineInRange("particleAcceleratorSpeedRequiredToGenerateAntimatter", 0.885D, 0, Float.MAX_VALUE);
+            this.empTowerRangeMinimum = builder
+                    .comment("",
+                            "Defines the minimum effective radius that a user may specify for an EMP Tower")
+                    .defineInRange("empTowerRangeMinimum", 10.0D, 0, Double.MAX_VALUE);
+            this.empTowerRangeMaximum = builder
+                    .comment("",
+                            "Defines the maximum effective radius that a user may specify for an EMP Tower")
+                    .defineInRange("empTowerRangeMaximum", 150.0D, 0, Double.MAX_VALUE);
             this.spec = builder.build();
         }
 
@@ -299,6 +310,14 @@ public class ICBMConfig {
 
         public double getParticleAcceleratorSpeedRequiredToGenerateAntimatter() {
             return particleAcceleratorSpeedRequiredToGenerateAntimatter.get();
+        }
+
+        public double getEMPTowerRangeMinimum() {
+            return empTowerRangeMinimum.get();
+        }
+
+        public double getEMPTowerRangeMaximum() {
+            return empTowerRangeMaximum.get();
         }
 
     }
