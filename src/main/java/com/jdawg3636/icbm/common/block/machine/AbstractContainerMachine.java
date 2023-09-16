@@ -6,7 +6,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -51,7 +50,7 @@ public class AbstractContainerMachine extends Container {
         return slotCount.get();
     }
 
-    public TileEntity getBlockEntity() {
+    public TileMachine getBlockEntity() {
         return tileEntity;
     }
 

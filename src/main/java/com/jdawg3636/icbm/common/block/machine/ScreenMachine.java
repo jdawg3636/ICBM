@@ -9,11 +9,15 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ScreenMachine <T extends AbstractContainerMachine> extends ContainerScreen<T> {
+@OnlyIn(Dist.CLIENT)
+public class ScreenMachine <T extends AbstractContainerMachine> extends ContainerScreen<T> implements IScreenMachine {
 
     public static final ResourceLocation DEFAULT_CONTAINER_BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_container.png");
 
+    public final TileMachine TILE_ENTITY;
     public final ResourceLocation TEXTURE;
 
     public ScreenMachine(T container, PlayerInventory inventory, ITextComponent name) {
@@ -26,6 +30,7 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
      * */
     public ScreenMachine(T container, PlayerInventory inventory, ITextComponent name, ResourceLocation backgroundTexture, int imageWidth, int imageHeight) {
         super(container, inventory, name);
+        this.TILE_ENTITY = container.getBlockEntity();
         this.TEXTURE = backgroundTexture;
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
@@ -67,6 +72,42 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
         IReorderingProcessor ireorderingprocessor = text.getVisualOrderText();
         int centerX = this.imageWidth / 2;
         fontRenderer.draw(matrixStack, ireorderingprocessor, (float)(centerX - fontRenderer.width(ireorderingprocessor) / 2) + offsetX, (float)posY, color);
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        // The joys of client-side code weeeeeeeee
+        assert this.minecraft != null;
+        assert this.minecraft.player != null;
+        // Call the superclass (AbstractContainerScreen) code
+        super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        // Return value for superclass call isn't helpful (always returns true) - manually checking if it should have done anything
+        if(this.clickedSlot == null && this.minecraft.player.inventory.getCarried().isEmpty()) {
+            // If not then try to use normal behavior from grandparent class (should make other draggable widgets such as sliders function properly)
+            return this.getFocused() != null && this.isDragging() && button == 0 && this.getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        }
+        // Superclass always returns true, so we'll do the same.
+        return true;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        assert this.minecraft != null;
+        this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
+    }
+
+    @Override
+    public void removed() {
+        assert this.minecraft != null;
+        this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
+        super.removed();
+    }
+
+    @Override
+    public void onClose() {
+        sendUpdatePacketToServer();
+        super.onClose();
     }
 
 }

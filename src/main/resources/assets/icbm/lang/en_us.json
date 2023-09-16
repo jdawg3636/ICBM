@@ -523,7 +523,7 @@
   "gui.icbm.emp_tower.missiles": "Missiles",
   "gui.icbm.emp_tower.elec": "Electricity",
   "gui.icbm.emp_tower.both": "Both",
-  "gui.icbm.emp_tower.radius": "EMP Radius: %p blocks",
+  "gui.icbm.emp_tower.radius": "EMP Radius",
   "gui.icbm.emp_tower.effect": "EMP Effect:",
   "gui.icbm.emp_tower.effectDebilitate": "Debilitate Electronics",
   "gui.icbm.emp_tower.effectDisrupt": "Disrupt Missiles",

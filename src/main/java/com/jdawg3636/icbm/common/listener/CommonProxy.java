@@ -40,7 +40,7 @@ public class CommonProxy {
 
     // Client Misc
     public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {}
-    public void updateScreenLauncherControlPanel() {}
+    public void updateScreenMachine() {}
 
     // Common Events
     public void onCommonSetupEvent(final FMLCommonSetupEvent event) {

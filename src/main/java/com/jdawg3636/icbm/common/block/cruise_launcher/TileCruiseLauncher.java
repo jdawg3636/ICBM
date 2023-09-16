@@ -7,7 +7,6 @@ import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -15,8 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
 
 public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLaunchControlPanel {
 
@@ -162,31 +159,6 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
         setTargetZ(compoundNBT.getDouble("targetZ"));
         setTargetY(compoundNBT.getDouble("targetY"));
         setRadioFrequency(compoundNBT.getInt("radioFrequency"));
-    }
-
-    @Override
-    @Nullable
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
-    }
-
-    @Override
-    public CompoundNBT getUpdateTag() {
-        CompoundNBT tag = super.getUpdateTag();
-        return save(tag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        if(level != null && level.isClientSide()) {
-            handleUpdateTag(getBlockState(), pkt.getTag());
-            ICBMReference.distProxy().updateScreenLauncherControlPanel();
-        }
-    }
-
-    @Override
-    public double getViewDistance() {
-        return ICBMReference.distProxy().getTileEntityUpdateDistance();
     }
 
 }

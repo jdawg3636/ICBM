@@ -1,8 +1,8 @@
 package com.jdawg3636.icbm.common.block.cruise_launcher;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.launcher_control_panel.IScreenLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
+import com.jdawg3636.icbm.common.block.machine.IScreenMachine;
 import com.jdawg3636.icbm.common.network.CPacketUpdateLauncherControlPanel;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLauncher> implements IScreenLaunchControlPanel {
+public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLauncher> implements IScreenMachine {
 
     // TileEntity
     private final TileCruiseLauncher tileEntity;
@@ -105,7 +105,7 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
         this.textFieldRadioFrequency.moveCursorToStart();
     }
 
-    // TODO: is this necessary? Why does it only update the X value? Same goes for the ScreenLauncherControlPanel.
+    // TODO: Need to do this for ALL values (not just x value) to avoid unsaved changes being wiped when resizing game window. Same goes for the ScreenLauncherControlPanel.
     @Override
     public void resize(Minecraft minecraft, int width, int height) {
         String s = this.textFieldTargetX.getValue();

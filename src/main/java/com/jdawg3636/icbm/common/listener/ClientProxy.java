@@ -9,10 +9,10 @@ import com.jdawg3636.icbm.common.block.emp_tower.ContainerEMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.ScreenEMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TEREMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
-import com.jdawg3636.icbm.common.block.launcher_control_panel.IScreenLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
+import com.jdawg3636.icbm.common.block.machine.IScreenMachine;
 import com.jdawg3636.icbm.common.block.particle_accelerator.ScreenParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
@@ -249,9 +249,9 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));
     }
 
-    public void updateScreenLauncherControlPanel() {
-        if (Minecraft.getInstance().screen instanceof IScreenLaunchControlPanel) {
-            ((IScreenLaunchControlPanel)Minecraft.getInstance().screen).updateGui();
+    public void updateScreenMachine() {
+        if (Minecraft.getInstance().screen instanceof IScreenMachine) {
+            ((IScreenMachine)Minecraft.getInstance().screen).updateGui();
         }
     }
 

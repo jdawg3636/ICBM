@@ -16,7 +16,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -88,9 +87,8 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());
             }
-            SUpdateTileEntityPacket supdatetileentitypacket = tileEntity.getUpdatePacket();
-            if (supdatetileentitypacket != null) ((ServerPlayerEntity)player).connection.send(supdatetileentitypacket);
         }
+        super.use(state, world, pos, player, hand, trace);
         return ActionResultType.SUCCESS;
     }
 

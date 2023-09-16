@@ -12,8 +12,14 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-// Used for Client -> Server Communication
-// Server -> Client is sent using a vanilla SUpdateTileEntityPacket handled in TileLauncherControlPanel::onDataPacket
+/**
+ * This is used for Client -> Server communication only.
+ * Server -> Client communication uses vanilla {@link net.minecraft.network.play.server.SUpdateTileEntityPacket}s
+ * handled in {@link com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel#onDataPacket} (or
+ * handled in {@link com.jdawg3636.icbm.common.block.machine.TileMachine#onDataPacket}, in the case of Cruise Launchers)
+ * via a server-side call from the block when it is interacted with (in this case {@link com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherControlPanel#use}
+ * or{@link com.jdawg3636.icbm.common.block.machine.AbstractBlockMachineTile#use})
+ */
 public class CPacketUpdateLauncherControlPanel {
 
     public final BlockPos pos;

@@ -14,6 +14,8 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -94,6 +96,15 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         if(itemHandlerLazyOptional.isPresent() && cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) return itemHandlerLazyOptional.cast();
         if(energyStorageLazyOptional.isPresent() && cap.equals(CapabilityEnergy.ENERGY)) return energyStorageLazyOptional.cast();
         return super.getCapability(cap, side);
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        // NOTE: This has the effect of sending **ALL** of the NBT data to the client, which could exploited by hacked clients
+        // to expose otherwise hidden information to players AND risks sending excessive (likely irrelevant) data.
+        // This should be overridden for machines containing sensitive data (or just large data that doesn't need synchronized).
+        CompoundNBT tag = super.getUpdateTag();
+        return save(tag);
     }
 
     @Override
@@ -212,6 +223,20 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        if(level != null && level.isClientSide()) {
+            handleUpdateTag(getBlockState(), pkt.getTag());
+            ICBMReference.distProxy().updateScreenMachine();
+        }
+    }
+
+    @Override
+    @Nullable
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
     }
 
 }

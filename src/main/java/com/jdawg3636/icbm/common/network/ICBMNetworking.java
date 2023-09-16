@@ -27,8 +27,9 @@ public class ICBMNetworking {
         );
 
         int packetID = 0;
-        //noinspection UnusedAssignment
         registerPacket(INSTANCE, CPacketUpdateLauncherControlPanel.class, packetID++);
+        //noinspection UnusedAssignment
+        registerPacket(INSTANCE, CPacketUpdateEMPTower.class, packetID++);
 
     }
 

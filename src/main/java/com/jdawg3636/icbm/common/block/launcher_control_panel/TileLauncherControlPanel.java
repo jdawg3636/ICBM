@@ -68,7 +68,7 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         if(level != null && level.isClientSide()) {
             handleUpdateTag(getBlockState(), pkt.getTag());
-            ICBMReference.distProxy().updateScreenLauncherControlPanel();
+            ICBMReference.distProxy().updateScreenMachine();
         }
     }
 

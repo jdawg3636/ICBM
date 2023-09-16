@@ -1,11 +1,11 @@
 package com.jdawg3636.icbm.common.block.multiblock;
 
-import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
@@ -59,8 +59,10 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
     }
 
     public void onUseMultiblock(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-        if(!world.isClientSide() && tileEntity instanceof TileEMPTower) {
+        if(!world.isClientSide() && tileEntity instanceof TileMachine) {
             NetworkHooks.openGui((ServerPlayerEntity) player, (TileMachine)tileEntity, tileEntity.getBlockPos());
+            SUpdateTileEntityPacket supdatetileentitypacket = tileEntity.getUpdatePacket();
+            if (supdatetileentitypacket != null) ((ServerPlayerEntity)player).connection.send(supdatetileentitypacket);
         }
     }
 
