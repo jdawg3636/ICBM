@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
@@ -18,6 +19,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -543,6 +545,27 @@ public class EntityMissile extends Entity {
     @Override
     public void setRot(float yRot, float xRot) {
         super.setRot(yRot, xRot);
+    }
+
+    public void strikeWithEMP() {
+        spawnAtLocation(missileItem.get().getDefaultInstance());
+        kill();
+    }
+
+    @Override
+    public void kill() {
+        for(int i = 0; i < 1; ++i) {
+            // Get TileEntity
+            if(level == null || level.isClientSide) break;
+            TileEntity tileEntity = level.getBlockEntity(sourcePos);
+            if(!(tileEntity instanceof TileLauncherPlatform)) break;
+            TileLauncherPlatform tileLauncherPlatform = ((TileLauncherPlatform) tileEntity);
+            // Remove item from tile if its UUID matches
+            if(uuid.equals(tileLauncherPlatform.missileEntityID)) {
+                tileLauncherPlatform.removeMissileItemWithAction((entity) -> {});
+            }
+        }
+        super.kill();
     }
 
 }

@@ -23,6 +23,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.Level;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class TileLauncherPlatform extends TileMachine {
@@ -54,24 +55,28 @@ public class TileLauncherPlatform extends TileMachine {
         return 0D;
     }
 
-    public void launchMissile(BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
+    public void removeMissileItemWithAction(Consumer<EntityMissile> action) {
         itemHandlerLazyOptional.ifPresent((itemHandlerUncast) -> {
             ItemStackHandler itemHandler = (ItemStackHandler)itemHandlerUncast;
             if(missileEntityID != null && level != null && !level.isClientSide()) {
                 Item item = itemHandler.getStackInSlot(0).getItem();
                 EntityMissile entity = (EntityMissile)(((ServerWorld)level).getEntity(missileEntityID));
-                if(item instanceof ItemMissile && entity != null) {
-
+                if(item instanceof ItemMissile) {
                     missileEntityID = null; // Necessary to disconnect, otherwise ItemStackHandler would kill the entity when the slot is cleared
                     itemHandler.setStackInSlot(0, ItemStack.EMPTY);
-
-                    entity.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, getMissileSourceType(), EntityMissile.MissileLaunchPhase.LAUNCHED);
-
-                    this.level.playSound((PlayerEntity) null, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), SoundEventReg.EFFECT_MISSILE_LAUNCH.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
-
-                    ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from (%s, %s, %s) to (%s, %s, %s) with peak height '%s' and '%s' ticks of flight time.", entity.getName().getString(), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), destPos.getX(), destPos.getY(), destPos.getZ(), peakHeight, totalFlightTicks);
-
+                    action.accept(entity);
                 }
+            }
+        });
+    }
+
+    public void launchMissile(BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
+        removeMissileItemWithAction((entity) -> {
+            assert level != null;
+            if(entity != null) {
+                entity.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, getMissileSourceType(), EntityMissile.MissileLaunchPhase.LAUNCHED);
+                this.level.playSound((PlayerEntity) null, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), SoundEventReg.EFFECT_MISSILE_LAUNCH.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from (%s, %s, %s) to (%s, %s, %s) with peak height '%s' and '%s' ticks of flight time.", entity.getName().getString(), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), destPos.getX(), destPos.getY(), destPos.getZ(), peakHeight, totalFlightTicks);
             }
         });
     }
@@ -97,7 +102,9 @@ public class TileLauncherPlatform extends TileMachine {
                     if(entity != null) {
                         entity.setRot(0, -90F);
                         entity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + getMissileEntityYOffset(), getBlockPos().getZ() + 0.5);
-                        entity.updateMissileData(null, null, null, null, getMissileSourceType(), null);
+                        // We need to set sourcePos so that the location of the platform can be derived from the entity (useful when killing the entity and wanting to sync inventory, etc.)
+                        // We also need to set missileSourceType for rendering (changes the scale of the model). All other data can wait until launch.
+                        entity.updateMissileData(getBlockPos(), null, null, null, getMissileSourceType(), null);
                         level.addFreshEntity(entity);
                         missileEntityID = entity.getUUID();
                     }

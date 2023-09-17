@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.block.emp_tower;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
+import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -12,6 +13,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 public class TileEMPTower extends TileMachine implements ITickableTileEntity {
 
@@ -42,9 +45,26 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
         return empRadius;
     }
 
+    public void triggerEMPBlast() {
+        if(level == null || level.isClientSide) return;
+        List<EntityMissile> missilesToZap = level.getEntitiesOfClass(EntityMissile.class, new AxisAlignedBB(getBlockPos().above()).inflate(empRadius));
+        for(EntityMissile missile : missilesToZap) {
+            if(missile.missileLaunchPhase != EntityMissile.MissileLaunchPhase.STATIONARY) {
+                missile.strikeWithEMP();
+            }
+        }
+    }
+
     @Override
     public void tick() {
-        if(level != null && level.isClientSide()) addAnimationPercent(5D);
+        if(level == null) return;
+        if(level.isClientSide()) {
+            addAnimationPercent(5D);
+        } else {
+            if(redstoneSignalPresent()) {
+                triggerEMPBlast();
+            }
+        }
     }
 
     @Override
