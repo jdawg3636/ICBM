@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.machine;
 
+import com.google.common.collect.Lists;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -15,9 +16,40 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AbstractContainerMachine extends Container {
+
+    public static enum SlotTag {
+        BATTERY(true, 18*1, 18*6),
+        INVENTORY_MACHINE,
+        MISSILE(false),
+        UNDECLARED;
+
+        public final int overlayU;
+        public final int overlayV;
+        public final boolean shouldRenderBorder;
+
+        SlotTag(boolean shouldRenderBorder, int overlayU, int overlayV) {
+            this.shouldRenderBorder = shouldRenderBorder;
+            this.overlayU = overlayU;
+            this.overlayV = overlayV;
+        }
+
+        SlotTag(boolean shouldRenderBorder) {
+            this(shouldRenderBorder, 0, 0);
+        }
+
+        SlotTag() {
+            this(true);
+        }
+
+    }
+
+    public static final Map<Integer, SlotTag> slotTags = new HashMap<>();
 
     private final TileMachine tileEntity;
     private final IItemHandler playerInventoryWrapper;
@@ -31,9 +63,16 @@ public class AbstractContainerMachine extends Container {
     }
 
     public void addSlot(int xPos, int yPos) {
+        addSlot(xPos, yPos, SlotTag.UNDECLARED);
+    }
+
+    public void addSlot(int xPos, int yPos, SlotTag slotTag) {
         if(tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
-                (IItemHandler itemHandler) -> addSlot(new SlotItemHandler(itemHandler, nextSlotIndex++, xPos, yPos))
+                (IItemHandler itemHandler) -> {
+                    slotTags.put(nextSlotIndex, slotTag);
+                    addSlot(new SlotItemHandler(itemHandler, nextSlotIndex++, xPos, yPos));
+                }
             );
         }
     }
@@ -48,6 +87,10 @@ public class AbstractContainerMachine extends Container {
             );
         }
         return slotCount.get();
+    }
+
+    public SlotTag getSlotTag(int i) {
+        return slotTags.getOrDefault(i, SlotTag.UNDECLARED);
     }
 
     public TileMachine getBlockEntity() {

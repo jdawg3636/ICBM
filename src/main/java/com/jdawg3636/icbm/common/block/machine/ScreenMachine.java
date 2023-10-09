@@ -3,9 +3,11 @@ package com.jdawg3636.icbm.common.block.machine;
 import com.jdawg3636.icbm.ICBMReference;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -15,6 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ScreenMachine <T extends AbstractContainerMachine> extends ContainerScreen<T> implements IScreenMachine {
 
+    public static final ResourceLocation DEFAULT_COMPONENTS_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_components.png");
     public static final ResourceLocation DEFAULT_CONTAINER_BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_container.png");
 
     public final TileMachine TILE_ENTITY;
@@ -39,9 +42,27 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
+        this.renderBackground(matrixStack); // This is the blur/gradient behind the GUI, not the background texture. See "renderBg" for that.
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
+    }
+
+    public void renderSlotBackgrounds(MatrixStack matrixStack, int relX, int relY) {
+        assert this.minecraft != null;
+        this.minecraft.getTextureManager().bind(DEFAULT_COMPONENTS_TEXTURE);
+        AbstractContainerMachine container = this.menu;
+        for(int i = 0; i < container.slots.size(); ++i) {
+            Slot slot = container.slots.get(i);
+            AbstractContainerMachine.SlotTag slotTag = container.getSlotTag(i);
+            if (slot.isActive() && slotTag.shouldRenderBorder) {
+                renderSlotBackground(matrixStack, slot, slotTag, relX, relY);
+            }
+        }
+    }
+
+    public void renderSlotBackground(MatrixStack matrixStack, Slot slot, AbstractContainerMachine.SlotTag slotTag, int relX, int relY) {
+        blit(matrixStack, relX + slot.x - 1, relY + slot.y - 1, 100, 0, 0, 18, 18, 256, 256);
+        blit(matrixStack, relX + slot.x - 1, relY + slot.y - 1, 100, slotTag.overlayU, slotTag.overlayV, 18, 18, 256, 256);
     }
 
     @Override
@@ -66,6 +87,7 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
+        this.renderSlotBackgrounds(matrixStack, relX, relY);
     }
 
     public void drawHorizontallyCenteredStringNoShadow(MatrixStack matrixStack, FontRenderer fontRenderer, ITextComponent text, int offsetX, int posY, int color) {
