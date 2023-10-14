@@ -36,6 +36,7 @@ public class ICBMConfig {
         public final ForgeConfigSpec spec;
 
         private final ForgeConfigSpec.IntValue maxBlastManagerThreadCountPerLevel;
+        private final ForgeConfigSpec.IntValue numWorkerThreadsPerNuclearBlast;
 
         private final ForgeConfigSpec.IntValue maxNumTicksAliveForLinearMissiles;
 
@@ -81,6 +82,12 @@ public class ICBMConfig {
                             "level/dimension. SETTING THIS VALUE TOO HIGH MAY CAUSE ENOUGH LAG TO COMPLETELY LOCK UP YOUR",
                             "COMPUTER. YOU HAVE BEEN WARNED!")
                     .defineInRange("maxBlastManagerThreadCountPerLevel", 4, 1, Integer.MAX_VALUE);
+            this.numWorkerThreadsPerNuclearBlast = builder
+                    .comment("",
+                            "Defines the exact number of worker threads to be used for each nuclear blast. (The blast ",
+                            "will have a single manager thread, which will then spawn these worker threads). SETTING THIS",
+                            "VALUE TOO HIGH MAY CAUSE ENOUGH LAG TO COMPLETELY LOCK UP YOUR COMPUTER. YOU HAVE BEEN WARNED!")
+                    .defineInRange("numWorkerThreadsPerNuclearBlast", 4, 1, Integer.MAX_VALUE);
             this.maxNumTicksAliveForLinearMissiles = builder
                     .comment("",
                             "Defines the amount of time, in game ticks (20 ticks = 1 second), that a missile launched from",
@@ -206,6 +213,10 @@ public class ICBMConfig {
 
         public int getMaxBlastManagerThreadCountPerLevel() {
             return maxBlastManagerThreadCountPerLevel.get();
+        }
+
+        public int getNumWorkerThreadsPerNuclearBlast() {
+            return numWorkerThreadsPerNuclearBlast.get();
         }
 
         public int getMaxNumTicksAliveForLinearMissiles() {
