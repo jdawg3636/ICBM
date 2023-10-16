@@ -10,12 +10,9 @@ import javax.annotation.Nullable;
 
 public class ContainerEMPTower extends AbstractContainerMachine {
 
-    public static final int batterySlotX = 151;
-    public static final int batterySlotY = 23;
-
     public ContainerEMPTower(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
         super(containerType, windowId, level, blockPos, playerInventory);
-        addSlot(batterySlotX, batterySlotY, SlotTag.BATTERY);
+        addSlot(151, 23, SlotTag.BATTERY);
         addPlayerInventorySlots(8, 135);
     }
 

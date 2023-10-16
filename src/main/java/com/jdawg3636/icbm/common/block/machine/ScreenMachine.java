@@ -3,13 +3,18 @@ package com.jdawg3636.icbm.common.block.machine;
 import com.jdawg3636.icbm.ICBMReference;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,6 +43,26 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
         this.inventoryLabelY = this.imageHeight - 94;
+    }
+
+    @Override
+    public int getWidth() {
+        return this.width;
+    }
+
+    @Override
+    public int getHeight() {
+        return this.height;
+    }
+
+    @Override
+    public int getImageWidth() {
+        return this.imageWidth;
+    }
+
+    @Override
+    public int getImageHeight() {
+        return this.imageHeight;
     }
 
     @Override
@@ -94,6 +119,26 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
         IReorderingProcessor ireorderingprocessor = text.getVisualOrderText();
         int centerX = this.imageWidth / 2;
         fontRenderer.draw(matrixStack, ireorderingprocessor, (float)(centerX - fontRenderer.width(ireorderingprocessor) / 2) + offsetX, (float)posY, color);
+    }
+
+    public static void blitColored(MatrixStack pMatrixStack, int pX, int pY, int pBlitOffset, float pUOffset, float pVOffset, int pUWidth, int pVHeight, int pTextureHeight, int pTextureWidth, float red, float green, float blue, float alpha) {
+        innerBlitColored(pMatrixStack, pX, pX + pUWidth, pY, pY + pVHeight, pBlitOffset, pUWidth, pVHeight, pUOffset, pVOffset, pTextureWidth, pTextureHeight, red, green, blue, alpha);
+    }
+
+    private static void innerBlitColored(MatrixStack pMatrixStack, int pX1, int pX2, int pY1, int pY2, int pBlitOffset, int pUWidth, int pVHeight, float pUOffset, float pVOffset, int pTextureWidth, int pTextureHeight, float red, float green, float blue, float alpha) {
+        innerBlitColoredTwo(pMatrixStack.last().pose(), pX1, pX2, pY1, pY2, pBlitOffset, (pUOffset + 0.0F) / (float)pTextureWidth, (pUOffset + (float)pUWidth) / (float)pTextureWidth, (pVOffset + 0.0F) / (float)pTextureHeight, (pVOffset + (float)pVHeight) / (float)pTextureHeight, red, green, blue, alpha);
+    }
+
+    private static void innerBlitColoredTwo(Matrix4f pMatrix, int pX1, int pX2, int pY1, int pY2, int pBlitOffset, float pMinU, float pMaxU, float pMinV, float pMaxV, float red, float green, float blue, float alpha) {
+        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR_TEX);
+        bufferbuilder.vertex(pMatrix, (float)pX1, (float)pY2, (float)pBlitOffset).color(red, green, blue, alpha).uv(pMinU, pMaxV).overlayCoords(OverlayTexture.NO_OVERLAY).endVertex();
+        bufferbuilder.vertex(pMatrix, (float)pX2, (float)pY2, (float)pBlitOffset).color(red, green, blue, alpha).uv(pMaxU, pMaxV).overlayCoords(OverlayTexture.NO_OVERLAY).endVertex();
+        bufferbuilder.vertex(pMatrix, (float)pX2, (float)pY1, (float)pBlitOffset).color(red, green, blue, alpha).uv(pMaxU, pMinV).overlayCoords(OverlayTexture.NO_OVERLAY).endVertex();
+        bufferbuilder.vertex(pMatrix, (float)pX1, (float)pY1, (float)pBlitOffset).color(red, green, blue, alpha).uv(pMinU, pMinV).overlayCoords(OverlayTexture.NO_OVERLAY).endVertex();
+        bufferbuilder.end();
+        RenderSystem.enableAlphaTest();
+        WorldVertexBufferUploader.end(bufferbuilder);
     }
 
     @Override

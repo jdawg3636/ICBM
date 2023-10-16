@@ -47,6 +47,26 @@ public class ScreenLauncherControlPanel extends Screen implements IScreenMachine
         this.tileEntity = tileEntity;
     }
 
+    @Override
+    public int getWidth() {
+        return this.width;
+    }
+
+    @Override
+    public int getHeight() {
+        return this.height;
+    }
+
+    @Override
+    public int getImageWidth() {
+        return this.imageWidth;
+    }
+
+    @Override
+    public int getImageHeight() {
+        return this.imageHeight;
+    }
+
     public static boolean stringIsNumeric(String in) {
         if(in.equals("")) return true;
         if(in.equals("-")) return true;

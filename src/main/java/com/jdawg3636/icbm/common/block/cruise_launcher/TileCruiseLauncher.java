@@ -1,13 +1,11 @@
 package com.jdawg3636.icbm.common.block.cruise_launcher;
 
-import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -60,10 +58,7 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
         this.tickAnimationStarted = tickAnimationStarted;
 
         // Update Nearby Clients
-        SUpdateTileEntityPacket updatePacket = this.getUpdatePacket();
-        if(updatePacket != null && level != null && level.getServer() != null) {
-            level.getServer().getPlayerList().broadcast(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), ICBMReference.distProxy().getTileEntityUpdateDistance(), level.dimension(), updatePacket);
-        }
+        this.updateNearbyClients();
 
     }
 

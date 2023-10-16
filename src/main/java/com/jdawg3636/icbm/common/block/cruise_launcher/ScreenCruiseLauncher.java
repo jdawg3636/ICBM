@@ -49,6 +49,28 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
         this.tileEntity = tileEntity;
     }
 
+    // TODO: None of these image size getters needs to be implemented once this is properly ported to the ScreenMachine system
+
+    @Override
+    public int getWidth() {
+        return this.width;
+    }
+
+    @Override
+    public int getHeight() {
+        return this.height;
+    }
+
+    @Override
+    public int getImageWidth() {
+        return this.imageWidth;
+    }
+
+    @Override
+    public int getImageHeight() {
+        return this.imageHeight;
+    }
+
     @SuppressWarnings("UnusedAssignment")
     @Override
     protected void init() {

@@ -1,14 +1,17 @@
 package com.jdawg3636.icbm.common.block.emp_tower;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.machine.CustomizableSliderWidget;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
+import com.jdawg3636.icbm.common.block.machine.WidgetCustomizableSlider;
+import com.jdawg3636.icbm.common.block.machine.WidgetProgressBar;
+import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import com.jdawg3636.icbm.common.network.CPacketUpdateEMPTower;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -22,7 +25,8 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
     public final double MAX_RANGE;
 
     public final TileEMPTower TILE_ENTITY;
-    public CustomizableSliderWidget rangeSlider;
+    public WidgetCustomizableSlider rangeSlider;
+    public WidgetProgressBar forgeEnergyStorageBar;
 
     public ScreenEMPTower(ContainerEMPTower container, PlayerInventory inventory, ITextComponent name) {
         super(container, inventory, name);
@@ -41,13 +45,33 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
 
     @Override
     protected void init() {
+
         super.init();
-        this.rangeSlider = new CustomizableSliderWidget((this.width / 2) - 75, ((height - imageHeight) / 2) + 100, 150, 20, new TranslationTextComponent("gui.icbm.emp_tower.radius"), rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()), (slider) -> {}, (slider) -> {
-            ITextComponent sliderValueAsText = new StringTextComponent(String.format("%.2f", sliderValueToRawRange(slider.getValue())));
-            slider.setMessage(slider.defaultMessage.copy().append(": ").append(sliderValueAsText));
-        });
+
+        int relX = (this.getWidth() - this.getImageWidth()) / 2;
+        int relY = (this.getHeight() - this.getImageHeight()) / 2;
+
+        this.rangeSlider = new WidgetCustomizableSlider(
+            (this.width / 2) - 75, relY + 100, 130, 20,
+            new TranslationTextComponent("gui.icbm.emp_tower.radius"),
+            rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()),
+            (slider) -> {},
+            (slider) -> {
+                ITextComponent sliderValueAsText = new StringTextComponent(String.format("%.1f", sliderValueToRawRange(slider.getValue())));
+                slider.setMessage(slider.defaultMessage.copy().append(": ").append(sliderValueAsText));
+            }
+        );
         addButton(this.rangeSlider);
-        this.children.add(this.rangeSlider);
+
+        Vector3f forgeEnergyStorageBarColor = new Vector3f(29/255f, 194/255f, 68/255f);
+        this.forgeEnergyStorageBar = new WidgetProgressBar(
+            relX + 151, relY + 47, 18, 49, this,
+            () -> forgeEnergyStorageBarColor,
+            () -> TILE_ENTITY.energyStorageLazyOptional.map((energyStorage) -> energyStorage.getEnergyStored() / (float)energyStorage.getMaxEnergyStored()).orElse(0f),
+            () -> TILE_ENTITY.energyStorageLazyOptional.map((energyStorage) ->
+                ((ICBMEnergyStorage)energyStorage).getEnergyStoredFormatted(3, true)).orElse(new StringTextComponent("ERROR!"))
+        );
+        addButton(this.forgeEnergyStorageBar);
     }
 
     @Override

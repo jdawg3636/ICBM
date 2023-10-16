@@ -189,6 +189,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
 
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        // TODO: This shouldn't always be instance of launcher platform - need to be generic
         return new ContainerLauncherPlatform(getContainerType(), i, this.getLevel(), getPosOfTileEntity(), playerInventory);
     }
 
@@ -222,6 +223,20 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void setChanged() {
+        super.setChanged();
+        this.updateNearbyClients();
+    }
+
+    public void updateNearbyClients() {
+        if(level != null && !level.isClientSide()) {
+            SUpdateTileEntityPacket updatePacket = this.getUpdatePacket();
+            if (updatePacket != null && level.getServer() != null) {
+                level.getServer().getPlayerList().broadcast(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), ICBMReference.distProxy().getTileEntityUpdateDistance(), level.dimension(), updatePacket);
+            }
         }
     }
 

@@ -10,11 +10,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
-public class CustomizableSliderWidget extends AbstractSlider {
+public class WidgetCustomizableSlider extends AbstractSlider {
 
     public IFormattableTextComponent defaultMessage;
-    public Consumer<CustomizableSliderWidget> applyValueCallback;
-    public Consumer<CustomizableSliderWidget> updateMessageCallback;
+    public Consumer<WidgetCustomizableSlider> applyValueCallback;
+    public Consumer<WidgetCustomizableSlider> updateMessageCallback;
 
     /**
      * Slider widget used in the vanilla UI (ex. render distance, volume, etc.), now with 100% more lambdas.
@@ -25,7 +25,7 @@ public class CustomizableSliderWidget extends AbstractSlider {
      * @param message text displayed on the slider
      * @param value default value of the slider (range 0.0D to 1.0D)
      */
-    public CustomizableSliderWidget(int posX, int posY, int width, int height, IFormattableTextComponent message, double value, Consumer<CustomizableSliderWidget> applyValueCallback, Consumer<CustomizableSliderWidget> updateMessageCallback) {
+    public WidgetCustomizableSlider(int posX, int posY, int width, int height, IFormattableTextComponent message, double value, Consumer<WidgetCustomizableSlider> applyValueCallback, Consumer<WidgetCustomizableSlider> updateMessageCallback) {
         super(posX, posY, width, height, message, value);
         this.defaultMessage = message;
         this.updateMessageCallback = updateMessageCallback;
@@ -33,11 +33,11 @@ public class CustomizableSliderWidget extends AbstractSlider {
         updateMessage();
     }
 
-    public CustomizableSliderWidget(int posX, int posY, int width, int height, IFormattableTextComponent message, double value, Consumer<CustomizableSliderWidget> applyValueCallback) {
+    public WidgetCustomizableSlider(int posX, int posY, int width, int height, IFormattableTextComponent message, double value, Consumer<WidgetCustomizableSlider> applyValueCallback) {
         this(posX, posY, width, height, message, value, applyValueCallback, null);
     }
 
-    public CustomizableSliderWidget(int posX, int posY, int width, int height, IFormattableTextComponent message, double value) {
+    public WidgetCustomizableSlider(int posX, int posY, int width, int height, IFormattableTextComponent message, double value) {
         this(posX, posY, width, height, message, value, null);
     }
 

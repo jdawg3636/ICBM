@@ -637,6 +637,10 @@
   "icbm.subtitle.explosion_hypersonic": "Hypersonic Explosion",
   "icbm.subtitle.explosion_incendiary": "Incendiary Explosion",
   "icbm.subtitle.explosion_sonic": "Sonic Explosion",
-  "icbm.subtitle.tile_machine_hum": "Machine hums"
+  "icbm.subtitle.tile_machine_hum": "Machine hums",
+
+  # Units
+  "energy.icbm.forge": "Forge Energy",
+  "energy.icbm.forge.short": "FE"
 
 }
