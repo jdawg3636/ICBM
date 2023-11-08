@@ -22,7 +22,7 @@ public class ScreenLauncherPlatform extends ScreenMachine<ContainerLauncherPlatf
     @Override
     protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
-        drawHorizontallyCenteredStringNoShadow(matrixStack, this.font, new TranslationTextComponent("gui.icbm.launcher_platform.place"), 1, 32, ICBMReference.ICBMTextColors.DARK_GRAY.code);
+        drawHorizontallyCenteredStringNoShadow(matrixStack, this.font, new TranslationTextComponent("gui." + ICBMReference.MODID + ".launcher_platform.place"), 1, 32, ICBMReference.ICBMTextColors.DARK_GRAY.code);
     }
 
     @Override
