@@ -73,6 +73,7 @@ public class ICBMConfig {
 
         private final ForgeConfigSpec.DoubleValue empTowerRangeMinimum;
         private final ForgeConfigSpec.DoubleValue empTowerRangeMaximum;
+        private final ForgeConfigSpec.IntValue empTowerEnergyUsePerBlast;
 
         public Common() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -208,6 +209,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the maximum effective radius that a user may specify for an EMP Tower")
                     .defineInRange("empTowerRangeMaximum", 150.0D, 0, Double.MAX_VALUE);
+            this.empTowerEnergyUsePerBlast = builder
+                    .comment("",
+                            "Defines the amount of Forge Energy (FE) consumed per blast by an EMP Tower.")
+                    .defineInRange("empTowerEnergyUsePerBlast", 1_000_000, 0, Integer.MAX_VALUE);
             this.spec = builder.build();
         }
 
@@ -329,6 +334,10 @@ public class ICBMConfig {
 
         public double getEMPTowerRangeMaximum() {
             return empTowerRangeMaximum.get();
+        }
+
+        public int empTowerEnergyUsePerBlast() {
+            return empTowerEnergyUsePerBlast.get();
         }
 
     }
