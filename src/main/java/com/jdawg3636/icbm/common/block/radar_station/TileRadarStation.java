@@ -1,28 +1,26 @@
 package com.jdawg3636.icbm.common.block.radar_station;
 
-import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class TileRadarStation extends TileEntity implements ITickableTileEntity {
+/**
+ * I am directly extending {@link TileEMPTower} since it already has logic for spinning in a circle a storing a "radius"
+ * field synced over the network and saved as NBT data. Doing this is, of course, a bad idea, since a radar station is
+ * not in fact an EMP tower, and the EMP tower could later implement functionality that is NOT shared by the radar station
+ * and would need to be explicitly overridden here to not inherit. I'm doing it anyway though, so get off my ass <3
+ */
+public class TileRadarStation extends TileEMPTower implements ITickableTileEntity {
 
-    double animationPercent;
+    public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.radar_station");
 
     public TileRadarStation(TileEntityType<?> tileEntityType) {
-        super(tileEntityType);
-    }
-
-    public void addAnimationPercent(double increment) {
-        animationPercent += increment;
-        while(animationPercent > 100) animationPercent -= 100D;
-    }
-
-    public float getAnimationRadians() {
-        return (float)(animationPercent * 0.01 * 2 * Math.PI);
+        super(tileEntityType, DEFAULT_NAME);
     }
 
     @Override
@@ -34,11 +32,6 @@ public class TileRadarStation extends TileEntity implements ITickableTileEntity 
     @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         return super.getRenderBoundingBox().expandTowards(0, 1, 0).inflate(1, 0, 1);
-    }
-
-    @Override
-    public double getViewDistance() {
-        return ICBMReference.distProxy().getTileEntityUpdateDistance();
     }
 
 }
