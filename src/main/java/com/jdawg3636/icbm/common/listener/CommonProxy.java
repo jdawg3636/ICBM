@@ -12,6 +12,7 @@ import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ResourceLocation;
@@ -47,6 +48,7 @@ public class CommonProxy {
         ICBMNetworking.init();
         ICBMCapabilities.register();
         event.enqueueWork(ICBMRecipeTypes::registerAll);
+        Blocks.OBSIDIAN.explosionResistance = 25.0f; //TODO: make this configurable
     }
 
     public void onAttachCapabilitiesEventWorld(final AttachCapabilitiesEvent<World> event) {
