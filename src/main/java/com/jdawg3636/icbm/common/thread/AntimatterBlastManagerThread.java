@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.thread;
 
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
+import com.jdawg3636.icbm.common.event.ICBMBlastEventUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,6 +10,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -48,6 +50,7 @@ public class AntimatterBlastManagerThread extends AbstractBlastManagerThread {
             for(AntimatterBlastWorkerThread worker : threadPool) {
                 results.addAll(worker.blocksToBeDestroyed);
             }
+            ICBMBlastEventUtil.doExplosionDamageAndKnockback(level, new Vector3d(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ), null /* todo: pass specialized DamageSource with LivingEntity to blame */, radius);
             for(BlockPos result : results) {
                 // Clear BlockEntity Contents
                 BlockState existingBlockState = level.getBlockState(result);

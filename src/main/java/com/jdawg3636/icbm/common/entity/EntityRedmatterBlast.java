@@ -23,6 +23,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
 
     @Override
     public void tick() {
+        // TODO: Implement player movement for Red Matter (black hole)
         if(level != null) {
             if(level.isClientSide()) {
                 addAnimationPercent(0.25D);
