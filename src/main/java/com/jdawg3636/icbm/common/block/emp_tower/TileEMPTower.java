@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.block.emp_tower;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
+import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
@@ -65,7 +66,9 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
         List<EntityMissile> missilesToZap = level.getEntitiesOfClass(EntityMissile.class, new AxisAlignedBB(getBlockPos().above()).inflate(empRadius));
         for(EntityMissile missile : missilesToZap) {
             if(missile.missileLaunchPhase != EntityMissile.MissileLaunchPhase.STATIONARY) {
-                missile.strikeWithEMP();
+                // TODO: fix this shit
+//                level.getCapability(ICBMCapabilities.MISSILE_DIRECTOR_CAPABILITY).ifPresent(md -> md.);
+//                missile.strikeWithEMP();
             }
         }
         this.level.playSound((PlayerEntity) null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 1.5, getBlockPos().getZ() + 0.5, SoundEventReg.EFFECT_BEAM_DISCHARGE.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
