@@ -607,9 +607,13 @@
 
   # Death messages
   "death.attack.icbm.radiation": "%s succumbed to radiation poisoning",
-  "death.attack.icbm.redmatter": "%s was crushed by the immense mass of the mighty black hole.",
-  "death.attack.icbm.chemical": "%s suddenly started feeling not so well.",
-  "death.attack.icbm.contagion": "%s breathed in too much of the green stuff.",
+  "death.attack.icbm.radiation.player": "%1$s succumbed to radiation poisoning while fighting %2$s",
+  "death.attack.icbm.redmatter": "%s was brutally spaghettified in a black hole",
+  "death.attack.icbm.redmatter.player": "%1$s was brutally spaghettified in a black hole while fighting %2$s",
+  "death.attack.icbm.chemical": "%s fell victim to chemical weapons",
+  "death.attack.icbm.chemical.player": "%1$s fell victim to chemical weapons while fighting %2$s",
+  "death.attack.icbm.contagion": "%s succumbed to The Contagion",
+  "death.attack.icbm.contagion.player": "%1$s succumbed to The Contagion while fighting %2$s",
 
   # GPS
   "gps.pos.set": "GPS data saved",
