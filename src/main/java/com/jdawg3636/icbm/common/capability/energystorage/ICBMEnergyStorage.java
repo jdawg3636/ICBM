@@ -1,17 +1,36 @@
 package com.jdawg3636.icbm.common.capability.energystorage;
 
 import com.jdawg3636.icbm.ICBMReference;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.Direction;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT> {
 
     public ICBMEnergyStorage() {
         super(0);
+    }
+
+    public ICBMEnergyStorage(Consumer<ICBMEnergyStorage> settingsCallback) {
+        this();
+        settingsCallback.accept(this);
+    }
+
+    public static ICapabilityProvider getNewCapabilityProvider(ItemStack stack, Consumer<ICBMEnergyStorage> settingsCallback) {
+        return new ICBMEnergyStorageCapabilityProvider(stack, settingsCallback);
     }
 
     private Runnable callbackOnChanged = () -> {};
@@ -80,6 +99,10 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
         return energyExtracted;
     }
 
+    public double getEnergyPercentage() {
+        return getEnergyStored() / (double)getMaxEnergyStored();
+    }
+
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
@@ -92,13 +115,14 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        setCapacity(nbt.getInt("capacity"), false);
-        setMaxReceive(nbt.getInt("maxReceive"));
-        setMaxExtract(nbt.getInt("maxExtract"));
-        setEnergy(nbt.getInt("energy"));
+        if(nbt == null) return;
+        if(nbt.contains("capacity")) setCapacity(nbt.getInt("capacity"), false);
+        if(nbt.contains("maxReceive")) setMaxReceive(nbt.getInt("maxReceive"));
+        if(nbt.contains("maxExtract")) setMaxExtract(nbt.getInt("maxExtract"));
+        if(nbt.contains("energy")) setEnergy(nbt.getInt("energy"));
     }
 
-    public ITextComponent getEnergyStoredFormatted(int decimalPlaces, boolean useShortName) {
+    public IFormattableTextComponent getEnergyStoredFormatted(int decimalPlaces, boolean useShortName) {
         return EnergyMeasurementUnit.formatEnergyValue(getEnergyStored(), decimalPlaces, useShortName);
     }
 
@@ -146,7 +170,7 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
             return wholeString + decimalString + " " + (useShortName ? shortName : name);
         }
 
-        public static ITextComponent formatEnergyValue(long value, int decimalPlaces, boolean useShortName) {
+        public static IFormattableTextComponent formatEnergyValue(long value, int decimalPlaces, boolean useShortName) {
             // Iteratively find largest suitable unit
             EnergyMeasurementUnit unitToUse = EnergyMeasurementUnit.BASE;
             for(EnergyMeasurementUnit currentUnit : EnergyMeasurementUnit.values()) {
@@ -161,5 +185,30 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
         }
 
     }
+
+    public static class ICBMEnergyStorageCapabilityProvider implements ICapabilityProvider {
+        public final ICBMEnergyStorage energyStorage;
+        public final ItemStack stack;
+
+        public ICBMEnergyStorageCapabilityProvider(ItemStack stack, Consumer<ICBMEnergyStorage> settingsCallback) {
+            super();
+            this.stack = stack;
+            this.energyStorage = new ICBMEnergyStorage(settingsCallback).setCallbackOnChanged(this::onContentsChanged);
+            energyStorage.deserializeNBT((CompoundNBT)(stack.getOrCreateTag().get("energy")));
+        }
+
+        @Nonnull
+        @Override
+        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+            return capability == CapabilityEnergy.ENERGY ? LazyOptional.of(() -> energyStorage).cast() : LazyOptional.empty();
+        }
+
+        public void onContentsChanged() {
+            if (!this.stack.isEmpty()) {
+                stack.getOrCreateTag().put("energy", energyStorage.serializeNBT());
+            }
+        }
+
+    };
 
 }

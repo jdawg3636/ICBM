@@ -226,6 +226,17 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         }
     }
 
+    public int tryReceiveEnergy(IEnergyStorage source, int energyToReceive) {
+        if(!source.canReceive()) return 0;
+        energyToReceive = Math.min(Math.min(energyToReceive, energyStorage.getMaxReceive()), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
+        int energyExtracted = source.extractEnergy(energyToReceive, false);
+        int energyReceived = energyStorage.receiveEnergy(energyExtracted, false);
+        if(energyExtracted != energyReceived) {
+            ICBMReference.logger().warn(String.format("(This is a bug, please report to mod author!) Error in energy reception logic for %s! Should have received %s, but instead received %s.", this, energyExtracted, energyReceived));
+        }
+        return energyReceived;
+    }
+
     public void setChanged() {
         super.setChanged();
         this.updateNearbyClients();
