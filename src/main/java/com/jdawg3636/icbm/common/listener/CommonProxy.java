@@ -5,6 +5,8 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherContro
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.BlastControllerCapabilityProvider;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
+import com.jdawg3636.icbm.common.capability.missiledirector.IMissileDirectorCapability;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileDirectorCapabilityProvider;
 import com.jdawg3636.icbm.common.capability.trackingmanager.ITrackingManagerCapability;
 import com.jdawg3636.icbm.common.capability.trackingmanager.TrackingManagerCapabilityProvider;
 import com.jdawg3636.icbm.common.item.ItemDefuser;
@@ -54,6 +56,7 @@ public class CommonProxy {
     public void onAttachCapabilitiesEventWorld(final AttachCapabilitiesEvent<World> event) {
         if(!event.getObject().isClientSide()) {
             event.addCapability(new ResourceLocation(ICBMReference.MODID, "blastcontroller"), new BlastControllerCapabilityProvider());
+            event.addCapability(new ResourceLocation(ICBMReference.MODID, "missiledirector"), new MissileDirectorCapabilityProvider(event.getObject()));
             if(event.getObject().dimension().equals(World.OVERWORLD)) {
                 event.addCapability(new ResourceLocation(ICBMReference.MODID, "trackingmanager"), new TrackingManagerCapabilityProvider());
             }
@@ -95,8 +98,10 @@ public class CommonProxy {
 
     public void onTickEvent(final TickEvent.WorldTickEvent event) {
     	if(event.phase != TickEvent.Phase.START) return;
-        LazyOptional<IBlastControllerCapability> capOptional = event.world.getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
-        capOptional.ifPresent((IBlastControllerCapability cap) -> cap.onWorldTickEvent(event));
+        LazyOptional<IBlastControllerCapability> blastControllerCapability = event.world.getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
+        blastControllerCapability.ifPresent((IBlastControllerCapability cap) -> cap.onWorldTickEvent(event));
+        LazyOptional<IMissileDirectorCapability> missileDirectorCapability = event.world.getCapability(ICBMCapabilities.MISSILE_DIRECTOR_CAPABILITY);
+        missileDirectorCapability.ifPresent((IMissileDirectorCapability cap) -> cap.onWorldTickEvent(event));
     }
 
     public double getTileEntityUpdateDistance() {

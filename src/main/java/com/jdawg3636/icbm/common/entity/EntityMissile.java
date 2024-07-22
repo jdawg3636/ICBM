@@ -3,6 +3,8 @@ package com.jdawg3636.icbm.common.entity;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
+import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
+import com.jdawg3636.icbm.common.capability.missiledirector.IMissileDirectorCapability;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.BlockState;
@@ -32,6 +34,8 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -109,6 +113,15 @@ public class EntityMissile extends Entity {
         this.destPos = destPos;
         this.peakHeight = peakHeight;
         this.totalFlightTicks = totalFlightTicks;
+    }
+
+    public LazyOptional<IMissileDirectorCapability> getMissileDirector() {
+        return level.getCapability(ICBMCapabilities.MISSILE_DIRECTOR_CAPABILITY);
+    }
+
+    @Override
+    public boolean save(CompoundNBT pCompound) {
+        return false;
     }
 
     public void updatePathFunctions() {
@@ -547,24 +560,9 @@ public class EntityMissile extends Entity {
         super.setRot(yRot, xRot);
     }
 
-    public void strikeWithEMP() {
-        spawnAtLocation(missileItem.get().getDefaultInstance());
-        kill();
-    }
-
     @Override
     public void kill() {
-        for(int i = 0; i < 1; ++i) {
-            // Get TileEntity
-            if(level == null || level.isClientSide) break;
-            TileEntity tileEntity = level.getBlockEntity(sourcePos);
-            if(!(tileEntity instanceof TileLauncherPlatform)) break;
-            TileLauncherPlatform tileLauncherPlatform = ((TileLauncherPlatform) tileEntity);
-            // Remove item from tile if its UUID matches
-            if(uuid.equals(tileLauncherPlatform.missileEntityID)) {
-                tileLauncherPlatform.removeMissileItemWithAction((entity) -> {});
-            }
-        }
+        if(level != null && !level.isClientSide()) getMissileDirector().ifPresent(md -> md.deleteMissile(this));
         super.kill();
     }
 
