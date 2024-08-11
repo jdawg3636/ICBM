@@ -1,7 +1,6 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.missiledirector.IMissileDirectorCapability;
@@ -21,7 +20,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +32,6 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -76,7 +73,7 @@ public class EntityMissile extends Entity {
     public final AbstractBlastEvent.BlastEventProvider blastEventProvider;
     public final RegistryObject<Item> missileItem;
     public MissileSourceType missileSourceType;
-    public MissileLaunchPhase missileLaunchPhase;
+    private MissileLaunchPhase missileLaunchPhase;
     public BlockPos sourcePos;
     public BlockPos destPos;
     public double peakHeight;
@@ -119,8 +116,23 @@ public class EntityMissile extends Entity {
         return level.getCapability(ICBMCapabilities.MISSILE_DIRECTOR_CAPABILITY);
     }
 
+    public void launchMissile() {
+        // Set launch phase (this will cause the tick function to simulate flight)
+        this.missileLaunchPhase = MissileLaunchPhase.LAUNCHED;
+        // Initialize rotation prior to spawning, fixes split-second of incorrect rotation.
+        Vector3d initialPosition = this.pathFunction.apply(1);
+        Vector3d initialRotation = this.gradientFunction.apply(initialPosition);
+        this.setPos(initialPosition.x, initialPosition.y, initialPosition.z);
+        this.setRot((float)initialRotation.y, (float)initialRotation.x);
+    }
+
+    public MissileLaunchPhase getMissileLaunchPhase() {
+        return this.missileLaunchPhase;
+    }
+
     @Override
     public boolean save(CompoundNBT pCompound) {
+        // TODO: verify that this works. Intent is to prevent the missile from being saved to disk when it leaves loaded chunks.
         return false;
     }
 
@@ -483,7 +495,7 @@ public class EntityMissile extends Entity {
         }
     }
 
-    public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase) {
+    public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType) {
         EntityDataAccessor entityDataAccessor = new EntityDataAccessor(this);
         CompoundNBT data = entityDataAccessor.getData();
         if(sourcePos != null) {
@@ -499,7 +511,6 @@ public class EntityMissile extends Entity {
         if(peakHeight != null) data.putFloat("PeakHeight", peakHeight);
         if(totalFlightTicks != null) data.putInt("TotalFlightTicks", totalFlightTicks);
         if(missileSourceType != null) data.putInt("MissileSourceType", missileSourceType.ordinal());
-        if(missileLaunchPhase != null) data.putInt("MissileLaunchPhase", missileLaunchPhase.ordinal());
         try { entityDataAccessor.setData(data); } catch (Exception e) { e.printStackTrace(); }
     }
 

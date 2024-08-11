@@ -28,8 +28,8 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
     }
 
     @Override
-    public UUID registerMissile(LogicalMissile logicalMissile, UUID forceLogicalUUID) {
-        UUID logicalUUID = Optional.ofNullable(forceLogicalUUID).orElseGet(() -> {
+    public UUID registerMissile(LogicalMissile logicalMissile, Optional<UUID> forceLogicalUUID) {
+        UUID logicalUUID = forceLogicalUUID.orElseGet(() -> {
             long i = random.nextLong() & -61441L | 16384L;
             long j = random.nextLong() & 4611686018427387903L | Long.MIN_VALUE;
             return new UUID(i, j);

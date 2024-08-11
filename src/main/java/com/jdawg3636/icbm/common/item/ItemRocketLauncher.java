@@ -2,17 +2,16 @@ package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
-import net.minecraft.command.impl.data.EntityDataAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShootableItem;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
@@ -63,24 +62,8 @@ public class ItemRocketLauncher extends ShootableItem {
                 final int totalFlightTicks = 10;
 
                 // Load Data into Entity
-                EntityDataAccessor entityDataAccessor = new EntityDataAccessor(entity);
-                CompoundNBT data = entityDataAccessor.getData();
-                data.putInt("SourcePosX", sourcePosX);
-                data.putInt("SourcePosY", sourcePosY);
-                data.putInt("SourcePosZ", sourcePosZ);
-                data.putInt("DestPosX", destPosX);
-                data.putInt("DestPosY", destPosY);
-                data.putInt("DestPosZ", destPosZ);
-                data.putInt("TotalFlightTicks", totalFlightTicks);
-                data.putInt("MissileSourceType", EntityMissile.MissileSourceType.ROCKET_LAUNCHER.ordinal());
-                data.putInt("MissileLaunchPhase", EntityMissile.MissileLaunchPhase.LAUNCHED.ordinal());
-                try { entityDataAccessor.setData(data); } catch (Exception e) { e.printStackTrace(); }
-
-                // Initialize rotation prior to spawning, fixes split-second of incorrect rotation.
-                Vector3d initialPosition = entity.pathFunction.apply(1);
-                Vector3d initialRotation = entity.gradientFunction.apply(initialPosition);
-                entity.setPos(initialPosition.x, initialPosition.y, initialPosition.z);
-                entity.setRot((float)initialRotation.y, (float)initialRotation.x);
+                entity.updateMissileData(new BlockPos(sourcePosX, sourcePosY, sourcePosZ), new BlockPos(destPosX, destPosY, destPosZ), null, totalFlightTicks, EntityMissile.MissileSourceType.ROCKET_LAUNCHER);
+                entity.launchMissile();
 
                 // Spawn Entity
                 level.addFreshEntity(entity);

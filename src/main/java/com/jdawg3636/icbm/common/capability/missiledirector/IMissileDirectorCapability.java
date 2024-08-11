@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface IMissileDirectorCapability {
 
-    UUID registerMissile(LogicalMissile logicalMissile, UUID forceLogicalUUID);
+    UUID registerMissile(LogicalMissile logicalMissile, Optional<UUID> forceLogicalUUID);
 
     Set<UUID> getLogicalMissileIDList();
 

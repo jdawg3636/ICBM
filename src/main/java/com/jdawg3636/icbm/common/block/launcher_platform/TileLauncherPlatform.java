@@ -74,7 +74,8 @@ public class TileLauncherPlatform extends TileMachine {
         removeMissileItemWithAction((entity) -> {
             assert level != null;
             if(entity != null) {
-                entity.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, getMissileSourceType(), EntityMissile.MissileLaunchPhase.LAUNCHED);
+                entity.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, getMissileSourceType());
+                entity.launchMissile();
                 this.level.playSound((PlayerEntity) null, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), SoundEventReg.EFFECT_MISSILE_LAUNCH.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
                 ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from (%s, %s, %s) to (%s, %s, %s) with peak height '%s' and '%s' ticks of flight time.", entity.getName().getString(), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), destPos.getX(), destPos.getY(), destPos.getZ(), peakHeight, totalFlightTicks);
             }
@@ -104,7 +105,7 @@ public class TileLauncherPlatform extends TileMachine {
                         entity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + getMissileEntityYOffset(), getBlockPos().getZ() + 0.5);
                         // We need to set sourcePos so that the location of the platform can be derived from the entity (useful when killing the entity and wanting to sync inventory, etc.)
                         // We also need to set missileSourceType for rendering (changes the scale of the model). All other data can wait until launch.
-                        entity.updateMissileData(getBlockPos(), null, null, null, getMissileSourceType(), null);
+                        entity.updateMissileData(getBlockPos(), null, null, null, getMissileSourceType());
                         level.addFreshEntity(entity);
                         missileEntityID = entity.getUUID();
                     }
