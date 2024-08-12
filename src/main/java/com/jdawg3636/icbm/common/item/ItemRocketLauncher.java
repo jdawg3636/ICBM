@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -62,7 +63,7 @@ public class ItemRocketLauncher extends ShootableItem {
                 final int totalFlightTicks = 10;
 
                 // Initialize, Spawn, and Launch the missile entity
-                entity.updateMissileData(new BlockPos(sourcePosX, sourcePosY, sourcePosZ), new BlockPos(destPosX, destPosY, destPosZ), null, totalFlightTicks, EntityMissile.MissileSourceType.ROCKET_LAUNCHER);
+                entity.updateMissileData(new BlockPos(sourcePosX, sourcePosY, sourcePosZ), new BlockPos(destPosX, destPosY, destPosZ), null, totalFlightTicks, MissileSourceType.ROCKET_LAUNCHER);
                 final Vector3d initialPosition = entity.pathFunction.apply(1);
                 final Vector3d initialRotation = entity.gradientFunction.apply(initialPosition);
                 entity.addEntityToLevel(initialPosition, initialRotation);
@@ -70,7 +71,7 @@ public class ItemRocketLauncher extends ShootableItem {
 
                 // Log Missile Path
                 if(ICBMReference.COMMON_CONFIG.getDoLogMissilePathsHandheld()) {
-                    ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from source '%s' at (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), EntityMissile.MissileSourceType.ROCKET_LAUNCHER.toString(), sourcePosX, sourcePosY, sourcePosZ, destPosX, destPosY, destPosZ, totalFlightTicks);
+                    ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from source '%s' at (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), MissileSourceType.ROCKET_LAUNCHER.toString(), sourcePosX, sourcePosY, sourcePosZ, destPosX, destPosY, destPosZ, totalFlightTicks);
                 }
 
             }

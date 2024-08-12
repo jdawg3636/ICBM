@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.block.launcher_platform;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.item.ItemMissile;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
@@ -44,8 +45,8 @@ public class TileLauncherPlatform extends TileMachine {
         return true;
     }
 
-    public EntityMissile.MissileSourceType getMissileSourceType() {
-        return EntityMissile.MissileSourceType.LAUNCHER_PLATFORM;
+    public MissileSourceType getMissileSourceType() {
+        return MissileSourceType.LAUNCHER_PLATFORM;
     }
 
     public double getYawRadians() {

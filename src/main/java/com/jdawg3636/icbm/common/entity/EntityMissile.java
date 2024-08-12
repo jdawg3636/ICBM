@@ -4,6 +4,8 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.missiledirector.IMissileDirectorCapability;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileLaunchPhase;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.BlockState;
@@ -42,30 +44,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class EntityMissile extends Entity {
-
-    public enum MissileSourceType {
-
-        LAUNCHER_PLATFORM(AbstractBlastEvent.Type.PLATFORM_MISSILE),
-        CRUISE_LAUNCHER(AbstractBlastEvent.Type.CRUISE_MISSILE),
-        ROCKET_LAUNCHER(AbstractBlastEvent.Type.HANDHELD_ROCKET);
-
-        MissileSourceType(final AbstractBlastEvent.Type blastType) {
-            this.blastType = blastType;
-        }
-
-        private final AbstractBlastEvent.Type blastType;
-
-        public AbstractBlastEvent.Type getResultantBlastType() {
-            return blastType;
-        }
-
-    }
-
-    public enum MissileLaunchPhase {
-        STATIONARY,
-        STATIONARY_ACTIVATED, // Generate Particles/Sounds while still on the platform // todo: use this or remove it
-        LAUNCHED
-    }
 
     public static final DataParameter<Integer>  MISSILE_SOURCE_TYPE  = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
     public static final DataParameter<Integer>  MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);

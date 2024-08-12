@@ -1,6 +1,8 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileLaunchPhase;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -34,8 +36,8 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
 
         // Constants
         TileEntity blockEntity = entity.level.getBlockEntity(entity.blockPosition());
-        boolean isLaunched = entity.getMissileLaunchPhase() == EntityMissile.MissileLaunchPhase.LAUNCHED;
-        boolean isFromCruiseLauncher = entity.missileSourceType == EntityMissile.MissileSourceType.CRUISE_LAUNCHER;
+        boolean isLaunched = entity.getMissileLaunchPhase() == MissileLaunchPhase.LAUNCHED;
+        boolean isFromCruiseLauncher = entity.missileSourceType == MissileSourceType.CRUISE_LAUNCHER;
 
         // Dirty Hack for Cruise Launcher Translation (TODO: This should really be defined by an overridable method in the BlockEntity)
         if(isFromCruiseLauncher) {

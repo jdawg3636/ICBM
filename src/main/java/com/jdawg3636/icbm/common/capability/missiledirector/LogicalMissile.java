@@ -316,7 +316,7 @@ public class LogicalMissile {
 
     }
 
-    public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, EntityMissile.MissileSourceType missileSourceType, EntityMissile.MissileLaunchPhase missileLaunchPhase) {
+    public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase) {
         this.puppetEntity.ifPresent(entity -> {
             EntityDataAccessor entityDataAccessor = new EntityDataAccessor(entity);
             CompoundNBT data = entityDataAccessor.getData();

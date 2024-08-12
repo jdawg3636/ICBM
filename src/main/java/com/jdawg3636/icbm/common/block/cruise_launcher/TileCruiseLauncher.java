@@ -2,7 +2,7 @@ package com.jdawg3636.icbm.common.block.cruise_launcher;
 
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
-import com.jdawg3636.icbm.common.entity.EntityMissile;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -127,8 +127,8 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
     }
 
     @Override
-    public EntityMissile.MissileSourceType getMissileSourceType() {
-        return EntityMissile.MissileSourceType.CRUISE_LAUNCHER;
+    public MissileSourceType getMissileSourceType() {
+        return MissileSourceType.CRUISE_LAUNCHER;
     }
 
     @Override
