@@ -4,16 +4,19 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
-import net.minecraft.command.impl.data.EntityDataAccessor;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.RegistryObject;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -24,6 +27,7 @@ public class LogicalMissile {
 //    public static final DataParameter<Integer>  MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
 
     public final AbstractBlastEvent.BlastEventProvider blastEventProvider;
+    public final RegistryObject<Item> missileItem;
     public MissileSourceType missileSourceType;
     public MissileLaunchPhase missileLaunchPhase;
     public BlockPos sourcePos;
@@ -37,12 +41,15 @@ public class LogicalMissile {
     public boolean shouldExplode = false;
 
     Optional<EntityMissile> puppetEntity;
-    double x;
-    double y;
-    double z;
+    public double x;
+    public double y;
+    public double z;
+    public float yRot;
+    public float xRot;
 
-    public LogicalMissile(AbstractBlastEvent.BlastEventProvider blastEventProvider, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase, BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks, Optional<EntityMissile> puppetEntity) {
+    public LogicalMissile(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase, BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks, Optional<EntityMissile> puppetEntity) {
         this.blastEventProvider = blastEventProvider;
+        this.missileItem = missileItem;
         this.missileSourceType = missileSourceType;
         this.missileLaunchPhase = missileLaunchPhase;
         this.sourcePos = sourcePos;
@@ -251,14 +258,8 @@ public class LogicalMissile {
                 Vector3d newPos = pathFunction.apply(ticksSinceLaunch);
                 Vector3d newRot = gradientFunction.apply(newPos);
                 //System.out.printf("Moving Missile from (%s, %s, %s) to (%s, %s, %s)\n", getX(), getY(), getZ(), newPos.x, newPos.y, newPos.z);
-                this.puppetEntity.ifPresent(entity -> {
-                    entity.setDeltaMovement(newPos.x - x + 0.5D, newPos.y - y + 0.5D, newPos.z - z + 0.5D);
-                    entity.move(MoverType.SELF, entity.getDeltaMovement());
-                    entity.setRot((float)newRot.y, (float)newRot.x);
-                });
-                this.x = newPos.x();
-                this.y = newPos.y();
-                this.z = newPos.z();
+                this.move(newPos.x + 0.5, newPos.y + 0.5, newPos.z + 0.5);
+                this.setRot((float)newRot.y, (float)newRot.x);
 
                 break;
 
@@ -267,11 +268,11 @@ public class LogicalMissile {
 
     public void explode(ServerWorld level) {
         // TODO fix
-//        AbstractBlastEvent.fire(blastEventProvider, missileSourceType.getResultantBlastType(), level, blockPosition(), getDirection());
+        AbstractBlastEvent.fire(blastEventProvider, missileSourceType.getResultantBlastType(), level, blockPosition(), getDirection());
         this.kill(level);
     }
 
-    protected CompoundNBT save(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
 
         compound.putInt("MissileSourceType", missileSourceType.ordinal());
         compound.putInt("MissileLaunchPhase", missileLaunchPhase.ordinal());
@@ -291,7 +292,7 @@ public class LogicalMissile {
 
     }
 
-    protected void load(CompoundNBT compound) {
+    public void load(CompoundNBT compound) {
 
         setMissileSourceType(compound.getInt("MissileSourceType"));
         setMissileLaunchPhase(compound.getInt("MissileLaunchPhase"));
@@ -316,30 +317,17 @@ public class LogicalMissile {
 
     }
 
-    public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase) {
-        this.puppetEntity.ifPresent(entity -> {
-            EntityDataAccessor entityDataAccessor = new EntityDataAccessor(entity);
-            CompoundNBT data = entityDataAccessor.getData();
-            if(sourcePos != null) {
-                data.putInt("SourcePosX", sourcePos.getX());
-                data.putInt("SourcePosY", sourcePos.getY());
-                data.putInt("SourcePosZ", sourcePos.getZ());
-            }
-            if(destPos != null) {
-                data.putInt("DestPosX", destPos.getX());
-                data.putInt("DestPosY", destPos.getY());
-                data.putInt("DestPosZ", destPos.getZ());
-            }
-            if(peakHeight != null) data.putFloat("PeakHeight", peakHeight);
-            if(totalFlightTicks != null) data.putInt("TotalFlightTicks", totalFlightTicks);
-            if(missileSourceType != null) data.putInt("MissileSourceType", missileSourceType.ordinal());
-            if(missileLaunchPhase != null) data.putInt("MissileLaunchPhase", missileLaunchPhase.ordinal());
-            try { entityDataAccessor.setData(data); } catch (Exception e) { e.printStackTrace(); }
-        });
+    public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType) {
+        if(sourcePos != null) this.sourcePos = sourcePos;
+        if(destPos != null) this.destPos = destPos;
+        if(peakHeight != null) this.peakHeight = peakHeight;
+        if(totalFlightTicks != null) this.totalFlightTicks = totalFlightTicks;
+        if(missileSourceType != null) setMissileSourceType(missileSourceType.ordinal());
+        updatePathFunctions();
     }
 
     public void strikeWithEMP(World level) {
-        puppetEntity.ifPresent(pe -> pe.spawnAtLocation(pe.missileItem.get().getDefaultInstance()));
+        puppetEntity.ifPresent(pe -> pe.spawnAtLocation(this.missileItem.get().getDefaultInstance()));
         kill(level);
     }
 
@@ -358,6 +346,36 @@ public class LogicalMissile {
 //            }
 //        }
         puppetEntity.ifPresent(EntityMissile::kill);
+    }
+
+    public BlockPos blockPosition() {
+        return new BlockPos(
+                MathHelper.floor(this.x),
+                MathHelper.floor(this.y),
+                MathHelper.floor(this.z)
+        );
+    }
+
+    public Direction getDirection() {
+        return Direction.fromYRot((double)this.yRot);
+    }
+
+    public void move(double x, double y, double z) {
+        this.puppetEntity.ifPresent(entity -> {
+            entity.setDeltaMovement(x - this.x, y - this.y, z - this.z);
+            entity.move(MoverType.SELF, entity.getDeltaMovement());
+        });
+        if(!this.puppetEntity.isPresent()) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+    }
+
+    public void setRot(float yRot, float xRot) {
+        this.yRot = yRot;
+        this.xRot = xRot;
+        this.puppetEntity.ifPresent(pe -> pe.setRot(yRot, xRot));
     }
 
 }

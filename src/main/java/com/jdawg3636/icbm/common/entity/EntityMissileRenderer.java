@@ -37,7 +37,7 @@ public class EntityMissileRenderer extends EntityRenderer<EntityMissile> {
         // Constants
         TileEntity blockEntity = entity.level.getBlockEntity(entity.blockPosition());
         boolean isLaunched = entity.getMissileLaunchPhase() == MissileLaunchPhase.LAUNCHED;
-        boolean isFromCruiseLauncher = entity.missileSourceType == MissileSourceType.CRUISE_LAUNCHER;
+        boolean isFromCruiseLauncher = entity.getMissileSourceType() == MissileSourceType.CRUISE_LAUNCHER;
 
         // Dirty Hack for Cruise Launcher Translation (TODO: This should really be defined by an overridable method in the BlockEntity)
         if(isFromCruiseLauncher) {
