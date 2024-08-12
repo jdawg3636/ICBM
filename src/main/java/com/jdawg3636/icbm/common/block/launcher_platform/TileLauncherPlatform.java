@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
@@ -101,12 +102,13 @@ public class TileLauncherPlatform extends TileMachine {
                 if(item instanceof ItemMissile) {
                     EntityMissile entity = ((ItemMissile)item).getMissileEntity().get().create(level);
                     if(entity != null) {
-                        entity.setRot(0, -90F);
-                        entity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY() + getMissileEntityYOffset(), getBlockPos().getZ() + 0.5);
                         // We need to set sourcePos so that the location of the platform can be derived from the entity (useful when killing the entity and wanting to sync inventory, etc.)
                         // We also need to set missileSourceType for rendering (changes the scale of the model). All other data can wait until launch.
                         entity.updateMissileData(getBlockPos(), null, null, null, getMissileSourceType());
-                        level.addFreshEntity(entity);
+                        entity.addEntityToLevel(
+                                new Vector3d(getBlockPos().getX() + 0.5, getBlockPos().getY() + getMissileEntityYOffset(), getBlockPos().getZ() + 0.5),
+                                new Vector3d(-90F, 0F, 0F)
+                        );
                         missileEntityID = entity.getUUID();
                     }
                 }

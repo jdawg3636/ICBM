@@ -118,12 +118,14 @@ public class EntityMissile extends Entity {
 
     public void launchMissile() {
         // Set launch phase (this will cause the tick function to simulate flight)
-        this.missileLaunchPhase = MissileLaunchPhase.LAUNCHED;
-        // Initialize rotation prior to spawning, fixes split-second of incorrect rotation.
-        Vector3d initialPosition = this.pathFunction.apply(1);
-        Vector3d initialRotation = this.gradientFunction.apply(initialPosition);
+        entityData.set(MISSILE_LAUNCH_PHASE, MissileLaunchPhase.LAUNCHED.ordinal());
+    }
+
+    public void addEntityToLevel(Vector3d initialPosition, Vector3d initialRotation) {
         this.setPos(initialPosition.x, initialPosition.y, initialPosition.z);
         this.setRot((float)initialRotation.y, (float)initialRotation.x);
+        // Now we actually add to level
+        level.addFreshEntity(this);
     }
 
     public MissileLaunchPhase getMissileLaunchPhase() {

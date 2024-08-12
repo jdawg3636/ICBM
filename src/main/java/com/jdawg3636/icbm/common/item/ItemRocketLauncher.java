@@ -61,12 +61,12 @@ public class ItemRocketLauncher extends ShootableItem {
                 final int destPosZ = sourcePosZ + (int)playerViewVector.scale(20).z;
                 final int totalFlightTicks = 10;
 
-                // Load Data into Entity
+                // Initialize, Spawn, and Launch the missile entity
                 entity.updateMissileData(new BlockPos(sourcePosX, sourcePosY, sourcePosZ), new BlockPos(destPosX, destPosY, destPosZ), null, totalFlightTicks, EntityMissile.MissileSourceType.ROCKET_LAUNCHER);
+                final Vector3d initialPosition = entity.pathFunction.apply(1);
+                final Vector3d initialRotation = entity.gradientFunction.apply(initialPosition);
+                entity.addEntityToLevel(initialPosition, initialRotation);
                 entity.launchMissile();
-
-                // Spawn Entity
-                level.addFreshEntity(entity);
 
                 // Log Missile Path
                 if(ICBMReference.COMMON_CONFIG.getDoLogMissilePathsHandheld()) {
