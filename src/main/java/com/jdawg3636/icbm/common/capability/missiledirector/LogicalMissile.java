@@ -1,14 +1,21 @@
 package com.jdawg3636.icbm.common.capability.missiledirector;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
+import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
+import com.jdawg3636.icbm.common.item.ItemMissile;
+import com.jdawg3636.icbm.common.reg.BlastEventReg;
+import com.jdawg3636.icbm.common.reg.ItemReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
@@ -16,18 +23,17 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.RegistryObject;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 
 public class LogicalMissile {
 
-//    public static final DataParameter<Integer> MISSILE_SOURCE_TYPE  = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
-//    public static final DataParameter<Integer>  MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
-
-    public final AbstractBlastEvent.BlastEventProvider blastEventProvider;
-    public final RegistryObject<Item> missileItem;
+    public RegistryObject<BlastEventRegistryEntry> blastEventProvider;
+    public RegistryObject<Item> missileItem;
     public MissileSourceType missileSourceType;
     public MissileLaunchPhase missileLaunchPhase;
     public BlockPos sourcePos;
@@ -40,14 +46,16 @@ public class LogicalMissile {
     public int ticksSinceLaunch = 0;
     public boolean shouldExplode = false;
 
-    Optional<EntityMissile> puppetEntity;
+    public ServerWorld level;
+    public Optional<UUID> puppetEntityUUID;
     public double x;
     public double y;
     public double z;
     public float yRot;
     public float xRot;
+    public boolean removed = false;
 
-    public LogicalMissile(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase, BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks, Optional<EntityMissile> puppetEntity) {
+    public LogicalMissile(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase, BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks, Optional<UUID> puppetEntityUUID, ServerWorld level) {
         this.blastEventProvider = blastEventProvider;
         this.missileItem = missileItem;
         this.missileSourceType = missileSourceType;
@@ -56,17 +64,27 @@ public class LogicalMissile {
         this.destPos = destPos;
         this.peakHeight = peakHeight;
         this.totalFlightTicks = totalFlightTicks;
-        this.puppetEntity = puppetEntity;
+        this.puppetEntityUUID = puppetEntityUUID;
+        this.level = level;
+    }
+
+    public LogicalMissile(ServerWorld level, CompoundNBT compoundNBT) {
+        this.level = level;
+        this.load(compoundNBT);
+    }
+
+    public Optional<EntityMissile> getPuppetEntity() {
+        return this.puppetEntityUUID.flatMap(uuid -> Optional.ofNullable(level.getEntity(uuid))).filter(EntityMissile.class::isInstance).map(EntityMissile.class::cast);
     }
 
     public void setMissileSourceType(int missileSourceType) {
         this.missileSourceType = MissileSourceType.values()[missileSourceType];
-        puppetEntity.ifPresent(pe -> pe.getEntityData().set(EntityMissile.MISSILE_SOURCE_TYPE, missileSourceType));
+        getPuppetEntity().ifPresent(pe -> pe.getEntityData().set(EntityMissile.MISSILE_SOURCE_TYPE, missileSourceType));
     }
 
     public void setMissileLaunchPhase(int missileLaunchPhase) {
         this.missileLaunchPhase = MissileLaunchPhase.values()[missileLaunchPhase];
-        puppetEntity.ifPresent(pe -> pe.getEntityData().set(EntityMissile.MISSILE_LAUNCH_PHASE, missileLaunchPhase));
+        getPuppetEntity().ifPresent(pe -> pe.getEntityData().set(EntityMissile.MISSILE_LAUNCH_PHASE, missileLaunchPhase));
     }
 
     public void updatePathFunctions() {
@@ -237,23 +255,38 @@ public class LogicalMissile {
 
                 ticksSinceLaunch++;
 
-                if(shouldExplode) explode(level);
+                if(shouldExplode) {
+                    explode(level);
+                    break;
+                }
 
                 if(missileSourceType != MissileSourceType.LAUNCHER_PLATFORM && ticksSinceLaunch > ICBMReference.COMMON_CONFIG.getMaxNumTicksAliveForLinearMissiles()) {
                     explode(level);
                     break;
                 }
 
-                if(y < 0) { //todo: switch this to a variable for MC 1.17+
-                    kill(level); // Don't Explode, Just Disappear.
+                // If below the world, die
+                if(y < 0 && World.isOutsideBuildHeight((int) y)) {
+                    kill(); // Don't Explode, Just Disappear.
                     break;
+                }
+                // If above the world, and there is no passenger, despawn puppet
+                else if(y > 0 && World.isOutsideBuildHeight((int) y) && getPuppetEntity().map(pe -> pe.getPassengers().isEmpty()).orElse(true)) {
+                    getPuppetEntity().ifPresent(EntityMissile::killPuppet);
+                }
+                // If in world, and puppet is despawned, then respawn
+                else if(!getPuppetEntity().isPresent()) {
+                    EntityMissile newPuppet = new EntityMissile(((ItemMissile) this.missileItem.get()).getMissileEntity().get(), this.level, uuid -> {
+                        this.puppetEntityUUID = Optional.of(uuid);
+                        return Optional.of(this);
+                    }, getLogicalUUID());
+                    newPuppet.updatePuppetToMatchLogical();
+                    level.addFreshEntity(newPuppet);
                 }
 
                 if ((ticksSinceLaunch-1) % 40 == 0) {
-                    puppetEntity.ifPresent(entity -> entity.level.playSound((PlayerEntity) null, x, y, z, SoundEventReg.EFFECT_MISSILE_FLIGHT.get(), SoundCategory.BLOCKS, 2.5F, 1.0F));
+                    getPuppetEntity().ifPresent(entity -> entity.level.playSound((PlayerEntity) null, x, y, z, SoundEventReg.EFFECT_MISSILE_FLIGHT.get(), SoundCategory.BLOCKS, 2.5F, 1.0F));
                 }
-
-                // TODO: if y > 255, then despawn missile and switch to simulation
 
                 Vector3d newPos = pathFunction.apply(ticksSinceLaunch);
                 Vector3d newRot = gradientFunction.apply(newPos);
@@ -267,12 +300,14 @@ public class LogicalMissile {
     }
 
     public void explode(ServerWorld level) {
-        // TODO fix
-        AbstractBlastEvent.fire(blastEventProvider, missileSourceType.getResultantBlastType(), level, blockPosition(), getDirection());
-        this.kill(level);
+        AbstractBlastEvent.fire(blastEventProvider.get(), missileSourceType.getResultantBlastType(), level, blockPosition(), getDirection());
+        this.kill();
     }
 
     public CompoundNBT save(CompoundNBT compound) {
+
+        compound.putString("BlastEvent", blastEventProvider.getId().toString());
+        compound.putString("MissileItem", missileItem.getId().toString());
 
         compound.putInt("MissileSourceType", missileSourceType.ordinal());
         compound.putInt("MissileLaunchPhase", missileLaunchPhase.ordinal());
@@ -294,11 +329,11 @@ public class LogicalMissile {
 
     public void load(CompoundNBT compound) {
 
+        this.blastEventProvider = BlastEventReg.getRegistryObjectFromResourceLocation(new ResourceLocation(compound.getString("BlastEvent")));
+        this.missileItem = ItemReg.getRegistryObjectFromResourceLocation(new ResourceLocation(compound.getString("MissileItem")));
+
         setMissileSourceType(compound.getInt("MissileSourceType"));
         setMissileLaunchPhase(compound.getInt("MissileLaunchPhase"));
-        // TODO verify that this change works
-//        entityData.set(MISSILE_SOURCE_TYPE, compound.getInt("MissileSourceType"));
-//        entityData.set(MISSILE_LAUNCH_PHASE, compound.getInt("MissileLaunchPhase"));
 
         int sourcePosX = compound.getInt("SourcePosX");
         int sourcePosY = compound.getInt("SourcePosY");
@@ -326,26 +361,33 @@ public class LogicalMissile {
         updatePathFunctions();
     }
 
-    public void strikeWithEMP(World level) {
-        puppetEntity.ifPresent(pe -> pe.spawnAtLocation(this.missileItem.get().getDefaultInstance()));
-        kill(level);
+    public void strikeWithEMP() {
+        this.getPuppetEntity().ifPresent(pe -> pe.spawnAtLocation(this.missileItem.get().getDefaultInstance()));
+        this.kill();
     }
 
-    public void kill(World level) {
+    public LazyOptional<IMissileDirectorCapability> getMissileDirector() {
+        return level.getCapability(ICBMCapabilities.MISSILE_DIRECTOR_CAPABILITY);
+    }
+
+    public Optional<UUID> getLogicalUUID() {
+        return getMissileDirector().resolve().flatMap(md -> md.lookupLogicalMissile(this));
+    }
+
+    public void kill() {
+        // Prevent loop between kill functions
+        if(this.removed) return;
+        this.removed = true;
         // Cut connections from the launcher platform TileEntity (only relevant if we're still on the launch pad)
-        // TODO figure out how to implement this, very important
-//        for(int i = 0; i < 1; ++i) {
-//            // Get TileEntity
-//            if(level.isClientSide) break;
-//            TileEntity tileEntity = level.getBlockEntity(sourcePos);
-//            if(!(tileEntity instanceof TileLauncherPlatform)) break;
-//            TileLauncherPlatform tileLauncherPlatform = ((TileLauncherPlatform) tileEntity);
-//            // Remove item from tile if its UUID matches
-//            if(uuid.equals(tileLauncherPlatform.missileEntityID)) {
-//                tileLauncherPlatform.removeMissileItemWithAction((entity) -> {});
-//            }
-//        }
-        puppetEntity.ifPresent(EntityMissile::kill);
+        getPuppetEntity().ifPresent(missileEntity -> Optional.ofNullable(level.getBlockEntity(sourcePos)).filter(TileLauncherPlatform.class::isInstance).map(TileLauncherPlatform.class::cast).ifPresent(tileLauncherPlatform -> {
+            if (missileEntity.getUUID().equals(tileLauncherPlatform.missileEntityID)) {
+                tileLauncherPlatform.removeMissileItemWithAction((entity) -> {});
+            }
+        }));
+        // Kill puppet entity, if it exists
+        this.getPuppetEntity().ifPresent(EntityMissile::killPuppet);
+        // Remove from simulation
+        getMissileDirector().ifPresent(md -> md.deleteMissile(this));
     }
 
     public BlockPos blockPosition() {
@@ -361,11 +403,11 @@ public class LogicalMissile {
     }
 
     public void move(double x, double y, double z) {
-        this.puppetEntity.ifPresent(entity -> {
+        this.getPuppetEntity().ifPresent(entity -> {
             entity.setDeltaMovement(x - this.x, y - this.y, z - this.z);
             entity.move(MoverType.SELF, entity.getDeltaMovement());
         });
-        if(!this.puppetEntity.isPresent()) {
+        if(!this.getPuppetEntity().isPresent()) {
             this.x = x;
             this.y = y;
             this.z = z;
@@ -375,7 +417,7 @@ public class LogicalMissile {
     public void setRot(float yRot, float xRot) {
         this.yRot = yRot;
         this.xRot = xRot;
-        this.puppetEntity.ifPresent(pe -> pe.setRot(yRot, xRot));
+        this.getPuppetEntity().ifPresent(pe -> pe.setRot(yRot, xRot));
     }
 
 }

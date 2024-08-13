@@ -48,7 +48,7 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
         TileEntity platformTile = level.getBlockEntity(platformPos);
         BlockPos targetPos = new BlockPos(getTargetX(), getTargetY(), getTargetZ());
         if(platformTile instanceof TileLauncherPlatform && ((TileLauncherPlatform) platformTile).usesControlPanel()) {
-            ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, level.getHeight(), (int)Math.sqrt((platformPos.getX() - getTargetX()) * (platformPos.getX() - getTargetX()) + (platformPos.getZ() - getTargetZ()) * (platformPos.getZ() - getTargetZ())));
+            ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, level.getHeight() * 1.5F, (int)Math.sqrt((platformPos.getX() - getTargetX()) * (platformPos.getX() - getTargetX()) + (platformPos.getZ() - getTargetZ()) * (platformPos.getZ() - getTargetZ())));
         }
     }
 

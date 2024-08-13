@@ -5,6 +5,7 @@ import com.jdawg3636.icbm.common.item.*;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.RegistryObject;
@@ -16,6 +17,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ItemReg {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ICBMReference.MODID);
+
+    public static RegistryObject<Item> getRegistryObjectFromResourceLocation(ResourceLocation resourceLocation) {
+        return ITEMS.getEntries().stream().filter(ro -> ro.getId().equals(resourceLocation)).findAny().orElseThrow(() -> new RuntimeException(String.format("Unable to deserialize item: \"%s\"", resourceLocation)));
+    }
 
     // Basic Blocks
     public static final RegistryObject<Item> CONCRETE                       = ITEMS.register("concrete",                        () -> new BlockItem(BlockReg.CONCRETE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

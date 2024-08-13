@@ -1,7 +1,6 @@
 package com.jdawg3636.icbm.common.capability.missiledirector;
 
 import com.jdawg3636.icbm.common.entity.EntityMissile;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.TickEvent;
@@ -10,15 +9,15 @@ import java.util.*;
 
 public class MissileDirectorCapability implements IMissileDirectorCapability {
 
-    private final HashMap<UUID, LogicalMissile> logicalMissiles = new HashMap<>();
+    private HashMap<UUID, LogicalMissile> logicalMissiles = new HashMap<>();
     private final Random random = new Random();
-    private final World level;
+    private final ServerWorld level;
 
 //    public MissileDirectorCapability() {
 //        this(null);
 //    }
 
-    public MissileDirectorCapability(World level) {
+    public MissileDirectorCapability(ServerWorld level) {
         this.level = level;
     }
 
@@ -44,40 +43,54 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
     }
 
     @Override
-    public Collection<LogicalMissile> getLogicalMissiles() {
-        return logicalMissiles.values();
+    public HashMap<UUID, LogicalMissile> getLogicalMissiles() {
+        return logicalMissiles;
     }
 
     @Override
-    public LogicalMissile lookupLogicalMissile(UUID missileID) {
-        return logicalMissiles.get(missileID);
+    public Optional<LogicalMissile> lookupLogicalMissile(UUID missileID) {
+        return Optional.ofNullable(logicalMissiles.get(missileID));
+    }
+
+    @Override
+    public Optional<UUID> lookupLogicalMissile(LogicalMissile logicalMissile) {
+        return logicalMissiles.entrySet().stream().filter(entry -> entry.getValue().equals(logicalMissile)).map(Map.Entry::getKey).findAny();
     }
 
     @Override
     public void deleteMissile(UUID missileID) {
-        logicalMissiles.remove(missileID).kill(level);
+        if(missileID == null) return;
+        Optional.ofNullable(logicalMissiles.remove(missileID)).ifPresent(LogicalMissile::kill);
     }
 
     @Override
     public void deleteMissile(LogicalMissile logicalMissile) {
-        getLogicalMissileIDList().stream().filter(uuid -> lookupLogicalMissile(uuid).equals(logicalMissile)).forEach(this::deleteMissile);
+        if(logicalMissile == null) return;
+        new HashMap<>(logicalMissiles).entrySet().stream().filter(entry -> entry.getValue().equals(logicalMissile)).map(Map.Entry::getKey).forEach(this::deleteMissile);
     }
 
     @Override
     public void deleteMissile(EntityMissile puppetEntity) {
-        logicalMissiles.entrySet().stream().filter(entry -> entry.getValue().puppetEntity.map(pe -> pe.equals(puppetEntity)).orElse(false)).forEach(entry -> deleteMissile(entry.getKey()));
+        if(puppetEntity == null) return;
+        new HashMap<>(logicalMissiles).entrySet().stream().filter(entry -> entry.getValue().getPuppetEntity().map(pe -> pe.equals(puppetEntity)).orElse(false)).forEach(entry -> deleteMissile(entry.getKey()));
     }
 
     @Override
     public void deleteAllMissiles() {
-        getLogicalMissileIDList().forEach(this::deleteMissile);
+        logicalMissiles = new HashMap<>();
     }
 
     @Override
     public void onWorldTickEvent(TickEvent.WorldTickEvent event) {
         if(event.world instanceof ServerWorld) {
-            logicalMissiles.values().forEach(missile -> missile.tick((ServerWorld) event.world));
+            // Have to make a new HashMap to avoid ConcurrentModificationException
+            new HashMap<>(logicalMissiles).values().forEach(missile -> missile.tick((ServerWorld) event.world));
         }
+    }
+
+    @Override
+    public ServerWorld getLevel() {
+        return level;
     }
 
 }

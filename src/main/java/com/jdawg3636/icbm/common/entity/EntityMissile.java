@@ -6,9 +6,10 @@ import com.jdawg3636.icbm.common.capability.missiledirector.IMissileDirectorCapa
 import com.jdawg3636.icbm.common.capability.missiledirector.LogicalMissile;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileLaunchPhase;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
-import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,6 +42,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -49,21 +51,27 @@ public class EntityMissile extends Entity {
     public static final DataParameter<Integer>  MISSILE_SOURCE_TYPE  = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
     public static final DataParameter<Integer>  MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
 
-    private Optional<LogicalMissile> logicalMissile = Optional.empty();
+    private UUID simulatedMissileUUID = null;
 
-    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> missileItem) {
+    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem) {
+        this(entityTypeIn, worldIn, uuid1 -> Optional.of(worldIn).filter(ServerWorld.class::isInstance).map(ServerWorld.class::cast).map(serverWorld -> new LogicalMissile(
+            blastEventProvider,
+            missileItem,
+            MissileSourceType.LAUNCHER_PLATFORM,
+            MissileLaunchPhase.STATIONARY,
+            BlockPos.ZERO,
+            BlockPos.ZERO.offset(100, 0, 0),
+            worldIn.getMaxBuildHeight(),
+            3000,
+            Optional.of(uuid1),
+            serverWorld
+        )), Optional.empty());
+    }
+
+    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, Function<UUID, Optional<LogicalMissile>> logicalMissileConstructor, Optional<UUID> logicalUUID) {
         super(entityTypeIn, worldIn);
-        this.logicalMissile = Optional.of(new LogicalMissile(
-                blastEventProvider,
-                missileItem,
-                MissileSourceType.LAUNCHER_PLATFORM,
-                MissileLaunchPhase.STATIONARY,
-                BlockPos.ZERO,
-                BlockPos.ZERO.offset(100, 0, 0),
-                worldIn.getMaxBuildHeight(),
-                3000,
-                Optional.of(this)
-        ));
+        // Construct and register logical missile
+        this.getMissileDirector().ifPresent(md -> logicalMissileConstructor.apply(this.uuid).ifPresent(lm -> this.simulatedMissileUUID = md.registerMissile(lm, logicalUUID)));
         yRot = -90F;
     }
 
@@ -71,48 +79,48 @@ public class EntityMissile extends Entity {
         return level.getCapability(ICBMCapabilities.MISSILE_DIRECTOR_CAPABILITY);
     }
 
+    public Optional<LogicalMissile> getLogicalMissile() {
+        return this.getMissileDirector().resolve().flatMap(md -> md.lookupLogicalMissile(this.simulatedMissileUUID));
+    }
+
     public void launchMissile() {
         // Set launch phase (this will cause the tick function to simulate flight)
-        // TODO: Swap to simulation
         entityData.set(MISSILE_LAUNCH_PHASE, MissileLaunchPhase.LAUNCHED.ordinal());
     }
 
     public void addEntityToLevel(Vector3d initialPosition, Vector3d initialRotation) {
         this.setPos(initialPosition.x, initialPosition.y, initialPosition.z);
         this.setRot((float)initialRotation.y, (float)initialRotation.x);
+        this.addEntityToLevel();
+    }
+
+    public void addEntityToLevel() {
+        // todo chunk loading
+//        ForgeChunkManager.forceChunk()
         level.addFreshEntity(this);
     }
 
     public MissileSourceType getMissileSourceType() {
-        return this.logicalMissile.map(lm -> lm.missileSourceType).orElse(MissileSourceType.LAUNCHER_PLATFORM);
+        return this.getLogicalMissile().map(lm -> lm.missileSourceType).orElse(MissileSourceType.LAUNCHER_PLATFORM);
     }
 
     public MissileLaunchPhase getMissileLaunchPhase() {
-        return this.logicalMissile.map(lm -> lm.missileLaunchPhase).orElse(MissileLaunchPhase.STATIONARY);
+        return this.getLogicalMissile().map(lm -> lm.missileLaunchPhase).orElse(MissileLaunchPhase.STATIONARY);
     }
 
     public Function<Integer, Vector3d> getPathFunction() {
-        return this.logicalMissile.map(lm -> lm.pathFunction).orElse(i -> new Vector3d(0,0,0));
+        return this.getLogicalMissile().map(lm -> lm.pathFunction).orElse(i -> new Vector3d(0,0,0));
     }
 
     public Function<Vector3d, Vector3d> getGradientFunction() {
-        return this.logicalMissile.map(lm -> lm.gradientFunction).orElse(pos -> new Vector3d(0,0,0));
-    }
-
-    @Override
-    public boolean save(CompoundNBT pCompound) {
-        // TODO: verify that this works. Intent is to prevent the missile from being saved to disk when it leaves loaded chunks.
-        return false;
+        level.setBlock(new BlockPos(0,0,0), Blocks.AIR.defaultBlockState(), 0);
+        return this.getLogicalMissile().map(lm -> lm.gradientFunction).orElse(pos -> new Vector3d(0,0,0));
     }
 
     @Override
     public void tick() {
         super.tick();
-        if(this.level instanceof ServerWorld) {
-            // TODO: Remove this once using simulation capability
-            this.logicalMissile.ifPresent(lm -> lm.tick((ServerWorld) level));
-        }
-        else if(this.logicalMissile.map(lm -> lm.missileLaunchPhase).orElse(MissileLaunchPhase.STATIONARY) == MissileLaunchPhase.LAUNCHED) {
+        if(level.isClientSide() && this.getMissileLaunchPhase() == MissileLaunchPhase.LAUNCHED) {
             Vector3d viewVector = getViewVector(0F);
             spawnParticles(-viewVector.x, -viewVector.y, -viewVector.z);
         }
@@ -122,7 +130,7 @@ public class EntityMissile extends Entity {
     public Vector3d collide(Vector3d destination) {
         Vector3d result = collideFiltered(destination);
         if(!MathHelper.equal(destination.x, result.x) || !MathHelper.equal(destination.z, result.z) || !MathHelper.equal(destination.y, result.y)) {
-            this.logicalMissile.ifPresent(lm -> lm.shouldExplode = true);
+            this.getLogicalMissile().ifPresent(lm -> lm.shouldExplode = true);
         }
         return result;
     }
@@ -179,12 +187,16 @@ public class EntityMissile extends Entity {
 
     @Override
     protected void addAdditionalSaveData(CompoundNBT compound) {
-        logicalMissile.ifPresent(lm -> lm.save(compound));
+        if(simulatedMissileUUID != null) {
+            compound.putUUID("SimulatedMissileUUID", simulatedMissileUUID);
+        }
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundNBT compound) {
-        logicalMissile.ifPresent(lm -> lm.load(compound));
+        if(compound.contains("SimulatedMissileUUID")) {
+            simulatedMissileUUID = compound.getUUID("SimulatedMissileUUID");
+        }
     }
 
     @Override
@@ -195,7 +207,7 @@ public class EntityMissile extends Entity {
 
     @Override
     public void onSyncedDataUpdated(DataParameter<?> dataParameter) {
-        logicalMissile.ifPresent(lm -> {
+        getLogicalMissile().ifPresent(lm -> {
             if(MISSILE_SOURCE_TYPE.equals(dataParameter)) {
                 lm.missileSourceType = MissileSourceType.values()[entityData.get(MISSILE_SOURCE_TYPE)];
             }
@@ -206,7 +218,7 @@ public class EntityMissile extends Entity {
     }
 
     public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType) {
-        this.logicalMissile.ifPresent(lm -> lm.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, missileSourceType));
+        this.getLogicalMissile().ifPresent(lm -> lm.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, missileSourceType));
     }
 
     @Override
@@ -221,7 +233,7 @@ public class EntityMissile extends Entity {
 
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
-        return this.logicalMissile.map(lm -> lm.missileItem).orElse(ItemReg.MISSILE_CONVENTIONAL).get().getDefaultInstance();
+        return this.getLogicalMissile().map(lm -> lm.missileItem).orElse(ItemReg.MISSILE_CONVENTIONAL).get().getDefaultInstance();
     }
 
     public void spawnParticles(double motionX, double motionY, double motionZ) {
@@ -249,7 +261,7 @@ public class EntityMissile extends Entity {
 
     @Override
     public final ActionResultType interact(PlayerEntity player, Hand hand) {
-        if (!this.isVehicle() && !player.isSecondaryUseActive() && !this.logicalMissile.map(lm -> lm.missileSourceType).orElse(MissileSourceType.LAUNCHER_PLATFORM).equals(MissileSourceType.ROCKET_LAUNCHER)) {
+        if (!this.isVehicle() && !player.isSecondaryUseActive() && !this.getMissileSourceType().equals(MissileSourceType.ROCKET_LAUNCHER)) {
             if (!this.level.isClientSide) {
                 player.startRiding(this);
             }
@@ -263,27 +275,39 @@ public class EntityMissile extends Entity {
     @Override
     public void setPosRaw(double x, double y, double z) {
         super.setPosRaw(x, y, z);
-        if(logicalMissile != null) {
-            this.logicalMissile.ifPresent(lm -> {
-                lm.x = x;
-                lm.y = y;
-                lm.z = z;
-            });
-        }
+        this.getLogicalMissile().ifPresent(lm -> {
+            lm.x = x;
+            lm.y = y;
+            lm.z = z;
+        });
     }
 
     @Override
     public void setRot(float yRot, float xRot) {
         super.setRot(yRot, xRot);
-        this.logicalMissile.ifPresent(lm -> {
+        this.getLogicalMissile().ifPresent(lm -> {
             lm.yRot = yRot;
             lm.xRot = xRot;
         });
     }
 
+    public void updatePuppetToMatchLogical() {
+        this.getLogicalMissile().ifPresent(lm -> {
+            this.setPos(lm.x, lm.y, lm.z);
+            this.setRot(lm.yRot, lm.xRot);
+            lm.setMissileSourceType(lm.missileSourceType.ordinal());
+            lm.setMissileLaunchPhase(lm.missileLaunchPhase.ordinal());
+        });
+    }
+
     @Override
     public void kill() {
-        if(level != null && !level.isClientSide()) getMissileDirector().ifPresent(md -> md.deleteMissile(this));
+        if(!this.removed && level != null && !level.isClientSide()) getMissileDirector().ifPresent(md -> md.deleteMissile(simulatedMissileUUID));
+        super.kill();
+    }
+
+    public void killPuppet() {
+        if(!this.removed && level != null && !level.isClientSide()) getLogicalMissile().ifPresent(lm -> lm.puppetEntityUUID = Optional.empty());
         super.kill();
     }
 

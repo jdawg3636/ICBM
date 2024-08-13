@@ -27,6 +27,7 @@ public final class ICBM {
         FMLJavaModLoadingContext.get().getModEventBus().register(ICBMModEventListener.class);
 
         // Make Custom Registries
+        BlastEventReg.BLAST_EVENTS.makeRegistry("blast_events", RegistryBuilder::new);
         BlastManagerThreadReg.BLAST_MANAGER_THREADS.makeRegistry("blast_manager_threads", RegistryBuilder::new);
 
         // Load Tag Reference Classes
@@ -41,6 +42,7 @@ public final class ICBM {
 
     public DeferredRegister<?>[] getICBMDeferredRegisters() {
         return new DeferredRegister[] {
+                BlastEventReg.BLAST_EVENTS,
                 BlastManagerThreadReg.BLAST_MANAGER_THREADS,
                 BlockReg.BLOCKS,
                 ContainerReg.CONTAINERS,

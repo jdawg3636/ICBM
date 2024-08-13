@@ -3,7 +3,7 @@ package com.jdawg3636.icbm.common.capability.missiledirector;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -15,7 +15,7 @@ public class MissileDirectorCapabilityProvider implements ICapabilitySerializabl
 
     private final IMissileDirectorCapability capabilityInstance;
 
-    public MissileDirectorCapabilityProvider(World level) {
+    public MissileDirectorCapabilityProvider(ServerWorld level) {
         capabilityInstance = new MissileDirectorCapability(level);
     }
 

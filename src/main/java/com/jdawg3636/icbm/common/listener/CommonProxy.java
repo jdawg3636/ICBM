@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.util.LazyOptional;
@@ -54,9 +55,10 @@ public class CommonProxy {
     }
 
     public void onAttachCapabilitiesEventWorld(final AttachCapabilitiesEvent<World> event) {
-        if(!event.getObject().isClientSide()) {
+        if(event.getObject() instanceof ServerWorld) {
+            ServerWorld serverWorld = (ServerWorld) event.getObject();
             event.addCapability(new ResourceLocation(ICBMReference.MODID, "blastcontroller"), new BlastControllerCapabilityProvider());
-            event.addCapability(new ResourceLocation(ICBMReference.MODID, "missiledirector"), new MissileDirectorCapabilityProvider(event.getObject()));
+            event.addCapability(new ResourceLocation(ICBMReference.MODID, "missiledirector"), new MissileDirectorCapabilityProvider(serverWorld));
             if(event.getObject().dimension().equals(World.OVERWORLD)) {
                 event.addCapability(new ResourceLocation(ICBMReference.MODID, "trackingmanager"), new TrackingManagerCapabilityProvider());
             }

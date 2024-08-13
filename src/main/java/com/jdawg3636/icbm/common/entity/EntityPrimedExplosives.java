@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
@@ -19,11 +20,11 @@ import javax.annotation.Nullable;
 
 public class EntityPrimedExplosives extends TNTEntity {
 
-    public final AbstractBlastEvent.BlastEventProvider blastEventProvider;
+    public final RegistryObject<BlastEventRegistryEntry> blastEventProvider;
     public final RegistryObject<Item> itemForm;
     public Direction blastDirection; // Can't be final - re-assigned by chained constructors
 
-    public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter) {
+    public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter) {
         super(type, worldIn);
         this.blastEventProvider = blastEventProvider;
         this.itemForm = itemForm;
@@ -38,7 +39,7 @@ public class EntityPrimedExplosives extends TNTEntity {
         this.blastDirection = (igniter != null) ? igniter.getDirection() : Direction.getRandom(worldIn.random);
     }
 
-    public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter, Direction blastDirection, int fuse) {
+    public EntityPrimedExplosives(EntityType<? extends EntityPrimedExplosives> type, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm, double x, double y, double z, @Nullable LivingEntity igniter, Direction blastDirection, int fuse) {
         this(type, worldIn, blastEventProvider, itemForm, x, y, z, igniter);
         if(blastDirection != null) this.blastDirection =  blastDirection;
         this.setFuse(fuse);
@@ -47,7 +48,7 @@ public class EntityPrimedExplosives extends TNTEntity {
     @Override
     protected void explode() {
         if(!level.isClientSide()) {
-            AbstractBlastEvent.fire(blastEventProvider, AbstractBlastEvent.Type.EXPLOSIVES, (ServerWorld) level, blockPosition(), blastDirection);
+            AbstractBlastEvent.fire(blastEventProvider.get(), AbstractBlastEvent.Type.EXPLOSIVES, (ServerWorld) level, blockPosition(), blastDirection);
         }
     }
 

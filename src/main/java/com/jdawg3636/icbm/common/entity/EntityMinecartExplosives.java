@@ -35,7 +35,7 @@ public class EntityMinecartExplosives extends TNTMinecartEntity {
     protected void explode(double ignored) {
         if (!this.level.isClientSide) {
             if(blockForm.get() instanceof BlockExplosives) {
-                AbstractBlastEvent.fire(((BlockExplosives)blockForm.get()).blastEventProvider, AbstractBlastEvent.Type.EXPLOSIVES_MINECART, (ServerWorld) level, blockPosition(), getDirection());
+                AbstractBlastEvent.fire(((BlockExplosives)blockForm.get()).blastEventProvider.get(), AbstractBlastEvent.Type.EXPLOSIVES_MINECART, (ServerWorld) level, blockPosition(), getDirection());
             }
             this.remove();
         }
