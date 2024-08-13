@@ -309,6 +309,7 @@ public class LogicalMissile {
         compound.putString("BlastEvent", blastEventProvider.getId().toString());
         compound.putString("MissileItem", missileItem.getId().toString());
 
+        if(puppetEntityUUID.isPresent()) compound.putUUID("PuppetEntityUUID", puppetEntityUUID.orElse(null));
         compound.putInt("MissileSourceType", missileSourceType.ordinal());
         compound.putInt("MissileLaunchPhase", missileLaunchPhase.ordinal());
 
@@ -322,6 +323,14 @@ public class LogicalMissile {
 
         compound.putFloat("PeakHeight", (float)peakHeight);
         compound.putInt("TotalFlightTicks", totalFlightTicks);
+        compound.putInt("TicksSinceLaunch", ticksSinceLaunch);
+        compound.putBoolean("ShouldExplode", shouldExplode);
+
+        compound.putDouble("x", x);
+        compound.putDouble("y", y);
+        compound.putDouble("z", z);
+        compound.putFloat("yRot", yRot);
+        compound.putFloat("xRot", xRot);
 
         return compound;
 
@@ -332,6 +341,7 @@ public class LogicalMissile {
         this.blastEventProvider = BlastEventReg.getRegistryObjectFromResourceLocation(new ResourceLocation(compound.getString("BlastEvent")));
         this.missileItem = ItemReg.getRegistryObjectFromResourceLocation(new ResourceLocation(compound.getString("MissileItem")));
 
+        puppetEntityUUID = compound.contains("PuppetEntityUUID") ? Optional.of(compound.getUUID("PuppetEntityUUID")) : Optional.empty();
         setMissileSourceType(compound.getInt("MissileSourceType"));
         setMissileLaunchPhase(compound.getInt("MissileLaunchPhase"));
 
@@ -347,6 +357,14 @@ public class LogicalMissile {
 
         peakHeight = compound.getFloat("PeakHeight");
         totalFlightTicks = compound.getInt("TotalFlightTicks");
+        ticksSinceLaunch = compound.getInt("TicksSinceLaunch");
+        shouldExplode = compound.getBoolean("ShouldExplode");
+
+        x = compound.getDouble("x");
+        y = compound.getDouble("y");
+        z = compound.getDouble("z");
+        yRot = compound.getFloat("yRot");
+        xRot = compound.getFloat("xRot");
 
         updatePathFunctions();
 
@@ -419,5 +437,11 @@ public class LogicalMissile {
         this.xRot = xRot;
         this.getPuppetEntity().ifPresent(pe -> pe.setRot(yRot, xRot));
     }
+
+    @Override
+    public String toString() {
+        return String.format("LogicalMissile[%s][Phase %s] @ (%s, %s, %s)", missileItem, missileLaunchPhase.ordinal(), x, y, z);
+    }
+
 
 }
