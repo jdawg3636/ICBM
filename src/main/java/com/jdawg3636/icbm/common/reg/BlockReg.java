@@ -9,6 +9,7 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherContr
 import com.jdawg3636.icbm.common.block.launcher_platform.BlockLauncherPlatform;
 import com.jdawg3636.icbm.common.block.particle_accelerator.BlockParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.BlockRadarStation;
+import com.jdawg3636.icbm.common.block.siren.BlockSiren;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -131,5 +132,6 @@ public class BlockReg {
     // Extras
     public static final RegistryObject<Block> GLASS_BUTTON                  = BLOCKS.register("glass_button",                   BlockGlassButton::new);
     public static final RegistryObject<Block> GLASS_PRESSURE_PLATE          = BLOCKS.register("glass_pressure_plate",           BlockGlassPressurePlate::new);
+    public static final RegistryObject<Block> SIREN                         = BLOCKS.register("siren",                          () -> new BlockSiren(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(0.8F)));
 
 }

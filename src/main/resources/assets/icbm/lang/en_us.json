@@ -456,6 +456,8 @@
 
   "block.icbm.batterybox": "Battery Box",
 
+  "block.icbm.siren": "Siren",
+
   # Chat messages
   "message.tracker.nowtrack": "Now tracking:",
   "message.tracker.nopower": "Tracker out of electricity!",
