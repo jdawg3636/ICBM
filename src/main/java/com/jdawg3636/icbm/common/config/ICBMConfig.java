@@ -138,15 +138,15 @@ public class ICBMConfig {
                     .defineInRange("blastRadiusExothermic", 12D, 0D, Float.MAX_VALUE);
             this.blastRadiusHypersonic = builder
                     .comment("",
-                            "Defines the maximum radius of an Hypersonic Blast.")
+                            "Defines the maximum radius of a Hypersonic Blast.")
                     .defineInRange("blastRadiusHypersonic", 13D, 0D, Float.MAX_VALUE);
             this.blastRadiusNuclear = builder
                     .comment("",
-                            "Defines the maximum radius of an Nuclear Blast.")
+                            "Defines the maximum radius of a Nuclear Blast.")
                     .defineInRange("blastRadiusNuclear", 30D, 0D, Float.MAX_VALUE);
             this.blastRadiusSonic = builder
                     .comment("",
-                            "Defines the maximum radius of an Sonic Blast.")
+                            "Defines the maximum radius of a Sonic Blast.")
                     .defineInRange("blastRadiusSonic", 9D, 0D, Float.MAX_VALUE);
             this.oreCopperSize = builder
                     .comment("",
