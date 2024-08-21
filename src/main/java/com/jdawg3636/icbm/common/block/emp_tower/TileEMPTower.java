@@ -63,7 +63,7 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
 
     public void triggerEMPBlast() {
         if(level == null || level.isClientSide) return;
-        List<EntityMissile> missilesToZap = level.getEntitiesOfClass(EntityMissile.class, new AxisAlignedBB(getBlockPos().above()).inflate(empRadius));
+        List<EntityMissile> missilesToZap = level.getEntitiesOfClass(EntityMissile.class, new AxisAlignedBB(getBlockPos().above()).inflate(empRadius, 1000.0, empRadius));
         for(EntityMissile missile : missilesToZap) {
             missile.getLogicalMissile().ifPresent(LogicalMissile::strikeWithEMP);
         }
