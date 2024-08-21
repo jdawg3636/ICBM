@@ -36,7 +36,7 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
     @Override
     public boolean hasTileEntity(BlockState state) {
-        return state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL) == 0 && state.getValue(MULTIBLOCK_OFFSET_HEIGHT) == 0 && state.getValue(MULTIBLOCK_OFFSET_DEPTH) == 0;
+        return this.isRootOfMultiblock(state);
     }
 
     @Override
@@ -64,6 +64,14 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
             SUpdateTileEntityPacket supdatetileentitypacket = tileEntity.getUpdatePacket();
             if (supdatetileentitypacket != null) ((ServerPlayerEntity)player).connection.send(supdatetileentitypacket);
         }
+    }
+
+    @Override
+    public void destroyMultiblock(World worldIn, BlockPos pos, BlockState sourceState) {
+        BlockPos rootPos = getMultiblockCenter(worldIn, pos, sourceState);
+        TileEntity tileEntity = worldIn.getBlockEntity(rootPos);
+        if(tileEntity instanceof TileMachine) ((TileMachine)tileEntity).onBlockDestroyed();
+        super.destroyMultiblock(worldIn, pos, sourceState);
     }
 
 }

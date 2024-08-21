@@ -24,34 +24,41 @@ import java.util.List;
 public class ItemBattery extends Item {
 
     public static final int ENERGY_CAPACITY = 1_000_000;
+    public final boolean infinite;
 
-    public ItemBattery() {
-        this(new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB));
+    public ItemBattery(boolean infinite) {
+        this(new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB), infinite);
     }
 
-    public ItemBattery(Properties properties) {
+    public ItemBattery(Properties properties, boolean infinite) {
         super(properties);
+        this.infinite = infinite;
     }
 
     public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
-        if(this.allowdedIn(group)){
-            ItemStack empty = this.getDefaultInstance();
-            ItemStack full = empty.copy();
-            full.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> energyStorage.receiveEnergy(energyStorage.getMaxEnergyStored(), false));
-            items.add(empty);
-            items.add(full);
+        if(this.infinite) {
+            super.fillItemCategory(group, items);
+        }
+        else {
+            if (this.allowdedIn(group)) {
+                ItemStack empty = this.getDefaultInstance();
+                ItemStack full = empty.copy();
+                full.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> energyStorage.receiveEnergy(energyStorage.getMaxEnergyStored(), false));
+                items.add(empty);
+                items.add(full);
+            }
         }
     }
 
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         if(stack.isEmpty()) return super.initCapabilities(stack, nbt);
-        return ICBMEnergyStorage.getNewCapabilityProvider(stack, (energyStorage) -> energyStorage.setCapacity(ENERGY_CAPACITY, true));
+        return ICBMEnergyStorage.getNewCapabilityProvider(stack, (energyStorage) -> energyStorage.setCapacity(ENERGY_CAPACITY, true).setInfinite(this.infinite));
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return true;
+        return !this.infinite;
     }
 
     @Override
@@ -61,12 +68,15 @@ public class ItemBattery extends Item {
 
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable World level, List<ITextComponent> tooltip, ITooltipFlag tooltipFlag) {
-        tooltip.add(stack.getCapability(CapabilityEnergy.ENERGY).map((energyStorage) -> {
-            IFormattableTextComponent stored = ((ICBMEnergyStorage)energyStorage).getEnergyStoredFormatted(0, true);
-            IFormattableTextComponent slash = new StringTextComponent("/");
-            IFormattableTextComponent capacity = ICBMEnergyStorage.EnergyMeasurementUnit.formatEnergyValue(energyStorage.getMaxEnergyStored(), 0, true);
-            return stored.append(slash).append(capacity).withStyle(TextFormatting.GRAY);
-        }).orElse(new StringTextComponent("ERROR: MISSING CAPABILITY!")));
+        super.appendHoverText(stack, level, tooltip, tooltipFlag);
+        if(!this.infinite) {
+            tooltip.add(stack.getCapability(CapabilityEnergy.ENERGY).map((energyStorage) -> {
+                IFormattableTextComponent stored = ((ICBMEnergyStorage) energyStorage).getEnergyStoredFormatted(0, true);
+                IFormattableTextComponent slash = new StringTextComponent("/");
+                IFormattableTextComponent capacity = ICBMEnergyStorage.EnergyMeasurementUnit.formatEnergyValue(energyStorage.getMaxEnergyStored(), 0, true);
+                return stored.append(slash).append(capacity).withStyle(TextFormatting.GRAY);
+            }).orElse(new StringTextComponent("ERROR: MISSING CAPABILITY!")));
+        }
     }
 
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {

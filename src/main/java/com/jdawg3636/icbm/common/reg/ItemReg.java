@@ -159,7 +159,8 @@ public class ItemReg {
     public static final RegistryObject<Item> ELECTROMAGNETIC_GLASS          = ITEMS.register("electromagnetic_glass",           () -> new BlockItem(BlockReg.ELECTROMAGNETIC_GLASS.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Functional Items
-    public static final RegistryObject<Item> BATTERY                        = ITEMS.register("battery",                         ItemBattery::new);
+    public static final RegistryObject<Item> BATTERY                        = ITEMS.register("battery",                         () -> new ItemBattery(false));
+    public static final RegistryObject<Item> BATTERY_INFINITE               = ITEMS.register("battery_infinite",                () -> new ItemBattery(true));
     public static final RegistryObject<Item> DEFUSER                        = ITEMS.register("defuser",                         ItemDefuser::new);
     public static final RegistryObject<Item> LASER_DESIGNATOR               = ITEMS.register("laser_designator",                ItemLaserDesignator::new);
     public static final RegistryObject<Item> RADAR_GUN                      = ITEMS.register("radar_gun",                       ItemRadarGun::new);

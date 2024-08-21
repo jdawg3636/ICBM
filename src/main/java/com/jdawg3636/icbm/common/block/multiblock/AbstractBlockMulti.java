@@ -133,8 +133,8 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     @Override
     public void onRemove(BlockState originalState, World level, BlockPos blockPos, BlockState newState, boolean flag) {
         if (!originalState.is(newState.getBlock())) {
-            super.onRemove(originalState, level, blockPos, newState, flag);
             destroyMultiblock(level, blockPos, originalState);
+            super.onRemove(originalState, level, blockPos, newState, flag);
         }
     }
 

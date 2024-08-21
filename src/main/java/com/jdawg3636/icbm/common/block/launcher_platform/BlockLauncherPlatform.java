@@ -64,11 +64,4 @@ public class BlockLauncherPlatform extends AbstractBlockMultiTile implements IMi
         }
     }
 
-    @Override
-    public void destroyMultiblock(World worldIn, BlockPos pos, BlockState sourceState) {
-        TileEntity tileEntity = worldIn.getBlockEntity(getMultiblockCenter(worldIn, pos, sourceState));
-        if(tileEntity instanceof TileLauncherPlatform) ((TileLauncherPlatform)tileEntity).onBlockDestroyed();
-        super.destroyMultiblock(worldIn, pos, sourceState);
-    }
-
 }

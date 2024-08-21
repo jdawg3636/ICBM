@@ -66,13 +66,13 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     }
 
     /*
-    * Note! This must be called by the block. This is done by default in AbstractBlockMachineTile.
+    * Note! This must be called by the block. This is done by default in AbstractBlockMachineTile and AbstractBlockMultiTile.
     * */
     public void onBlockDestroyed() {
         if(level != null && itemHandler != null) {
             for(int i = 0; i < itemHandler.getSlots(); ++i) {
-                ItemStack contents = itemHandler.getStackInSlot(0);
-                itemHandler.setStackInSlot(0, ItemStack.EMPTY);
+                ItemStack contents = itemHandler.getStackInSlot(i);
+                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
                 InventoryHelper.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), contents);
             }
         }
@@ -227,7 +227,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     }
 
     public int tryReceiveEnergy(IEnergyStorage source, int energyToReceive) {
-        if(!source.canReceive()) return 0;
+        if(!energyStorage.canReceive()) return 0;
         energyToReceive = Math.min(Math.min(energyToReceive, energyStorage.getMaxReceive()), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
         int energyExtracted = source.extractEnergy(energyToReceive, false);
         int energyReceived = energyStorage.receiveEnergy(energyExtracted, false);

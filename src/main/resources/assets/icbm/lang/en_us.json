@@ -58,6 +58,8 @@
   "item.icbm.battery": "Battery",
   "item.icbm.battery.info": "Used to store and transport power",
 
+  "item.icbm.battery_infinite": "Infinite Battery",
+
   "item.icbm.electric_motor": "Electric Motor",
 
   "item.icbm.sulfur": "Sulfur",

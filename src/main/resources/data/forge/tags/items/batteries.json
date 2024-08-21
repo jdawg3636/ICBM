@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "icbm:battery"
+    "icbm:battery",
+    "icbm:battery_infinite"
   ]
 }

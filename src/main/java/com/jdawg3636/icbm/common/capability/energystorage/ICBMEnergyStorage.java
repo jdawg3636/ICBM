@@ -20,6 +20,8 @@ import java.util.function.Consumer;
 
 public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT> {
 
+    private boolean infinite;
+
     public ICBMEnergyStorage() {
         super(0);
     }
@@ -63,12 +65,21 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
         return this;
     }
 
+    public ICBMEnergyStorage setInfinite(boolean infinite) {
+        this.infinite = infinite;
+        return this;
+    }
+
     public int getMaxReceive() {
         return this.maxReceive;
     }
 
     public int getMaxExtract() {
         return this.maxExtract;
+    }
+
+    public boolean getInfinite() {
+        return this.infinite;
     }
 
     public ICBMEnergyStorage setEnergy(int energy) {
@@ -86,6 +97,7 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
+        if(this.getInfinite()) return Math.min(this.maxExtract, maxExtract);
         int returnValue = super.extractEnergy(maxExtract, simulate);
         if(!simulate && returnValue != 0) callbackOnChanged.run();
         return returnValue;
@@ -93,6 +105,7 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
 
     // Doesn't enforce this.maxExtract, only limited by parameter and capacity
     public int extractEnergyUnchecked(int maxExtract, boolean simulate) {
+        if(this.getInfinite()) return maxExtract;
         int energyExtracted = Math.min(energy, maxExtract);
         if(!simulate) energy -= energyExtracted;
         if(!simulate && energyExtracted != 0) callbackOnChanged.run();
@@ -100,7 +113,17 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
     }
 
     public double getEnergyPercentage() {
-        return getEnergyStored() / (double)getMaxEnergyStored();
+        return this.getInfinite() ? 1.0 : getEnergyStored() / (double)getMaxEnergyStored();
+    }
+
+    @Override
+    public int getEnergyStored() {
+        return this.getInfinite() ? getMaxEnergyStored() : super.getEnergyStored();
+    }
+
+    @Override
+    public boolean canReceive() {
+        return !this.getInfinite() && super.canReceive();
     }
 
     @Override
