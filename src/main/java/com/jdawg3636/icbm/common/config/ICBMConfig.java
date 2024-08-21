@@ -44,6 +44,8 @@ public class ICBMConfig {
 
         private final ForgeConfigSpec.BooleanValue enableEasterEggForRedcoats;
 
+        private final ForgeConfigSpec.DoubleValue blastResistanceObsidian;
+
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
 
         private final ForgeConfigSpec.IntValue blastDepthBreaching;
@@ -105,6 +107,15 @@ public class ICBMConfig {
                             "have the \"unstable = true\" variant of the BlockState, causing them to automatically ignite",
                             "when broken rather than drop as an item.")
                     .define("enableEasterEggForRedcoats", true);
+            this.blastResistanceObsidian = builder
+                    .comment("",
+                            "Vanilla obsidian normally has a blast resistance of 1200 (virtually unbreakable). To balance",
+                            "it, we reduce this value down to match the base tier of concrete (25.0 by default). For context,",
+                            "end stone is 9.0, normal stone is 6.0, and dirt is 0.5. IF THIS VALUE IS SET TO A NEGATIVE",
+                            "NUMBER, THEN THE MOD WILL LEAVE THE EXPLOSION RESISTANCE UNCHANGED (DEFER TO VANILLA OR OTHER",
+                            "MODS)."
+                            )
+                    .defineInRange("blastResistanceObsidian", 25.0, -1.0, Float.MAX_VALUE);
             this.antimatterFuzzinessPercentage = builder
                     .comment("",
                             "Defines the percentage, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
@@ -234,6 +245,10 @@ public class ICBMConfig {
 
         public boolean getEnableEasterEggForRedcoats() {
             return enableEasterEggForRedcoats.get();
+        }
+
+        public float getBlastResistanceObsidian() {
+            return blastResistanceObsidian.get().floatValue();
         }
 
         public double getAntimatterFuzzinessPercentage() {

@@ -48,10 +48,16 @@ public class CommonProxy {
 
     // Common Events
     public void onCommonSetupEvent(final FMLCommonSetupEvent event) {
+
         ICBMNetworking.init();
         ICBMCapabilities.register();
         event.enqueueWork(ICBMRecipeTypes::registerAll);
-        Blocks.OBSIDIAN.explosionResistance = 25.0f; //TODO: make this configurable
+
+        // Override blast resistance of vanilla obsidian
+        if(ICBMReference.COMMON_CONFIG.getBlastResistanceObsidian() >= 0) {
+            Blocks.OBSIDIAN.explosionResistance = ICBMReference.COMMON_CONFIG.getBlastResistanceObsidian();
+        }
+
     }
 
     public void onAttachCapabilitiesEventWorld(final AttachCapabilitiesEvent<World> event) {
