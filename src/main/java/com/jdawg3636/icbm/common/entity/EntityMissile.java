@@ -101,11 +101,11 @@ public class EntityMissile extends Entity {
     }
 
     public MissileSourceType getMissileSourceType() {
-        return this.getLogicalMissile().map(lm -> lm.missileSourceType).orElse(MissileSourceType.LAUNCHER_PLATFORM);
+        return MissileSourceType.values()[this.getEntityData().get(MISSILE_SOURCE_TYPE)];
     }
 
     public MissileLaunchPhase getMissileLaunchPhase() {
-        return this.getLogicalMissile().map(lm -> lm.missileLaunchPhase).orElse(MissileLaunchPhase.STATIONARY);
+        return MissileLaunchPhase.values()[this.getEntityData().get(MISSILE_LAUNCH_PHASE)];
     }
 
     public Function<Integer, Vector3d> getPathFunction() {
@@ -219,6 +219,10 @@ public class EntityMissile extends Entity {
 
     public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType) {
         this.getLogicalMissile().ifPresent(lm -> lm.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, missileSourceType));
+        // The source type needs to be set on the entity so that it is synced with the client. The above call will
+        // attempt to do this indirectly, but will fail if the missile hasn't been added to the level yet since it
+        // can only find the entity by looking up its UUID in the level. Setting it directly here to work around.
+        this.getEntityData().set(MISSILE_SOURCE_TYPE, missileSourceType.ordinal());
     }
 
     @Override
