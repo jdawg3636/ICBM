@@ -299,8 +299,8 @@ public class EntityMissile extends Entity {
         this.getLogicalMissile().ifPresent(lm -> {
             this.setPos(lm.x, lm.y, lm.z);
             this.setRot(lm.yRot, lm.xRot);
-            lm.setMissileSourceType(lm.missileSourceType.ordinal());
-            lm.setMissileLaunchPhase(lm.missileLaunchPhase.ordinal());
+            this.getEntityData().set(MISSILE_SOURCE_TYPE, lm.missileSourceType.ordinal());
+            this.getEntityData().set(MISSILE_LAUNCH_PHASE, lm.missileLaunchPhase.ordinal());
         });
     }
 
