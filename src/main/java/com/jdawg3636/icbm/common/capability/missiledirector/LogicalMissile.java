@@ -168,7 +168,8 @@ public class LogicalMissile {
                 position -> {
                     double rotXFromX = rotXMultipleFromX * Math.toDegrees(Math.atan(2d * parabolaXCoefficients[0] * position.x + parabolaXCoefficients[1]));
                     double rotXFromZ = rotXMultipleFromZ * Math.toDegrees(Math.atan(2d * parabolaZCoefficients[0] * position.z + parabolaZCoefficients[1]));
-                    return new Vector3d((!Double.isNaN(parabolaXCoefficients[0]) ? rotXFromX : rotXFromZ), finalRotY, 0D);
+                    Vector3d toReturn = new Vector3d((!Double.isNaN(parabolaXCoefficients[0]) ? rotXFromX : rotXFromZ), finalRotY, 0D);
+                    return toReturn;
                 }
         );
 
@@ -241,15 +242,18 @@ public class LogicalMissile {
 
     }
 
-    // Tick function for the logical/simulated missile. Note that this is assumed to only run on the logical server
-    // AND note that the puppet entity (if it exists) will still tick as usual, handling certain client-side behavior.
-    public void tick(ServerWorld level) {
+    /**
+     * Tick function for the logical/simulated missile. Note that this is assumed to only run on the logical server
+     * AND note that the puppet entity (if it exists) will still tick as usual, handling certain client-side behavior.
+     * @return flag for whether missile was modified
+     */
+    public boolean tick(ServerWorld level) {
 
         switch(missileLaunchPhase) {
 
             case STATIONARY:
             case STATIONARY_ACTIVATED:
-                break;
+                return false;
 
             case LAUNCHED:
 
@@ -297,6 +301,7 @@ public class LogicalMissile {
                 break;
 
         }
+        return true;
     }
 
     public void explode(ServerWorld level) {

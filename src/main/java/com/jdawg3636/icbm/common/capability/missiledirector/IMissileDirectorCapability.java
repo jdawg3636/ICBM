@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 
 public interface IMissileDirectorCapability {
 
@@ -30,6 +31,10 @@ public interface IMissileDirectorCapability {
     void deleteAllMissiles();
 
     void onWorldTickEvent(TickEvent.WorldTickEvent event);
+
+    UUID registerListener(BiConsumer<UUID, LogicalMissile> listener);
+
+    void removeListener(UUID uuid);
 
     ServerWorld getLevel();
 

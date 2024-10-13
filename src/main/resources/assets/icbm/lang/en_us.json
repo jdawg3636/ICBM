@@ -585,7 +585,7 @@
 
   "gui.icbm.radar_station": "Radar Station",
   "gui.icbm.radar_station.coords": "Coordinates:",
-  "gui.icbm.radar_station.range": "Range",
+  "gui.icbm.radar_station.range": "Detection Range",
   "gui.icbm.radar_station.range.trigger": "Trigger:",
   "gui.icbm.radar_station.range.detection": "Detection:",
   "gui.icbm.radar_station.on": "Radar on!",

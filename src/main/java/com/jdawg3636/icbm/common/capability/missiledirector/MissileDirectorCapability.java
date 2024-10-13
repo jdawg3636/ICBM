@@ -6,10 +6,12 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.TickEvent;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 public class MissileDirectorCapability implements IMissileDirectorCapability {
 
     private HashMap<UUID, LogicalMissile> logicalMissiles = new HashMap<>();
+    private HashMap<UUID, BiConsumer<UUID, LogicalMissile>> listeners = new HashMap<>();
     private final Random random = new Random();
     private final ServerWorld level;
 
@@ -28,11 +30,7 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
 
     @Override
     public UUID registerMissile(LogicalMissile logicalMissile, Optional<UUID> forceLogicalUUID) {
-        UUID logicalUUID = forceLogicalUUID.orElseGet(() -> {
-            long i = random.nextLong() & -61441L | 16384L;
-            long j = random.nextLong() & 4611686018427387903L | Long.MIN_VALUE;
-            return new UUID(i, j);
-        });
+        UUID logicalUUID = forceLogicalUUID.orElseGet(this::generateUUID);
         logicalMissiles.put(logicalUUID, logicalMissile);
         return logicalUUID;
     }
@@ -60,7 +58,10 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
     @Override
     public void deleteMissile(UUID missileID) {
         if(missileID == null) return;
-        Optional.ofNullable(logicalMissiles.remove(missileID)).ifPresent(LogicalMissile::kill);
+        Optional.ofNullable(logicalMissiles.remove(missileID)).ifPresent(logicalMissile -> {
+            logicalMissile.kill();
+            listeners.values().forEach(listener -> listener.accept(missileID, logicalMissile));
+        });
     }
 
     @Override
@@ -77,20 +78,43 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
 
     @Override
     public void deleteAllMissiles() {
-        logicalMissiles = new HashMap<>();
+        getLogicalMissileIDList().forEach(this::deleteMissile);
     }
 
     @Override
     public void onWorldTickEvent(TickEvent.WorldTickEvent event) {
         if(event.world instanceof ServerWorld) {
             // Have to make a new HashMap to avoid ConcurrentModificationException
-            new HashMap<>(logicalMissiles).values().forEach(missile -> missile.tick((ServerWorld) event.world));
+            new HashMap<>(logicalMissiles).forEach((uuid, logicalMissile) -> {
+                boolean missileChanged = logicalMissile.tick((ServerWorld) event.world);
+                if (missileChanged) {
+                    listeners.values().forEach(listener -> listener.accept(uuid, logicalMissile));
+                }
+            });
         }
+    }
+
+    @Override
+    public UUID registerListener(BiConsumer<UUID, LogicalMissile> listener) {
+        UUID uuid = this.generateUUID();
+        this.listeners.put(uuid, listener);
+        return uuid;
+    }
+
+    @Override
+    public void removeListener(UUID uuid) {
+        this.listeners.remove(uuid);
     }
 
     @Override
     public ServerWorld getLevel() {
         return level;
+    }
+
+    private UUID generateUUID() {
+        long i = random.nextLong() & -61441L | 16384L;
+        long j = random.nextLong() & 4611686018427387903L | Long.MIN_VALUE;
+        return new UUID(i, j);
     }
 
 }

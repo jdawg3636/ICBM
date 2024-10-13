@@ -53,11 +53,13 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
 
         this.rangeSlider = new WidgetCustomizableSlider(
             (this.width / 2) - 75, relY + 100, 130, 20,
-            new TranslationTextComponent("gui.icbm.emp_tower.radius"),
+            new TranslationTextComponent(TILE_ENTITY.getRadiusSliderText()),
             rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()),
-            (slider) -> {},
             (slider) -> {
-                ITextComponent sliderValueAsText = new StringTextComponent(String.format("%.1f", sliderValueToRawRange(slider.getValue())));
+                slider.setValue(rawRangeToSliderValue((int)sliderValueToRawRange(slider.getValue())));
+            },
+            (slider) -> {
+                ITextComponent sliderValueAsText = new StringTextComponent(String.format("%.0f", sliderValueToRawRange(slider.getValue())));
                 slider.setMessage(slider.defaultMessage.copy().append(": ").append(sliderValueAsText));
             }
         );

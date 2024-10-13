@@ -61,6 +61,7 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
         return empRadius;
     }
 
+    // TODO: move this into the missile director capability so that it can work on LogicalMissiles
     public void triggerEMPBlast() {
         if(level == null || level.isClientSide) return;
         List<EntityMissile> missilesToZap = level.getEntitiesOfClass(EntityMissile.class, new AxisAlignedBB(getBlockPos().above()).inflate(empRadius, 1000.0, empRadius));
@@ -70,19 +71,25 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
         this.level.playSound((PlayerEntity) null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 1.5, getBlockPos().getZ() + 0.5, SoundEventReg.EFFECT_BEAM_DISCHARGE.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
-    @Override
-    public void tick() {
-        if(level == null) return;
+    public void tickSpinnyThing() {
+        assert level != null;
         if(level.isClientSide()) {
             addAnimationPercent(getAnimationSpeed());
         } else {
-            itemHandlerLazyOptional.ifPresent(itemHandler ->
-                itemHandler.getStackInSlot(0).getCapability(CapabilityEnergy.ENERGY).ifPresent(itemEnergyStorage ->
-                    tryReceiveEnergy(itemEnergyStorage, 10_000))
-            );
-            if(redstoneSignalPresent() && tryConsumeEnergy(ICBMReference.COMMON_CONFIG.empTowerEnergyUsePerBlast())) {
-                triggerEMPBlast();
-            }
+            itemHandlerLazyOptional.ifPresent(itemHandler -> {
+                itemHandler.getStackInSlot(0).getCapability(CapabilityEnergy.ENERGY).ifPresent(itemEnergyStorage -> {
+                    tryReceiveEnergy(itemEnergyStorage, 10_000);
+                });
+            });
+        }
+    }
+
+    @Override
+    public void tick() {
+        if(level == null) return;
+        tickSpinnyThing();
+        if(!level.isClientSide() && redstoneSignalPresent() && tryConsumeEnergy(ICBMReference.COMMON_CONFIG.empTowerEnergyUsePerBlast())) {
+            triggerEMPBlast();
         }
     }
 
@@ -96,6 +103,10 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
     public CompoundNBT save(CompoundNBT tag) {
         tag.putDouble("radius", empRadius);
         return super.save(tag);
+    }
+
+    public String getRadiusSliderText() {
+        return "gui.icbm.emp_tower.radius";
     }
 
     @Override
