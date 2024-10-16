@@ -183,6 +183,7 @@ public class ClientProxy extends CommonProxy {
 
         // Register Other Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.ACCELERATING_PARTICLE.get(), EntityAcceleratingParticleRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.LIGHTNING_VISUAL.get(), EntityLightningVisualRenderer::new);
 
         // Register Tile Entity Renderers
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
