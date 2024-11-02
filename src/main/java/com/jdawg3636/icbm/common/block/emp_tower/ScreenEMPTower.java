@@ -28,11 +28,14 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
     public WidgetCustomizableSlider rangeSlider;
     public WidgetProgressBar forgeEnergyStorageBar;
 
+    private boolean hasBeenUpdated;
+
     public ScreenEMPTower(ContainerEMPTower container, PlayerInventory inventory, ITextComponent name) {
         super(container, inventory, name);
         this.TILE_ENTITY = (TileEMPTower)super.TILE_ENTITY;
         this.MIN_RANGE = ICBMReference.COMMON_CONFIG.getEMPTowerRangeMinimum();
         this.MAX_RANGE = ICBMReference.COMMON_CONFIG.getEMPTowerRangeMaximum();
+        this.hasBeenUpdated = false;
     }
 
     public double rawRangeToSliderValue(double range) {
@@ -84,7 +87,10 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
 
     @Override
     public void updateGui() {
-        this.rangeSlider.setValue(this.rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()));
+        if(!this.hasBeenUpdated) {
+            this.hasBeenUpdated = true;
+            this.rangeSlider.setValue(this.rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()));
+        }
     }
 
     @Override
