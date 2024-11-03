@@ -38,9 +38,13 @@ public class EntityLightningVisualRenderer extends EntityRenderer<EntityLightnin
         for(int i = entity.getSegmentCount() - 1; i >= 0; --i) {
             segmentXValues[i] = latestSegmentX;
             segmentZValues[i] = latestSegmentZ;
-            latestSegmentX += (float)(randomPerFrame.nextInt(11) - 5);
-            latestSegmentZ += (float)(randomPerFrame.nextInt(11) - 5);
+            latestSegmentX = (float)(randomPerFrame.nextInt(11) - 5);
+            latestSegmentZ = (float)(randomPerFrame.nextInt(11) - 5);
         }
+        latestSegmentX = 0.0F;
+        latestSegmentZ = 0.0F;
+        segmentXValues[0] = latestSegmentX;
+        segmentZValues[0] = latestSegmentZ;
 
         IVertexBuilder vertexBuilder = renderTypeBuffer.getBuffer(RenderType.lightning());
         Matrix4f lastPose = matrixStack.last().pose();
@@ -66,11 +70,16 @@ public class EntityLightningVisualRenderer extends EntityRenderer<EntityLightnin
                     float segmentXValueOriginal = segmentXValue;
                     float segmentZValueOriginal = segmentZValue;
                     if (forkIdx == 0) {
-                        segmentXValue += (float)(randomPerConcentricLayer.nextInt(11) - 5);
-                        segmentZValue += (float)(randomPerConcentricLayer.nextInt(11) - 5);
+                        if(segmentYIdx == lowestSegmentYIdx) {
+                            segmentXValue = 0;
+                            segmentZValue = 0;
+                        } else {
+                            segmentXValue += (float) (randomPerConcentricLayer.nextInt(11) - 5);
+                            segmentZValue += (float) (randomPerConcentricLayer.nextInt(11) - 5);
+                        }
                     } else {
-                        segmentXValue += (float)(randomPerConcentricLayer.nextInt(31) - 15);
-                        segmentZValue += (float)(randomPerConcentricLayer.nextInt(31) - 15);
+                        segmentXValue = (float)(randomPerConcentricLayer.nextInt(31) - 15);
+                        segmentZValue = (float)(randomPerConcentricLayer.nextInt(31) - 15);
                     }
 
                     float segmentWidthTop = 0.1F + (float)concentricLayerIdx * 0.2F;
