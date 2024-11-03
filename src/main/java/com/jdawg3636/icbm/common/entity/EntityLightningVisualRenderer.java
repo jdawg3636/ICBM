@@ -35,11 +35,11 @@ public class EntityLightningVisualRenderer extends EntityRenderer<EntityLightnin
         float latestSegmentZ = 0.0F;
         Random randomPerFrame = new Random(entity.seed);
 
-        for(int i = entity.getSegmentCount() - 1; i >= 0; --i) {
+        for(int i = 0; i < entity.getSegmentCount(); ++i) {
             segmentXValues[i] = latestSegmentX;
             segmentZValues[i] = latestSegmentZ;
-            latestSegmentX = (float)(randomPerFrame.nextInt(11) - 5);
-            latestSegmentZ = (float)(randomPerFrame.nextInt(11) - 5);
+            latestSegmentX += (float)(randomPerFrame.nextInt(11) - 5);
+            latestSegmentZ += (float)(randomPerFrame.nextInt(11) - 5);
         }
         latestSegmentX = 0.0F;
         latestSegmentZ = 0.0F;
@@ -56,21 +56,18 @@ public class EntityLightningVisualRenderer extends EntityRenderer<EntityLightnin
                 int highestSegmentYIdx = entity.getSegmentCount() - 1;
                 int lowestSegmentYIdx = 0;
                 if (forkIdx > 0) {
-                    highestSegmentYIdx = entity.getSegmentCount() - 1 - forkIdx;
+                    lowestSegmentYIdx = forkIdx;
+                    highestSegmentYIdx = lowestSegmentYIdx + 2;
                 }
 
-                if (forkIdx > 0) {
-                    lowestSegmentYIdx = highestSegmentYIdx - 2;
-                }
+                float segmentXValue = segmentXValues[lowestSegmentYIdx] - latestSegmentX;
+                float segmentZValue = segmentZValues[lowestSegmentYIdx] - latestSegmentZ;
 
-                float segmentXValue = segmentXValues[highestSegmentYIdx] - latestSegmentX;
-                float segmentZValue = segmentZValues[highestSegmentYIdx] - latestSegmentZ;
-
-                for(int segmentYIdx = highestSegmentYIdx; segmentYIdx >= lowestSegmentYIdx; --segmentYIdx) {
+                for(int segmentYIdx = lowestSegmentYIdx; segmentYIdx <= highestSegmentYIdx; ++segmentYIdx) {
                     float segmentXValueOriginal = segmentXValue;
                     float segmentZValueOriginal = segmentZValue;
                     if (forkIdx == 0) {
-                        if(segmentYIdx == lowestSegmentYIdx) {
+                        if(segmentYIdx == highestSegmentYIdx) {
                             segmentXValue = 0;
                             segmentZValue = 0;
                         } else {
@@ -78,25 +75,25 @@ public class EntityLightningVisualRenderer extends EntityRenderer<EntityLightnin
                             segmentZValue += (float) (randomPerConcentricLayer.nextInt(11) - 5);
                         }
                     } else {
-                        segmentXValue = (float)(randomPerConcentricLayer.nextInt(31) - 15);
-                        segmentZValue = (float)(randomPerConcentricLayer.nextInt(31) - 15);
-                    }
-
-                    float segmentWidthTop = 0.1F + (float)concentricLayerIdx * 0.2F;
-                    if (forkIdx == 0) {
-                        segmentWidthTop = (float)((double)segmentWidthTop * ((double)segmentYIdx * 0.1 + 1.0));
+                        segmentXValue += (float)(randomPerConcentricLayer.nextInt(21) - 10);
+                        segmentZValue += (float)(randomPerConcentricLayer.nextInt(21) - 10);
                     }
 
                     float segmentWidthBottom = 0.1F + (float)concentricLayerIdx * 0.2F;
                     if (forkIdx == 0) {
-                        segmentWidthBottom *= (float)(segmentYIdx - 1) * 0.1F + 1.0F;
+                        segmentWidthBottom = (float)((double)segmentWidthBottom * ((double)segmentYIdx * 0.1 + 1.0));
                     }
 
-                    //fn(lastPose, vertexBuilder, xBase1,        zBase1,        yBase,       xBase2,                zBase2,                colorRed,       colorGreen,       colorBlue,     xzOffset2,        xzOffset1,
-                    quad(lastPose, vertexBuilder, segmentXValue, segmentZValue, segmentYIdx, segmentXValueOriginal, segmentZValueOriginal, 0.45F, 0.45F, 0.5F, segmentWidthTop, segmentWidthBottom, false, false, true, false); // north
-                    quad(lastPose, vertexBuilder, segmentXValue, segmentZValue, segmentYIdx, segmentXValueOriginal, segmentZValueOriginal, 0.45F, 0.45F, 0.5F, segmentWidthTop, segmentWidthBottom, true, false, true, true);   // east
-                    quad(lastPose, vertexBuilder, segmentXValue, segmentZValue, segmentYIdx, segmentXValueOriginal, segmentZValueOriginal, 0.45F, 0.45F, 0.5F, segmentWidthTop, segmentWidthBottom, true, true, false, true);   // south
-                    quad(lastPose, vertexBuilder, segmentXValue, segmentZValue, segmentYIdx, segmentXValueOriginal, segmentZValueOriginal, 0.45F, 0.45F, 0.5F, segmentWidthTop, segmentWidthBottom, false, true, false, false); // west
+                    float segmentWidthTop = 0.1F + (float)concentricLayerIdx * 0.2F;
+                    if (forkIdx == 0) {
+                        segmentWidthTop *= (float)(segmentYIdx - 1) * 0.1F + 1.0F;
+                    }
+
+                    //fn(lastPose, vertexBuilder, xBase1,                zBase1,                yBase,       xBase2,        zBase2,                colorRed,       colorGreen,       colorBlue,     xzOffset2,        xzOffset1,
+                    quad(lastPose, vertexBuilder, segmentXValueOriginal, segmentZValueOriginal, segmentYIdx, segmentXValue, segmentZValue, 0.45F, 0.45F, 0.5F, segmentWidthTop, segmentWidthBottom, false, false, true, false); // north
+                    quad(lastPose, vertexBuilder, segmentXValueOriginal, segmentZValueOriginal, segmentYIdx, segmentXValue, segmentZValue, 0.45F, 0.45F, 0.5F, segmentWidthTop, segmentWidthBottom, true, false, true, true);   // east
+                    quad(lastPose, vertexBuilder, segmentXValueOriginal, segmentZValueOriginal, segmentYIdx, segmentXValue, segmentZValue, 0.45F, 0.45F, 0.5F, segmentWidthTop, segmentWidthBottom, true, true, false, true);   // south
+                    quad(lastPose, vertexBuilder, segmentXValueOriginal, segmentZValueOriginal, segmentYIdx, segmentXValue, segmentZValue, 0.45F, 0.45F, 0.5F, segmentWidthTop, segmentWidthBottom, false, true, false, false); // west
                 }
             }
         }
