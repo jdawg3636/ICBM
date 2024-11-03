@@ -28,6 +28,8 @@ public class EntityLightningVisualRenderer extends EntityRenderer<EntityLightnin
         // Apply rotation specified by entity
         matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), (float)entity.getYawRadians(), false));
         matrixStack.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float)(entity.getPitchRadians()), false));
+        float scale = entity.getScale();
+        matrixStack.scale(scale, scale, scale);
 
         float[] segmentXValues = new float[entity.getSegmentCount()];
         float[] segmentZValues = new float[entity.getSegmentCount()];
