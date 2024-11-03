@@ -16,16 +16,16 @@ public class TileCoalGenerator  extends TileEntity implements ITickableTileEntit
 
     @Override
     public void tick() {
-        if(!this.level.isClientSide()) {
-            int radius = 3;
-            for(Direction direction : Direction.values()) {
-                for(int i = -radius; i <= radius; ++i) {
-                    for(int j = -radius; j <= radius; ++j) {
-                        level.setBlock(getBlockPos().offset(rotateOffsetAboutDirection(i, j, direction, radius)), BlockReg.ELECTROMAGNETIC_GLASS.get().defaultBlockState(), 2);
-                    }
-                }
-            }
-        }
+//        if(!this.level.isClientSide()) {
+//            int radius = 3;
+//            for(Direction direction : Direction.values()) {
+//                for(int i = -radius; i <= radius; ++i) {
+//                    for(int j = -radius; j <= radius; ++j) {
+//                        level.setBlock(getBlockPos().offset(rotateOffsetAboutDirection(i, j, direction, radius)), BlockReg.ELECTROMAGNETIC_GLASS.get().defaultBlockState(), 2);
+//                    }
+//                }
+//            }
+//        }
     }
 
     public BlockPos rotateOffsetAboutDirection(int i, int j, Direction direction, int magnitude) {
