@@ -14,6 +14,8 @@ import java.util.function.Supplier;
 @OnlyIn(Dist.CLIENT)
 public class WidgetProgressBar extends Widget {
 
+    private static final int FULL_BAR_TEXTURE_HEIGHT = 65;
+
     IScreenMachine screen;
     Supplier<Vector3f> colorSupplier;
     Supplier<Float> valueSupplier;
@@ -32,11 +34,11 @@ public class WidgetProgressBar extends Widget {
         // Pulling from the gui_components.png texture
         this.screen.getMinecraft().getTextureManager().bind(ScreenMachine.DEFAULT_COMPONENTS_TEXTURE);
         // Render Empty Bar
-        blit(matrixStack, this.x - 1, this.y - 1, 100, 40,  0, this.width, this.height, 256, 256);
+        blit(matrixStack, this.x - 1, this.y - 1, 100, 40,  0 * FULL_BAR_TEXTURE_HEIGHT, this.width, this.height, 256, 256);
         // Render Bar Contents
         Vector3f color = colorSupplier.get();
         int missingPixels = this.height - (int)(this.valueSupplier.get() * this.height);
-        ScreenMachine.blitColored(matrixStack, this.x - 1, this.y - 1 + missingPixels, 100, 40, 49 + missingPixels, this.width, this.height - missingPixels, 256, 256, color.x(), color.y(), color.z(), 1.0F);
+        ScreenMachine.blitColored(matrixStack, this.x - 1, this.y - 1 + missingPixels, 100, 40, (1 * FULL_BAR_TEXTURE_HEIGHT) + missingPixels, this.width, this.height - missingPixels, 256, 256, color.x(), color.y(), color.z(), 1.0F);
         // Render Tooltip
         if(this.isHovered()) {
             this.renderToolTip(matrixStack, mouseX, mouseY);

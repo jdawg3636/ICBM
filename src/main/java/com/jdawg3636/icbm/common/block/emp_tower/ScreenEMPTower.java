@@ -55,7 +55,7 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
         int relY = (this.getHeight() - this.getImageHeight()) / 2;
 
         this.rangeSlider = new WidgetCustomizableSlider(
-            (this.width / 2) - 75, relY + 100, 130, 20,
+            (this.width / 2) - 75, relY + 61, 130, 20,
             new TranslationTextComponent(TILE_ENTITY.getRadiusSliderText()),
             rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()),
             (slider) -> {
@@ -70,7 +70,7 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
 
         Vector3f forgeEnergyStorageBarColor = new Vector3f(29/255f, 194/255f, 68/255f);
         this.forgeEnergyStorageBar = new WidgetProgressBar(
-            relX + 151, relY + 47, 18, 49, this,
+            relX + 151, relY + 47, 18, 65, this,
             () -> forgeEnergyStorageBarColor,
             () -> TILE_ENTITY.energyStorageLazyOptional.map((energyStorage) -> energyStorage.getEnergyStored() / (float)energyStorage.getMaxEnergyStored()).orElse(0f),
             () -> TILE_ENTITY.energyStorageLazyOptional.map((energyStorage) ->
