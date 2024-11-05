@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    " C ",
+    "CDC"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/gold"
+    },
+    "B": {
+      "item": "icbm:radar_gun"
+    },
+    "C": {
+      "tag": "forge:plates/steel"
+    },
+    "D": {
+      "tag": "forge:circuits/basic"
+    }
+  },
+  "result": {
+    "item": "icbm:radar_station",
+    "count": 1
+  }
+}

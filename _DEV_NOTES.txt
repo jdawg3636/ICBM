@@ -3,17 +3,18 @@ Unless you are me (jdawg3636), please use GitHub's issue tracker to
 report/track any feature requests and bug reports.
 
 Missing Recipes:
-- Nightmare Explosives
-- Rejuvenation Explosives
-- EMP Explosives
-- Anti-Gravitational Explosives
-- Ender Explosives
-- (Red Matter Explosives)
-- (Antimatter Explosives)
-- EMP Tower
-- Radar Station
-- Signal Disruptor
+
 - Antidote
 
-** Defuser **
-** Hazmat Suit **
+- Anti-Gravitational Explosives
+- EMP Explosives
+- Ender Explosives
+- Nightmare Explosives
+- Rejuvenation Explosives
+
+- Antiballistic Missile
+- Cluster Missile
+- Nuclear Cluster Missile
+- Homing Missile
+
+- Signal Disruptor
