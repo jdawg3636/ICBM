@@ -68,14 +68,14 @@ public class ScreenLauncherControlPanel extends Screen implements IScreenMachine
     }
 
     public static boolean stringIsNumeric(String in) {
-        if(in.equals("")) return true;
+        if(in.isEmpty()) return true;
         if(in.equals("-")) return true;
         try { Double.parseDouble(in); } catch (Exception e) { return false; }
         return true;
     }
 
     public static boolean stringIsPositiveInteger(String in) {
-        if(in.equals("")) return true;
+        if(in.isEmpty()) return true;
         try {
             int val = Integer.parseInt(in);
             if(val < 0) return false;
