@@ -1,7 +1,6 @@
 package com.jdawg3636.icbm.common.block.coal_generator;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.reg.BlockReg;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;

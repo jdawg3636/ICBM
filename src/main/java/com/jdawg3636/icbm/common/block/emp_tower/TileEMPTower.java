@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import com.jdawg3636.icbm.common.capability.missiledirector.LogicalMissile;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileLaunchPhase;
 import com.jdawg3636.icbm.common.entity.EntityLightningVisual;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
@@ -24,7 +25,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public class TileEMPTower extends TileMachine implements ITickableTileEntity {
 
@@ -68,8 +69,8 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
     // TODO: move this into the missile director capability so that it can work on LogicalMissiles
     public void triggerEMPBlast() {
         if(level == null || level.isClientSide) return;
-        List<EntityMissile> missilesToZap = level.getEntitiesOfClass(EntityMissile.class, new AxisAlignedBB(getBlockPos().above()).inflate(empRadius, 1000.0, empRadius));
-        for(EntityMissile missile : missilesToZap) {
+        Stream<EntityMissile> missilesToZap = level.getEntitiesOfClass(EntityMissile.class, new AxisAlignedBB(getBlockPos().above()).inflate(empRadius, 1000.0, empRadius)).stream().filter(missile -> missile.getMissileLaunchPhase() != MissileLaunchPhase.STATIONARY);
+        missilesToZap.forEach(missile -> {
             // Spawn visual lightning
             EntityLightningVisual entityLightningVisual = EntityReg.LIGHTNING_VISUAL.get().create(level);
             if(entityLightningVisual != null) {
@@ -82,7 +83,7 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
             missile.getLogicalMissile().ifPresent(LogicalMissile::strikeWithEMP);
             // Play sound
             this.level.playSound((PlayerEntity)null, missile.getX(), missile.getY(), missile.getZ(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundCategory.BLOCKS, 10.0F, 0.6F);
-        }
+        });
         // Play sound
         this.level.playSound((PlayerEntity) null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 1.5, getBlockPos().getZ() + 0.5, SoundEventReg.EFFECT_BEAM_DISCHARGE.get(), SoundCategory.BLOCKS, 100F, 1.0F);
         this.level.playSound((PlayerEntity) null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 1.5, getBlockPos().getZ() + 0.5, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundCategory.BLOCKS, 300F, 1.0F);
