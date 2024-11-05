@@ -46,7 +46,7 @@ public class ItemGrenade extends Item {
             world.playSound(null, entityLiving.getX(), entityLiving.getY(), entityLiving.getZ(), SoundEvents.TNT_PRIMED, SoundCategory.BLOCKS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
             float throwEnergy = (float) (getUseDuration(itemStack) - timeLeft) / (float) getUseDuration(itemStack) + 0.7f;
-            EntityGrenade grenade = entityForm.get().create(world); //todo: confirm that this works
+            EntityGrenade grenade = entityForm.get().create(world);
             if(grenade != null) {
                 grenade.moveTo(entityLiving.getX(), entityLiving.getY() + entityLiving.getEyeHeight() * 0.8, entityLiving.getZ(), entityLiving.getRotationVector().y, entityLiving.getRotationVector().x);
                 grenade.shootFromRotation(entityLiving, entityLiving.getRotationVector().x - 20, entityLiving.getRotationVector().y, 0.0F, throwEnergy, 1.0F);

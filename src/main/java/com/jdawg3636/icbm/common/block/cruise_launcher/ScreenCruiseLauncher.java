@@ -1,8 +1,8 @@
 package com.jdawg3636.icbm.common.block.cruise_launcher;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.launcher_control_panel.IScreenLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
+import com.jdawg3636.icbm.common.block.machine.IScreenMachine;
 import com.jdawg3636.icbm.common.network.CPacketUpdateLauncherControlPanel;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLauncher> implements IScreenLaunchControlPanel {
+public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLauncher> implements IScreenMachine {
 
     // TileEntity
     private final TileCruiseLauncher tileEntity;
@@ -47,6 +47,28 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
     public ScreenCruiseLauncher(ContainerCruiseLauncher container, PlayerInventory inventory, ITextComponent name, TileCruiseLauncher tileEntity) {
         super(container, inventory, name);
         this.tileEntity = tileEntity;
+    }
+
+    // TODO: None of these image size getters needs to be implemented once this is properly ported to the ScreenMachine system
+
+    @Override
+    public int getWidth() {
+        return this.width;
+    }
+
+    @Override
+    public int getHeight() {
+        return this.height;
+    }
+
+    @Override
+    public int getImageWidth() {
+        return this.imageWidth;
+    }
+
+    @Override
+    public int getImageHeight() {
+        return this.imageHeight;
     }
 
     @SuppressWarnings("UnusedAssignment")
@@ -105,10 +127,11 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
         this.textFieldRadioFrequency.moveCursorToStart();
     }
 
+    // TODO: Need to do this for ALL values (not just x value) to avoid unsaved changes being wiped when resizing game window. Same goes for the ScreenLauncherControlPanel.
     @Override
-    public void resize(Minecraft p_231152_1_, int p_231152_2_, int p_231152_3_) {
+    public void resize(Minecraft minecraft, int width, int height) {
         String s = this.textFieldTargetX.getValue();
-        this.init(p_231152_1_, p_231152_2_, p_231152_3_);
+        this.init(minecraft, width, height);
         this.textFieldTargetX.setValue(s);
     }
 

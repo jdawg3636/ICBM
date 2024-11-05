@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "icbm:electromagnet",
+    "icbm:electromagnetic_glass",
+    "icbm:particle_accelerator"
+  ]
+}

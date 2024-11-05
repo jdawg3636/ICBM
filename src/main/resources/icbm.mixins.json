@@ -3,8 +3,11 @@
   "package": "com.jdawg3636.icbm.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "icbm.refmap.json",
-  "mixins": [],
+  "mixins": [
+    "MixinCommonCustomizableFluidFlowDirections"
+  ],
   "client": [
+    "MixinClientForceOfflineSocialInteractions",
     "MixinClientOBJLightingPipeline",
     "MixinClientRocketLauncherPose"
   ],

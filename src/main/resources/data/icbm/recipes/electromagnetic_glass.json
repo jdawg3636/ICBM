@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "icbm:electromagnet"
+    },
+    {
+      "tag": "forge:glass/colorless"
+    }
+  ],
+  "result":
+  {
+    "item": "icbm:electromagnetic_glass",
+    "count": 1
+  }
+}

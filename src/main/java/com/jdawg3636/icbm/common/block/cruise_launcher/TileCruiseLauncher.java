@@ -1,21 +1,17 @@
 package com.jdawg3636.icbm.common.block.cruise_launcher;
 
-import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
-import com.jdawg3636.icbm.common.entity.EntityMissile;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
+import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
 
 public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLaunchControlPanel {
 
@@ -33,7 +29,7 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
     private int radioFrequency;
 
     public TileCruiseLauncher(TileEntityType<?> tileEntityType) {
-        super(tileEntityType);
+        super(tileEntityType, ContainerReg.CRUISE_LAUNCHER::get);
     }
 
     private void updateRotation(long tickAnimationStarted) {
@@ -62,10 +58,7 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
         this.tickAnimationStarted = tickAnimationStarted;
 
         // Update Nearby Clients
-        SUpdateTileEntityPacket updatePacket = this.getUpdatePacket();
-        if(updatePacket != null && level != null && level.getServer() != null) {
-            level.getServer().getPlayerList().broadcast(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), ICBMReference.proxy.getTileEntityUpdateDistance(), level.dimension(), updatePacket);
-        }
+        this.updateNearbyClients();
 
     }
 
@@ -134,8 +127,8 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
     }
 
     @Override
-    public EntityMissile.MissileSourceType getMissileSourceType() {
-        return EntityMissile.MissileSourceType.CRUISE_LAUNCHER;
+    public MissileSourceType getMissileSourceType() {
+        return MissileSourceType.CRUISE_LAUNCHER;
     }
 
     @Override
@@ -161,31 +154,6 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
         setTargetZ(compoundNBT.getDouble("targetZ"));
         setTargetY(compoundNBT.getDouble("targetY"));
         setRadioFrequency(compoundNBT.getInt("radioFrequency"));
-    }
-
-    @Override
-    @Nullable
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
-    }
-
-    @Override
-    public CompoundNBT getUpdateTag() {
-        CompoundNBT tag = super.getUpdateTag();
-        return save(tag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        if(level != null && level.isClientSide()) {
-            handleUpdateTag(getBlockState(), pkt.getTag());
-            ICBMReference.proxy.updateScreenLauncherControlPanel();
-        }
-    }
-
-    @Override
-    public double getViewDistance() {
-        return ICBMReference.proxy.getTileEntityUpdateDistance();
     }
 
 }

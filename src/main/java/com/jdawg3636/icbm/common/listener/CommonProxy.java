@@ -5,12 +5,16 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherContro
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.BlastControllerCapabilityProvider;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
+import com.jdawg3636.icbm.common.capability.missiledirector.IMissileDirectorCapability;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileDirectorCapabilityProvider;
 import com.jdawg3636.icbm.common.capability.trackingmanager.ITrackingManagerCapability;
 import com.jdawg3636.icbm.common.capability.trackingmanager.TrackingManagerCapabilityProvider;
 import com.jdawg3636.icbm.common.item.ItemDefuser;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
+import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.util.LazyOptional;
@@ -39,17 +44,27 @@ public class CommonProxy {
 
     // Client Misc
     public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {}
-    public void updateScreenLauncherControlPanel() {}
+    public void updateScreenMachine() {}
 
     // Common Events
     public void onCommonSetupEvent(final FMLCommonSetupEvent event) {
+
         ICBMNetworking.init();
         ICBMCapabilities.register();
+        event.enqueueWork(ICBMRecipeTypes::registerAll);
+
+        // Override blast resistance of vanilla obsidian
+        if(ICBMReference.COMMON_CONFIG.getBlastResistanceObsidian() >= 0) {
+            Blocks.OBSIDIAN.explosionResistance = ICBMReference.COMMON_CONFIG.getBlastResistanceObsidian();
+        }
+
     }
 
     public void onAttachCapabilitiesEventWorld(final AttachCapabilitiesEvent<World> event) {
-        if(!event.getObject().isClientSide()) {
+        if(event.getObject() instanceof ServerWorld) {
+            ServerWorld serverWorld = (ServerWorld) event.getObject();
             event.addCapability(new ResourceLocation(ICBMReference.MODID, "blastcontroller"), new BlastControllerCapabilityProvider());
+            event.addCapability(new ResourceLocation(ICBMReference.MODID, "missiledirector"), new MissileDirectorCapabilityProvider(serverWorld));
             if(event.getObject().dimension().equals(World.OVERWORLD)) {
                 event.addCapability(new ResourceLocation(ICBMReference.MODID, "trackingmanager"), new TrackingManagerCapabilityProvider());
             }
@@ -91,8 +106,10 @@ public class CommonProxy {
 
     public void onTickEvent(final TickEvent.WorldTickEvent event) {
     	if(event.phase != TickEvent.Phase.START) return;
-        LazyOptional<IBlastControllerCapability> capOptional = event.world.getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
-        capOptional.ifPresent((IBlastControllerCapability cap) -> cap.onWorldTickEvent(event));
+        LazyOptional<IBlastControllerCapability> blastControllerCapability = event.world.getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
+        blastControllerCapability.ifPresent((IBlastControllerCapability cap) -> cap.onWorldTickEvent(event));
+        LazyOptional<IMissileDirectorCapability> missileDirectorCapability = event.world.getCapability(ICBMCapabilities.MISSILE_DIRECTOR_CAPABILITY);
+        missileDirectorCapability.ifPresent((IMissileDirectorCapability cap) -> cap.onWorldTickEvent(event));
     }
 
     public double getTileEntityUpdateDistance() {

@@ -1,20 +1,27 @@
 package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
+import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SExplosionPacket;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -97,6 +104,63 @@ public class ICBMBlastEventUtil {
 
                 }
         );
+    }
+
+    // Adapted from a portion of net.minecraft.world.Explosion::explode (MC 1.16.5, MCP + Parchment Mappings)
+    public static void doExplosionDamageAndKnockback(World level, Vector3d blastPosition, DamageSource damageSource, double radius) {
+
+        // Process Parameters
+        damageSource = damageSource != null ? damageSource : DamageSource.explosion((LivingEntity) null);
+
+        // Calculate AABB and find entities
+        double diameter = radius * 2.0F;
+        double xMin = MathHelper.floor(blastPosition.x() - diameter - 1.0D);
+        double xMax = MathHelper.floor(blastPosition.x() + diameter + 1.0D);
+        double yMin = MathHelper.floor(blastPosition.y() - diameter - 1.0D);
+        double yMax = MathHelper.floor(blastPosition.y() + diameter + 1.0D);
+        double zMin = MathHelper.floor(blastPosition.z() - diameter - 1.0D);
+        double zMax = MathHelper.floor(blastPosition.z() + diameter + 1.0D);
+        List<Entity> entities = level.getEntities(null, new AxisAlignedBB(xMin, yMin, zMin, xMax, yMax, zMax));
+
+        // TODO fire this event? Leaving it out for now to avoid sending null for Explosion (likely causing NPE in other mods)
+        // net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(level, null, list, diameter);
+
+        for(int i = 0; i < entities.size(); ++i) {
+            Entity entity = entities.get(i);
+            if (!entity.ignoreExplosion()) {
+                double entityDistanceToEpicenterAsRatio = (double)(MathHelper.sqrt(entity.distanceToSqr(blastPosition)) / diameter);
+                if (entityDistanceToEpicenterAsRatio <= 1.0D) {
+                    double entityDistanceX = entity.getX() - blastPosition.x();
+                    // Note: primed explosives from this mod are also instances of TNTEntity
+                    double entityDistanceY = (entity instanceof TNTEntity ? entity.getY() : entity.getEyeY()) - blastPosition.y();
+                    double entityDistanceZ = entity.getZ() - blastPosition.z();
+                    double entityDistance = MathHelper.sqrt(entityDistanceX * entityDistanceX + entityDistanceY * entityDistanceY + entityDistanceZ * entityDistanceZ);
+                    if (entityDistance != 0.0D) {
+                        // Normalize distances (components sum to 1)
+                        entityDistanceX = entityDistanceX / entityDistance;
+                        entityDistanceY = entityDistanceY / entityDistance;
+                        entityDistanceZ = entityDistanceZ / entityDistance;
+                        double seenPercent = (double)Explosion.getSeenPercent(blastPosition, entity);
+                        double knockback = (1.0D - entityDistanceToEpicenterAsRatio) * seenPercent * radius;
+                        entity.hurt(damageSource, (float)((int)((knockback * knockback + knockback) / 2.0D * 7.0D * diameter + 1.0D)));
+                        double knockbackAfterDampener = knockback;
+                        if (entity instanceof LivingEntity) {
+                            knockbackAfterDampener = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity)entity, knockback);
+                        }
+
+                        entity.setDeltaMovement(entity.getDeltaMovement().add(entityDistanceX * knockbackAfterDampener, entityDistanceY * knockbackAfterDampener, entityDistanceZ * knockbackAfterDampener));
+                        if (entity instanceof ServerPlayerEntity) {
+                            ServerPlayerEntity playerentity = (ServerPlayerEntity)entity;
+                            if (!playerentity.isSpectator() && (!playerentity.isCreative() || !playerentity.abilities.flying)) {
+                                // Vanilla code would cache this in a list for ServerWorld to send later - we're just doing it directly
+                                // this.hitPlayers.put(playerentity, new Vector3d(entityDistanceX * d10, d7 * d10, d9 * d10));
+                                playerentity.connection.send(new SExplosionPacket(blastPosition.x(), blastPosition.y(), blastPosition.z(), (float)radius, new ArrayList<>(), new Vector3d(entityDistanceX * knockback, entityDistanceY * knockback, entityDistanceZ * knockback)));
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

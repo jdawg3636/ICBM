@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "ABA",
+      "BCB",
+      "ABA"
+    ],
+    "key": {
+      "A": {
+        "item": "icbm:copper_wire"
+      },
+      "B": {
+        "tag": "forge:ingots/steel"
+      },
+      "C": {
+        "tag": "forge:ingots/iron"
+      }
+    },
+    "result": {
+      "item": "icbm:electric_motor",
+      "count": 1
+    }
+  }

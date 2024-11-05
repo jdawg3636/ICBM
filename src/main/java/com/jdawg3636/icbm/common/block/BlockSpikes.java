@@ -3,11 +3,13 @@ package com.jdawg3636.icbm.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -27,7 +29,7 @@ import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 
-public class BlockSpikes extends Block {
+public class BlockSpikes extends Block implements IWaterLoggable {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -44,6 +46,7 @@ public class BlockSpikes extends Block {
      */
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(WATERLOGGED);
     }
 
@@ -71,12 +74,6 @@ public class BlockSpikes extends Block {
 
     @SuppressWarnings("deprecation")
     @Override
-    public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
     public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity) entity.hurt(DamageSource.CACTUS, 1);
     }
@@ -89,8 +86,29 @@ public class BlockSpikes extends Block {
 
     @SuppressWarnings("deprecation")
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
-        return facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public boolean placeLiquid(IWorld level, BlockPos blockPos, BlockState blockState, FluidState fluidState) {
+        return IWaterLoggable.super.placeLiquid(level, blockPos, blockState, fluidState);
+    }
+
+    @Override
+    public boolean canPlaceLiquid(IBlockReader level, BlockPos blockPos, BlockState blockState, Fluid fluid) {
+        return IWaterLoggable.super.canPlaceLiquid(level, blockPos, blockState, fluid);
+    }
+
+    // Copied(ish) from SeaPickleBlock
+    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, IWorld pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        if (!pState.canSurvive(pLevel, pCurrentPos)) {
+            return Blocks.AIR.defaultBlockState();
+        }
+        if (pState.getValue(WATERLOGGED)) {
+            pLevel.getLiquidTicks().scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+        }
+        return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
     }
 
     @SuppressWarnings("deprecation")

@@ -2,7 +2,7 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.*;
-import com.jdawg3636.icbm.common.event.*;
+import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -19,62 +19,62 @@ public final class EntityReg {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMReference.MODID);
 
     // Primed Explosives Registration
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CONDENSED         = registerPrimedExplosives(EventBlastCondensed::new,           ItemReg.EXPLOSIVES_CONDENSED);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_SHRAPNEL          = registerPrimedExplosives(EventBlastShrapnel::new,            ItemReg.EXPLOSIVES_SHRAPNEL);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_INCENDIARY        = registerPrimedExplosives(EventBlastIncendiary::new,          ItemReg.EXPLOSIVES_INCENDIARY);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_DEBILITATION      = registerPrimedExplosives(EventBlastDebilitation::new,        ItemReg.EXPLOSIVES_DEBILITATION);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CHEMICAL          = registerPrimedExplosives(EventBlastChemical::new,            ItemReg.EXPLOSIVES_CHEMICAL);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ANVIL             = registerPrimedExplosives(EventBlastAnvil::new,               ItemReg.EXPLOSIVES_ANVIL);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_REPULSIVE         = registerPrimedExplosives(EventBlastRepulsive::new,           ItemReg.EXPLOSIVES_REPULSIVE);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ATTRACTIVE        = registerPrimedExplosives(EventBlastAttractive::new,          ItemReg.EXPLOSIVES_ATTRACTIVE);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_NIGHTMARE         = registerPrimedExplosives(EventBlastNightmare::new,           ItemReg.EXPLOSIVES_NIGHTMARE);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_FRAGMENTATION     = registerPrimedExplosives(EventBlastFragmentation::new,       ItemReg.EXPLOSIVES_FRAGMENTATION);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CONTAGION         = registerPrimedExplosives(EventBlastContagion::new,           ItemReg.EXPLOSIVES_CONTAGION);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_SONIC             = registerPrimedExplosives(EventBlastSonic::new,               ItemReg.EXPLOSIVES_SONIC);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_BREACHING         = registerPrimedExplosives(EventBlastBreaching::new,           ItemReg.EXPLOSIVES_BREACHING);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_REJUVENATION      = registerPrimedExplosives(EventBlastRejuvenation::new,        ItemReg.EXPLOSIVES_REJUVENATION);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_THERMOBARIC       = registerPrimedExplosives(EventBlastThermobaric::new,         ItemReg.EXPLOSIVES_THERMOBARIC);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_NUCLEAR           = registerPrimedExplosives(EventBlastNuclear::new,             ItemReg.EXPLOSIVES_NUCLEAR);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_EMP               = registerPrimedExplosives(EventBlastEmp::new,                 ItemReg.EXPLOSIVES_EMP);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_EXOTHERMIC        = registerPrimedExplosives(EventBlastExothermic::new,          ItemReg.EXPLOSIVES_EXOTHERMIC);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ENDOTHERMIC       = registerPrimedExplosives(EventBlastEndothermic::new,         ItemReg.EXPLOSIVES_ENDOTHERMIC);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ANTIGRAVITATIONAL = registerPrimedExplosives(EventBlastAntigravitational::new,   ItemReg.EXPLOSIVES_ANTIGRAVITATIONAL);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ENDER             = registerPrimedExplosives(EventBlastEnder::new,               ItemReg.EXPLOSIVES_ENDER);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_HYPERSONIC        = registerPrimedExplosives(EventBlastHypersonic::new,          ItemReg.EXPLOSIVES_HYPERSONIC);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ANTIMATTER        = registerPrimedExplosives(EventBlastAntimatter::new,          ItemReg.EXPLOSIVES_ANTIMATTER);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_REDMATTER         = registerPrimedExplosives(EventBlastRedmatter::new,           ItemReg.EXPLOSIVES_REDMATTER);
-    public static final RegistryObject<EntityType<EntityPrimedExplosives>> S_MINE                       = registerPrimedExplosives(EventBlastSMine::new,               ItemReg.S_MINE, 0.875F, 0.125F);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CONDENSED         = registerPrimedExplosives(BlastEventReg.CONDENSED,           ItemReg.EXPLOSIVES_CONDENSED);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_SHRAPNEL          = registerPrimedExplosives(BlastEventReg.SHRAPNEL,            ItemReg.EXPLOSIVES_SHRAPNEL);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_INCENDIARY        = registerPrimedExplosives(BlastEventReg.INCENDIARY,          ItemReg.EXPLOSIVES_INCENDIARY);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_DEBILITATION      = registerPrimedExplosives(BlastEventReg.DEBILITATION,        ItemReg.EXPLOSIVES_DEBILITATION);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CHEMICAL          = registerPrimedExplosives(BlastEventReg.CHEMICAL,            ItemReg.EXPLOSIVES_CHEMICAL);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ANVIL             = registerPrimedExplosives(BlastEventReg.ANVIL,               ItemReg.EXPLOSIVES_ANVIL);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_REPULSIVE         = registerPrimedExplosives(BlastEventReg.REPULSIVE,           ItemReg.EXPLOSIVES_REPULSIVE);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ATTRACTIVE        = registerPrimedExplosives(BlastEventReg.ATTRACTIVE,          ItemReg.EXPLOSIVES_ATTRACTIVE);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_NIGHTMARE         = registerPrimedExplosives(BlastEventReg.NIGHTMARE,           ItemReg.EXPLOSIVES_NIGHTMARE);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_FRAGMENTATION     = registerPrimedExplosives(BlastEventReg.FRAGMENTATION,       ItemReg.EXPLOSIVES_FRAGMENTATION);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CONTAGION         = registerPrimedExplosives(BlastEventReg.CONTAGION,           ItemReg.EXPLOSIVES_CONTAGION);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_SONIC             = registerPrimedExplosives(BlastEventReg.SONIC,               ItemReg.EXPLOSIVES_SONIC);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_BREACHING         = registerPrimedExplosives(BlastEventReg.BREACHING,           ItemReg.EXPLOSIVES_BREACHING);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_REJUVENATION      = registerPrimedExplosives(BlastEventReg.REJUVENATION,        ItemReg.EXPLOSIVES_REJUVENATION);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_THERMOBARIC       = registerPrimedExplosives(BlastEventReg.THERMOBARIC,         ItemReg.EXPLOSIVES_THERMOBARIC);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_NUCLEAR           = registerPrimedExplosives(BlastEventReg.NUCLEAR,             ItemReg.EXPLOSIVES_NUCLEAR);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_EMP               = registerPrimedExplosives(BlastEventReg.EMP,                 ItemReg.EXPLOSIVES_EMP);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_EXOTHERMIC        = registerPrimedExplosives(BlastEventReg.EXOTHERMIC,          ItemReg.EXPLOSIVES_EXOTHERMIC);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ENDOTHERMIC       = registerPrimedExplosives(BlastEventReg.ENDOTHERMIC,         ItemReg.EXPLOSIVES_ENDOTHERMIC);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ANTIGRAVITATIONAL = registerPrimedExplosives(BlastEventReg.ANTIGRAVITATIONAL,   ItemReg.EXPLOSIVES_ANTIGRAVITATIONAL);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ENDER             = registerPrimedExplosives(BlastEventReg.ENDER,               ItemReg.EXPLOSIVES_ENDER);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_HYPERSONIC        = registerPrimedExplosives(BlastEventReg.HYPERSONIC,          ItemReg.EXPLOSIVES_HYPERSONIC);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_ANTIMATTER        = registerPrimedExplosives(BlastEventReg.ANTIMATTER,          ItemReg.EXPLOSIVES_ANTIMATTER);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_REDMATTER         = registerPrimedExplosives(BlastEventReg.REDMATTER,           ItemReg.EXPLOSIVES_REDMATTER);
+    public static final RegistryObject<EntityType<EntityPrimedExplosives>> S_MINE                       = registerPrimedExplosives(BlastEventReg.S_MINE,              ItemReg.S_MINE, 0.875F, 0.125F);
 
     // Missile Registration
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_MODULE            = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_MODULE);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONVENTIONAL      = registerMissile(EventBlastCondensed::new,            ItemReg.MISSILE_CONVENTIONAL);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SHRAPNEL          = registerMissile(EventBlastShrapnel::new,             ItemReg.MISSILE_SHRAPNEL);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_INCENDIARY        = registerMissile(EventBlastIncendiary::new,           ItemReg.MISSILE_INCENDIARY);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_DEBILITATION      = registerMissile(EventBlastDebilitation::new,         ItemReg.MISSILE_DEBILITATION);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CHEMICAL          = registerMissile(EventBlastChemical::new,             ItemReg.MISSILE_CHEMICAL);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANVIL             = registerMissile(EventBlastAnvil::new,                ItemReg.MISSILE_ANVIL);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REPULSIVE         = registerMissile(EventBlastRepulsive::new,            ItemReg.MISSILE_REPULSIVE);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ATTRACTIVE        = registerMissile(EventBlastAttractive::new,           ItemReg.MISSILE_ATTRACTIVE);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NIGHTMARE         = registerMissile(EventBlastNightmare::new,            ItemReg.MISSILE_NIGHTMARE);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_FRAGMENTATION     = registerMissile(EventBlastFragmentation::new,        ItemReg.MISSILE_FRAGMENTATION, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONTAGION         = registerMissile(EventBlastContagion::new,            ItemReg.MISSILE_CONTAGION, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SONIC             = registerMissile(EventBlastSonic::new,                ItemReg.MISSILE_SONIC, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_BREACHING         = registerMissile(EventBlastBreaching::new,            ItemReg.MISSILE_BREACHING, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REJUVENATION      = registerMissile(EventBlastRejuvenation::new,         ItemReg.MISSILE_REJUVENATION, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_THERMOBARIC       = registerMissile(EventBlastThermobaric::new,          ItemReg.MISSILE_THERMOBARIC, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NUCLEAR           = registerMissile(EventBlastNuclear::new,              ItemReg.MISSILE_NUCLEAR, 1F, 7F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EMP               = registerMissile(EventBlastEmp::new,                  ItemReg.MISSILE_EMP, 1F, 7F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EXOTHERMIC        = registerMissile(EventBlastExothermic::new,           ItemReg.MISSILE_EXOTHERMIC, 1F, 7F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDOTHERMIC       = registerMissile(EventBlastEndothermic::new,          ItemReg.MISSILE_ENDOTHERMIC, 1F, 7F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIGRAVITATIONAL = registerMissile(EventBlastAntigravitational::new,    ItemReg.MISSILE_ANTIGRAVITATIONAL, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDER             = registerMissile(EventBlastEnder::new,                ItemReg.MISSILE_ENDER, 1F, 6F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HYPERSONIC        = registerMissile(EventBlastHypersonic::new,           ItemReg.MISSILE_HYPERSONIC, 1F, 7F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIMATTER        = registerMissile(EventBlastAntimatter::new,           ItemReg.MISSILE_ANTIMATTER);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REDMATTER         = registerMissile(EventBlastRedmatter::new,            ItemReg.MISSILE_REDMATTER);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HOMING            = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_HOMING);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC     = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_ANTIBALLISTIC, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER           = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_CLUSTER, 1F, 5F);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile(EventBlastDummy::new, /*TODO*/       ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_MODULE            = registerMissile(BlastEventReg.DUMMY,                ItemReg.MISSILE_MODULE);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONVENTIONAL      = registerMissile(BlastEventReg.CONDENSED,            ItemReg.MISSILE_CONVENTIONAL);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SHRAPNEL          = registerMissile(BlastEventReg.SHRAPNEL,             ItemReg.MISSILE_SHRAPNEL);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_INCENDIARY        = registerMissile(BlastEventReg.INCENDIARY,           ItemReg.MISSILE_INCENDIARY);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_DEBILITATION      = registerMissile(BlastEventReg.DEBILITATION,         ItemReg.MISSILE_DEBILITATION);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CHEMICAL          = registerMissile(BlastEventReg.CHEMICAL,             ItemReg.MISSILE_CHEMICAL);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANVIL             = registerMissile(BlastEventReg.ANVIL,                ItemReg.MISSILE_ANVIL);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REPULSIVE         = registerMissile(BlastEventReg.REPULSIVE,            ItemReg.MISSILE_REPULSIVE);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ATTRACTIVE        = registerMissile(BlastEventReg.ATTRACTIVE,           ItemReg.MISSILE_ATTRACTIVE);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NIGHTMARE         = registerMissile(BlastEventReg.NIGHTMARE,            ItemReg.MISSILE_NIGHTMARE);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_FRAGMENTATION     = registerMissile(BlastEventReg.FRAGMENTATION,        ItemReg.MISSILE_FRAGMENTATION, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CONTAGION         = registerMissile(BlastEventReg.CONTAGION,            ItemReg.MISSILE_CONTAGION, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_SONIC             = registerMissile(BlastEventReg.SONIC,                ItemReg.MISSILE_SONIC, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_BREACHING         = registerMissile(BlastEventReg.BREACHING,            ItemReg.MISSILE_BREACHING, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REJUVENATION      = registerMissile(BlastEventReg.REJUVENATION,         ItemReg.MISSILE_REJUVENATION, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_THERMOBARIC       = registerMissile(BlastEventReg.THERMOBARIC,          ItemReg.MISSILE_THERMOBARIC, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_NUCLEAR           = registerMissile(BlastEventReg.NUCLEAR,              ItemReg.MISSILE_NUCLEAR, 1F, 7F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EMP               = registerMissile(BlastEventReg.EMP,                  ItemReg.MISSILE_EMP, 1F, 7F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_EXOTHERMIC        = registerMissile(BlastEventReg.EXOTHERMIC,           ItemReg.MISSILE_EXOTHERMIC, 1F, 7F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDOTHERMIC       = registerMissile(BlastEventReg.ENDOTHERMIC,          ItemReg.MISSILE_ENDOTHERMIC, 1F, 7F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIGRAVITATIONAL = registerMissile(BlastEventReg.ANTIGRAVITATIONAL,    ItemReg.MISSILE_ANTIGRAVITATIONAL, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ENDER             = registerMissile(BlastEventReg.ENDER,                ItemReg.MISSILE_ENDER, 1F, 6F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HYPERSONIC        = registerMissile(BlastEventReg.HYPERSONIC,           ItemReg.MISSILE_HYPERSONIC, 1F, 7F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIMATTER        = registerMissile(BlastEventReg.ANTIMATTER,           ItemReg.MISSILE_ANTIMATTER);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REDMATTER         = registerMissile(BlastEventReg.REDMATTER,            ItemReg.MISSILE_REDMATTER);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HOMING            = registerMissile(BlastEventReg.DUMMY, /*TODO*/       ItemReg.MISSILE_HOMING);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC     = registerMissile(BlastEventReg.DUMMY, /*TODO*/       ItemReg.MISSILE_ANTIBALLISTIC, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER           = registerMissile(BlastEventReg.DUMMY, /*TODO*/       ItemReg.MISSILE_CLUSTER, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile(BlastEventReg.DUMMY, /*TODO*/       ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
 
     // Minecart Registration
     public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_EXPLOSIVE         = registerMinecart("minecart_explosive",         BlockReg.EXPLOSIVES_CONDENSED,         ItemReg.MINECART_EXPLOSIVE);
@@ -103,14 +103,14 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMinecartExplosives>> MINECART_REDMATTER         = registerMinecart("minecart_redmatter",         BlockReg.EXPLOSIVES_REDMATTER,         ItemReg.MINECART_REDMATTER);
 
     // Grenade Registration
-    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_CONVENTIONAL = registerGrenade(EventBlastCondensed::new,    ItemReg.GRENADE_CONVENTIONAL);
-    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_SHRAPNEL     = registerGrenade(EventBlastShrapnel::new,     ItemReg.GRENADE_SHRAPNEL);
-    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_INCENDIARY   = registerGrenade(EventBlastIncendiary::new,   ItemReg.GRENADE_INCENDIARY);
-    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_DEBILITATION = registerGrenade(EventBlastDebilitation::new, ItemReg.GRENADE_DEBILITATION);
-    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_CHEMICAL     = registerGrenade(EventBlastChemical::new,     ItemReg.GRENADE_CHEMICAL);
-    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_ANVIL        = registerGrenade(EventBlastAnvil::new,        ItemReg.GRENADE_ANVIL);
-    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_REPULSIVE    = registerGrenade(EventBlastRepulsive::new,    ItemReg.GRENADE_REPULSIVE);
-    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_ATTRACTIVE   = registerGrenade(EventBlastAttractive::new,   ItemReg.GRENADE_ATTRACTIVE);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_CONVENTIONAL = registerGrenade(BlastEventReg.CONDENSED,    ItemReg.GRENADE_CONVENTIONAL);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_SHRAPNEL     = registerGrenade(BlastEventReg.SHRAPNEL,     ItemReg.GRENADE_SHRAPNEL);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_INCENDIARY   = registerGrenade(BlastEventReg.INCENDIARY,   ItemReg.GRENADE_INCENDIARY);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_DEBILITATION = registerGrenade(BlastEventReg.DEBILITATION, ItemReg.GRENADE_DEBILITATION);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_CHEMICAL     = registerGrenade(BlastEventReg.CHEMICAL,     ItemReg.GRENADE_CHEMICAL);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_ANVIL        = registerGrenade(BlastEventReg.ANVIL,        ItemReg.GRENADE_ANVIL);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_REPULSIVE    = registerGrenade(BlastEventReg.REPULSIVE,    ItemReg.GRENADE_REPULSIVE);
+    public static final RegistryObject<EntityType<EntityGrenade>> GRENADE_ATTRACTIVE   = registerGrenade(BlastEventReg.ATTRACTIVE,   ItemReg.GRENADE_ATTRACTIVE);
 
     // Blast Utility Entity Registration
     public static final RegistryObject<EntityType<EntityLingeringBlast>>          BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
@@ -133,11 +133,15 @@ public final class EntityReg {
         }
     );
 
-    public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+    // Other Entity Registration
+    public static final RegistryObject<EntityType<EntityAcceleratingParticle>> ACCELERATING_PARTICLE = registerBlastUtilityEntity("accelerating_particle", EntityAcceleratingParticle::new, 1F, 1F);
+    public static final RegistryObject<EntityType<EntityLightningVisual>> LIGHTNING_VISUAL = registerBlastUtilityEntity("lightning_visual", EntityLightningVisual::new, 1F, 1F);
+
+    public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
         return registerPrimedExplosives(blastEventProvider, itemForm, 0.98F, 0.98F);
     }
 
-    public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, float width, float height) {
+    public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm, float width, float height) {
         return ENTITIES.register(
                 itemForm.getId().getPath(),
                 () -> {
@@ -154,11 +158,11 @@ public final class EntityReg {
         );
     }
 
-    public static RegistryObject<EntityType<EntityMissile>> registerMissile(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+    public static RegistryObject<EntityType<EntityMissile>> registerMissile(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
         return registerMissile(blastEventProvider, itemForm, 1F, 4F);
     }
 
-    public static RegistryObject<EntityType<EntityMissile>> registerMissile(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm, float width, float height) {
+    public static RegistryObject<EntityType<EntityMissile>> registerMissile(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm, float width, float height) {
         return ENTITIES.register(
                 itemForm.getId().getPath(),
                 () -> {
@@ -194,7 +198,7 @@ public final class EntityReg {
         );
     }
 
-    public static <T extends EntityGrenade> RegistryObject<EntityType<EntityGrenade>> registerGrenade(AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+    public static <T extends EntityGrenade> RegistryObject<EntityType<EntityGrenade>> registerGrenade(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
         return ENTITIES.register(
                 itemForm.getId().getPath(),
                 () -> {

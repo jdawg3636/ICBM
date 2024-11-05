@@ -2,7 +2,12 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
+import com.jdawg3636.icbm.common.block.emp_tower.ContainerEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
+import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
+import com.jdawg3636.icbm.common.block.particle_accelerator.ContainerParticleAccelerator;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -11,32 +16,42 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.function.Supplier;
+
 public class ContainerReg {
 
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, ICBMReference.MODID);
 
-    public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T1 = CONTAINERS.register(BlockReg.LAUNCHER_PLATFORM_T1.getId().getPath(), () -> IForgeContainerType.create((windowId, inv, data) -> {
-        BlockPos pos = data.readBlockPos();
-        World world = inv.player.getCommandSenderWorld();
-        return new ContainerLauncherPlatform(ContainerReg.LAUNCHER_PLATFORM_T1.get(), BlockReg.LAUNCHER_PLATFORM_T1.get(), windowId, world, pos, inv, inv.player);
-    }));
+    // Missile Launch Apparatus
+    public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T1 = registerContainer(BlockReg.LAUNCHER_PLATFORM_T1, ContainerLauncherPlatform::new, () -> ContainerReg.LAUNCHER_PLATFORM_T1);
+    public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T2 = registerContainer(BlockReg.LAUNCHER_PLATFORM_T2, ContainerLauncherPlatform::new, () -> ContainerReg.LAUNCHER_PLATFORM_T2);
+    public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T3 = registerContainer(BlockReg.LAUNCHER_PLATFORM_T3, ContainerLauncherPlatform::new, () -> ContainerReg.LAUNCHER_PLATFORM_T3);
 
-    public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T2 = CONTAINERS.register(BlockReg.LAUNCHER_PLATFORM_T2.getId().getPath(), () -> IForgeContainerType.create((windowId, inv, data) -> {
-        BlockPos pos = data.readBlockPos();
-        World world = inv.player.getCommandSenderWorld();
-        return new ContainerLauncherPlatform(ContainerReg.LAUNCHER_PLATFORM_T2.get(), BlockReg.LAUNCHER_PLATFORM_T2.get(), windowId, world, pos, inv, inv.player);
-    }));
+    // Other Machinery
+    public static final RegistryObject<ContainerType<ContainerCruiseLauncher>> CRUISE_LAUNCHER = registerContainer(BlockReg.CRUISE_LAUNCHER, ContainerCruiseLauncher::new, () -> ContainerReg.CRUISE_LAUNCHER);
+    public static final RegistryObject<ContainerType<ContainerEMPTower>> EMP_TOWER = registerContainer(BlockReg.EMP_TOWER, ContainerEMPTower::new, () -> ContainerReg.EMP_TOWER);
 
-    public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T3 = CONTAINERS.register(BlockReg.LAUNCHER_PLATFORM_T3.getId().getPath(), () -> IForgeContainerType.create((windowId, inv, data) -> {
-        BlockPos pos = data.readBlockPos();
-        World world = inv.player.getCommandSenderWorld();
-        return new ContainerLauncherPlatform(ContainerReg.LAUNCHER_PLATFORM_T3.get(), BlockReg.LAUNCHER_PLATFORM_T3.get(), windowId, world, pos, inv, inv.player);
-    }));
+    // Particle Accelerator Components
+    public static final RegistryObject<ContainerType<ContainerParticleAccelerator>> PARTICLE_ACCELERATOR = registerContainer(BlockReg.PARTICLE_ACCELERATOR, ContainerParticleAccelerator::new, () -> ContainerReg.PARTICLE_ACCELERATOR);
 
-    public static final RegistryObject<ContainerType<ContainerCruiseLauncher>> CRUISE_LAUNCHER = CONTAINERS.register(BlockReg.CRUISE_LAUNCHER.getId().getPath(), () -> IForgeContainerType.create((windowId, inv, data) -> {
-        BlockPos pos = data.readBlockPos();
-        World world = inv.player.getCommandSenderWorld();
-        return new ContainerCruiseLauncher(ContainerReg.CRUISE_LAUNCHER.get(), BlockReg.CRUISE_LAUNCHER.get(), windowId, world, pos, inv, inv.player);
-    }));
+    @FunctionalInterface
+    public interface IModContainerFactory<T extends AbstractContainerMachine> {
+        T construct(ContainerType<T> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory);
+    }
+
+    public static <T extends AbstractContainerMachine> RegistryObject<ContainerType<T>> registerContainer(RegistryObject<Block> block, IModContainerFactory<T> containerConstructor, Supplier<RegistryObject<ContainerType<T>>> self) {
+        return CONTAINERS.register(
+                block.getId().getPath(),
+                () -> {
+                    return IForgeContainerType.create(
+                            (windowId, inv, data) -> {
+                                BlockPos pos = data.readBlockPos();
+                                World world = inv.player.getCommandSenderWorld();
+                                return containerConstructor.construct(self.get().get(), windowId, world, pos, inv);
+                            }
+                    );
+                }
+        );
+    }
 
 }

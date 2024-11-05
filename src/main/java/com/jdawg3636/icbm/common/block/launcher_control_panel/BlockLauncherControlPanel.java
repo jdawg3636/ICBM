@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMachineTile;
+import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachineTile;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -26,11 +26,17 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
 
     public BlockLauncherControlPanel(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        this(getMultiblockMachineBlockProperties(), tileEntityType);
+        super(tileEntityType);
+        this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
     }
 
-    public BlockLauncherControlPanel(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-        super(properties, tileEntityType);
+    public BlockLauncherControlPanel(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(tileEntityType, waterloggable);
+        this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
+    }
+
+    public BlockLauncherControlPanel(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(properties, tileEntityType, waterloggable);
         this.registerDefaultState(defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
     }
 
@@ -45,7 +51,7 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
         TileEntity tileEntity = world.getBlockEntity(blockPos);
         if (tileEntity instanceof TileLauncherControlPanel) {
             if(world.isClientSide()) {
-                ICBMReference.proxy.setScreenLauncherControlPanel((TileLauncherControlPanel) tileEntity);
+                ICBMReference.distProxy().setScreenLauncherControlPanel((TileLauncherControlPanel) tileEntity);
             } else {
                 SUpdateTileEntityPacket supdatetileentitypacket = tileEntity.getUpdatePacket();
                 if (supdatetileentitypacket != null) ((ServerPlayerEntity) playerEntity).connection.send(supdatetileentitypacket);
@@ -58,7 +64,7 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
 
     @SuppressWarnings("deprecation")
     @Override
-    public void neighborChanged(BlockState blockState, World level, BlockPos blockPos, Block p_220069_4_, BlockPos p_220069_5_, boolean p_220069_6_) {
+    public void neighborChanged(BlockState blockState, World level, BlockPos blockPos, Block block, BlockPos fromBlockPos, boolean isMoving) {
         if (!level.isClientSide) {
             boolean flagHasSignal = level.hasNeighborSignal(blockPos) || level.hasNeighborSignal(blockPos.above());
             boolean flagStateTriggered = blockState.getValue(TRIGGERED);

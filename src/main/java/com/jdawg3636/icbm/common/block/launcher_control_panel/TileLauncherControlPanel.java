@@ -48,7 +48,7 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
         TileEntity platformTile = level.getBlockEntity(platformPos);
         BlockPos targetPos = new BlockPos(getTargetX(), getTargetY(), getTargetZ());
         if(platformTile instanceof TileLauncherPlatform && ((TileLauncherPlatform) platformTile).usesControlPanel()) {
-            ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, level.getHeight(), (int)Math.sqrt((platformPos.getX() - getTargetX()) * (platformPos.getX() - getTargetX()) + (platformPos.getZ() - getTargetZ()) * (platformPos.getZ() - getTargetZ())));
+            ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, Math.max(level.getHeight() * 1.5F, getBlockPos().getY() + 128F), (int)Math.sqrt((platformPos.getX() - getTargetX()) * (platformPos.getX() - getTargetX()) + (platformPos.getZ() - getTargetZ()) * (platformPos.getZ() - getTargetZ())));
         }
     }
 
@@ -68,13 +68,13 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         if(level != null && level.isClientSide()) {
             handleUpdateTag(getBlockState(), pkt.getTag());
-            ICBMReference.proxy.updateScreenLauncherControlPanel();
+            ICBMReference.distProxy().updateScreenMachine();
         }
     }
 
     @Override
     public double getViewDistance() {
-        return ICBMReference.proxy.getTileEntityUpdateDistance();
+        return ICBMReference.distProxy().getTileEntityUpdateDistance();
     }
 
 }

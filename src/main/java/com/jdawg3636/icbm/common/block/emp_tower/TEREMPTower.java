@@ -14,24 +14,37 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.common.util.LazyOptional;
 
 // https://mcforge.readthedocs.io/en/1.16.x/tileentities/tesr/
 public class TEREMPTower extends TileEntityRenderer<TileEMPTower> {
 
+    public final LazyOptional<IBakedModel> MODEL_CLOCKWISE;
+    public final LazyOptional<IBakedModel> MODEL_COUNTERCLOCKWISE;
+    public final LazyOptional<IBakedModel> MODEL_STATIC;
+
     public TEREMPTower(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
+        this(
+            tileEntityRendererDispatcher,
+            LazyOptional.of(() -> Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_EMP_TOWER_CLOCKWISE)),
+            LazyOptional.of(() -> Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_EMP_TOWER_COUNTERCLOCKWISE)),
+            LazyOptional.of(() -> Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_EMP_TOWER_STATIC))
+        );
+    }
+
+    public TEREMPTower(TileEntityRendererDispatcher tileEntityRendererDispatcher, LazyOptional<IBakedModel> modelClockwise, LazyOptional<IBakedModel> modelCounterclockwise, LazyOptional<IBakedModel> modelStatic) {
         super(tileEntityRendererDispatcher);
+        this.MODEL_CLOCKWISE = modelClockwise;
+        this.MODEL_COUNTERCLOCKWISE = modelCounterclockwise;
+        this.MODEL_STATIC = modelStatic;
     }
 
     @Override
     public void render(TileEMPTower tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer renderBuffer, int combinedLight, int combinedOverlay) {
 
-        IBakedModel MODEL_CLOCKWISE        = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_EMP_TOWER_CLOCKWISE);
-        IBakedModel MODEL_COUNTERCLOCKWISE = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_EMP_TOWER_COUNTERCLOCKWISE);
-        IBakedModel MODEL_STATIC           = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_EMP_TOWER_STATIC);
-
         BlockState blockState = tileEntity.getBlockState();
         Direction direction = (blockState.getBlock() instanceof BlockEMPTower) ? blockState.getValue(BlockEMPTower.FACING) : null;
-        float animationRadians = ((float)(tileEntity.getAnimationRadians() + (partialTicks * 0.05 * 2 * Math.PI)));
+        float animationRadians = tileEntity.getAnimationRadians(partialTicks);
 
         // Outer Push, used for offsetting the entire model and rotating to account for the block's facing direction
         matrixStack.pushPose();
@@ -41,19 +54,23 @@ public class TEREMPTower extends TileEntityRenderer<TileEMPTower> {
         else if (direction == Direction.WEST)   matrixStack.mulPose(new Quaternion(0, 180, 0, true));
 
         // Clockwise Model
-        matrixStack.pushPose();
-        matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), -animationRadians, false));
-        Minecraft.getInstance().getItemRenderer().render(new ItemStack(Blocks.STONE), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, MODEL_CLOCKWISE);
-        matrixStack.popPose();
+        MODEL_CLOCKWISE.ifPresent(model -> {
+            matrixStack.pushPose();
+            matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), -animationRadians, false));
+            Minecraft.getInstance().getItemRenderer().render(new ItemStack(Blocks.STONE), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, model);
+            matrixStack.popPose();
+        });
 
         // Counterclockwise Model
-        matrixStack.pushPose();
-        matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), animationRadians, false));
-        Minecraft.getInstance().getItemRenderer().render(new ItemStack(Blocks.STONE), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, MODEL_COUNTERCLOCKWISE);
-        matrixStack.popPose();
+        MODEL_COUNTERCLOCKWISE.ifPresent(model -> {
+            matrixStack.pushPose();
+            matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), animationRadians, false));
+            Minecraft.getInstance().getItemRenderer().render(new ItemStack(Blocks.STONE), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, model);
+            matrixStack.popPose();
+        });
 
         // Static Model
-        Minecraft.getInstance().getItemRenderer().render(new ItemStack(Blocks.STONE), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, MODEL_STATIC);
+        MODEL_STATIC.ifPresent(model -> Minecraft.getInstance().getItemRenderer().render(new ItemStack(Blocks.STONE), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, model));
 
         // Outer Pop
         matrixStack.popPose();

@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.multiblock;
 
+import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
@@ -10,6 +11,8 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
@@ -37,11 +40,15 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     public static final BooleanProperty MULTIBLOCK_OFFSET_DEPTH_NEGATIVE        = BooleanProperty.create("multiblock_offset_depth_negative");
 
     public AbstractBlockMulti() {
-        this(getMultiblockMachineBlockProperties());
+        this(true);
     }
 
-    public AbstractBlockMulti(AbstractBlock.Properties properties) {
-        super(properties);
+    public AbstractBlockMulti(boolean waterloggable) {
+        this(getMultiblockMachineBlockProperties(), waterloggable);
+    }
+
+    public AbstractBlockMulti(AbstractBlock.Properties properties, boolean waterloggable) {
+        super(properties, waterloggable);
         this.registerDefaultState(
                 this.defaultBlockState() // We know this isn't null, set in super.
                 .setValue(MULTIBLOCK_OFFSET_HORIZONTAL, 0)
@@ -92,14 +99,19 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-
         BlockState state = super.getStateForPlacement(context);
-
-        if(context.getClickedPos().getY() > context.getLevel().getMaxBuildHeight()-getMultiblockHeight()) return null;
-        for(BlockPos toCheck : getMultiblockWorldPositions(context.getClickedPos(), state)) if(!context.getLevel().getBlockState(toCheck).canBeReplaced(context)) return null;
-
+        // Prevent placing too high
+        if (context.getClickedPos().getY() > context.getLevel().getMaxBuildHeight() - getMultiblockHeight()) {
+            return null;
+        }
+        // Prevent if something is in the way
+        for (BlockPos toCheck : getMultiblockWorldPositions(context.getClickedPos(), state)) {
+            if(!context.getLevel().getBlockState(toCheck).canBeReplaced(context)) {
+                return null;
+            }
+        }
+        // All clear send it
         return state;
-
     }
 
     /**
@@ -107,8 +119,8 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      * Called by ItemBlocks after a block is set in the world, to allow post-place logic
      */
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemInHandOfPlacer) {
+        super.setPlacedBy(worldIn, pos, state, placer, itemInHandOfPlacer);
         placeMultiblock(worldIn, pos, state);
     }
 
@@ -120,13 +132,15 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
     @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState originalState, World level, BlockPos blockPos, BlockState newState, boolean flag) {
-        super.onRemove(originalState, level, blockPos, newState, flag);
-        destroyMultiblock(level, blockPos, originalState);
+        if (!originalState.is(newState.getBlock())) {
+            destroyMultiblock(level, blockPos, originalState);
+            super.onRemove(originalState, level, blockPos, newState, flag);
+        }
     }
 
     @Override
-    public boolean canDropFromExplosion(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
-        return isRootOfMultiblock(state);
+    public boolean canDropFromExplosion(BlockState state, IBlockReader level, BlockPos pos, Explosion explosion) {
+        return isRootOfMultiblock(state) && super.canDropFromExplosion(state, level, pos, explosion);
     }
 
     @SuppressWarnings("deprecation")
@@ -166,8 +180,14 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      * @param sampleBlockState Used for calculating what direction the multiblock is facing, can be any member node.
      */
     private void destroyMultiblockInternal(World world, BlockPos rootPos, BlockPos exclude, BlockState sampleBlockState) {
-        if(!exclude.equals(rootPos)) world.setBlockAndUpdate(rootPos, Blocks.AIR.defaultBlockState());
-        for(BlockPos pos : getMultiblockWorldPositions(rootPos, sampleBlockState)) if((!exclude.equals(pos)) && world.getBlockState(new BlockPos(pos)).getBlock().defaultBlockState().equals(defaultBlockState())) world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        if(!exclude.equals(rootPos)) {
+            world.setBlockAndUpdate(rootPos, world.getBlockState(rootPos).getFluidState().createLegacyBlock());
+        }
+        for(BlockPos pos : getMultiblockWorldPositions(rootPos, sampleBlockState)) {
+            if ((!exclude.equals(pos)) && world.getBlockState(new BlockPos(pos)).getBlock().defaultBlockState().equals(defaultBlockState())) {
+                world.setBlockAndUpdate(pos, world.getBlockState(pos).getFluidState().createLegacyBlock());
+            }
+        }
     }
 
     public boolean isRootOfMultiblock(BlockState state) {
@@ -177,7 +197,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
             state.getValue(MULTIBLOCK_OFFSET_DEPTH) == 0;
     }
 
-    public BlockPos getMultiblockCenter(World worldIn, BlockPos pos, BlockState sourceState) {
+    public BlockPos getMultiblockCenter(IBlockReader worldIn, BlockPos pos, BlockState sourceState) {
         // Raw Data from BlockState
         int offsetX = sourceState.getValue(MULTIBLOCK_OFFSET_HORIZONTAL); if(sourceState.getValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE)) offsetX *= -1;
         int offsetY = sourceState.getValue(MULTIBLOCK_OFFSET_HEIGHT); if(sourceState.getValue(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE)) offsetY *= -1;
@@ -269,6 +289,15 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
 
         return positions;
 
+    }
+
+    @Override
+    public VoxelShape getShapeForFluidBlocking(BlockState blockState, IBlockReader level, BlockPos blockPos) {
+        if(!waterloggable)
+            return VoxelShapes.block();
+        if(isRootOfMultiblock(blockState))
+            return SlabBlock.BOTTOM_AABB;
+        return VoxelShapes.empty();
     }
 
 }

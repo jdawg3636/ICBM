@@ -14,8 +14,8 @@ public class BlockGlassButton extends AbstractButtonBlock {
         super(false, Block.Properties.of(Material.GLASS).harvestTool(ToolType.PICKAXE).randomTicks().sound(SoundType.GLASS).strength(0.5F).noCollission());
     }
 
-    protected SoundEvent getSound(boolean p_196369_1_) {
-        return p_196369_1_ ? SoundEvents.STONE_BUTTON_CLICK_ON : SoundEvents.STONE_BUTTON_CLICK_OFF;
+    protected SoundEvent getSound(boolean isOn) {
+        return isOn ? SoundEvents.STONE_BUTTON_CLICK_ON : SoundEvents.STONE_BUTTON_CLICK_OFF;
     }
 
 }

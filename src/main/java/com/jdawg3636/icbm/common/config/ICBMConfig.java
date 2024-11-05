@@ -36,12 +36,15 @@ public class ICBMConfig {
         public final ForgeConfigSpec spec;
 
         private final ForgeConfigSpec.IntValue maxBlastManagerThreadCountPerLevel;
+        private final ForgeConfigSpec.IntValue numWorkerThreadsPerNuclearBlast;
 
         private final ForgeConfigSpec.IntValue maxNumTicksAliveForLinearMissiles;
 
         private final ForgeConfigSpec.BooleanValue doLogMissilePathsHandheld;
 
         private final ForgeConfigSpec.BooleanValue enableEasterEggForRedcoats;
+
+        private final ForgeConfigSpec.DoubleValue blastResistanceObsidian;
 
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
 
@@ -65,6 +68,15 @@ public class ICBMConfig {
         private final ForgeConfigSpec.IntValue oreUraniumRange;
         private final ForgeConfigSpec.IntValue oreUraniumCount;
 
+        private final ForgeConfigSpec.IntValue particleAcceleratorEnergyUsagePerTick;
+        private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedIncreasePerTick;
+        private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedPenaltyForCollision;
+        private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedRequiredToGenerateAntimatter;
+
+        private final ForgeConfigSpec.DoubleValue empTowerRangeMinimum;
+        private final ForgeConfigSpec.DoubleValue empTowerRangeMaximum;
+        private final ForgeConfigSpec.IntValue empTowerEnergyUsePerBlast;
+
         public Common() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
             this.maxBlastManagerThreadCountPerLevel = builder
@@ -73,6 +85,12 @@ public class ICBMConfig {
                             "level/dimension. SETTING THIS VALUE TOO HIGH MAY CAUSE ENOUGH LAG TO COMPLETELY LOCK UP YOUR",
                             "COMPUTER. YOU HAVE BEEN WARNED!")
                     .defineInRange("maxBlastManagerThreadCountPerLevel", 4, 1, Integer.MAX_VALUE);
+            this.numWorkerThreadsPerNuclearBlast = builder
+                    .comment("",
+                            "Defines the exact number of worker threads to be used for each nuclear blast. (The blast ",
+                            "will have a single manager thread, which will then spawn these worker threads). SETTING THIS",
+                            "VALUE TOO HIGH MAY CAUSE ENOUGH LAG TO COMPLETELY LOCK UP YOUR COMPUTER. YOU HAVE BEEN WARNED!")
+                    .defineInRange("numWorkerThreadsPerNuclearBlast", 4, 1, Integer.MAX_VALUE);
             this.maxNumTicksAliveForLinearMissiles = builder
                     .comment("",
                             "Defines the amount of time, in game ticks (20 ticks = 1 second), that a missile launched from",
@@ -89,6 +107,15 @@ public class ICBMConfig {
                             "have the \"unstable = true\" variant of the BlockState, causing them to automatically ignite",
                             "when broken rather than drop as an item.")
                     .define("enableEasterEggForRedcoats", true);
+            this.blastResistanceObsidian = builder
+                    .comment("",
+                            "Vanilla obsidian normally has a blast resistance of 1200 (virtually unbreakable). To balance",
+                            "it, we reduce this value down to match the base tier of concrete (25.0 by default). For context,",
+                            "end stone is 9.0, normal stone is 6.0, and dirt is 0.5. IF THIS VALUE IS SET TO A NEGATIVE",
+                            "NUMBER, THEN THE MOD WILL LEAVE THE EXPLOSION RESISTANCE UNCHANGED (DEFER TO VANILLA OR OTHER",
+                            "MODS)."
+                            )
+                    .defineInRange("blastResistanceObsidian", 25.0, -1.0, Float.MAX_VALUE);
             this.antimatterFuzzinessPercentage = builder
                     .comment("",
                             "Defines the percentage, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
@@ -111,15 +138,15 @@ public class ICBMConfig {
                     .defineInRange("blastRadiusExothermic", 12D, 0D, Float.MAX_VALUE);
             this.blastRadiusHypersonic = builder
                     .comment("",
-                            "Defines the maximum radius of an Hypersonic Blast.")
+                            "Defines the maximum radius of a Hypersonic Blast.")
                     .defineInRange("blastRadiusHypersonic", 13D, 0D, Float.MAX_VALUE);
             this.blastRadiusNuclear = builder
                     .comment("",
-                            "Defines the maximum radius of an Nuclear Blast.")
+                            "Defines the maximum radius of a Nuclear Blast.")
                     .defineInRange("blastRadiusNuclear", 30D, 0D, Float.MAX_VALUE);
             this.blastRadiusSonic = builder
                     .comment("",
-                            "Defines the maximum radius of an Sonic Blast.")
+                            "Defines the maximum radius of a Sonic Blast.")
                     .defineInRange("blastRadiusSonic", 9D, 0D, Float.MAX_VALUE);
             this.oreCopperSize = builder
                     .comment("",
@@ -169,11 +196,43 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the 'count' parameter of Uranium Ore vein generation.")
                     .defineInRange("oreUraniumCount", 1, 0, Integer.MAX_VALUE);
+            this.particleAcceleratorEnergyUsagePerTick = builder
+                    .comment("",
+                            "Defines the amount of Forge Energy (FE) consumed per tick by a particle accelerator while it is active.")
+                    .defineInRange("particleAcceleratorEnergyUsagePerTick", 2_500_000, 0, Integer.MAX_VALUE);
+            this.particleAcceleratorSpeedIncreasePerTick = builder
+                    .comment("",
+                            "Defines the speed increase in blocks per tick that is applied each tick to the particle in a particle accelerator.")
+                    .defineInRange("particleAcceleratorSpeedIncreasePerTick", 0.003D, 0, Float.MAX_VALUE);
+            this.particleAcceleratorSpeedPenaltyForCollision = builder
+                    .comment("",
+                            "Defines the speed penalty in percent that is incurred to a particle when it collides with the walls of a particle accelerator.")
+                    .defineInRange("particleAcceleratorSpeedPenaltyForCollision", 0.05D, 0, 1D);
+            this.particleAcceleratorSpeedRequiredToGenerateAntimatter = builder
+                    .comment("",
+                            "Defines the speed in blocks per tick that is required for a particle to be converted into antimatter in a particle accelerator.")
+                    .defineInRange("particleAcceleratorSpeedRequiredToGenerateAntimatter", 0.885D, 0, Float.MAX_VALUE);
+            this.empTowerRangeMinimum = builder
+                    .comment("",
+                            "Defines the minimum effective radius that a user may specify for an EMP Tower")
+                    .defineInRange("empTowerRangeMinimum", 10.0D, 0, Double.MAX_VALUE);
+            this.empTowerRangeMaximum = builder
+                    .comment("",
+                            "Defines the maximum effective radius that a user may specify for an EMP Tower")
+                    .defineInRange("empTowerRangeMaximum", 150.0D, 0, Double.MAX_VALUE);
+            this.empTowerEnergyUsePerBlast = builder
+                    .comment("",
+                            "Defines the amount of Forge Energy (FE) consumed per blast by an EMP Tower.")
+                    .defineInRange("empTowerEnergyUsePerBlast", 1_000_000, 0, Integer.MAX_VALUE);
             this.spec = builder.build();
         }
 
         public int getMaxBlastManagerThreadCountPerLevel() {
             return maxBlastManagerThreadCountPerLevel.get();
+        }
+
+        public int getNumWorkerThreadsPerNuclearBlast() {
+            return numWorkerThreadsPerNuclearBlast.get();
         }
 
         public int getMaxNumTicksAliveForLinearMissiles() {
@@ -186,6 +245,10 @@ public class ICBMConfig {
 
         public boolean getEnableEasterEggForRedcoats() {
             return enableEasterEggForRedcoats.get();
+        }
+
+        public float getBlastResistanceObsidian() {
+            return blastResistanceObsidian.get().floatValue();
         }
 
         public double getAntimatterFuzzinessPercentage() {
@@ -262,6 +325,34 @@ public class ICBMConfig {
 
         public int getOreUraniumCount() {
             return oreUraniumCount.get();
+        }
+
+        public int getParticleAcceleratorEnergyUsagePerTick() {
+            return particleAcceleratorEnergyUsagePerTick.get();
+        }
+
+        public double getParticleAcceleratorSpeedIncreasePerTick() {
+            return particleAcceleratorSpeedIncreasePerTick.get();
+        }
+
+        public double getParticleAcceleratorSpeedPenaltyForCollision() {
+            return particleAcceleratorSpeedPenaltyForCollision.get();
+        }
+
+        public double getParticleAcceleratorSpeedRequiredToGenerateAntimatter() {
+            return particleAcceleratorSpeedRequiredToGenerateAntimatter.get();
+        }
+
+        public double getEMPTowerRangeMinimum() {
+            return empTowerRangeMinimum.get();
+        }
+
+        public double getEMPTowerRangeMaximum() {
+            return empTowerRangeMaximum.get();
+        }
+
+        public int empTowerEnergyUsePerBlast() {
+            return empTowerEnergyUsePerBlast.get();
         }
 
     }

@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "ABA",
+      "ACA",
+      "ABA"
+    ],
+    "key": {
+      "A": {
+        "tag": "forge:ingots/bronze"
+      },
+      "B": {
+        "tag": "forge:plates/steel"
+      },
+      "C": {
+        "item": "icbm:electric_motor"
+      }
+    },
+    "result": {
+      "item": "icbm:electromagnet",
+      "count": 1
+    }
+  }

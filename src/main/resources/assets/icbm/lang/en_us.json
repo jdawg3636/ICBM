@@ -58,6 +58,10 @@
   "item.icbm.battery": "Battery",
   "item.icbm.battery.info": "Used to store and transport power",
 
+  "item.icbm.battery_infinite": "Infinite Battery",
+
+  "item.icbm.electric_motor": "Electric Motor",
+
   "item.icbm.sulfur": "Sulfur",
   "item.icbm.sulfur.info": "Used in the creation of gunpowder",
 
@@ -120,6 +124,14 @@
   "item.icbm.hazmat_pants": "Hazmat Pants",
   "item.icbm.hazmat_boots": "Hazmat Boots",
 
+  # ICBM Material Cells
+  "item.icbm.empty_cell": "Empty Cell",
+  "item.icbm.antimatter_cell": "Antimatter Cell",
+  "item.icbm.antimatter_cell.tooltip": "125 Milligrams",
+  "item.icbm.antimatter_cell_concentrated": "Antimatter Cell",
+  "item.icbm.antimatter_cell_concentrated.tooltip": "1 Gram",
+  "item.icbm.redmatter_cell": "Red Matter Cell",
+
   # ICBM Machines
   "block.icbm.launcher_platform_t1": "Launcher Platform T1",
   "block.icbm.launcher_platform_t2": "Launcher Platform T2",
@@ -148,12 +160,19 @@
   "block.icbm.missilecoordinator": "Missile Coordinator",
   "block.icbm.missilecoordinator.info": "Oversized calculator. Calculates flight paths",
 
+  "block.icbm.coal_generator": "Coal Generator",
+
   # Blocks
   "block.icbm.reinforcedRail": "Reinforced Rail",
   "block.icbm.reinforcedRail.info": "Hardened against explosives",
 
   "block.icbm.redmatter.ore": "Redmatter Ore",
   "block.icbm.redmatter.ore.info": "Oh shiz, how did you get that? Put it down, it could explode!",
+
+  "block.icbm.particle_accelerator": "Particle Accelerator",
+  "block.icbm.electromagnet": "Electromagnet",
+  "block.icbm.electromagnetic_glass": "Electromagnetic Glass",
+
 
   # ICBM Explosives
 
@@ -297,6 +316,9 @@
   "entity.icbm.blast_redmatter": "Redmatter Blast",
   "entity.icbm.blast_sonic": "Sonic Blast",
 
+  # Other Entities
+  "entity.icbm.accelerating_particle": "Accelerating Particle",
+
   # Explosive Minecarts
   "item.icbm.minecart_explosive": "Explosive Cart",
   "item.icbm.minecart_shrapnel": "Shrapnel Minecart",
@@ -436,6 +458,8 @@
 
   "block.icbm.batterybox": "Battery Box",
 
+  "block.icbm.siren": "Siren",
+
   # Chat messages
   "message.tracker.nowtrack": "Now tracking:",
   "message.tracker.nopower": "Tracker out of electricity!",
@@ -463,6 +487,7 @@
   "message.radarGun.nopower": "Radar Gun out of electricity!",
   "message.radarGun.transfer": "Coordinate information transferred!",
   "message.radarGun.noCoords": "You must scan a coordinate!",
+  "message.radarGun.cleared": "No target in range; coordinates cleared!",
   "message.launcher.protected": "Region is being protected.",
   "message.detonator.locked": "Remote locked to: X:%s Y:%s Z:%s",
   "message.detonator.nopower": "Remote out of electricity!",
@@ -498,18 +523,19 @@
   "gui.icbm.detector.on": "On",
   "gui.icbm.detector.status": "Status:",
 
-  "gui.icbm.empTower": "EMP Tower",
-  "gui.icbm.empTower.missiles": "Missiles",
-  "gui.icbm.empTower.elec": "Electricity",
-  "gui.icbm.empTower.both": "Both",
-  "gui.icbm.empTower.radius": "EMP Radius: %p blocks",
-  "gui.icbm.empTower.effect": "EMP Effect:",
-  "gui.icbm.empTower.effectDebilitate": "Debilitate Electronics",
-  "gui.icbm.empTower.effectDisrupt": "Disrupt Missiles",
-  "gui.icbm.empTower.effectDeplete": "Deplete Electricity",
-  "gui.icbm.empTower.mode": "Mode:",
-  "gui.icbm.empTower.ready": "Ready to blast!",
+  "gui.icbm.emp_tower": "EMP Tower",
+  "gui.icbm.emp_tower.missiles": "Missiles",
+  "gui.icbm.emp_tower.elec": "Electricity",
+  "gui.icbm.emp_tower.both": "Both",
+  "gui.icbm.emp_tower.radius": "EMP Radius",
+  "gui.icbm.emp_tower.effect": "EMP Effect:",
+  "gui.icbm.emp_tower.effectDebilitate": "Debilitate Electronics",
+  "gui.icbm.emp_tower.effectDisrupt": "Disrupt Missiles",
+  "gui.icbm.emp_tower.effectDeplete": "Deplete Electricity",
+  "gui.icbm.emp_tower.mode": "Mode:",
+  "gui.icbm.emp_tower.ready": "Ready to blast!",
 
+  "gui.icbm.unspecialized_machine": "Machine",
   "gui.icbm.launcher_platform": "Launcher Platform",
   "gui.icbm.launcher_platform.place": "Place Missile",
   "gui.icbm.launcher_control_panel": "Launcher Control Panel",
@@ -534,6 +560,8 @@
   "gui.icbm.cruise_launcher.noRoom": "3x3 not clear!",
   "gui.icbm.cruise_launcher.statusReady": "Ready!",
 
+  "gui.icbm.particle_accelerator": "Particle Accelerator",
+
   # Chat warning if user tries to fire by hand, %s is status message from GUI
   "chat.launcher.status": "Status: %s",
   "chat.launcher.failedToFire": "Warning: Cannot fire missile due to status error!",
@@ -555,12 +583,13 @@
   "gui.icbm.coordinator.direction": "Direction:",
   "gui.icbm.coordinator.wip": "More features coming soon!",
 
-  "gui.icbm.radar.coords": "Coordinates:",
-  "gui.icbm.radar.range": "Range",
-  "gui.icbm.radar.range.trigger": "Trigger:",
-  "gui.icbm.radar.range.detection": "Detection:",
-  "gui.icbm.radar.on": "Radar on!",
-  "gui.icbm.radar.nopower": "No electricity!",
+  "gui.icbm.radar_station": "Radar Station",
+  "gui.icbm.radar_station.coords": "Coordinates:",
+  "gui.icbm.radar_station.range": "Detection Range",
+  "gui.icbm.radar_station.range.trigger": "Trigger:",
+  "gui.icbm.radar_station.range.detection": "Detection:",
+  "gui.icbm.radar_station.on": "Radar on!",
+  "gui.icbm.radar_station.nopower": "No electricity!",
 
   "gui.icbm.terminal": "Terminal",
   "gui.icbm.platform.ammo": "Ammunition",
@@ -569,6 +598,7 @@
   "gui.icbm.platform.access": "User Access",
 
   # Tooltips
+  "icbm.info.radarGun.coordinates": "Scanned Coordinates:",
   "info.misc.freq": "Frequency:",
   "info.tracker.tracking": "Tracking:",
   "info.designator.noFreq": "Frequency: Not set",
@@ -581,9 +611,13 @@
 
   # Death messages
   "death.attack.icbm.radiation": "%s succumbed to radiation poisoning",
-  "death.attack.icbm.redmatter": "%s was crushed by the immense mass of the mighty black hole.",
-  "death.attack.icbm.chemical": "%s suddenly started feeling not so well.",
-  "death.attack.icbm.contagion": "%s breathed in too much of the green stuff.",
+  "death.attack.icbm.radiation.player": "%1$s succumbed to radiation poisoning while fighting %2$s",
+  "death.attack.icbm.redmatter": "%s was brutally spaghettified in a black hole",
+  "death.attack.icbm.redmatter.player": "%1$s was brutally spaghettified in a black hole while fighting %2$s",
+  "death.attack.icbm.chemical": "%s fell victim to chemical weapons",
+  "death.attack.icbm.chemical.player": "%1$s fell victim to chemical weapons while fighting %2$s",
+  "death.attack.icbm.contagion": "%s succumbed to The Contagion",
+  "death.attack.icbm.contagion.player": "%1$s succumbed to The Contagion while fighting %2$s",
 
   # GPS
   "gps.pos.set": "GPS data saved",
@@ -611,6 +645,10 @@
   "icbm.subtitle.explosion_hypersonic": "Hypersonic Explosion",
   "icbm.subtitle.explosion_incendiary": "Incendiary Explosion",
   "icbm.subtitle.explosion_sonic": "Sonic Explosion",
-  "icbm.subtitle.tile_machine_hum": "Machine hums"
+  "icbm.subtitle.tile_machine_hum": "Machine hums",
+
+  # Units
+  "energy.icbm.forge": "Forge Energy",
+  "energy.icbm.forge.short": "FE"
 
 }

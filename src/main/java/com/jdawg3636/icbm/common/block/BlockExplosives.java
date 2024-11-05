@@ -2,7 +2,7 @@ package com.jdawg3636.icbm.common.block;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
-import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -35,20 +35,20 @@ import javax.annotation.Nullable;
 public class BlockExplosives extends Block {
 
     public final RegistryObject<EntityType<EntityPrimedExplosives>> entityForm;
-    public final AbstractBlastEvent.BlastEventProvider blastEventProvider;
+    public final RegistryObject<BlastEventRegistryEntry> blastEventProvider;
     public final RegistryObject<Item> itemForm;
 
     /**
      * Parameterless Constructor
      * */
-    public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+    public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
         this(Block.Properties.of(Material.EXPLOSIVE).instabreak().sound(SoundType.GRASS), entityForm, blastEventProvider, itemForm);
     }
 
     /**
      * Verbose Constructor (Used by S-Mine to implement a custom material)
      * */
-    public BlockExplosives(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+    public BlockExplosives(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(UNSTABLE, Boolean.FALSE));
         this.entityForm = entityForm;

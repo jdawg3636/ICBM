@@ -1,0 +1,11 @@
+{
+    "__comment": "Based on the mcmeta for vanilla glass provided in the demo pack for MC 1.12: https://www.curseforge.com/minecraft/texture-packs/ctp/files/2457838",
+    "ctm":{
+        "ctm_version": 1,
+        "type":"CTM",
+        "layer":"CUTOUT",
+        "textures":[
+            "icbm:block/reinforced_glass-ctm"
+        ]
+    }
+}

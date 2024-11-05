@@ -1,0 +1,10 @@
+{
+  "type": "icbm:particle_accelerator",
+  "explosion_cause": "DESTROYED_BY_OTHER_PARTICLE",
+  "speed_percent_required": 0.5,
+  "drop_chance": 0.2,
+  "result": {
+    "item": "icbm:redmatter_cell",
+    "count": 3
+  }
+}

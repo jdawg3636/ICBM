@@ -1,0 +1,11 @@
+{
+  "type": "icbm:particle_accelerator",
+  "explosion_cause": "MAXIMUM_SPEED",
+  "_comment": "This is interpreted as a multiple of the value set in the config value 'particleAcceleratorSpeedRequiredToGenerateAntimatter'",
+  "speed_percent_required": 1.0,
+  "drop_chance": 1.0,
+  "result": {
+    "item": "icbm:antimatter_cell",
+    "count": 1
+  }
+}

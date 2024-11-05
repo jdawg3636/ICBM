@@ -1,18 +1,18 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
-import net.minecraft.command.impl.data.EntityDataAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShootableItem;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 public class ItemRocketLauncher extends ShootableItem {
 
     public ItemRocketLauncher() {
-        this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB));
+        this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB).stacksTo(1));
     }
 
     public ItemRocketLauncher(Properties properties) {
@@ -62,32 +62,16 @@ public class ItemRocketLauncher extends ShootableItem {
                 final int destPosZ = sourcePosZ + (int)playerViewVector.scale(20).z;
                 final int totalFlightTicks = 10;
 
-                // Load Data into Entity
-                EntityDataAccessor entityDataAccessor = new EntityDataAccessor(entity);
-                CompoundNBT data = entityDataAccessor.getData();
-                data.putInt("SourcePosX", sourcePosX);
-                data.putInt("SourcePosY", sourcePosY);
-                data.putInt("SourcePosZ", sourcePosZ);
-                data.putInt("DestPosX", destPosX);
-                data.putInt("DestPosY", destPosY);
-                data.putInt("DestPosZ", destPosZ);
-                data.putInt("TotalFlightTicks", totalFlightTicks);
-                data.putInt("MissileSourceType", EntityMissile.MissileSourceType.ROCKET_LAUNCHER.ordinal());
-                data.putInt("MissileLaunchPhase", EntityMissile.MissileLaunchPhase.LAUNCHED.ordinal());
-                try { entityDataAccessor.setData(data); } catch (Exception e) { e.printStackTrace(); }
-
-                // Initialize rotation prior to spawning, fixes split-second of incorrect rotation.
-                Vector3d initialPosition = entity.pathFunction.apply(1);
-                Vector3d initialRotation = entity.gradientFunction.apply(initialPosition);
-                entity.setPos(initialPosition.x, initialPosition.y, initialPosition.z);
-                entity.setRot((float)initialRotation.y, (float)initialRotation.x);
-
-                // Spawn Entity
-                level.addFreshEntity(entity);
+                // Initialize, Spawn, and Launch the missile entity
+                entity.updateMissileData(new BlockPos(sourcePosX, sourcePosY, sourcePosZ), new BlockPos(destPosX, destPosY, destPosZ), null, totalFlightTicks, MissileSourceType.ROCKET_LAUNCHER);
+                final Vector3d initialPosition = entity.getPathFunction().apply(1);
+                final Vector3d initialRotation = entity.getGradientFunction().apply(initialPosition);
+                entity.addEntityToLevel(initialPosition, initialRotation);
+                entity.launchMissile();
 
                 // Log Missile Path
                 if(ICBMReference.COMMON_CONFIG.getDoLogMissilePathsHandheld()) {
-                    ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from source '%s' at (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), EntityMissile.MissileSourceType.ROCKET_LAUNCHER.toString(), sourcePosX, sourcePosY, sourcePosZ, destPosX, destPosY, destPosZ, totalFlightTicks);
+                    ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from source '%s' at (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), MissileSourceType.ROCKET_LAUNCHER.toString(), sourcePosX, sourcePosY, sourcePosZ, destPosX, destPosY, destPosZ, totalFlightTicks);
                 }
 
             }

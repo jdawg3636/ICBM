@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.MoverType;
@@ -24,11 +25,11 @@ import net.minecraftforge.fml.network.NetworkHooks;
 )
 public class EntityGrenade extends ThrowableEntity implements IRendersAsItem {
 
-    public final AbstractBlastEvent.BlastEventProvider blastEventProvider;
+    public final RegistryObject<BlastEventRegistryEntry> blastEventProvider;
     public final RegistryObject<Item> itemForm;
     public int fuse = 40;
 
-    public EntityGrenade(EntityType<? extends EntityGrenade> type, World worldIn, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+    public EntityGrenade(EntityType<? extends EntityGrenade> type, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
         super(type, worldIn);
         this.blastEventProvider = blastEventProvider;
         this.itemForm = itemForm;
@@ -50,7 +51,7 @@ public class EntityGrenade extends ThrowableEntity implements IRendersAsItem {
         if (fuse <= 0) {
             remove();
             if(!level.isClientSide()) {
-                AbstractBlastEvent.fire(blastEventProvider, AbstractBlastEvent.Type.GRENADE, (ServerWorld) level, blockPosition(), getDirection());
+                AbstractBlastEvent.fire(blastEventProvider.get(), AbstractBlastEvent.Type.GRENADE, (ServerWorld) level, blockPosition(), getDirection());
             }
         } else {
             updateInWaterStateAndDoFluidPushing();

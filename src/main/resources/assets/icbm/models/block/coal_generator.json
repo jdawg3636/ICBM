@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "icbm:block/machine",
+    "north": "icbm:block/coal_generator",
+    "south": "icbm:block/machine_output",
+    "east": "icbm:block/machine_side",
+    "west": "icbm:block/machine_side",
+    "up": "icbm:block/machine",
+    "down": "icbm:block/machine"
+  }
+}

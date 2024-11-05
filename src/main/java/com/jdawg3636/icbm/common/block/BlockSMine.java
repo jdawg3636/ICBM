@@ -2,7 +2,7 @@ package com.jdawg3636.icbm.common.block;
 
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
 import com.jdawg3636.icbm.common.entity.EntityPrimedExplosives;
-import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -37,11 +37,11 @@ public class BlockSMine extends BlockExplosives {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public BlockSMine(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+    public BlockSMine(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
         this(AbstractBlockMulti.getMultiblockMachineBlockProperties().noCollission().strength(0.5F), entityForm, blastEventProvider, itemForm);
     }
 
-    public BlockSMine(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, AbstractBlastEvent.BlastEventProvider blastEventProvider, RegistryObject<Item> itemForm) {
+    public BlockSMine(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
         super(properties, entityForm, blastEventProvider, itemForm);
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
     }

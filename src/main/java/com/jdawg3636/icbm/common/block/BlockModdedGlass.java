@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -11,19 +12,26 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
-public class BlockReinforcedGlass extends Block {
+public class BlockModdedGlass extends Block {
 
-    public BlockReinforcedGlass() {
-        super(Block.Properties.of(Material.GLASS)
-                /* Copied(ish) from registration for GLASS in net.minecraft.block.Blocks */
-                .harvestTool(ToolType.PICKAXE)
-                .strength(2F, 48F)
-                .noOcclusion()
-                .isValidSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
-                .isRedstoneConductor((BlockState state, IBlockReader reader, BlockPos pos)->false)
-                .isSuffocating((BlockState state, IBlockReader reader, BlockPos pos)->false)
-                .isViewBlocking((BlockState state, IBlockReader reader, BlockPos pos)->false)
-        );
+    public static AbstractBlock.Properties getModGlassBlockProperties() {
+        return Block.Properties
+            /* Copied(ish) from registration for GLASS in net.minecraft.block.Blocks */
+            .of(Material.GLASS)
+            .harvestTool(ToolType.PICKAXE)
+            .noOcclusion()
+            .isValidSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
+            .isRedstoneConductor((BlockState state, IBlockReader reader, BlockPos pos)->false)
+            .isSuffocating((BlockState state, IBlockReader reader, BlockPos pos)->false)
+            .isViewBlocking((BlockState state, IBlockReader reader, BlockPos pos)->false);
+    }
+
+    public BlockModdedGlass(AbstractBlock.Properties blockProperties) {
+        super(blockProperties);
+    }
+
+    public BlockModdedGlass(float destroyTime, float explosionResistance) {
+        this(getModGlassBlockProperties().strength(destroyTime, explosionResistance));
     }
 
     /**
@@ -49,7 +57,7 @@ public class BlockReinforcedGlass extends Block {
      * Copied from {@link net.minecraft.block.AbstractGlassBlock}
      */
     @Override
-    public boolean propagatesSkylightDown(BlockState p_200123_1_, IBlockReader p_200123_2_, BlockPos p_200123_3_) {
+    public boolean propagatesSkylightDown(BlockState blockState, IBlockReader level, BlockPos blockPos) {
         return true;
     }
 

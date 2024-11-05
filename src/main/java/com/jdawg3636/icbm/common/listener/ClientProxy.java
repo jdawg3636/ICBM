@@ -5,12 +5,15 @@ import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ScreenCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TERCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TileCruiseLauncher;
+import com.jdawg3636.icbm.common.block.emp_tower.ContainerEMPTower;
+import com.jdawg3636.icbm.common.block.emp_tower.ScreenEMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TEREMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
-import com.jdawg3636.icbm.common.block.launcher_control_panel.IScreenLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
+import com.jdawg3636.icbm.common.block.machine.IScreenMachine;
+import com.jdawg3636.icbm.common.block.particle_accelerator.ScreenParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.*;
@@ -54,6 +57,7 @@ public class ClientProxy extends CommonProxy {
     public void onClientSetupEvent(FMLClientSetupEvent event) {
 
         // Set Render Layers
+        RenderTypeLookup.setRenderLayer(BlockReg.ELECTROMAGNETIC_GLASS.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_PLATFORM_T3.get(), RenderType.cutout());
@@ -68,9 +72,11 @@ public class ClientProxy extends CommonProxy {
         // Register Container Screens
         //noinspection RedundantTypeArguments
         ScreenManager.<ContainerCruiseLauncher, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
+        ScreenManager.<ContainerEMPTower, ScreenEMPTower>register(ContainerReg.EMP_TOWER.get(), ScreenEMPTower::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
+        ScreenManager.register(ContainerReg.PARTICLE_ACCELERATOR.get(), ScreenParticleAccelerator::new);
 
         // Register Explosives Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONDENSED.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONDENSED.get().defaultBlockState()));
@@ -175,6 +181,10 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_SONIC.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 
+        // Register Other Entity Rendering Handlers
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.ACCELERATING_PARTICLE.get(), EntityAcceleratingParticleRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.LIGHTNING_VISUAL.get(), EntityLightningVisualRenderer::new);
+
         // Register Tile Entity Renderers
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileEMPTower>) TileReg.EMP_TOWER.get(), TEREMPTower::new);
@@ -240,9 +250,9 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));
     }
 
-    public void updateScreenLauncherControlPanel() {
-        if (Minecraft.getInstance().screen instanceof IScreenLaunchControlPanel) {
-            ((IScreenLaunchControlPanel)Minecraft.getInstance().screen).updateGui();
+    public void updateScreenMachine() {
+        if (Minecraft.getInstance().screen instanceof IScreenMachine) {
+            ((IScreenMachine)Minecraft.getInstance().screen).updateGui();
         }
     }
 
