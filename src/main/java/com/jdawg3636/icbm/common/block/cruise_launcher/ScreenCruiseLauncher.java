@@ -250,4 +250,14 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
         this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
     }
 
+    @Override
+    public Minecraft deobf$getMinecraft() {
+        return super.getMinecraft();
+    }
+
+    @Override
+    public void deobf$renderTooltip(MatrixStack matrixStack, ITextComponent text, int mouseX, int mouseY) {
+        super.renderTooltip(matrixStack, text, mouseX, mouseY);
+    }
+
 }

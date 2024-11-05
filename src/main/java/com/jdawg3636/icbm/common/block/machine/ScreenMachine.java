@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.block.machine;
 import com.jdawg3636.icbm.ICBMReference;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -175,6 +176,16 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
     public void onClose() {
         sendUpdatePacketToServer();
         super.onClose();
+    }
+
+    @Override
+    public Minecraft deobf$getMinecraft() {
+        return super.getMinecraft();
+    }
+
+    @Override
+    public void deobf$renderTooltip(MatrixStack matrixStack, ITextComponent text, int mouseX, int mouseY) {
+        super.renderTooltip(matrixStack, text, mouseX, mouseY);
     }
 
 }

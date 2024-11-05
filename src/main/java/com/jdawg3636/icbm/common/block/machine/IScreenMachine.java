@@ -20,8 +20,10 @@ public interface IScreenMachine {
 
     int getImageHeight();
 
-    Minecraft getMinecraft();
+    // Have to use different name, otherwise implementation gets remapped and the interface doesn't, causing java.lang.AbstractMethodError at runtime
+    Minecraft deobf$getMinecraft();
 
-    void renderTooltip(MatrixStack pMatrixStack, ITextComponent pText, int pMouseX, int pMouseY);
+    // Have to use different name, otherwise implementation gets remapped and the interface doesn't, causing java.lang.AbstractMethodError at runtime
+    void deobf$renderTooltip(MatrixStack pMatrixStack, ITextComponent pText, int pMouseX, int pMouseY);
 
 }
