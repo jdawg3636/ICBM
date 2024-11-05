@@ -243,4 +243,14 @@ public class ScreenLauncherControlPanel extends Screen implements IScreenMachine
         fontRenderer.draw(matrixStack, ireorderingprocessor, (float)(posX - fontRenderer.width(ireorderingprocessor)) + relX, (float)posY + relY, color);
     }
 
+    @Override
+    public Minecraft deobf$getMinecraft() {
+        return super.getMinecraft();
+    }
+
+    @Override
+    public void deobf$renderTooltip(MatrixStack matrixStack, ITextComponent text, int mouseX, int mouseY) {
+        super.renderTooltip(matrixStack, text, mouseX, mouseY);
+    }
+
 }

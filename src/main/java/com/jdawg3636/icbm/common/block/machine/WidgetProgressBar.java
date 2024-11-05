@@ -32,7 +32,7 @@ public class WidgetProgressBar extends Widget {
     @Override
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         // Pulling from the gui_components.png texture
-        this.screen.getMinecraft().getTextureManager().bind(ScreenMachine.DEFAULT_COMPONENTS_TEXTURE);
+        this.screen.deobf$getMinecraft().getTextureManager().bind(ScreenMachine.DEFAULT_COMPONENTS_TEXTURE);
         // Render Empty Bar
         blit(matrixStack, this.x - 1, this.y - 1, 100, 40,  0 * FULL_BAR_TEXTURE_HEIGHT, this.width, this.height, 256, 256);
         // Render Bar Contents
@@ -47,7 +47,7 @@ public class WidgetProgressBar extends Widget {
 
     @Override
     public void renderToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
-        screen.renderTooltip(matrixStack, tooltipSupplier.get(), mouseX, mouseY);
+        screen.deobf$renderTooltip(matrixStack, tooltipSupplier.get(), mouseX, mouseY);
     }
 
     @Override
