@@ -63,35 +63,4 @@ public class BlockModdedGlass extends Block {
         return true;
     }
 
-    @Override
-    public void onRemove(BlockState originalState, World level, BlockPos blockPos, BlockState newState, boolean flag) {
-        // testing hardcodes
-        int xOffset = 0;
-        int yOffset = 0;
-        int zOffset = 0;
-        int radius = 3;
-        BlockPos pos = new BlockPos(0, 100, 0);
-        BlockPos targetPos = blockPos;
-        // Apply Offset
-        BlockPos centerPos = pos.offset(xOffset, yOffset, zOffset);
-        // Calculate Distances from Offset Projector to the Target Block
-        int xDist = Math.abs(targetPos.getX() - centerPos.getX());
-        int yDist = Math.abs(targetPos.getY() - centerPos.getY());
-        int zDist = Math.abs(targetPos.getZ() - centerPos.getZ());
-        // Check if x/y/z matches
-        boolean xMatches = xDist == radius;
-        boolean yMatches = yDist == radius;
-        boolean zMatches = zDist == radius;
-        // Check if x/y/z in range
-        boolean xInRange = xDist <= radius;
-        boolean yInRange = yDist <= radius;
-        boolean zInRange = zDist <= radius;
-        // Target block is part of this forcefield if all coordinates are in
-        // range and at least 1 of them is an exact match
-        boolean returnValue = (xInRange && yInRange && zMatches) ||
-                (xInRange && yMatches && zInRange) ||
-                (xMatches && yInRange && zInRange);
-        ICBMReference.logger().warn(returnValue); // TODO: remove this debug stuff and remove forcefield behavior from coal generator
-    }
-
 }
