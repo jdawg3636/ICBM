@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.missiledirector.IMissileDirectorCapability;
@@ -24,10 +25,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ReuseableStream;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -36,6 +34,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -52,6 +51,7 @@ public class EntityMissile extends Entity {
     public static final DataParameter<Integer>  MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
 
     private UUID simulatedMissileUUID = null;
+    public Optional<ChunkPos> forcedChunkPos = Optional.empty();
 
     public EntityMissile(EntityType<?> entityTypeIn, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem) {
         this(entityTypeIn, worldIn, uuid1 -> Optional.of(worldIn).filter(ServerWorld.class::isInstance).map(ServerWorld.class::cast).map(serverWorld -> new LogicalMissile(
@@ -95,8 +95,6 @@ public class EntityMissile extends Entity {
     }
 
     public void addEntityToLevel() {
-        // todo chunk loading
-//        ForgeChunkManager.forceChunk()
         level.addFreshEntity(this);
     }
 
@@ -123,6 +121,16 @@ public class EntityMissile extends Entity {
         if(level.isClientSide() && this.getMissileLaunchPhase() == MissileLaunchPhase.LAUNCHED) {
             Vector3d viewVector = getViewVector(0F);
             spawnParticles(-viewVector.x, -viewVector.y, -viewVector.z);
+        }
+        if(level instanceof ServerWorld) {
+            // Get current chunk pos
+            ChunkPos currentChunkPos = new ChunkPos(this.blockPosition());
+            // If forced chunk is missing OR not equal to current chunk, un-force it (if present) and switch to forcing current chunk
+            if(forcedChunkPos.map(fc -> !fc.equals(currentChunkPos)).orElse(true)) {
+                forcedChunkPos.ifPresent(fc -> ForgeChunkManager.forceChunk((ServerWorld) this.level, ICBMReference.MODID, this, fc.x, fc.z, false, true));
+                forcedChunkPos = Optional.of(currentChunkPos);
+                forcedChunkPos.ifPresent(fc -> ForgeChunkManager.forceChunk((ServerWorld) this.level, ICBMReference.MODID, this, fc.x, fc.z, true, true));
+            }
         }
     }
 
@@ -304,14 +312,20 @@ public class EntityMissile extends Entity {
         });
     }
 
+    public void unforceChunk() {
+        if(this.level instanceof ServerWorld) forcedChunkPos.ifPresent(fc -> ForgeChunkManager.forceChunk((ServerWorld) this.level, ICBMReference.MODID, this, fc.x, fc.z, false, true));
+    }
+
     @Override
     public void kill() {
         if(!this.removed && level != null && !level.isClientSide()) getMissileDirector().ifPresent(md -> md.deleteMissile(simulatedMissileUUID));
+        unforceChunk(); // This call is likely redundant since the LogicalMissile will invoke killPuppet, which already un-forces the chunk, but better safe than sorry.
         super.kill();
     }
 
     public void killPuppet() {
         if(!this.removed && level != null && !level.isClientSide()) getLogicalMissile().ifPresent(lm -> lm.puppetEntityUUID = Optional.empty());
+        unforceChunk();
         super.kill();
     }
 

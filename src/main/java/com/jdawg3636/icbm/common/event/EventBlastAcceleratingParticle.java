@@ -60,7 +60,7 @@ public class EventBlastAcceleratingParticle extends AbstractBlastEvent {
 
     @Override
     public boolean executeBlast() {
-        ICBMReference.logger().info(String.format("Detonating particle @ %s with cause %s", getBlastPosition(), getExplosionCause()));
+        ICBMReference.logger().debug(String.format("Detonating particle @ %s with cause %s", getBlastPosition(), getExplosionCause()));
         Optional<ParticleAcceleratorRecipe> recipeOptional = ParticleAcceleratorRecipe.getRecipeFor(ICBMRecipeTypes.PARTICLE_ACCELERATOR, getExplosionCause(), getBlastWorld());
         recipeOptional.ifPresent((recipe)->{
             float maxParticleSpeed = Math.max(getParticleSpeed(), getOtherParticleSpeed().orElse(Float.MIN_VALUE));
