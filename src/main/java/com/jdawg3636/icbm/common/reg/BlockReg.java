@@ -40,7 +40,7 @@ public class BlockReg {
     public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.of(Material.STONE).strength(3.8F, 50F)));
     public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.of(Material.STONE).strength(3.8F, 75F)));
     public static final RegistryObject<Block> RADIOACTIVE_MATERIAL          = BLOCKS.register("radioactive_material",           () -> new GrassBlock(AbstractBlock.Properties.of(Material.GRASS).randomTicks().harvestTool(ToolType.SHOVEL).strength(0.6F, 6F).sound(SoundType.GRASS)));
-    public static final RegistryObject<Block> REINFORCED_GLASS              = BLOCKS.register("reinforced_glass",               () -> new BlockModdedGlass(2F, 48F));
+    public static final RegistryObject<Block> REINFORCED_GLASS              = BLOCKS.register("reinforced_glass",               () -> new BlockModdedGlass(2F, 48F, false));
 
     // Ores
     public static final RegistryObject<Block> ORE_COPPER                    = BLOCKS.register("ore_copper",                     () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
@@ -127,7 +127,7 @@ public class BlockReg {
     // Particle Accelerator Components (Deliberately Non-Alphabetized so that the Particle Accelerator itself will appear first in the Creative Inventory)
     public static final RegistryObject<Block> PARTICLE_ACCELERATOR          = BLOCKS.register("particle_accelerator",           () -> new BlockParticleAccelerator(TileReg.PARTICLE_ACCELERATOR));
     public static final RegistryObject<Block> ELECTROMAGNET                 = BLOCKS.register("electromagnet",                  () -> new Block(Block.Properties.of(Material.METAL).strength(5F, 6F)));
-    public static final RegistryObject<Block> ELECTROMAGNETIC_GLASS         = BLOCKS.register("electromagnetic_glass",          () -> new BlockModdedGlass(5F, 6F));
+    public static final RegistryObject<Block> ELECTROMAGNETIC_GLASS         = BLOCKS.register("electromagnetic_glass",          () -> new BlockModdedGlass(5F, 6F, true));
 
     // Extras
     public static final RegistryObject<Block> GLASS_BUTTON                  = BLOCKS.register("glass_button",                   BlockGlassButton::new);
