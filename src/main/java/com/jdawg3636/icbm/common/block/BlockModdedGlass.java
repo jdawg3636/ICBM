@@ -21,7 +21,6 @@ public class BlockModdedGlass extends Block {
             .harvestTool(ToolType.PICKAXE)
             .noOcclusion()
             .isValidSpawn((BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity)->false)
-            .isRedstoneConductor((BlockState state, IBlockReader reader, BlockPos pos)->false)
             .isSuffocating((BlockState state, IBlockReader reader, BlockPos pos)->false)
             .isViewBlocking((BlockState state, IBlockReader reader, BlockPos pos)->false);
     }
@@ -30,8 +29,8 @@ public class BlockModdedGlass extends Block {
         super(blockProperties);
     }
 
-    public BlockModdedGlass(float destroyTime, float explosionResistance) {
-        this(getModGlassBlockProperties().strength(destroyTime, explosionResistance));
+    public BlockModdedGlass(float destroyTime, float explosionResistance, boolean isRedstoneConductor) {
+        this(getModGlassBlockProperties().strength(destroyTime, explosionResistance).isRedstoneConductor((BlockState state, IBlockReader reader, BlockPos pos) -> isRedstoneConductor));
     }
 
     /**
