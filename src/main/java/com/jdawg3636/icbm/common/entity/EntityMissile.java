@@ -33,6 +33,8 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fml.RegistryObject;
@@ -52,6 +54,13 @@ public class EntityMissile extends Entity {
 
     private UUID simulatedMissileUUID = null;
     public Optional<ChunkPos> forcedChunkPos = Optional.empty();
+
+    private int lerpSteps;
+    private double lerpY;
+    private double lerpX;
+    private double lerpZ;
+    private double lerpYRot;
+    private double lerpXRot;
 
     public EntityMissile(EntityType<?> entityTypeIn, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem) {
         this(entityTypeIn, worldIn, uuid1 -> Optional.of(worldIn).filter(ServerWorld.class::isInstance).map(ServerWorld.class::cast).map(serverWorld -> new LogicalMissile(
@@ -119,6 +128,7 @@ public class EntityMissile extends Entity {
     public void tick() {
         super.tick();
         if(level.isClientSide() && this.getMissileLaunchPhase() == MissileLaunchPhase.LAUNCHED) {
+            tickLerp();
             Vector3d viewVector = getViewVector(0F);
             spawnParticles(-viewVector.x, -viewVector.y, -viewVector.z);
         }
@@ -131,6 +141,21 @@ public class EntityMissile extends Entity {
                 forcedChunkPos = Optional.of(currentChunkPos);
                 forcedChunkPos.ifPresent(fc -> ForgeChunkManager.forceChunk((ServerWorld) this.level, ICBMReference.MODID, this, fc.x, fc.z, true, true));
             }
+        }
+    }
+
+    // Copied from vanilla BoatEntity, MC 1.16.5
+    private void tickLerp() {
+        if (this.lerpSteps > 0) {
+            double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
+            double d1 = this.getY() + (this.lerpY - this.getY()) / (double)this.lerpSteps;
+            double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double)this.lerpSteps;
+            double d3 = MathHelper.wrapDegrees(this.lerpYRot - (double)this.yRot);
+            this.yRot = (float)((double)this.yRot + d3 / (double)this.lerpSteps);
+            this.xRot = (float)((double)this.xRot + (this.lerpXRot - (double)this.xRot) / (double)this.lerpSteps);
+            --this.lerpSteps;
+            this.setPos(d0, d1, d2);
+            this.setRot(this.yRot, this.xRot);
         }
     }
 
@@ -272,6 +297,11 @@ public class EntityMissile extends Entity {
     }
 
     @Override
+    public double getPassengersRidingOffset() {
+        return Math.sin(Math.toRadians(Math.max(0, -this.xRot))) * (getBbHeight() - 1);
+    }
+
+    @Override
     public final ActionResultType interact(PlayerEntity player, Hand hand) {
         if (!this.isVehicle() && !player.isSecondaryUseActive() && !this.getMissileSourceType().equals(MissileSourceType.ROCKET_LAUNCHER)) {
             if (!this.level.isClientSide) {
@@ -301,6 +331,18 @@ public class EntityMissile extends Entity {
             lm.yRot = yRot;
             lm.xRot = xRot;
         });
+    }
+
+    // Copied from vanilla BoatEntity, MC 1.16.5
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void lerpTo(double x, double y, double z, float yRot, float xRot, int posRotationIncrements, boolean teleport) {
+        this.lerpX = x;
+        this.lerpY = y;
+        this.lerpZ = z;
+        this.lerpYRot = yRot;
+        this.lerpXRot = xRot;
+        this.lerpSteps = 10;
     }
 
     public void updatePuppetToMatchLogical() {
