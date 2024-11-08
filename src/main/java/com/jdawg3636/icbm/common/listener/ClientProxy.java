@@ -31,6 +31,7 @@ import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -250,9 +251,9 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));
     }
 
-    public void updateScreenMachine() {
+    public void updateScreenMachine(BlockPos posOfTileEntity) {
         if (Minecraft.getInstance().screen instanceof IScreenMachine) {
-            ((IScreenMachine)Minecraft.getInstance().screen).updateGui();
+            ((IScreenMachine)Minecraft.getInstance().screen).updateGui(posOfTileEntity);
         }
     }
 

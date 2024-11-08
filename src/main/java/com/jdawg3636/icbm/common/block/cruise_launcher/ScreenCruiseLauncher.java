@@ -251,6 +251,11 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
     }
 
     @Override
+    public void updateGui(BlockPos posOfTileEntity) {
+        if(tileEntity.getPosOfTileEntity().equals(posOfTileEntity)) updateGui();
+    }
+
+    @Override
     public Minecraft deobf$getMinecraft() {
         return super.getMinecraft();
     }

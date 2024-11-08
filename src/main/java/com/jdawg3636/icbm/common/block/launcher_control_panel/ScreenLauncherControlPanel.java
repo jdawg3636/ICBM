@@ -135,15 +135,18 @@ public class ScreenLauncherControlPanel extends Screen implements IScreenMachine
 
     }
 
-    public void updateGui() {
-        this.textFieldTargetX.setValue(String.valueOf(tileEntity.getTargetX()));
-        this.textFieldTargetZ.setValue(String.valueOf(tileEntity.getTargetZ()));
-        this.textFieldTargetY.setValue(String.valueOf(tileEntity.getTargetY()));
-        this.textFieldRadioFrequency.setValue(String.valueOf(tileEntity.getRadioFrequency()));
-        this.textFieldTargetX.moveCursorToStart();
-        this.textFieldTargetZ.moveCursorToStart();
-        this.textFieldTargetY.moveCursorToStart();
-        this.textFieldRadioFrequency.moveCursorToStart();
+    @Override
+    public void updateGui(BlockPos posOfTileEntity) {
+        if(tileEntity.getBlockPos().equals(posOfTileEntity)) {
+            this.textFieldTargetX.setValue(String.valueOf(tileEntity.getTargetX()));
+            this.textFieldTargetZ.setValue(String.valueOf(tileEntity.getTargetZ()));
+            this.textFieldTargetY.setValue(String.valueOf(tileEntity.getTargetY()));
+            this.textFieldRadioFrequency.setValue(String.valueOf(tileEntity.getRadioFrequency()));
+            this.textFieldTargetX.moveCursorToStart();
+            this.textFieldTargetZ.moveCursorToStart();
+            this.textFieldTargetY.moveCursorToStart();
+            this.textFieldRadioFrequency.moveCursorToStart();
+        }
     }
 
     @Override

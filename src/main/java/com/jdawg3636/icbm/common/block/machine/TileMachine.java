@@ -255,7 +255,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         if(level != null && level.isClientSide()) {
             handleUpdateTag(getBlockState(), pkt.getTag());
-            ICBMReference.distProxy().updateScreenMachine();
+            ICBMReference.distProxy().updateScreenMachine(pkt.getPos());
         }
     }
 
