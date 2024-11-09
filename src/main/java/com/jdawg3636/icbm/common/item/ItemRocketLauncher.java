@@ -3,17 +3,17 @@ package com.jdawg3636.icbm.common.item;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
+import com.jdawg3636.icbm.common.reg.ICBMTags;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShootableItem;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 
@@ -44,14 +44,6 @@ public class ItemRocketLauncher extends ShootableItem {
             // If ammo was present and missile created....
             if(entity != null) {
 
-                // Take ammo from player (unless in creative mode - using same check as vanilla bow)
-                if (!player.abilities.instabuild) {
-                    itemstack.shrink(1);
-                    if (itemstack.isEmpty()) {
-                        player.inventory.removeItem(itemstack);
-                    }
-                }
-
                 // Calculate Missile Data
                 final Vector3d playerViewVector = player.getLookAngle().normalize();
                 final int sourcePosX = (int) (player.getX() + playerViewVector.x);
@@ -67,11 +59,25 @@ public class ItemRocketLauncher extends ShootableItem {
                 final Vector3d initialPosition = entity.getPathFunction().apply(1);
                 final Vector3d initialRotation = entity.getGradientFunction().apply(initialPosition);
                 entity.addEntityToLevel(initialPosition, initialRotation);
-                entity.launchMissile();
+                boolean successfulLaunch = entity.launchMissile();
 
-                // Log Missile Path
-                if(ICBMReference.COMMON_CONFIG.getDoLogMissilePathsHandheld()) {
-                    ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from source '%s' at (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), MissileSourceType.ROCKET_LAUNCHER.toString(), sourcePosX, sourcePosY, sourcePosZ, destPosX, destPosY, destPosZ, totalFlightTicks);
+                if(successfulLaunch) {
+                    // Log Missile Path
+                    if (ICBMReference.COMMON_CONFIG.getDoLogMissilePathsHandheld()) {
+                        ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from source '%s' at (%s, %s, %s) to (%s, %s, %s) with %s ticks of flight time.", entity.getName().getString(), MissileSourceType.ROCKET_LAUNCHER.toString(), sourcePosX, sourcePosY, sourcePosZ, destPosX, destPosY, destPosZ, totalFlightTicks);
+                    }
+
+                    // Take ammo from player (unless in creative mode - using same check as vanilla bow)
+                    if (!player.abilities.instabuild) {
+                        itemstack.shrink(1);
+                        if (itemstack.isEmpty()) {
+                            player.inventory.removeItem(itemstack);
+                        }
+                    }
+                }
+                else {
+                    player.sendMessage(new TranslationTextComponent("message.icbm.rocket_launcher.launch_failed", entity.getName()), Util.NIL_UUID);
+                    entity.kill();
                 }
 
             }
@@ -86,8 +92,7 @@ public class ItemRocketLauncher extends ShootableItem {
     @Override
     public Predicate<ItemStack> getAllSupportedProjectiles() {
         return (ItemStack itemStack) -> {
-            ITag<Item> missile = ItemTags.getAllTags().getTag(new ResourceLocation(ICBMReference.MODID, "missiles"));
-            return missile != null && itemStack.getItem().is(missile);
+            return itemStack.getItem().is(ICBMTags.Items.MISSILES);
         };
     }
 

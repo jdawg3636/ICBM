@@ -269,6 +269,11 @@ public class LogicalMissile {
                     break;
                 }
 
+                if(missileItem.equals(ItemReg.MISSILE_ANTIBALLISTIC) && ticksSinceLaunch >= totalFlightTicks) {
+                    explode(level);
+                    break;
+                }
+
                 // If below the world, die
                 if(y < 0 && World.isOutsideBuildHeight((int) y)) {
                     kill(); // Don't Explode, Just Disappear.
@@ -283,7 +288,7 @@ public class LogicalMissile {
                     EntityMissile newPuppet = new EntityMissile(((ItemMissile) this.missileItem.get()).getMissileEntity().get(), this.level, uuid -> {
                         this.puppetEntityUUID = Optional.of(uuid);
                         return Optional.of(this);
-                    }, getLogicalUUID());
+                    }, this.missileItem, getLogicalUUID());
                     newPuppet.updatePuppetToMatchLogical();
                     level.addFreshEntity(newPuppet);
                 }
@@ -404,7 +409,7 @@ public class LogicalMissile {
         // Cut connections from the launcher platform TileEntity (only relevant if we're still on the launch pad)
         getPuppetEntity().ifPresent(missileEntity -> Optional.ofNullable(level.getBlockEntity(sourcePos)).filter(TileLauncherPlatform.class::isInstance).map(TileLauncherPlatform.class::cast).ifPresent(tileLauncherPlatform -> {
             if (missileEntity.getUUID().equals(tileLauncherPlatform.missileEntityID)) {
-                tileLauncherPlatform.removeMissileItemWithAction((entity) -> {});
+                tileLauncherPlatform.removeMissileItemWithAction((entity) -> true);
             }
         }));
         // Kill puppet entity, if it exists

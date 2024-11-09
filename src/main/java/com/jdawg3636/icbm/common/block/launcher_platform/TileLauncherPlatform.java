@@ -25,7 +25,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.Level;
 
 import java.util.UUID;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class TileLauncherPlatform extends TileMachine {
@@ -57,16 +57,17 @@ public class TileLauncherPlatform extends TileMachine {
         return 0D;
     }
 
-    public void removeMissileItemWithAction(Consumer<EntityMissile> action) {
+    public void removeMissileItemWithAction(Function<EntityMissile, Boolean> action) {
         itemHandlerLazyOptional.ifPresent((itemHandlerUncast) -> {
             ItemStackHandler itemHandler = (ItemStackHandler)itemHandlerUncast;
             if(missileEntityID != null && level != null && !level.isClientSide()) {
                 Item item = itemHandler.getStackInSlot(0).getItem();
                 EntityMissile entity = (EntityMissile)(((ServerWorld)level).getEntity(missileEntityID));
                 if(item instanceof ItemMissile) {
-                    missileEntityID = null; // Necessary to disconnect, otherwise ItemStackHandler would kill the entity when the slot is cleared
-                    itemHandler.setStackInSlot(0, ItemStack.EMPTY);
-                    action.accept(entity);
+                    if(action.apply(entity)) {
+                        missileEntityID = null; // Necessary to disconnect, otherwise ItemStackHandler would kill the entity when the slot is cleared
+                        itemHandler.setStackInSlot(0, ItemStack.EMPTY);
+                    }
                 }
             }
         });
@@ -77,10 +78,13 @@ public class TileLauncherPlatform extends TileMachine {
             assert level != null;
             if(entity != null) {
                 entity.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, getMissileSourceType());
-                entity.launchMissile();
-                this.level.playSound((PlayerEntity) null, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), SoundEventReg.EFFECT_MISSILE_LAUNCH.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
-                ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from (%s, %s, %s) to (%s, %s, %s) with peak height '%s' and '%s' ticks of flight time.", entity.getName().getString(), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), destPos.getX(), destPos.getY(), destPos.getZ(), peakHeight, totalFlightTicks);
+                if(entity.launchMissile()) {
+                    this.level.playSound((PlayerEntity) null, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), SoundEventReg.EFFECT_MISSILE_LAUNCH.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from (%s, %s, %s) to (%s, %s, %s) with peak height '%s' and '%s' ticks of flight time.", entity.getName().getString(), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), destPos.getX(), destPos.getY(), destPos.getZ(), peakHeight, totalFlightTicks);
+                    return true;
+                }
             }
+            return false;
         });
     }
 

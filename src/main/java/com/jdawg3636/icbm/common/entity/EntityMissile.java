@@ -8,7 +8,6 @@ import com.jdawg3636.icbm.common.capability.missiledirector.LogicalMissile;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileLaunchPhase;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
-import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -53,6 +52,7 @@ public class EntityMissile extends Entity {
     public static final DataParameter<Integer>  MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
 
     private UUID simulatedMissileUUID = null;
+    public RegistryObject<Item> missileItem;
     public Optional<ChunkPos> forcedChunkPos = Optional.empty();
 
     private int lerpSteps;
@@ -61,6 +61,10 @@ public class EntityMissile extends Entity {
     private double lerpZ;
     private double lerpYRot;
     private double lerpXRot;
+
+    public interface Constructor<T extends EntityMissile> {
+        T construct(EntityType<?> entityTypeIn, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem);
+    }
 
     public EntityMissile(EntityType<?> entityTypeIn, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem) {
         this(entityTypeIn, worldIn, uuid1 -> Optional.of(worldIn).filter(ServerWorld.class::isInstance).map(ServerWorld.class::cast).map(serverWorld -> new LogicalMissile(
@@ -74,13 +78,14 @@ public class EntityMissile extends Entity {
             3000,
             Optional.of(uuid1),
             serverWorld
-        )), Optional.empty());
+        )), missileItem, Optional.empty());
     }
 
-    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, Function<UUID, Optional<LogicalMissile>> logicalMissileConstructor, Optional<UUID> logicalUUID) {
+    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, Function<UUID, Optional<LogicalMissile>> logicalMissileConstructor, RegistryObject<Item> missileItem, Optional<UUID> logicalUUID) {
         super(entityTypeIn, worldIn);
         // Construct and register logical missile
         this.getMissileDirector().ifPresent(md -> logicalMissileConstructor.apply(this.uuid).ifPresent(lm -> this.simulatedMissileUUID = md.registerMissile(lm, logicalUUID)));
+        this.missileItem = missileItem;
         yRot = -90F;
     }
 
@@ -92,9 +97,10 @@ public class EntityMissile extends Entity {
         return this.getMissileDirector().resolve().flatMap(md -> md.lookupLogicalMissile(this.simulatedMissileUUID));
     }
 
-    public void launchMissile() {
+    public boolean launchMissile() {
         // Set launch phase (this will cause the tick function to simulate flight)
         entityData.set(MISSILE_LAUNCH_PHASE, MissileLaunchPhase.LAUNCHED.ordinal());
+        return true;
     }
 
     public void addEntityToLevel(Vector3d initialPosition, Vector3d initialRotation) {
@@ -270,7 +276,7 @@ public class EntityMissile extends Entity {
 
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
-        return this.getLogicalMissile().map(lm -> lm.missileItem).orElse(ItemReg.MISSILE_CONVENTIONAL).get().getDefaultInstance();
+        return this.missileItem.get().getDefaultInstance();
     }
 
     public void spawnParticles(double motionX, double motionY, double motionZ) {

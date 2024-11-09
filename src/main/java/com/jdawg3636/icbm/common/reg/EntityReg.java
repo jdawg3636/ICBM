@@ -72,7 +72,7 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIMATTER        = registerMissile(BlastEventReg.ANTIMATTER,           ItemReg.MISSILE_ANTIMATTER);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_REDMATTER         = registerMissile(BlastEventReg.REDMATTER,            ItemReg.MISSILE_REDMATTER);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_HOMING            = registerMissile(BlastEventReg.DUMMY, /*TODO*/       ItemReg.MISSILE_HOMING);
-    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC     = registerMissile(BlastEventReg.DUMMY, /*TODO*/       ItemReg.MISSILE_ANTIBALLISTIC, 1F, 5F);
+    public static final RegistryObject<EntityType<EntityMissile>> MISSILE_ANTIBALLISTIC     = registerMissile(BlastEventReg.ANTIBALLISTIC,        ItemReg.MISSILE_ANTIBALLISTIC, 1F, 5F, EntityMissileAntiballistic::new);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER           = registerMissile(BlastEventReg.DUMMY, /*TODO*/       ItemReg.MISSILE_CLUSTER, 1F, 5F);
     public static final RegistryObject<EntityType<EntityMissile>> MISSILE_CLUSTER_NUCLEAR   = registerMissile(BlastEventReg.DUMMY, /*TODO*/       ItemReg.MISSILE_CLUSTER_NUCLEAR, 1F, 5F);
 
@@ -163,12 +163,16 @@ public final class EntityReg {
     }
 
     public static RegistryObject<EntityType<EntityMissile>> registerMissile(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm, float width, float height) {
+        return registerMissile(blastEventProvider, itemForm, width, height, EntityMissile::new);
+    }
+
+    public static <T extends EntityMissile> RegistryObject<EntityType<T>> registerMissile(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm, float width, float height, EntityMissile.Constructor<T> constructor) {
         return ENTITIES.register(
                 itemForm.getId().getPath(),
                 () -> {
-                    return EntityType.Builder.<EntityMissile>of(
+                    return EntityType.Builder.<T>of(
                             (type, world) -> {
-                                EntityMissile toReturn = new EntityMissile(type, world, blastEventProvider, itemForm);
+                                T toReturn = constructor.construct(type, world, blastEventProvider, itemForm);
                                 toReturn.setRot(0F, 90F);
                                 return toReturn;
                             },
