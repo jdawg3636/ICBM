@@ -71,7 +71,7 @@ public class ItemBattery extends Item {
         super.appendHoverText(stack, level, tooltip, tooltipFlag);
         if(!this.infinite) {
             tooltip.add(stack.getCapability(CapabilityEnergy.ENERGY).map((energyStorage) -> {
-                IFormattableTextComponent stored = ((ICBMEnergyStorage) energyStorage).getEnergyStoredFormatted(0, true);
+                IFormattableTextComponent stored = ((ICBMEnergyStorage) energyStorage).getEnergyStoredFormatted(2, true);
                 IFormattableTextComponent slash = new StringTextComponent("/");
                 IFormattableTextComponent capacity = ICBMEnergyStorage.EnergyMeasurementUnit.formatEnergyValue(energyStorage.getMaxEnergyStored(), 0, true);
                 return stored.append(slash).append(capacity).withStyle(TextFormatting.GRAY);

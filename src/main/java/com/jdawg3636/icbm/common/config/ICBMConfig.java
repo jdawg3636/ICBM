@@ -77,6 +77,8 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue empTowerRangeMaximum;
         private final ForgeConfigSpec.IntValue empTowerEnergyUsePerBlast;
 
+        private final ForgeConfigSpec.IntValue coalGeneratorEnergyGenerationPerTick;
+
         public Common() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
             this.maxBlastManagerThreadCountPerLevel = builder
@@ -224,6 +226,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the amount of Forge Energy (FE) consumed per blast by an EMP Tower.")
                     .defineInRange("empTowerEnergyUsePerBlast", 1_000_000, 0, Integer.MAX_VALUE);
+            this.coalGeneratorEnergyGenerationPerTick = builder
+                    .comment("",
+                            "Defines the amount of Forge Energy (FE) generated per tick by a coal generator while it is active.")
+                    .defineInRange("coalGeneratorEnergyGenerationPerTick", 50, 0, Integer.MAX_VALUE);
             this.spec = builder.build();
         }
 
@@ -353,6 +359,10 @@ public class ICBMConfig {
 
         public int empTowerEnergyUsePerBlast() {
             return empTowerEnergyUsePerBlast.get();
+        }
+
+        public int getCoalGeneratorEnergyGenerationPerTick() {
+            return coalGeneratorEnergyGenerationPerTick.get();
         }
 
     }

@@ -53,6 +53,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         super(tileEntityTypeIn);
         this.containerType = containerType;
         this.containerConstructor = containerConstructor;
+
         if(inventorySize > 0) {
             itemHandler = createHandler(inventorySize);
             itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
@@ -61,9 +62,18 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
             itemHandler = null;
             itemHandlerLazyOptional = LazyOptional.empty();
         }
-        this.energyStorage = new ICBMEnergyStorage().setCapacity(forgeEnergyCapacity, false).setMaxReceive(forgeEnergyPerTickIn).setMaxExtract(forgeEnergyPerTickOut).setCallbackOnChanged(this::setChanged);
-        this.energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
+
+        if(forgeEnergyCapacity > 0 || forgeEnergyPerTickIn > 0 || forgeEnergyPerTickOut > 0) {
+            this.energyStorage = new ICBMEnergyStorage().setCapacity(forgeEnergyCapacity, false).setMaxReceive(forgeEnergyPerTickIn).setMaxExtract(forgeEnergyPerTickOut).setCallbackOnChanged(this::setChanged);
+            this.energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
+        }
+        else {
+            this.energyStorage = null;
+            this.energyStorageLazyOptional = LazyOptional.empty();
+        }
+
         this.defaultName = defaultName;
+
     }
 
     /*
@@ -215,6 +225,27 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         return maxAmount - totalRequesting;
     }
 
+    public int sendEnergy(int maxAmount, Direction[] directions) {
+        int amountUnsent = maxAmount;
+        for(Direction direction : directions) {
+            amountUnsent -= sendEnergy(amountUnsent, direction);
+        }
+        return maxAmount - amountUnsent;
+    }
+
+    public int sendEnergy(int maxAmount, Direction direction) {
+        if(level == null) return 0;
+        TileEntity blockEntity = level.getBlockEntity(getBlockPos().relative(direction));
+        if(blockEntity != null) {
+            LazyOptional<IEnergyStorage> neighborCapOptional = blockEntity.getCapability(ICBMReference.FORGE_ENERGY_CAPABILITY, direction.getOpposite());
+            if(neighborCapOptional.isPresent()) {
+                IEnergyStorage neighborCap = neighborCapOptional.orElse(null);
+                return neighborCap.receiveEnergy(maxAmount, false);
+            }
+        }
+        return 0;
+    }
+
     public boolean tryConsumeEnergy(int energyToConsume) {
         ICBMEnergyStorage energyStorage = (ICBMEnergyStorage)energyStorageLazyOptional.orElse(null);
         int energyWouldBeConsumed = energyStorage.extractEnergyUnchecked(energyToConsume, true);
@@ -227,7 +258,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     }
 
     public int tryReceiveEnergy(IEnergyStorage source, int energyToReceive) {
-        if(!energyStorage.canReceive()) return 0;
+        if(!energyStorageLazyOptional.isPresent() || !energyStorage.canReceive()) return 0;
         energyToReceive = Math.min(Math.min(energyToReceive, energyStorage.getMaxReceive()), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
         int energyExtracted = source.extractEnergy(energyToReceive, false);
         int energyReceived = energyStorage.receiveEnergy(energyExtracted, false);
