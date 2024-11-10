@@ -562,6 +562,8 @@
   "gui.icbm.cruise_launcher.noRoom": "3x3 not clear!",
   "gui.icbm.cruise_launcher.statusReady": "Ready!",
 
+  "gui.icbm.coal_generator": "Coal Generator",
+
   "gui.icbm.particle_accelerator": "Particle Accelerator",
 
   # Chat warning if user tries to fire by hand, %s is status message from GUI

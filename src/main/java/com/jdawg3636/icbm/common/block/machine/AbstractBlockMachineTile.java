@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class AbstractBlockMachineTile extends AbstractBlockMachine {
 
@@ -56,6 +57,7 @@ public class AbstractBlockMachineTile extends AbstractBlockMachine {
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
         TileEntity tileEntity = world.getBlockEntity(pos);
         if(!world.isClientSide() && tileEntity instanceof TileMachine) {
+            NetworkHooks.openGui((ServerPlayerEntity) player, (TileMachine)tileEntity, tileEntity.getBlockPos());
             SUpdateTileEntityPacket supdatetileentitypacket = tileEntity.getUpdatePacket();
             if (supdatetileentitypacket != null) ((ServerPlayerEntity)player).connection.send(supdatetileentitypacket);
         }

@@ -17,7 +17,6 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class AbstractContainerMachine extends Container {
 
@@ -54,6 +53,11 @@ public class AbstractContainerMachine extends Container {
     private int nextSlotIndex = 0;
     boolean playerInventoryShown = false;
 
+    @FunctionalInterface
+    public static interface IConstructor {
+        AbstractContainerMachine construct(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory);
+    }
+
     public AbstractContainerMachine(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
         super(containerType, windowId);
         this.tileEntity = (TileMachine) level.getBlockEntity(blockPos);
@@ -76,15 +80,7 @@ public class AbstractContainerMachine extends Container {
     }
 
     public int getSlotCount() {
-        AtomicInteger slotCount = new AtomicInteger();
-        if(tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
-                    (IItemHandler itemHandler) -> {
-                        slotCount.set(itemHandler.getSlots());
-                    }
-            );
-        }
-        return slotCount.get();
+        return tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(IItemHandler::getSlots).orElse(-1);
     }
 
     public SlotTag getSlotTag(int i) {

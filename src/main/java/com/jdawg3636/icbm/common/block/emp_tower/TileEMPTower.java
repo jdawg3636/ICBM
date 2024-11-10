@@ -39,7 +39,7 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
     }
 
     public TileEMPTower(TileEntityType<?> tileEntityType, ITextComponent name) {
-        super(tileEntityType, ContainerReg.EMP_TOWER::get, 1, 1_000_000, 5_000, 0, name);
+        super(tileEntityType, ContainerReg.EMP_TOWER::get, ContainerEMPTower::new, 1, 1_000_000, 5_000, 0, name);
     }
 
     public void addAnimationPercent(double increment) {

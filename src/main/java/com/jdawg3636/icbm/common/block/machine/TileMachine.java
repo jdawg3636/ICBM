@@ -1,7 +1,6 @@
 package com.jdawg3636.icbm.common.block.machine;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import net.minecraft.block.BlockState;
@@ -40,18 +39,20 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     private ITextComponent name;
     private final ITextComponent defaultName;
     private final Supplier<ContainerType<? extends AbstractContainerMachine>> containerType;
+    private final AbstractContainerMachine.IConstructor containerConstructor;
     private final ItemStackHandler itemHandler;
     public final LazyOptional<IItemHandler> itemHandlerLazyOptional;
     private final ICBMEnergyStorage energyStorage;
     public final LazyOptional<IEnergyStorage> energyStorageLazyOptional;
 
-    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType) {
-        this(tileEntityTypeIn, containerType, 0, 0, 0, 0, new TranslationTextComponent("gui.icbm.unspecialized_machine"));
+    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor) {
+        this(tileEntityTypeIn, containerType, containerConstructor, 0, 0, 0, 0, new TranslationTextComponent("gui.icbm.unspecialized_machine"));
     }
 
-    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, int inventorySize, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut, ITextComponent defaultName) {
+    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor, int inventorySize, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut, ITextComponent defaultName) {
         super(tileEntityTypeIn);
         this.containerType = containerType;
+        this.containerConstructor = containerConstructor;
         if(inventorySize > 0) {
             itemHandler = createHandler(inventorySize);
             itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
@@ -189,8 +190,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
 
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        // TODO: This shouldn't always be instance of launcher platform - need to be generic
-        return new ContainerLauncherPlatform(getContainerType(), i, this.getLevel(), getPosOfTileEntity(), playerInventory);
+        return containerConstructor.construct(getContainerType(), i, this.getLevel(), getPosOfTileEntity(), playerInventory);
     }
 
     public boolean redstoneSignalPresent() {

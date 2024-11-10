@@ -1,6 +1,8 @@
 package com.jdawg3636.icbm.common.listener;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.coal_generator.ContainerCoalGenerator;
+import com.jdawg3636.icbm.common.block.coal_generator.ScreenCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ScreenCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TERCruiseLauncher;
@@ -72,6 +74,7 @@ public class ClientProxy extends CommonProxy {
 
         // Register Container Screens
         //noinspection RedundantTypeArguments
+        ScreenManager.<ContainerCoalGenerator, ScreenCoalGenerator>register(ContainerReg.COAL_GENERATOR.get(), ScreenCoalGenerator::new);
         ScreenManager.<ContainerCruiseLauncher, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
         ScreenManager.<ContainerEMPTower, ScreenEMPTower>register(ContainerReg.EMP_TOWER.get(), ScreenEMPTower::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);

@@ -33,8 +33,8 @@ public class TileLauncherPlatform extends TileMachine {
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.launcher_platform");
     public UUID missileEntityID = null;
 
-    public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType) {
-        super(tileEntityTypeIn, containerType, 1, 0, 0, 0, DEFAULT_NAME);
+    public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor) {
+        super(tileEntityTypeIn, containerType, containerConstructor, 1, 0, 0, 0, DEFAULT_NAME);
     }
 
     public double getMissileEntityYOffset() {
