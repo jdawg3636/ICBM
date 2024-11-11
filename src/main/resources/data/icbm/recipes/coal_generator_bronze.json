@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "ABA",
+    "ACA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/bronze"
+    },
+    "B": {
+      "item": "minecraft:furnace"
+    },
+    "C": {
+      "item": "icbm:electric_motor"
+    }
+  },
+  "result": {
+    "item": "icbm:coal_generator",
+    "count": 1
+  }
+}
