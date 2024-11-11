@@ -18,6 +18,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
@@ -44,7 +45,7 @@ public class CommonProxy {
 
     // Client Misc
     public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {}
-    public void updateScreenMachine() {}
+    public void updateScreenMachine(BlockPos posOfTileEntity) {}
 
     // Common Events
     public void onCommonSetupEvent(final FMLCommonSetupEvent event) {

@@ -29,7 +29,7 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
     private int radioFrequency;
 
     public TileCruiseLauncher(TileEntityType<?> tileEntityType) {
-        super(tileEntityType, ContainerReg.CRUISE_LAUNCHER::get);
+        super(tileEntityType, ContainerReg.CRUISE_LAUNCHER::get, ContainerCruiseLauncher::new);
     }
 
     private void updateRotation(long tickAnimationStarted) {

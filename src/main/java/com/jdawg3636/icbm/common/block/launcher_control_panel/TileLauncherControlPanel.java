@@ -55,6 +55,7 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
     @Override
     @Nullable
     public SUpdateTileEntityPacket getUpdatePacket() {
+        // todo: use getTileEntityPos() when move to machine backend
         return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
     }
 
@@ -68,7 +69,7 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         if(level != null && level.isClientSide()) {
             handleUpdateTag(getBlockState(), pkt.getTag());
-            ICBMReference.distProxy().updateScreenMachine();
+            ICBMReference.distProxy().updateScreenMachine(pkt.getPos());
         }
     }
 

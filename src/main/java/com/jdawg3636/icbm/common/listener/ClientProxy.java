@@ -1,6 +1,8 @@
 package com.jdawg3636.icbm.common.listener;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.coal_generator.ContainerCoalGenerator;
+import com.jdawg3636.icbm.common.block.coal_generator.ScreenCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ScreenCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TERCruiseLauncher;
@@ -31,6 +33,7 @@ import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -71,6 +74,7 @@ public class ClientProxy extends CommonProxy {
 
         // Register Container Screens
         //noinspection RedundantTypeArguments
+        ScreenManager.<ContainerCoalGenerator, ScreenCoalGenerator>register(ContainerReg.COAL_GENERATOR.get(), ScreenCoalGenerator::new);
         ScreenManager.<ContainerCruiseLauncher, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
         ScreenManager.<ContainerEMPTower, ScreenEMPTower>register(ContainerReg.EMP_TOWER.get(), ScreenEMPTower::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
@@ -250,9 +254,9 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));
     }
 
-    public void updateScreenMachine() {
+    public void updateScreenMachine(BlockPos posOfTileEntity) {
         if (Minecraft.getInstance().screen instanceof IScreenMachine) {
-            ((IScreenMachine)Minecraft.getInstance().screen).updateGui();
+            ((IScreenMachine)Minecraft.getInstance().screen).updateGui(posOfTileEntity);
         }
     }
 

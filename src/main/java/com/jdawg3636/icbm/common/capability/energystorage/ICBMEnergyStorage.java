@@ -16,6 +16,7 @@ import net.minecraftforge.energy.EnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.text.NumberFormat;
 import java.util.function.Consumer;
 
 public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT> {
@@ -179,18 +180,9 @@ public class ICBMEnergyStorage extends EnergyStorage implements INBTSerializable
         }
 
         public String energyValueToString(long value, int decimalPlaces, boolean useShortName) {
-            // Calculate whole part of quotient
-            long whole = value / this.unitValue;
-            String wholeString = Long.toString(whole);
-            // Calculate decimal part of quotient
-            String decimalString = "";
-            if(this.canBeFractional && decimalPlaces != 0) {
-                long remainder = value - (whole * this.unitValue);
-                double decimal = remainder / (double) this.unitValue;
-                decimalString = String.format("%." + decimalPlaces + "f", decimal).substring(1);
-            }
-            // Return concatenation of whole and decimal parts
-            return wholeString + decimalString + " " + (useShortName ? shortName : name);
+            NumberFormat nf = NumberFormat.getInstance();
+            nf.setMaximumFractionDigits(decimalPlaces);
+            return nf.format(value / (double)this.unitValue) + " " + (useShortName ? shortName : name);
         }
 
         public static IFormattableTextComponent formatEnergyValue(long value, int decimalPlaces, boolean useShortName) {

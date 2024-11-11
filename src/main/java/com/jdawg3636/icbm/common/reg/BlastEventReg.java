@@ -14,6 +14,7 @@ public class BlastEventReg {
         return BLAST_EVENTS.getEntries().stream().filter(ro -> ro.getId().equals(resourceLocation)).findAny().orElseThrow(() -> new RuntimeException(String.format("Unable to deserialize blast event: \"%s\"", resourceLocation)));
     }
 
+    public static RegistryObject<BlastEventRegistryEntry> ANTIBALLISTIC     = BLAST_EVENTS.register("antiballistic",        () -> new BlastEventRegistryEntry(EventBlastAntiballistic::new));
     public static RegistryObject<BlastEventRegistryEntry> ANTIGRAVITATIONAL = BLAST_EVENTS.register("antigravitational",    () -> new BlastEventRegistryEntry(EventBlastAntigravitational::new));
     public static RegistryObject<BlastEventRegistryEntry> ANTIMATTER        = BLAST_EVENTS.register("antimatter",           () -> new BlastEventRegistryEntry(EventBlastAntimatter::new));
     public static RegistryObject<BlastEventRegistryEntry> ANVIL             = BLAST_EVENTS.register("anvil",                () -> new BlastEventRegistryEntry(EventBlastAnvil::new));

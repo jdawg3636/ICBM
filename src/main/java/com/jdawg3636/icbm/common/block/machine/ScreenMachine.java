@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -176,6 +177,13 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
     public void onClose() {
         sendUpdatePacketToServer();
         super.onClose();
+    }
+
+    public void updateGui() {}
+
+    @Override
+    public void updateGui(BlockPos posOfTileEntity) {
+        if(TILE_ENTITY.getPosOfTileEntity().equals(posOfTileEntity)) updateGui();
     }
 
     @Override

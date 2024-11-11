@@ -1,7 +1,6 @@
 package com.jdawg3636.icbm.common.block.machine;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import net.minecraft.block.BlockState;
@@ -40,18 +39,21 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     private ITextComponent name;
     private final ITextComponent defaultName;
     private final Supplier<ContainerType<? extends AbstractContainerMachine>> containerType;
+    private final AbstractContainerMachine.IConstructor containerConstructor;
     private final ItemStackHandler itemHandler;
     public final LazyOptional<IItemHandler> itemHandlerLazyOptional;
     private final ICBMEnergyStorage energyStorage;
     public final LazyOptional<IEnergyStorage> energyStorageLazyOptional;
 
-    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType) {
-        this(tileEntityTypeIn, containerType, 0, 0, 0, 0, new TranslationTextComponent("gui.icbm.unspecialized_machine"));
+    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor) {
+        this(tileEntityTypeIn, containerType, containerConstructor, 0, 0, 0, 0, new TranslationTextComponent("gui.icbm.unspecialized_machine"));
     }
 
-    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, int inventorySize, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut, ITextComponent defaultName) {
+    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor, int inventorySize, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut, ITextComponent defaultName) {
         super(tileEntityTypeIn);
         this.containerType = containerType;
+        this.containerConstructor = containerConstructor;
+
         if(inventorySize > 0) {
             itemHandler = createHandler(inventorySize);
             itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
@@ -60,9 +62,18 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
             itemHandler = null;
             itemHandlerLazyOptional = LazyOptional.empty();
         }
-        this.energyStorage = new ICBMEnergyStorage().setCapacity(forgeEnergyCapacity, false).setMaxReceive(forgeEnergyPerTickIn).setMaxExtract(forgeEnergyPerTickOut).setCallbackOnChanged(this::setChanged);
-        this.energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
+
+        if(forgeEnergyCapacity > 0 || forgeEnergyPerTickIn > 0 || forgeEnergyPerTickOut > 0) {
+            this.energyStorage = new ICBMEnergyStorage().setCapacity(forgeEnergyCapacity, false).setMaxReceive(forgeEnergyPerTickIn).setMaxExtract(forgeEnergyPerTickOut).setCallbackOnChanged(this::setChanged);
+            this.energyStorageLazyOptional = LazyOptional.of(() -> energyStorage);
+        }
+        else {
+            this.energyStorage = null;
+            this.energyStorageLazyOptional = LazyOptional.empty();
+        }
+
         this.defaultName = defaultName;
+
     }
 
     /*
@@ -189,8 +200,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
 
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        // TODO: This shouldn't always be instance of launcher platform - need to be generic
-        return new ContainerLauncherPlatform(getContainerType(), i, this.getLevel(), getPosOfTileEntity(), playerInventory);
+        return containerConstructor.construct(getContainerType(), i, this.getLevel(), getPosOfTileEntity(), playerInventory);
     }
 
     public boolean redstoneSignalPresent() {
@@ -215,6 +225,27 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         return maxAmount - totalRequesting;
     }
 
+    public int sendEnergy(int maxAmount, Direction[] directions) {
+        int amountUnsent = maxAmount;
+        for(Direction direction : directions) {
+            amountUnsent -= sendEnergy(amountUnsent, direction);
+        }
+        return maxAmount - amountUnsent;
+    }
+
+    public int sendEnergy(int maxAmount, Direction direction) {
+        if(level == null) return 0;
+        TileEntity blockEntity = level.getBlockEntity(getBlockPos().relative(direction));
+        if(blockEntity != null) {
+            LazyOptional<IEnergyStorage> neighborCapOptional = blockEntity.getCapability(ICBMReference.FORGE_ENERGY_CAPABILITY, direction.getOpposite());
+            if(neighborCapOptional.isPresent()) {
+                IEnergyStorage neighborCap = neighborCapOptional.orElse(null);
+                return neighborCap.receiveEnergy(maxAmount, false);
+            }
+        }
+        return 0;
+    }
+
     public boolean tryConsumeEnergy(int energyToConsume) {
         ICBMEnergyStorage energyStorage = (ICBMEnergyStorage)energyStorageLazyOptional.orElse(null);
         int energyWouldBeConsumed = energyStorage.extractEnergyUnchecked(energyToConsume, true);
@@ -227,7 +258,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     }
 
     public int tryReceiveEnergy(IEnergyStorage source, int energyToReceive) {
-        if(!energyStorage.canReceive()) return 0;
+        if(!energyStorageLazyOptional.isPresent() || !energyStorage.canReceive()) return 0;
         energyToReceive = Math.min(Math.min(energyToReceive, energyStorage.getMaxReceive()), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
         int energyExtracted = source.extractEnergy(energyToReceive, false);
         int energyReceived = energyStorage.receiveEnergy(energyExtracted, false);
@@ -255,7 +286,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         if(level != null && level.isClientSide()) {
             handleUpdateTag(getBlockState(), pkt.getTag());
-            ICBMReference.distProxy().updateScreenMachine();
+            ICBMReference.distProxy().updateScreenMachine(pkt.getPos());
         }
     }
 
