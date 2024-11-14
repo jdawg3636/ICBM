@@ -15,6 +15,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -23,6 +24,14 @@ public class EventBlastEmp extends AbstractBlastEvent {
 
     public EventBlastEmp(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection) {
         super(blastPosition, blastWorld, blastType, blastDirection, SoundEventReg.EXPLOSION_EMP);
+    }
+
+    public static void drainEnergyInALoop(IEnergyStorage energyStorage) {
+        final int amountPerLoop = energyStorage.getMaxEnergyStored();
+        int lastDrain = Integer.MAX_VALUE;
+        for(int i = 0; i < 500 && lastDrain > 0; ++i) {
+            lastDrain = energyStorage.extractEnergy(amountPerLoop, false);
+        }
     }
 
     @Override
@@ -42,8 +51,16 @@ public class EventBlastEmp extends AbstractBlastEvent {
                             anySideImplementsForgeEnergyAPI = true;
                             anySideCanExtract = anySideCanExtract || energyStorage.canExtract();
                             anySideCanReceive = anySideCanReceive || energyStorage.canReceive();
-                            energyStorage.extractEnergy(energyStorage.getMaxEnergyStored(), false);
+                            drainEnergyInALoop(energyStorage);
                         }
+                        // Drain energy from the items too
+                        tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
+                            for(int i = 0; i < itemHandler.getSlots(); ++i) {
+                                itemHandler.getStackInSlot(i).getCapability(ICBMReference.FORGE_ENERGY_CAPABILITY).ifPresent(itemEnergyStorage -> {
+                                    drainEnergyInALoop(itemEnergyStorage);
+                                });
+                            }
+                        });
                     }
                     // API isn't good enough - loop back through, bypass API using an access transformer (only works for built-in Forge implementation), and drain any remaining energy that's not supposed to be extractable
                     for (Direction direction : Direction.values()) {
@@ -66,8 +83,8 @@ public class EventBlastEmp extends AbstractBlastEvent {
                     // Summon visual lightning
                     EntityLightningVisual entityLightningVisual = EntityReg.LIGHTNING_VISUAL.get().create(getBlastWorld());
                     if(entityLightningVisual != null) {
-                        entityLightningVisual.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY(), getBlastPosition().getZ() + 0.5);
-                        entityLightningVisual.updateRotation(tileEntity.getBlockPos().getX() + 0.5, tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ() + 0.5);
+                        entityLightningVisual.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
+                        entityLightningVisual.updateRotation(tileEntity.getBlockPos().getX() + 0.5, tileEntity.getBlockPos().getY() + 0.5, tileEntity.getBlockPos().getZ() + 0.5);
                         getBlastWorld().addFreshEntity(entityLightningVisual);
                     }
                 });
