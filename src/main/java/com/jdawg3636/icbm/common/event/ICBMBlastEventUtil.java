@@ -1,14 +1,21 @@
 package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
 import net.minecraft.network.play.server.SExplosionPacket;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -20,6 +27,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -161,6 +169,20 @@ public class ICBMBlastEventUtil {
                 }
             }
         }
+    }
+
+    // Loosely adapted from a portion of net.minecraft.world.Explosion::finalizeExplosion (MC 1.16.5, MCP Class Mappings + Mojang Method Mappings)
+    public static void dropLootForBlockPos(ServerWorld level, BlockPos blockPos, @Nullable Entity source, boolean destroyBlock) {
+        BlockState blockstate = level.getBlockState(blockPos);
+        TileEntity tileentity = blockstate.hasTileEntity() ? level.getBlockEntity(blockPos) : null;
+        LootContext.Builder lootContextBuilder = new LootContext.Builder(level)
+                .withRandom(level.random)
+                .withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(blockPos))
+                .withParameter(LootParameters.TOOL, ItemStack.EMPTY)
+                .withOptionalParameter(LootParameters.BLOCK_ENTITY, tileentity)
+                .withOptionalParameter(LootParameters.THIS_ENTITY, source);
+        blockstate.getDrops(lootContextBuilder).forEach((itemStack) -> Block.popResource(level, blockPos, itemStack));
+        if(destroyBlock) level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3);
     }
 
 }

@@ -1,13 +1,16 @@
 package com.jdawg3636.icbm.common.event;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 /**
@@ -31,6 +34,8 @@ public abstract class AbstractBlastEvent extends Event {
     private final ServerWorld blastWorld;
     private final AbstractBlastEvent.Type blastType;
     private final Direction blastDirection;
+    @Nullable
+    private final Entity blastSource;
     private final Supplier<SoundEvent> soundEvent;
     private final float soundEventRangeMultiplier; // 1.0F = Radius of 16 blocks
 
@@ -56,6 +61,7 @@ public abstract class AbstractBlastEvent extends Event {
         this.blastWorld = blastWorld;
         this.blastType = blastType;
         this.blastDirection = blastDirection;
+        this.blastSource = null; // TODO use this!
         this.soundEvent = soundEvent;
         this.soundEventRangeMultiplier = soundEventRangeMultiplier;
     }
@@ -86,6 +92,10 @@ public abstract class AbstractBlastEvent extends Event {
         return blastPosition;
     }
 
+    public Vector3d getExactBlastPosition() {
+        return Vector3d.atCenterOf(this.getBlastPosition());
+    }
+
     public ServerWorld getBlastWorld() {
         return blastWorld;
     }
@@ -96,6 +106,10 @@ public abstract class AbstractBlastEvent extends Event {
 
     public Direction getBlastDirection() {
         return blastDirection;
+    }
+
+    public Entity getBlastSource() {
+        return blastSource;
     }
 
     public Supplier<SoundEvent> getSoundEvent() {
