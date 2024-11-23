@@ -62,6 +62,7 @@ public class EntityMissile extends Entity {
     private double lerpYRot;
     private double lerpXRot;
 
+    @FunctionalInterface
     public interface Constructor<T extends EntityMissile> {
         T construct(EntityType<?> entityTypeIn, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem);
     }

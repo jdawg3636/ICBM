@@ -21,6 +21,7 @@ import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.common.item.ItemTracker;
 import com.jdawg3636.icbm.common.particle.ColoredSmokeParticle;
+import com.jdawg3636.icbm.common.particle.EnderParticle;
 import com.jdawg3636.icbm.common.reg.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -180,6 +181,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGION.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityNOPRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_ENDER.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_RADIATION.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_REDMATTER.get(), EntityRedmatterBlastRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_SONIC.get(), EntityNOPRenderer::new);
@@ -247,6 +249,8 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_C.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x2D, 0x7B, 0x00));
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_D.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x20, 0x56, 0x00));
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_E.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x08, 0x16, 0x00));
+
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.ENDER_EFFECT.get(), (IAnimatedSprite sprites) -> EnderParticle::new);
 
     }
 
