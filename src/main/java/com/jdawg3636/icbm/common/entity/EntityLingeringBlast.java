@@ -6,6 +6,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public abstract class EntityLingeringBlast extends Entity {
@@ -37,6 +39,18 @@ public abstract class EntityLingeringBlast extends Entity {
     @Override
     protected void readAdditionalSaveData(CompoundNBT nbt) {
         ticksRemaining = nbt.getInt("TicksRemaining");
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public boolean shouldRender(double playerX, double playerY, double playerZ) {
+        return true;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        return true;
     }
 
     @Override

@@ -230,6 +230,8 @@ public final class EntityReg {
                         entityConstructor,
                         EntityClassification.MISC
                 )
+                .clientTrackingRange(Integer.MAX_VALUE)
+                .updateInterval(Integer.MAX_VALUE)
                 .fireImmune()
                 .sized(width, height)
                 .build(entityName)

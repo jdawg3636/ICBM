@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.concurrent.TickDelayedTask;
 import net.minecraft.util.math.BlockPos;
@@ -38,11 +39,12 @@ public class EntityLingeringBlastEnder extends EntityLingeringBlast {
             }
             // Particles
             double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusEnder();// * (ticksRemaining / (double)totalTicksAlive);
-            if(ticksRemaining % 10 == 0) {
-                for (BlockPos blockPos : getAffectedBlockPositions(level, getX(), getY(), getZ(), radius)) {
-                    if (level.random.nextDouble() < 0.01d) {
-                        ((ServerWorld) level).sendParticles((BasicParticleType) ParticleTypeReg.ENDER_EFFECT.get(), blockPos.getX(), blockPos.getY(), blockPos.getZ(), 1, level.random.nextDouble() * 2, level.random.nextDouble() * 2, level.random.nextDouble() * 2, 0.1);
-                    }
+            for (BlockPos blockPos : getAffectedBlockPositions(level, getX(), getY(), getZ(), radius, true)) {
+                if (level.random.nextDouble() < 0.0012d) {
+                    ICBMReference.sendParticlesOverrideLimiter((ServerWorld) level, (BasicParticleType) ParticleTypeReg.ENDER_EFFECT.get(), blockPos.getX(), blockPos.getY(), blockPos.getZ(), 1, level.random.nextDouble() * 2, level.random.nextDouble() * 2, level.random.nextDouble() * 2, 0.1);
+                }
+                else if (level.random.nextDouble() < 0.005d) {
+                    ICBMReference.sendParticlesOverrideLimiter((ServerWorld) level, ParticleTypes.DRAGON_BREATH, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 1, level.random.nextDouble() * 2, level.random.nextDouble() * 2, level.random.nextDouble() * 2, 0.1);
                 }
             }
             // Player Teleport
@@ -62,7 +64,7 @@ public class EntityLingeringBlastEnder extends EntityLingeringBlast {
         }
     }
 
-    public static List<BlockPos> getAffectedBlockPositions(World world, double x, double y, double z, double radius){
+    public static List<BlockPos> getAffectedBlockPositions(World world, double x, double y, double z, double radius, boolean edgesOnly){
         List<BlockPos> affectedBlockPositions = Lists.newArrayList();
         int radius_int = (int) Math.ceil(radius);
         for (int dx = -radius_int; dx < radius_int + 1; dx++) {
@@ -70,9 +72,13 @@ public class EntityLingeringBlastEnder extends EntityLingeringBlast {
             int y_lim = (int) (Math.sqrt(radius_int*radius_int-dx*dx));
             for (int dy = -y_lim; dy < y_lim + 1; dy++) {
                 int z_lim = (int) Math.sqrt(radius_int*radius_int-dx*dx-dy*dy);
-                for (int dz = -z_lim; dz < z_lim + 1; dz++) {
-                    BlockPos blockPos = new BlockPos(x + dx, y + dy, z + dz);
-                    if((dx != -radius_int && dx != radius_int && dy != -y_lim && dy != y_lim && dz != -z_lim && dz != z_lim) || world.random.nextFloat() < ICBMReference.COMMON_CONFIG.getAntimatterFuzzinessPercentage()) {
+                if(edgesOnly && dx != -radius_int && dx != radius_int) {
+                    affectedBlockPositions.add(new BlockPos(x + dx, y + dy, z - z_lim));
+                    affectedBlockPositions.add(new BlockPos(x + dx, y + dy, z + z_lim));
+                }
+                else {
+                    for (int dz = -z_lim; dz < z_lim + 1; dz++) {
+                        BlockPos blockPos = new BlockPos(x + dx, y + dy, z + dz);
                         affectedBlockPositions.add(blockPos);
                     }
                 }

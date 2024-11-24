@@ -294,7 +294,13 @@ public class EntityMissile extends Entity {
         return false;
     }
 
+    @Override
     public boolean isAttackable() {
+        return false;
+    }
+
+    @Override
+    public boolean canChangeDimensions() {
         return false;
     }
 

@@ -7,6 +7,7 @@ import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IWorldReader;
@@ -72,6 +73,20 @@ public final class ICBMReference {
             completeMessage = String.format(message, messageArgs);
         } catch (Exception ignored) {}
         broadcastToChat(level, completeMessage);
+    }
+
+    // Variant of the vanilla ServerWorld method where we send true instead of false for the override parameter. This increases the packet render distance to 512 blocks.
+    public static <T extends IParticleData> int sendParticlesOverrideLimiter(ServerWorld level, T p_195598_1_, double p_195598_2_, double p_195598_4_, double p_195598_6_, int p_195598_8_, double p_195598_9_, double p_195598_11_, double p_195598_13_, double p_195598_15_) {
+        int i = 0;
+
+        for(int j = 0; j < level.players().size(); ++j) {
+            ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)level.players().get(j);
+            if (level.sendParticles(serverplayerentity, p_195598_1_, true, p_195598_2_, p_195598_4_, p_195598_6_, p_195598_8_, p_195598_9_, p_195598_11_, p_195598_13_, p_195598_15_)) {
+                ++i;
+            }
+        }
+
+        return i;
     }
 
 }
