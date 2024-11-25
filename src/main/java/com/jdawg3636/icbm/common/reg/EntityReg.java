@@ -116,6 +116,7 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityLingeringBlast>>          BLAST_CHEMICAL     = registerBlastUtilityEntity("blast_chemical",     EntityLingeringBlastChemical::new);
     public static final RegistryObject<EntityType<EntityLingeringBlast>>          BLAST_CONTAGION    = registerBlastUtilityEntity("blast_contagion",    EntityLingeringBlastContagion::new);
     public static final RegistryObject<EntityType<EntityLingeringBlast>>          BLAST_DEBILITATION = registerBlastUtilityEntity("blast_debilitation", EntityLingeringBlastDebilitation::new);
+    public static final RegistryObject<EntityType<EntityLingeringBlastEnder>>     BLAST_ENDER        = registerBlastUtilityEntity("blast_ender",        EntityLingeringBlastEnder::new);
     public static final RegistryObject<EntityType<EntityLingeringBlastRadiation>> BLAST_RADIATION    = registerBlastUtilityEntity("blast_radiation",    EntityLingeringBlastRadiation::new);
     public static final RegistryObject<EntityType<EntityRedmatterBlast>>          BLAST_REDMATTER    = registerBlastUtilityEntity("blast_redmatter",    EntityRedmatterBlast::new);
     public static final RegistryObject<EntityType<EntitySonicBlast>>              BLAST_SONIC        = registerBlastUtilityEntity("blast_sonic",        EntitySonicBlast::new);
@@ -229,6 +230,7 @@ public final class EntityReg {
                         entityConstructor,
                         EntityClassification.MISC
                 )
+                .clientTrackingRange(ICBMReference.distProxy().getRenderDistance())
                 .fireImmune()
                 .sized(width, height)
                 .build(entityName)

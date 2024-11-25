@@ -1,5 +1,7 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.common.entity.EntityLingeringBlastEnder;
+import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -13,8 +15,11 @@ public class EventBlastEnder extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        //todo: implement
-        return false;
+        EntityLingeringBlastEnder entityLingeringBlast = new EntityLingeringBlastEnder(EntityReg.BLAST_ENDER.get(), getBlastWorld(), 10 * 20);
+        entityLingeringBlast.blastType = getBlastType();
+        entityLingeringBlast.setPos(getBlastPosition().getX(), getBlastPosition().getY(), getBlastPosition().getZ());
+        getBlastWorld().addFreshEntity(entityLingeringBlast);
+        return true;
     }
 
 }

@@ -34,4 +34,6 @@ public class ParticleTypeReg {
     public static final RegistryObject<ParticleType<BasicParticleType>> SMOKE_CONTAGION_D = PARTICLES.register("smoke_contagion_d", () -> new BasicParticleType(false));
     public static final RegistryObject<ParticleType<BasicParticleType>> SMOKE_CONTAGION_E = PARTICLES.register("smoke_contagion_e", () -> new BasicParticleType(true));
 
+    public static final RegistryObject<ParticleType<BasicParticleType>> ENDER_EFFECT = PARTICLES.register("ender", () -> new BasicParticleType(true));
+
 }

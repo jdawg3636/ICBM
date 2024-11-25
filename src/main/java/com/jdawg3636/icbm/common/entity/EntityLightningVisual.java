@@ -102,7 +102,7 @@ public class EntityLightningVisual extends Entity {
         getEntityData().set(VISUAL_PITCH, nbtCustomVisual.getFloat("pitch"));
         getEntityData().set(NUM_SEGMENTS, nbtCustomVisual.getInt("segment_count"));
         getEntityData().set(SCALE, nbtCustomVisual.getFloat("scale"));
-        this.remainingTicks = nbtCustomVisual.getInt("remainingTicks");
+        this.remainingTicks = nbtCustomVisual.getInt("remaining_ticks");
     }
 
     @Override
@@ -112,7 +112,7 @@ public class EntityLightningVisual extends Entity {
         nbtCustomVisual.putFloat("pitch", getEntityData().get(VISUAL_PITCH));
         nbtCustomVisual.putInt("segment_count", getEntityData().get(NUM_SEGMENTS));
         nbtCustomVisual.putFloat("scale", getEntityData().get(SCALE));
-        nbtCustomVisual.putInt("remainingTicks", this.remainingTicks);
+        nbtCustomVisual.putInt("remaining_ticks", this.remainingTicks);
         nbt.put("custom_visual", nbtCustomVisual);
     }
 

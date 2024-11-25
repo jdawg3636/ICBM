@@ -41,18 +41,13 @@ public class EntityAcceleratingParticle extends Entity {
     public static final DataParameter<Direction> PARTICLE_DIRECTION = EntityDataManager.defineId(EntityAcceleratingParticle.class, DataSerializers.DIRECTION);
     public static final DataParameter<Float> PARTICLE_SPEED = EntityDataManager.defineId(EntityAcceleratingParticle.class, DataSerializers.FLOAT);
 
-//    public BlockPos particleAcceleratorPosition = BlockPos.ZERO;
-//    public Direction particleDirection = Direction.DOWN;
     public boolean hasCollided = false;
-//    public float particleSpeed = 0F;
 
     public static EntityAcceleratingParticle getNewInstanceForAccelerator(TileParticleAccelerator particleAccelerator) {
         World level = particleAccelerator.getLevel();
         assert level != null;
         EntityAcceleratingParticle particleEntity = EntityReg.ACCELERATING_PARTICLE.get().create(level);
         if(particleEntity != null) {
-//            particleEntity.particleAcceleratorPosition = particleAccelerator.getBlockPos();
-//            particleEntity.particleDirection = particleAccelerator.getBlockState().getValue(BlockParticleAccelerator.FACING).getOpposite();
             particleEntity.getEntityData().set(PARTICLE_ACCELERATOR_POSITION, Optional.of(particleAccelerator.getBlockPos()));
             particleEntity.getEntityData().set(PARTICLE_DIRECTION, particleAccelerator.getBlockState().getValue(BlockParticleAccelerator.FACING).getOpposite());
             BlockPos particlePos = particleEntity.getEntityData().get(PARTICLE_ACCELERATOR_POSITION).orElse(BlockPos.ZERO).relative(particleEntity.getEntityData().get(PARTICLE_DIRECTION));
@@ -106,7 +101,6 @@ public class EntityAcceleratingParticle extends Entity {
 
     @Override
     public void tick() {
-//        super.tick();
         if(!level.isClientSide() && isAlive()) {
             // If no accelerator is assigned, do nothing.
             if (!getEntityData().get(PARTICLE_ACCELERATOR_POSITION).isPresent()) {
@@ -150,20 +144,15 @@ public class EntityAcceleratingParticle extends Entity {
             float previousSpeed = getEntityData().get(PARTICLE_SPEED);
             getEntityData().set(PARTICLE_SPEED, (float)Math.max(0, getEntityData().get(PARTICLE_SPEED) * (1 - ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedPenaltyForCollision())));
 //            ICBMReference.broadcastToChat(level, "Imparting speed penalty for collision, '%s' -> '%s'", previousSpeed, getEntityData().get(PARTICLE_SPEED));
-//            particleSpeed = (float)Math.max(0, particleSpeed - ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedPenaltyForCollision());
             Direction newParticleDirection = getDirectionToGo(level, blockPosition(), getEntityData().get(PARTICLE_DIRECTION).getOpposite());
             if (newParticleDirection != null) getEntityData().set(PARTICLE_DIRECTION, newParticleDirection);
             else explode(ExplosionCause.COLLISION_WITH_BLOCK);
             hasCollided = false;
         } else {
             getEntityData().set(PARTICLE_SPEED, getEntityData().get(PARTICLE_SPEED) + (float)ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedIncreasePerTick());
-//            particleSpeed += ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedIncreasePerTick();
             Vector3i particleDirectionAsVecI = getEntityData().get(PARTICLE_DIRECTION).getNormal();
             Vector3d particleDirectionAsVecD = new Vector3d(particleDirectionAsVecI.getX(), particleDirectionAsVecI.getY(), particleDirectionAsVecI.getZ());
-            //particleDirectionAsVecD = particleDirectionAsVecD.scale(particleSpeed);
             moveRelative(getEntityData().get(PARTICLE_SPEED), particleDirectionAsVecD);
-            //setDeltaMovement(getDeltaMovement().add(particleDirectionAsVecD));
-            //setPos(getX() + particleDirectionAsVecD.x, getY() + particleDirectionAsVecD.y, getZ() + particleDirectionAsVecD.z);
             this.move(MoverType.SELF, this.getDeltaMovement());
         }
     }

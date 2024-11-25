@@ -113,11 +113,10 @@ public class CommonProxy {
         missileDirectorCapability.ifPresent((IMissileDirectorCapability cap) -> cap.onWorldTickEvent(event));
     }
 
-    public double getTileEntityUpdateDistance() {
+    public int getRenderDistance() {
         MinecraftServer minecraftServer = ServerLifecycleHooks.getCurrentServer();
-        if(!(minecraftServer instanceof DedicatedServer)) return 64D; // Can't think of any circumstance where this would apply, but worth a check.
-        double l1Distance = (((DedicatedServer)minecraftServer).getProperties().viewDistance + 1) * 16;
-        return Math.sqrt(l1Distance * l1Distance + l1Distance * l1Distance);
+        if(!(minecraftServer instanceof DedicatedServer)) return 3; // Can't think of any circumstance where this would apply, but worth a check.
+        return (((DedicatedServer)minecraftServer).getProperties().viewDistance);
     }
 
 }

@@ -49,6 +49,8 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
 
         private final ForgeConfigSpec.IntValue blastDepthBreaching;
+        private final ForgeConfigSpec.DoubleValue blastRadiusEMP;
+        private final ForgeConfigSpec.DoubleValue blastRadiusEnder;
         private final ForgeConfigSpec.DoubleValue blastRadiusEndothermic;
         private final ForgeConfigSpec.DoubleValue blastRadiusExothermic;
         private final ForgeConfigSpec.DoubleValue blastRadiusHypersonic;
@@ -130,6 +132,14 @@ public class ICBMConfig {
                             "actual depth for a given blast may be lower, depending on the blast resistance of the blocks",
                             "in its way.")
                     .defineInRange("blastDepthBreaching", 7, 1, Integer.MAX_VALUE);
+            this.blastRadiusEMP = builder
+                    .comment("",
+                            "Defines the maximum radius of an EMP Blast.")
+                    .defineInRange("blastRadiusEMP", 20D, 0D, Float.MAX_VALUE);
+            this.blastRadiusEnder = builder
+                    .comment("",
+                            "Defines the maximum radius of an Ender Blast.")
+                    .defineInRange("blastRadiusEnder", 20D, 0D, Float.MAX_VALUE);
             this.blastRadiusEndothermic = builder
                     .comment("",
                             "Defines the maximum radius of an Endothermic Blast.")
@@ -263,6 +273,14 @@ public class ICBMConfig {
 
         public int getBlastDepthBreaching() {
             return blastDepthBreaching.get();
+        }
+
+        public double getBlastRadiusEMP() {
+            return blastRadiusEMP.get();
+        }
+
+        public double getBlastRadiusEnder() {
+            return blastRadiusEnder.get();
         }
 
         public double getBlastRadiusEndothermic() {

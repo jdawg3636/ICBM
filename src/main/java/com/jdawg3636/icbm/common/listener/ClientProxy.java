@@ -21,6 +21,7 @@ import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.common.item.ItemTracker;
 import com.jdawg3636.icbm.common.particle.ColoredSmokeParticle;
+import com.jdawg3636.icbm.common.particle.EnderParticle;
 import com.jdawg3636.icbm.common.reg.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -53,6 +54,7 @@ public class ClientProxy extends CommonProxy {
     public static final ResourceLocation MODEL_RADAR_STATION_STATIC       = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_static");
 
     // Entity Models
+    public static final ResourceLocation MODEL_ENDER_BLAST_SPHERE             = new ResourceLocation(ICBMReference.MODID + ":entity/ender_blast_sphere");
     public static final ResourceLocation MODEL_REDMATTER_BLAST_ACCRETION_DISK = new ResourceLocation(ICBMReference.MODID + ":entity/redmatter_blast_accretion_disk");
     public static final ResourceLocation MODEL_REDMATTER_BLAST_SPHERE         = new ResourceLocation(ICBMReference.MODID + ":entity/redmatter_blast_sphere");
 
@@ -180,6 +182,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGION.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityNOPRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_ENDER.get(), EntityLingeringBlastEnderRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_RADIATION.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_REDMATTER.get(), EntityRedmatterBlastRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_SONIC.get(), EntityNOPRenderer::new);
@@ -223,6 +226,7 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.addSpecialModel(MODEL_RADAR_STATION_STATIC);
 
         // Entity Models
+        ModelLoader.addSpecialModel(MODEL_ENDER_BLAST_SPHERE);
         ModelLoader.addSpecialModel(MODEL_REDMATTER_BLAST_ACCRETION_DISK);
         ModelLoader.addSpecialModel(MODEL_REDMATTER_BLAST_SPHERE);
 
@@ -248,6 +252,8 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_D.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x20, 0x56, 0x00));
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_E.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x08, 0x16, 0x00));
 
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.ENDER_EFFECT.get(), (IAnimatedSprite sprites) -> EnderParticle::new);
+
     }
 
     public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {
@@ -260,9 +266,8 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
-    public double getTileEntityUpdateDistance() {
-        double l1Distance = (Minecraft.getInstance().options.renderDistance + 1) * 16;
-        return Math.sqrt(l1Distance * l1Distance + l1Distance * l1Distance);
+    public int getRenderDistance() {
+        return Minecraft.getInstance().options.renderDistance;
     }
 
 }
