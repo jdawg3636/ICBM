@@ -115,7 +115,7 @@ public class CommonProxy {
 
     public int getRenderDistance() {
         MinecraftServer minecraftServer = ServerLifecycleHooks.getCurrentServer();
-        if(!(minecraftServer instanceof DedicatedServer)) return 3; // Can't think of any circumstance where this would apply, but worth a check.
+        if(!(minecraftServer instanceof DedicatedServer)) return 3; // This will fire if the server is null and not started yet!
         return (((DedicatedServer)minecraftServer).getProperties().viewDistance);
     }
 
