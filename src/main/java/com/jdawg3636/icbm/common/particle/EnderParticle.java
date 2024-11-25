@@ -6,6 +6,7 @@ import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.settings.ParticleStatus;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.vector.Quaternion;
@@ -38,6 +39,11 @@ public class EnderParticle extends Particle {
 
     @Override
     public void render(IVertexBuilder ignored, ActiveRenderInfo renderInfo, float partialTicks) {
+
+        // Disable rendering when the player has particles set to minimal
+        if(Minecraft.getInstance().options.particles.equals(ParticleStatus.MINIMAL)) {
+            return;
+        }
 
         // Seed RNG
         Random random = new Random(31100L);

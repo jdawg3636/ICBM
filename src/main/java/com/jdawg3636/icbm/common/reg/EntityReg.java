@@ -1,13 +1,17 @@
 package com.jdawg3636.icbm.common.reg;
 
+import com.google.common.collect.ImmutableSet;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
+import net.minecraft.util.Util;
+import net.minecraft.util.datafix.TypeReferences;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -226,14 +230,28 @@ public final class EntityReg {
         //noinspection RedundantTypeArguments
         return ENTITIES.register(
                 entityName,
-                ()->EntityType.Builder.<T>of(
-                        entityConstructor,
-                        EntityClassification.MISC
-                )
-                .clientTrackingRange(ICBMReference.distProxy().getRenderDistance())
-                .fireImmune()
-                .sized(width, height)
-                .build(entityName)
+                ()-> {
+                    // We have to use the constructor directly instead of the builder since we want to look up the
+                    // current render distance for trackingRangeSupplier, but the builder only accepts a constant
+                    // integer, and it runs before the DedicatedServer object is instantiated.
+                    Util.fetchChoiceType(TypeReferences.ENTITY_TREE, entityName);
+                    return new EntityType<>(
+                            entityConstructor, // factory
+                            EntityClassification.MISC, // category
+                            true, // serialize
+                            true, // summon
+                            true, // fireImmune
+                            true, // canSpawnFarFromPlayer
+                            ImmutableSet.of(), // immuneTo
+                            EntitySize.scalable(width, height), // dimensions
+                            5, // clientTrackingRange
+                            3, // updateInterval
+                            entityType -> false, // velocityUpdateSupplier
+                            entityType -> ICBMReference.distProxy().getRenderDistance(), // trackingRangeSupplier
+                            entityType -> 3, // updateIntervalSupplier
+                            null //customClientFactory
+                    );
+                }
         );
     }
 
