@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "ABA",
+      "BCB",
+      "ABA"
+    ],
+    "key": {
+      "A": {
+        "tag": "forge:storage_blocks/redstone"
+      },
+      "B": {
+        "tag": "forge:batteries"
+      },
+      "C": {
+        "item": "icbm:explosives_repulsive"
+      }
+    },
+    "result": {
+      "item": "icbm:explosives_emp",
+      "count": 1
+    }
+  }
