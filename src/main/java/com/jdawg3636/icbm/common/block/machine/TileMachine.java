@@ -157,7 +157,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
 
     @Override
     public double getViewDistance() {
-        return ICBMReference.distProxy().getTileEntityUpdateDistance();
+        return ICBMReference.getTileEntityUpdateDistance();
     }
 
     public ContainerType<? extends AbstractContainerMachine> getContainerType() {
@@ -277,7 +277,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         if(level != null && !level.isClientSide()) {
             SUpdateTileEntityPacket updatePacket = this.getUpdatePacket();
             if (updatePacket != null && level.getServer() != null) {
-                level.getServer().getPlayerList().broadcast(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), ICBMReference.distProxy().getTileEntityUpdateDistance(), level.dimension(), updatePacket);
+                level.getServer().getPlayerList().broadcast(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), ICBMReference.getTileEntityUpdateDistance(), level.dimension(), updatePacket);
             }
         }
     }

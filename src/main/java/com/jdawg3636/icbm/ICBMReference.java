@@ -56,6 +56,11 @@ public final class ICBMReference {
         return distProxy;
     }
 
+    public static double getTileEntityUpdateDistance() {
+        double l1Distance = (distProxy().getRenderDistance() + 1) * 16;
+        return Math.sqrt(l1Distance * l1Distance + l1Distance * l1Distance);
+    }
+
     @CapabilityInject(IEnergyStorage.class)
     public static Capability<IEnergyStorage> FORGE_ENERGY_CAPABILITY;
 

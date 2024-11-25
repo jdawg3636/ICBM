@@ -70,7 +70,7 @@ public class EventBlastEmp extends AbstractBlastEvent {
                             // If we changed anything, send an update packet to the client.
                             SUpdateTileEntityPacket updatePacket = tileEntity.getUpdatePacket();
                             if (updatePacket != null && getBlastWorld().getServer() != null) {
-                                getBlastWorld().getServer().getPlayerList().broadcast(null, tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), ICBMReference.distProxy().getTileEntityUpdateDistance(), getBlastWorld().dimension(), updatePacket);
+                                getBlastWorld().getServer().getPlayerList().broadcast(null, tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), ICBMReference.getTileEntityUpdateDistance(), getBlastWorld().dimension(), updatePacket);
                             }
                         }
                     }
