@@ -195,7 +195,7 @@ public class ItemReg {
     public static final RegistryObject<Item> PLATE_STEEL                    = ITEMS.register("plate_steel",                     () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Extras
-    public static final RegistryObject<Item> ANTIDOTE                       = ITEMS.register("antidote",                        () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> ANTIDOTE                       = ITEMS.register("antidote",                        () -> new ItemAntidote(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> GLASS_BUTTON                   = ITEMS.register("glass_button",                    () -> new BlockItem(BlockReg.GLASS_BUTTON.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> GLASS_PRESSURE_PLATE           = ITEMS.register("glass_pressure_plate",            () -> new BlockItem(BlockReg.GLASS_PRESSURE_PLATE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> SIREN                          = ITEMS.register("siren",                           () -> new BlockItem(BlockReg.SIREN.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

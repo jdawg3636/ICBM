@@ -48,7 +48,11 @@ public class ICBMConfig {
 
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
 
+        private final ForgeConfigSpec.BooleanValue engineeredPathogenPerpetualForPlayers;
+        private final ForgeConfigSpec.DoubleValue engineeredPathogenSpreadRadius;
+
         private final ForgeConfigSpec.IntValue blastDepthBreaching;
+        private final ForgeConfigSpec.DoubleValue blastRadiusContagion;
         private final ForgeConfigSpec.DoubleValue blastRadiusEMP;
         private final ForgeConfigSpec.DoubleValue blastRadiusEnder;
         private final ForgeConfigSpec.DoubleValue blastRadiusEndothermic;
@@ -125,6 +129,16 @@ public class ICBMConfig {
                             "Defines the percentage, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
                             "section within the radius of an antimatter blast will be destroyed in the blast.")
                     .defineInRange("antimatterFuzzynessPercentage", 0.4D, 0D, 1D);
+            this.engineeredPathogenPerpetualForPlayers = builder
+                    .comment("",
+                            "If enabled, players will never recover from The Engineered Pathogen unless they die or",
+                            "consume an antidote.")
+                    .define("engineeredPathogenPerpetualForPlayers", true);
+            this.engineeredPathogenSpreadRadius = builder
+                    .comment("",
+                            "Entities which are within this radius of another entity which is infected with the Engineered Pathogen",
+                            "will become infected with the engineered pathogen. Set to zero to disable pathogen spreading.")
+                    .defineInRange("engineeredPathogenSpreadRadius", 10D, 0D, 100D);
             this.blastDepthBreaching = builder
                     .comment("",
                             "The breaching blast creates a string of explosions in the direction towards which it is",
@@ -132,6 +146,10 @@ public class ICBMConfig {
                             "actual depth for a given blast may be lower, depending on the blast resistance of the blocks",
                             "in its way.")
                     .defineInRange("blastDepthBreaching", 7, 1, Integer.MAX_VALUE);
+            this.blastRadiusContagion = builder
+                    .comment("",
+                            "Defines the maximum radius of a Contagion Blast.")
+                    .defineInRange("blastRadiusContagion", 10D, 0D, Float.MAX_VALUE);
             this.blastRadiusEMP = builder
                     .comment("",
                             "Defines the maximum radius of an EMP Blast.")
@@ -271,8 +289,20 @@ public class ICBMConfig {
             return antimatterFuzzinessPercentage.get();
         }
 
+        public boolean getEngineeredPathogenPerpetualForPlayers() {
+            return  engineeredPathogenPerpetualForPlayers.get();
+        }
+
+        public double getEngineeredPathogenSpreadRadius() {
+            return engineeredPathogenSpreadRadius.get();
+        }
+
         public int getBlastDepthBreaching() {
             return blastDepthBreaching.get();
+        }
+
+        public double getBlastRadiusContagion() {
+            return blastRadiusContagion.get();
         }
 
         public double getBlastRadiusEMP() {

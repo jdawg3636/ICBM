@@ -1,13 +1,14 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.common.reg.EffectReg;
 import com.jdawg3636.icbm.common.reg.ParticleTypeReg;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -29,11 +30,14 @@ public class EntityLingeringBlastContagion extends EntityLingeringBlast {
                 kill();
                 return;
             }
+            // Calculate radius
+            double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusContagion();
+            if(blastType == AbstractBlastEvent.Type.GRENADE) radius *= 2.0/3.0;
+            int radiusInt = (int)radius;
             // Particles
-            int radius = blastType == AbstractBlastEvent.Type.GRENADE ? 6 : 9;
-            for(int i = -radius; i <= radius; i+=3) {
-                for(int j = -radius; j <= radius; j+=3) {
-                    for(int k = -radius; k <= radius; k+=3) {
+            for(int i = -radiusInt; i <= radiusInt; i+=3) {
+                for(int j = -radiusInt; j <= radiusInt; j+=3) {
+                    for(int k = -radiusInt; k <= radiusInt; k+=3) {
                         if(level.random.nextFloat() < 0.3F) {
                             ((ServerWorld)level).sendParticles(
                                     getParticleType(level.random.nextDouble()),
@@ -51,14 +55,9 @@ public class EntityLingeringBlastContagion extends EntityLingeringBlast {
                 }
             }
             // Player Effects
-            // TODO: Make these effects persistent until treated with an antidote
             for(LivingEntity livingEntity : this.level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().contract(0,1,0).inflate(radius))) {
                 if(livingEntity.isAffectedByPotions()) {
-                    livingEntity.addEffect(new EffectInstance(Effects.BLINDNESS,    15 * 20, 0));
-                    // TODO: ICBM "Virus" Potion Effect
-                    livingEntity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 60 * 20, 0));
-                    livingEntity.addEffect(new EffectInstance(Effects.WEAKNESS,     35 * 20, 0));
-                    livingEntity.addEffect(new EffectInstance(Effects.HUNGER,       30 * 20, 0));
+                    livingEntity.addEffect(new EffectInstance(EffectReg.ENGINEERED_PATHOGEN.get(), 45 * 20, 0));
                 }
             }
             --ticksRemaining;
