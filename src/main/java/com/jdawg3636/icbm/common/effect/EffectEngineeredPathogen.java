@@ -64,10 +64,6 @@ public class EffectEngineeredPathogen extends Effect {
             // If villager, convert to zombie
             // Adapted from net.minecraft.entity.ZombieEntity::monsterkilled, MC 1.16.5, MCP Package/Class Names, Mojmap Method/Field Names
             if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && livingEntity instanceof VillagerEntity && net.minecraftforge.event.ForgeEventFactory.canLivingConvert(livingEntity, EntityType.ZOMBIE_VILLAGER, (timer) -> {})) {
-                if (serverLevel.getDifficulty() != Difficulty.HARD && livingEntity.getRandom().nextBoolean()) {
-                    return;
-                }
-
                 VillagerEntity villagerentity = (VillagerEntity) livingEntity;
                 ZombieVillagerEntity zombievillagerentity = villagerentity.convertTo(EntityType.ZOMBIE_VILLAGER, false);
                 zombievillagerentity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(zombievillagerentity.blockPosition()), SpawnReason.CONVERSION, new ZombieEntity.GroupData(false, true), (CompoundNBT) null);
@@ -93,8 +89,6 @@ public class EffectEngineeredPathogen extends Effect {
                     zombifiedpiglinentity.setCustomName(livingEntity.getCustomName());
                     zombifiedpiglinentity.setCustomNameVisible(livingEntity.isCustomNameVisible());
                 }
-
-                zombifiedpiglinentity.setPersistenceRequired();
                 net.minecraftforge.event.ForgeEventFactory.onLivingConvert(livingEntity, zombifiedpiglinentity);
                 serverLevel.addFreshEntity(zombifiedpiglinentity);
                 livingEntity.remove();
