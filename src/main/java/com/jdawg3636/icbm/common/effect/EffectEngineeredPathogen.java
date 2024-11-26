@@ -91,6 +91,8 @@ public class EffectEngineeredPathogen extends Effect {
                 }
                 net.minecraftforge.event.ForgeEventFactory.onLivingConvert(livingEntity, zombifiedpiglinentity);
                 serverLevel.addFreshEntity(zombifiedpiglinentity);
+                // Plays Zombie Effect Sound (Re-using for pig because it was weird to not have a sound)
+                serverLevel.levelEvent((PlayerEntity) null, 1026, livingEntity.blockPosition(), 0);
                 livingEntity.remove();
             }
 
@@ -104,7 +106,7 @@ public class EffectEngineeredPathogen extends Effect {
                             livingEntity,
                             AxisAlignedBB.unitCubeFromLowerCorner(livingEntity.position()).inflate(spreadRadius - 1), LivingEntity.class::isInstance
                     ).stream().map(LivingEntity.class::cast).forEach((LivingEntity otherNearbyLivingEntity) -> {
-
+                        otherNearbyLivingEntity.addEffect(new EffectInstance(EffectReg.ENGINEERED_PATHOGEN.get(), 45 * 20, 0));
                     });
                 }
                 // Renew Pathogen effect

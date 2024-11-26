@@ -9,12 +9,14 @@ import com.jdawg3636.icbm.common.capability.missiledirector.IMissileDirectorCapa
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileDirectorCapabilityProvider;
 import com.jdawg3636.icbm.common.capability.trackingmanager.ITrackingManagerCapability;
 import com.jdawg3636.icbm.common.capability.trackingmanager.TrackingManagerCapabilityProvider;
+import com.jdawg3636.icbm.common.item.ItemAntidote;
 import com.jdawg3636.icbm.common.item.ItemDefuser;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ResourceLocation;
@@ -86,7 +88,11 @@ public class CommonProxy {
     }
 
     public void onPlayerInteractEvent(final PlayerInteractEvent.EntityInteractSpecific event) {
-        if(event.getPlayer().getItemInHand(event.getHand()).getItem() instanceof ItemDefuser) {
+        Item heldItem = event.getPlayer().getItemInHand(event.getHand()).getItem();
+        if (heldItem instanceof ItemAntidote) {
+            ItemAntidote.onInteractWithEntity(event);
+        }
+        else if(heldItem instanceof ItemDefuser) {
             ItemDefuser.onInteractWithEntity(event);
         }
     }
