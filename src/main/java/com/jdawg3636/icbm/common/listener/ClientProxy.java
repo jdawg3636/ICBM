@@ -234,6 +234,8 @@ public class ClientProxy extends CommonProxy {
 
     public void onParticleFactoryRegisterEvent(ParticleFactoryRegisterEvent event) {
 
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.ENDER_EFFECT.get(), (IAnimatedSprite sprites) -> EnderParticle::new);
+
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_DEBILITATION_A.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0xFF, 0xFF, 0xFF));
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_DEBILITATION_B.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0xBC, 0xBC, 0xBC));
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_DEBILITATION_C.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x4B, 0x4B, 0x4B));
@@ -252,7 +254,7 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_D.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x20, 0x56, 0x00));
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.SMOKE_CONTAGION_E.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.Factory(sprites, 0x08, 0x16, 0x00));
 
-        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.ENDER_EFFECT.get(), (IAnimatedSprite sprites) -> EnderParticle::new);
+        Minecraft.getInstance().particleEngine.register(ParticleTypeReg.RADIOACTIVE_EFFECT.get(), (IAnimatedSprite sprites) -> new ColoredSmokeParticle.FactoryRadioactive(sprites, 0xb2, 0xff, 0x4d));
 
     }
 
