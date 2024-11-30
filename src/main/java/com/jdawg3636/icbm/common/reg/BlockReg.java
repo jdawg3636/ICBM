@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.*;
+import com.jdawg3636.icbm.common.block.camouflage.BlockCamouflage;
 import com.jdawg3636.icbm.common.block.coal_generator.BlockCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.BlockCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.BlockEMPTower;
@@ -130,6 +131,7 @@ public class BlockReg {
     public static final RegistryObject<Block> ELECTROMAGNETIC_GLASS         = BLOCKS.register("electromagnetic_glass",          () -> new BlockModdedGlass(5F, 6F, true));
 
     // Extras
+    public static final RegistryObject<Block> CAMOUFLAGE                    = BLOCKS.register("camouflage",                     BlockCamouflage::new);
     public static final RegistryObject<Block> GLASS_BUTTON                  = BLOCKS.register("glass_button",                   BlockGlassButton::new);
     public static final RegistryObject<Block> GLASS_PRESSURE_PLATE          = BLOCKS.register("glass_pressure_plate",           BlockGlassPressurePlate::new);
     public static final RegistryObject<Block> SIREN                         = BLOCKS.register("siren",                          () -> new BlockSiren(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(0.8F)));

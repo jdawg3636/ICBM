@@ -1,6 +1,9 @@
 package com.jdawg3636.icbm.common.listener;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.camouflage.BlockCamouflage;
+import com.jdawg3636.icbm.common.block.camouflage.DynamicBakedModelCamouflage;
+import com.jdawg3636.icbm.common.block.camouflage.TileCamouflage;
 import com.jdawg3636.icbm.common.block.coal_generator.ContainerCoalGenerator;
 import com.jdawg3636.icbm.common.block.coal_generator.ScreenCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
@@ -23,6 +26,7 @@ import com.jdawg3636.icbm.common.item.ItemTracker;
 import com.jdawg3636.icbm.common.particle.ColoredSmokeParticle;
 import com.jdawg3636.icbm.common.particle.EnderParticle;
 import com.jdawg3636.icbm.common.reg.*;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.IAnimatedSprite;
@@ -35,9 +39,11 @@ import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -58,10 +64,14 @@ public class ClientProxy extends CommonProxy {
     public static final ResourceLocation MODEL_REDMATTER_BLAST_ACCRETION_DISK = new ResourceLocation(ICBMReference.MODID + ":entity/redmatter_blast_accretion_disk");
     public static final ResourceLocation MODEL_REDMATTER_BLAST_SPHERE         = new ResourceLocation(ICBMReference.MODID + ":entity/redmatter_blast_sphere");
 
+    // Other Models
+    public static final ResourceLocation MODEL_CAMOUFLAGE_DEFAULT = new ResourceLocation(ICBMReference.MODID + ":block/camouflage_default");
+
     @SuppressWarnings("unchecked")
     public void onClientSetupEvent(FMLClientSetupEvent event) {
 
         // Set Render Layers
+        RenderTypeLookup.setRenderLayer(BlockReg.CAMOUFLAGE.get(), renderType -> true);
         RenderTypeLookup.setRenderLayer(BlockReg.ELECTROMAGNETIC_GLASS.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.cutout());
@@ -212,6 +222,15 @@ public class ClientProxy extends CommonProxy {
                 ItemReg.HAZMAT_BOOTS.get()
         );
 
+        // Register BlockColors for Camouflage
+        Minecraft.getInstance().getBlockColors().register((BlockState blockState, IBlockDisplayReader level, BlockPos blockPos, int tint) -> {
+            if (level == null) return -1;
+            return BlockCamouflage.getTileEntity(level, blockPos)
+                    .map(TileCamouflage::getAppearanceNoSelf)
+                    .map(appearance -> Minecraft.getInstance().getBlockColors().getColor(appearance, level, blockPos, tint))
+                    .orElse(blockState.getMapColor(level, blockPos).col);
+        }, BlockReg.CAMOUFLAGE.get());
+
     }
 
     public void onModelRegistryEvent(final ModelRegistryEvent event) {
@@ -229,6 +248,10 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.addSpecialModel(MODEL_ENDER_BLAST_SPHERE);
         ModelLoader.addSpecialModel(MODEL_REDMATTER_BLAST_ACCRETION_DISK);
         ModelLoader.addSpecialModel(MODEL_REDMATTER_BLAST_SPHERE);
+
+        // Other Models
+        ModelLoader.addSpecialModel(MODEL_CAMOUFLAGE_DEFAULT);
+        ModelLoaderRegistry.registerLoader(new ResourceLocation(ICBMReference.MODID, "camouflage_loader"), new DynamicBakedModelCamouflage.CamouflageModelLoader());
 
     }
 
