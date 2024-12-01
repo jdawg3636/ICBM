@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.*;
+import com.jdawg3636.icbm.common.block.camouflage.BlockCamouflage;
 import com.jdawg3636.icbm.common.block.coal_generator.BlockCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.BlockCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.BlockEMPTower;
@@ -39,14 +40,14 @@ public class BlockReg {
     public static final RegistryObject<Block> CONCRETE                      = BLOCKS.register("concrete",                       () -> new Block(Block.Properties.of(Material.STONE).strength(3.8F, 25F)));
     public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.of(Material.STONE).strength(3.8F, 50F)));
     public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.of(Material.STONE).strength(3.8F, 75F)));
-    public static final RegistryObject<Block> RADIOACTIVE_MATERIAL          = BLOCKS.register("radioactive_material",           () -> new GrassBlock(AbstractBlock.Properties.of(Material.GRASS).randomTicks().harvestTool(ToolType.SHOVEL).strength(0.6F, 6F).sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> RADIOACTIVE_MATERIAL          = BLOCKS.register("radioactive_material",           () -> new BlockRadioactiveMaterial(AbstractBlock.Properties.of(Material.GRASS).randomTicks().harvestTool(ToolType.SHOVEL).strength(0.6F, 6F).sound(SoundType.GRASS)));
     public static final RegistryObject<Block> REINFORCED_GLASS              = BLOCKS.register("reinforced_glass",               () -> new BlockModdedGlass(2F, 48F, false));
 
     // Ores
     public static final RegistryObject<Block> ORE_COPPER                    = BLOCKS.register("ore_copper",                     () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final RegistryObject<Block> ORE_SULFUR                    = BLOCKS.register("ore_sulfur",                     () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final RegistryObject<Block> ORE_TIN                       = BLOCKS.register("ore_tin",                        () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-    public static final RegistryObject<Block> ORE_URANIUM                   = BLOCKS.register("ore_uranium",                    () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F).randomTicks()) {
+    public static final RegistryObject<Block> ORE_URANIUM                   = BLOCKS.register("ore_uranium",                    () -> new BlockUraniumOre(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F).lightLevel(blockState -> 3)) {
         @OnlyIn(Dist.CLIENT)
         public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
             super.animateTick(stateIn, worldIn, pos, rand);
@@ -130,6 +131,7 @@ public class BlockReg {
     public static final RegistryObject<Block> ELECTROMAGNETIC_GLASS         = BLOCKS.register("electromagnetic_glass",          () -> new BlockModdedGlass(5F, 6F, true));
 
     // Extras
+    public static final RegistryObject<Block> CAMOUFLAGE                    = BLOCKS.register("camouflage",                     BlockCamouflage::new);
     public static final RegistryObject<Block> GLASS_BUTTON                  = BLOCKS.register("glass_button",                   BlockGlassButton::new);
     public static final RegistryObject<Block> GLASS_PRESSURE_PLATE          = BLOCKS.register("glass_pressure_plate",           BlockGlassPressurePlate::new);
     public static final RegistryObject<Block> SIREN                         = BLOCKS.register("siren",                          () -> new BlockSiren(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(0.8F)));

@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.camouflage.TileCamouflage;
 import com.jdawg3636.icbm.common.block.coal_generator.TileCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TileCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
@@ -64,6 +65,7 @@ public class TileReg {
     public static final RegistryObject<TileEntityType<? extends TileEntity>> RADAR_STATION   = TILES.register(BlockReg.RADAR_STATION.getId().getPath(),   () -> TileEntityType.Builder.of(() -> new TileRadarStation(TileReg.RADAR_STATION.get()),     BlockReg.RADAR_STATION.get()  ).build(null));
 
     // Extras
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> CAMOUFLAGE      = TILES.register(BlockReg.CAMOUFLAGE.getId().getPath(),      () -> TileEntityType.Builder.of(() -> new TileCamouflage(TileReg.CAMOUFLAGE.get()),          BlockReg.CAMOUFLAGE.get()     ).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> SIREN           = TILES.register(BlockReg.SIREN.getId().getPath(),           () -> TileEntityType.Builder.of(() -> new TileSiren(TileReg.SIREN.get()),                    BlockReg.SIREN.get()          ).build(null));
 
     // Particle Accelerator Components

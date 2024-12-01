@@ -16,6 +16,8 @@ public class ParticleTypeReg {
 
     public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, ICBMReference.MODID);
 
+    public static final RegistryObject<ParticleType<BasicParticleType>> ENDER_EFFECT = PARTICLES.register("ender", () -> new BasicParticleType(true));
+
     public static final RegistryObject<ParticleType<BasicParticleType>> SMOKE_DEBILITATION_A = PARTICLES.register("smoke_debilitation_a", () -> new BasicParticleType(true));
     public static final RegistryObject<ParticleType<BasicParticleType>> SMOKE_DEBILITATION_B = PARTICLES.register("smoke_debilitation_b", () -> new BasicParticleType(false));
     public static final RegistryObject<ParticleType<BasicParticleType>> SMOKE_DEBILITATION_C = PARTICLES.register("smoke_debilitation_c", () -> new BasicParticleType(true));
@@ -34,6 +36,6 @@ public class ParticleTypeReg {
     public static final RegistryObject<ParticleType<BasicParticleType>> SMOKE_CONTAGION_D = PARTICLES.register("smoke_contagion_d", () -> new BasicParticleType(false));
     public static final RegistryObject<ParticleType<BasicParticleType>> SMOKE_CONTAGION_E = PARTICLES.register("smoke_contagion_e", () -> new BasicParticleType(true));
 
-    public static final RegistryObject<ParticleType<BasicParticleType>> ENDER_EFFECT = PARTICLES.register("ender", () -> new BasicParticleType(true));
+    public static final RegistryObject<ParticleType<BasicParticleType>> RADIOACTIVE_EFFECT = PARTICLES.register("radioactive", () -> new BasicParticleType(false));
 
 }

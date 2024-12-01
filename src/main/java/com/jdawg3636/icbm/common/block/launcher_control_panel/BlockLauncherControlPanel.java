@@ -62,6 +62,7 @@ public class BlockLauncherControlPanel extends AbstractBlockMachineTile implemen
         }
     }
 
+    // TODO clean up this redstone state management
     @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(BlockState blockState, World level, BlockPos blockPos, Block block, BlockPos fromBlockPos, boolean isMoving) {

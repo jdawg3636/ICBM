@@ -50,7 +50,8 @@
 
   # Potions
   "potion.toxin": "Toxin",
-  "potion.virus": "Virus",
+  "effect.icbm.engineered_pathogen": "Pathogen",
+  "effect.icbm.engineered_pathogen_immunity": "Chemical Immunity",
   "potion.frostBite": "Frost Bite",
   "effect.icbm.radiation": "Radiation",
 
@@ -620,8 +621,8 @@
   "death.attack.icbm.redmatter.player": "%1$s was brutally spaghettified in a black hole while fighting %2$s",
   "death.attack.icbm.chemical": "%s fell victim to chemical weapons",
   "death.attack.icbm.chemical.player": "%1$s fell victim to chemical weapons while fighting %2$s",
-  "death.attack.icbm.contagion": "%s succumbed to The Contagion",
-  "death.attack.icbm.contagion.player": "%1$s succumbed to The Contagion while fighting %2$s",
+  "death.attack.icbm.engineered_pathogen": "%s succumbed to The Engineered Pathogen",
+  "death.attack.icbm.engineered_pathogen.player": "%1$s succumbed to The Engineered Pathogen while fighting %2$s",
 
   # GPS
   "gps.pos.set": "GPS data saved",

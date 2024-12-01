@@ -4,13 +4,17 @@ import com.jdawg3636.icbm.common.config.ICBMConfig;
 import com.jdawg3636.icbm.common.listener.ClientProxy;
 import com.jdawg3636.icbm.common.listener.CommonProxy;
 import com.jdawg3636.icbm.common.reg.ItemReg;
+import com.jdawg3636.icbm.common.reg.ParticleTypeReg;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -18,6 +22,8 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.DistExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Random;
 
 public final class ICBMReference {
 
@@ -92,6 +98,16 @@ public final class ICBMReference {
         }
 
         return i;
+    }
+
+    public static void spawnRadiationParticle(World level, BlockPos blockPos, Random random) {
+        double x = (double)blockPos.getX() + random.nextDouble();
+        double y = (double)blockPos.getY() + random.nextDouble();
+        double z = (double)blockPos.getZ() + random.nextDouble();
+        double speedX = (random.nextDouble() - 0.5) / 8;
+        double speedY = (random.nextDouble() - 0.5) / 8;
+        double speedZ = (random.nextDouble() - 0.5) / 8;
+        level.addParticle((BasicParticleType) ParticleTypeReg.RADIOACTIVE_EFFECT.get(), x, y, z, speedX, speedY, speedZ);
     }
 
 }
