@@ -63,6 +63,7 @@ public class TileCamouflage extends TileEntity {
         super.setChanged();
         if(level != null) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE + Constants.BlockFlags.NOTIFY_NEIGHBORS);
+            level.getChunkSource().getLightEngine().checkBlock(getBlockPos());
         }
     }
 
@@ -80,10 +81,10 @@ public class TileCamouflage extends TileEntity {
         super.load(blockState, compoundNBT);
 
         if(compoundNBT.contains("appearance")) {
-            this.appearance = NBTUtil.readBlockState(compoundNBT.getCompound("appearance"));
+            this.setAppearance(NBTUtil.readBlockState(compoundNBT.getCompound("appearance")));
         }
         else {
-            this.appearance = null;
+            this.setAppearance(null);
         }
 
         this.transparentSides = new ArrayList<>();
@@ -91,7 +92,7 @@ public class TileCamouflage extends TileEntity {
         for(Direction potentialDirection : Direction.values()) {
             int bit = 1 << potentialDirection.ordinal();
             if((transparentSidesPacked | bit) == transparentSidesPacked) {
-                this.transparentSides.add(potentialDirection);
+                this.toggleSideTransparency(potentialDirection);
             }
         }
 

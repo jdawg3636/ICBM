@@ -59,11 +59,6 @@ public class BlockCamouflage extends Block {
     }
 
     @Override
-    public VoxelShape getVisualShape(BlockState blockState, IBlockReader level, BlockPos blockPos, ISelectionContext context) {
-        return super.getCollisionShape(blockState, level, blockPos, context);
-    }
-
-    @Override
     public boolean useShapeForLightOcclusion(BlockState blockState) {
         return true;
     }
