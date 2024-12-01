@@ -55,6 +55,10 @@ public class DynamicBakedModelCamouflage implements IDynamicBakedModel {
             shouldRender = RenderTypeLookup.canRenderInLayer(mimickedState, MinecraftForgeClient.getRenderLayer());
         }
 
+        if (side != null && tile.getLevel().getBlockState(tile.getBlockPos().relative(side)).getBlock() instanceof BlockCamouflage) {
+            shouldRender = false;
+        }
+
         return shouldRender ? model.getQuads(blockStateForRender, side, rand, extraData) : Collections.emptyList();
 
     }

@@ -34,7 +34,6 @@ public class TileCamouflage extends TileEntity {
     public void setAppearance(BlockState appearance) {
         this.appearance = appearance;
         setChanged();
-        System.out.println("Appearance: " + appearance);
     }
 
     public BlockState getAppearanceNoNull() {
@@ -51,7 +50,6 @@ public class TileCamouflage extends TileEntity {
         if(transparentSides.contains(direction)) transparentSides.remove(direction);
         else transparentSides.add(direction);
         setChanged();
-        System.out.println("Transparent Sides: " + transparentSides);
     }
 
     public boolean isSideTransparent(Direction direction) {
