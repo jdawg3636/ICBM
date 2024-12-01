@@ -234,6 +234,11 @@ public class EntityAcceleratingParticle extends Entity {
         nbt.putFloat("particle_speed", getEntityData().get(PARTICLE_SPEED));
     }
 
+    @Override
+    public boolean isSilent() {
+        return true;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public boolean shouldRenderAtSqrDistance(double pDistance) {
         return true;
