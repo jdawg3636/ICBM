@@ -35,6 +35,7 @@ public class AntimatterBlastManagerThread extends AbstractBlastManagerThread {
 
     public int radius;
     public int fuzzyEdgeThickness;
+    public boolean canBreakBedrock;
 
     ArrayList<AntimatterBlastWorkerThread> threadPool;
 
@@ -100,6 +101,7 @@ public class AntimatterBlastManagerThread extends AbstractBlastManagerThread {
                     worker.explosionCenterPosZ = explosionCenterPosZ;
                     worker.radius = radius;
                     worker.fuzzyEdgeThickness = fuzzyEdgeThickness;
+                    worker.canBreakBedrock = canBreakBedrock;
                     worker.threadCountX = threadCountX;
                     worker.threadCountY = threadCountY;
                     worker.threadCountZ = threadCountZ;

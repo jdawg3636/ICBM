@@ -46,7 +46,9 @@ public class ICBMConfig {
 
         private final ForgeConfigSpec.DoubleValue blastResistanceObsidian;
 
+        private final ForgeConfigSpec.BooleanValue antimatterCanDestroyBedrock;
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
+        private final ForgeConfigSpec.BooleanValue redmatterCanDestroyBedrock;
 
         private final ForgeConfigSpec.BooleanValue engineeredPathogenPerpetualForPlayers;
         private final ForgeConfigSpec.DoubleValue engineeredPathogenSpreadRadius;
@@ -124,11 +126,19 @@ public class ICBMConfig {
                             "MODS)."
                             )
                     .defineInRange("blastResistanceObsidian", 25.0, -1.0, Float.MAX_VALUE);
+            this.antimatterCanDestroyBedrock = builder
+                    .comment("",
+                            "Enables/disables the ability of Antimatter blasts to destroy normally indestructible blocks, such as bedrock.")
+                    .define("antimatterCanDestroyBedrock", false);
             this.antimatterFuzzinessPercentage = builder
                     .comment("",
                             "Defines the percentage, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
                             "section within the radius of an antimatter blast will be destroyed in the blast.")
                     .defineInRange("antimatterFuzzynessPercentage", 0.4D, 0D, 1D);
+            this.redmatterCanDestroyBedrock = builder
+                    .comment("",
+                            "Enables/disables the ability of Red Matter blasts to destroy normally indestructible blocks, such as bedrock.")
+                    .define("redmatterCanDestroyBedrock", false);
             this.engineeredPathogenPerpetualForPlayers = builder
                     .comment("",
                             "If enabled, players will never recover from The Engineered Pathogen unless they die or",
@@ -285,8 +295,16 @@ public class ICBMConfig {
             return blastResistanceObsidian.get().floatValue();
         }
 
+        public boolean getAntimatterCanDestroyBedrock() {
+            return antimatterCanDestroyBedrock.get();
+        }
+
         public double getAntimatterFuzzinessPercentage() {
             return antimatterFuzzinessPercentage.get();
+        }
+
+        public boolean getRedmatterCanDestroyBedrock() {
+            return redmatterCanDestroyBedrock.get();
         }
 
         public boolean getEngineeredPathogenPerpetualForPlayers() {

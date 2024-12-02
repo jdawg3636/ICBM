@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.IBlastControllerCapability;
 import com.jdawg3636.icbm.common.reg.BlastManagerThreadReg;
@@ -39,6 +40,7 @@ public class EventBlastRedmatter extends AbstractBlastEvent {
         blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
         blastManagerThread.radius = getBlastType() == Type.GRENADE ? 30 : 50; // todo: make configurable
         blastManagerThread.fuzzyEdgeThickness = 2; // todo: make configurable
+        blastManagerThread.canBreakBedrock = ICBMReference.COMMON_CONFIG.getRedmatterCanDestroyBedrock();
         LazyOptional<IBlastControllerCapability> capOptional = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
         capOptional.ifPresent((IBlastControllerCapability cap) -> cap.enqueueBlastThread(blastManagerThread));
         return true;

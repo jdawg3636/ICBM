@@ -29,6 +29,7 @@ public class AntimatterBlastWorkerThread extends AbstractBlastWorkerThread {
 
     public int radius;
     public int fuzzyEdgeThickness;
+    public boolean canBreakBedrock;
 
     public final Set<BlockPos> blocksToBeDestroyed = Sets.newHashSet();
 
@@ -45,7 +46,8 @@ public class AntimatterBlastWorkerThread extends AbstractBlastWorkerThread {
                     BlockPos blockPos = new BlockPos(offsetX + explosionCenterPosX, offsetY + explosionCenterPosY, offsetZ + explosionCenterPosZ);
                     // Calling deprecated BlockState::isAir instead of Forge-recommended alternative with level parameter since lacking reference to level from worker thread
                     //noinspection deprecation
-                    if(!blockStateSupplier.apply(blockPos).isAir()) {
+                    BlockState blockState = blockStateSupplier.apply(blockPos);
+                    if(!blockState.isAir() && (canBreakBedrock || blockState.getBlock().explosionResistance < 3_600_000F)) {
                         int distanceFromCenterSquared = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
                         if(distanceFromCenterSquared < (radius - fuzzyEdgeThickness) * (radius - fuzzyEdgeThickness)) {
                             blocksToBeDestroyed.add(blockPos);
