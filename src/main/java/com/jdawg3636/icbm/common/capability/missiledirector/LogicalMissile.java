@@ -1,7 +1,6 @@
 package com.jdawg3636.icbm.common.capability.missiledirector;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
@@ -406,12 +405,6 @@ public class LogicalMissile {
         // Prevent loop between kill functions
         if(this.removed) return;
         this.removed = true;
-        // Cut connections from the launcher platform TileEntity (only relevant if we're still on the launch pad)
-        getPuppetEntity().ifPresent(missileEntity -> Optional.ofNullable(level.getBlockEntity(sourcePos)).filter(TileLauncherPlatform.class::isInstance).map(TileLauncherPlatform.class::cast).ifPresent(tileLauncherPlatform -> {
-            if (missileEntity.getUUID().equals(tileLauncherPlatform.missileEntityID)) {
-                tileLauncherPlatform.removeMissileItemWithAction((entity) -> true);
-            }
-        }));
         // Kill puppet entity, if it exists
         this.getPuppetEntity().ifPresent(EntityMissile::killPuppet);
         // Remove from simulation
