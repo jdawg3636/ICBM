@@ -72,7 +72,7 @@ public class TileCoalGenerator extends TileMachine implements ITickableTileEntit
                 final int burnTimeForConsumedFuel = tryConsumeFuel();
                 remainingBurnTicks = burnTimeForConsumedFuel;
                 totalBurnTicksForCurrentFuel = burnTimeForConsumedFuel;
-                updateNearbyClients();
+                if(burnTimeForConsumedFuel != 0) updateNearbyClients();
             }
             // If currently generating, send to battery, then send excess to outside
             if(remainingBurnTicks > 0) {

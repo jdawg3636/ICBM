@@ -28,7 +28,6 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,7 +39,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     private final ITextComponent defaultName;
     private final Supplier<ContainerType<? extends AbstractContainerMachine>> containerType;
     private final AbstractContainerMachine.IConstructor containerConstructor;
-    private final ItemStackHandler itemHandler;
+    private final ICBMItemStackHandler itemHandler;
     public final LazyOptional<IItemHandler> itemHandlerLazyOptional;
     private final ICBMEnergyStorage energyStorage;
     public final LazyOptional<IEnergyStorage> energyStorageLazyOptional;
@@ -81,6 +80,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     * */
     public void onBlockDestroyed() {
         if(level != null && itemHandler != null) {
+            itemHandler.setBeingDestroyed();
             for(int i = 0; i < itemHandler.getSlots(); ++i) {
                 ItemStack contents = itemHandler.getStackInSlot(i);
                 itemHandler.setStackInSlot(i, ItemStack.EMPTY);
@@ -89,15 +89,17 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         }
     }
 
-    protected void onInventorySlotChanged(int slot) {
-        setChanged();
+    protected void onInventorySlotChanged(int slot, boolean isBeingDestroyed) {
+        if(!isBeingDestroyed) {
+            setChanged();
+        }
     }
 
     public boolean isInventoryItemValid(int slot, ItemStack stack) {
         return true;
     }
 
-    private ItemStackHandler createHandler(int inventorySize) {
+    private ICBMItemStackHandler createHandler(int inventorySize) {
         return new ICBMItemStackHandler(inventorySize, this::onInventorySlotChanged, this::isInventoryItemValid);
     }
 
@@ -293,6 +295,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     @Override
     @Nullable
     public SUpdateTileEntityPacket getUpdatePacket() {
+        if(level == null || level.getBlockEntity(worldPosition) == null) return null;
         return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
     }
 

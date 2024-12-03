@@ -89,8 +89,8 @@ public class TileLauncherPlatform extends TileMachine {
     }
 
     @Override
-    protected void onInventorySlotChanged(int slot) {
-        super.onInventorySlotChanged(slot);
+    protected void onInventorySlotChanged(int slot, boolean isBeingDestroyed) {
+        super.onInventorySlotChanged(slot, isBeingDestroyed);
         itemHandlerLazyOptional.ifPresent((itemHandlerUncast) -> {
             ItemStackHandler itemHandler = (ItemStackHandler)itemHandlerUncast;
             if(level != null && !level.isClientSide()) {

@@ -4,20 +4,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 public class ICBMItemStackHandler extends ItemStackHandler {
 
     private boolean doCheckItemValidity = true;
-    Consumer<Integer> onInventorySlotChanged = (slot) -> {};
+    private boolean isBeingDestroyed = false;
+    BiConsumer<Integer, Boolean> onInventorySlotChanged = (slot, isBeingDestroyed) -> {};
     BiFunction<Integer, ItemStack, Boolean> isInventoryItemValid = (slot, stack) -> true;
 
     public ICBMItemStackHandler(int inventorySize) {
         super(inventorySize);
     }
 
-    public ICBMItemStackHandler(int inventorySize, Consumer<Integer> onInventorySlotChanged, BiFunction<Integer, ItemStack, Boolean> isInventoryItemValid) {
+    public ICBMItemStackHandler(int inventorySize, BiConsumer<Integer, Boolean> onInventorySlotChanged, BiFunction<Integer, ItemStack, Boolean> isInventoryItemValid) {
         this(inventorySize);
         this.onInventorySlotChanged = onInventorySlotChanged;
         this.isInventoryItemValid = isInventoryItemValid;
@@ -25,7 +26,7 @@ public class ICBMItemStackHandler extends ItemStackHandler {
 
     @Override
     protected void onContentsChanged(int slot) {
-        onInventorySlotChanged.accept(slot);
+        onInventorySlotChanged.accept(slot, this.isBeingDestroyed);
     }
 
     @Override
@@ -44,6 +45,10 @@ public class ICBMItemStackHandler extends ItemStackHandler {
         ItemStack result = this.insertItem(slot, stack, simulate);
         this.doCheckItemValidity = true;
         return result;
+    }
+
+    public void setBeingDestroyed() {
+        this.isBeingDestroyed = true;
     }
 
 }

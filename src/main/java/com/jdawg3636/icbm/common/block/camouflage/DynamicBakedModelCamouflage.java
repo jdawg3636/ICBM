@@ -28,7 +28,9 @@ import java.util.function.Function;
 
 public class DynamicBakedModelCamouflage implements IDynamicBakedModel {
 
-    public static final LazyOptional<IBakedModel> defaultModel = LazyOptional.of(() -> Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_CAMOUFLAGE_DEFAULT));
+    public static final LazyOptional<IBakedModel> defaultModel = LazyOptional.of(() -> {
+        return Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_CAMOUFLAGE_DEFAULT);
+    });
 
     @Override
     public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand, IModelData extraData) {
