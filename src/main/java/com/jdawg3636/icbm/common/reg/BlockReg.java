@@ -22,14 +22,10 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.Random;
 
 public class BlockReg {
 
@@ -47,13 +43,11 @@ public class BlockReg {
     public static final RegistryObject<Block> ORE_COPPER                    = BLOCKS.register("ore_copper",                     () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final RegistryObject<Block> ORE_SULFUR                    = BLOCKS.register("ore_sulfur",                     () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final RegistryObject<Block> ORE_TIN                       = BLOCKS.register("ore_tin",                        () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-    public static final RegistryObject<Block> ORE_URANIUM                   = BLOCKS.register("ore_uranium",                    () -> new BlockUraniumOre(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F).lightLevel(blockState -> 3)) {
-        @OnlyIn(Dist.CLIENT)
-        public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-            super.animateTick(stateIn, worldIn, pos, rand);
-            // TODO Radiation Particles
-        }
-    });
+    public static final RegistryObject<Block> ORE_URANIUM                   = BLOCKS.register("ore_uranium",                    () -> new BlockUraniumOre(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F).lightLevel(blockState -> 3)));
+
+    // Fluids
+    public static final RegistryObject<FlowingFluidBlock> FUEL              = BLOCKS.register("fuel",                           () -> new FlowingFluidBlock(FluidReg.FUEL.source, AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
+    public static final RegistryObject<FlowingFluidBlock> OIL               = BLOCKS.register("oil",                            () -> new FlowingFluidBlock(FluidReg.OIL.source, AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
 
     // Explosives
     public static final RegistryObject<Block> EXPLOSIVES_CONDENSED          = BLOCKS.register("explosives_condensed",           () -> new BlockExplosives(EntityReg.EXPLOSIVES_CONDENSED,           BlastEventReg.CONDENSED,          ItemReg.EXPLOSIVES_CONDENSED));

@@ -40,9 +40,9 @@ def getGitHash = { ->
         commandLine 'git', 'status', '--short'
         standardOutput = stdout
     }
-    //def modifiedSuffix = stdout.toString().equals("\n") ? "" : "-MODIFIED"
+    def modifiedSuffix = stdout.toString().equals("\n") ? "" : "-MODIFIED"
 
-    return commitHash //+ modifiedSuffix
+    return commitHash + modifiedSuffix
 
 }
 

@@ -99,6 +99,13 @@
   "item.icbm.rocket_launcher.info": "This rocket launcher can fire up to Tier %s rockets",
   "item.icbm.rocket_launcher.info.creative": "Creative: Bypasses tier restriction",
 
+  "item.icbm.fuel_bucket": "Fuel Bucket",
+  "item.icbm.oil_bucket": "Oil Bucket",
+  "block.icbm.fuel": "Fuel",
+  "block.icbm.oil": "Oil",
+  "fluid.icbm.fuel": "Fuel",
+  "fluid.icbm.oil": "Oil",
+
   # Crafting items
   "item.icbm.ingot_bronze": "Bronze Ingot",
   "item.icbm.ingot_copper": "Copper Ingot",

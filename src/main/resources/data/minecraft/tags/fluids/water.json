@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "icbm:fuel",
+    "icbm:flowing_fuel",
+    "icbm:oil",
+    "icbm:flowing_oil"
+  ]
+}

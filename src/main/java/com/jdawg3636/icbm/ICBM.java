@@ -48,6 +48,7 @@ public final class ICBM {
                 ContainerReg.CONTAINERS,
                 EffectReg.EFFECTS,
                 EntityReg.ENTITIES,
+                FluidReg.FLUIDS,
                 ItemReg.ITEMS,
                 ParticleTypeReg.PARTICLES,
                 RecipeSerializerReg.RECIPE_SERIALIZERS,

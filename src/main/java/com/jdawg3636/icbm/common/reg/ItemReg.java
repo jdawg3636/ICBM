@@ -4,7 +4,9 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.item.*;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -34,6 +36,10 @@ public class ItemReg {
     public static final RegistryObject<Item> ORE_SULFUR                     = ITEMS.register("ore_sulfur",                      () -> new BlockItem(BlockReg.ORE_SULFUR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> ORE_TIN                        = ITEMS.register("ore_tin",                         () -> new BlockItem(BlockReg.ORE_TIN.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> ORE_URANIUM                    = ITEMS.register("ore_uranium",                     () -> new BlockItem(BlockReg.ORE_URANIUM.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+
+    // Fluids
+    public static final RegistryObject<Item> FUEL_BUCKET                    = ITEMS.register("fuel_bucket",                     () -> new BucketItem(FluidReg.FUEL.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> OIL_BUCKET                     = ITEMS.register("oil_bucket",                      () -> new BucketItem(FluidReg.OIL.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
 
     // Explosives
     public static final RegistryObject<Item> EXPLOSIVES_CONDENSED           = ITEMS.register("explosives_condensed",            () -> new BlockItem(BlockReg.EXPLOSIVES_CONDENSED.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
