@@ -66,6 +66,9 @@ public class ICBMConfig {
         private final ForgeConfigSpec.IntValue oreCopperSize;
         private final ForgeConfigSpec.IntValue oreCopperRange;
         private final ForgeConfigSpec.IntValue oreCopperCount;
+        private final ForgeConfigSpec.IntValue oreFluoriteSize;
+        private final ForgeConfigSpec.IntValue oreFluoriteRange;
+        private final ForgeConfigSpec.IntValue oreFluoriteCount;
         private final ForgeConfigSpec.IntValue oreSulfurSize;
         private final ForgeConfigSpec.IntValue oreSulfurRange;
         private final ForgeConfigSpec.IntValue oreSulfurCount;
@@ -75,9 +78,8 @@ public class ICBMConfig {
         private final ForgeConfigSpec.IntValue oreUraniumSize;
         private final ForgeConfigSpec.IntValue oreUraniumRange;
         private final ForgeConfigSpec.IntValue oreUraniumCount;
-        private final ForgeConfigSpec.IntValue oreOilSize;
-        private final ForgeConfigSpec.IntValue oreOilRange;
-        private final ForgeConfigSpec.IntValue oreOilCount;
+
+        private final ForgeConfigSpec.BooleanValue generateOilLakes;
 
         private final ForgeConfigSpec.IntValue particleAcceleratorEnergyUsagePerTick;
         private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedIncreasePerTick;
@@ -203,6 +205,18 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the 'count' parameter of Copper Ore vein generation.")
                     .defineInRange("oreCopperCount", 20, 0, Integer.MAX_VALUE);
+            this.oreFluoriteSize = builder
+                    .comment("",
+                            "Defines the 'size' parameter of Fluorite Ore vein generation.")
+                    .defineInRange("oreFluoriteSize", 12, 0, Integer.MAX_VALUE);
+            this.oreFluoriteRange = builder
+                    .comment("",
+                            "Defines the 'range' parameter of Fluorite Ore vein generation.")
+                    .defineInRange("oreFluoriteRange", 32, 0, Integer.MAX_VALUE);
+            this.oreFluoriteCount = builder
+                    .comment("",
+                            "Defines the 'count' parameter of Fluorite Ore vein generation.")
+                    .defineInRange("oreFluoriteCount", 6, 0, Integer.MAX_VALUE);
             this.oreSulfurSize = builder
                     .comment("",
                             "Defines the 'size' parameter of Sulfur Ore vein generation.")
@@ -239,18 +253,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the 'count' parameter of Uranium Ore vein generation.")
                     .defineInRange("oreUraniumCount", 1, 0, Integer.MAX_VALUE);
-            this.oreOilSize = builder
+            this.generateOilLakes = builder
                     .comment("",
-                            "Defines the 'size' parameter of Oil vein generation.")
-                    .defineInRange("oreOilSize", 16, 0, Integer.MAX_VALUE);
-            this.oreOilRange = builder
-                    .comment("",
-                            "Defines the 'range' parameter of Oil vein generation.")
-                    .defineInRange("oreOilRange", 20, 0, Integer.MAX_VALUE);
-            this.oreOilCount = builder
-                    .comment("",
-                            "Defines the 'count' parameter of Oil vein generation.")
-                    .defineInRange("oreOilCount", 10, 0, Integer.MAX_VALUE);
+                            "Enables/disables the generation of Oil Lakes.")
+                    .define("generateOilLakes", true);
             this.particleAcceleratorEnergyUsagePerTick = builder
                     .comment("",
                             "Defines the amount of Forge Energy (FE) consumed per tick by a particle accelerator while it is active.")
@@ -378,6 +384,18 @@ public class ICBMConfig {
             return oreCopperCount.get();
         }
 
+        public int getOreFluoriteSize() {
+            return oreFluoriteSize.get();
+        }
+
+        public int getOreFluoriteRange() {
+            return oreFluoriteRange.get();
+        }
+
+        public int getOreFluoriteCount() {
+            return oreFluoriteCount.get();
+        }
+
         public int getOreSulfurSize() {
             return oreSulfurSize.get();
         }
@@ -414,16 +432,8 @@ public class ICBMConfig {
             return oreUraniumCount.get();
         }
 
-        public int getOreOilSize() {
-            return oreOilSize.get();
-        }
-
-        public int getOreOilRange() {
-            return oreOilRange.get();
-        }
-
-        public int getOreOilCount() {
-            return oreOilCount.get();
+        public boolean getGenerateOilLakes() {
+            return generateOilLakes.get();
         }
 
         public int getParticleAcceleratorEnergyUsagePerTick() {

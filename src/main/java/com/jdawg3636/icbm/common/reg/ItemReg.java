@@ -33,6 +33,7 @@ public class ItemReg {
 
     // Ores
     public static final RegistryObject<Item> ORE_COPPER                     = ITEMS.register("ore_copper",                      () -> new BlockItem(BlockReg.ORE_COPPER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> ORE_FLUORITE                   = ITEMS.register("ore_fluorite",                    () -> new BlockItem(BlockReg.ORE_FLUORITE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> ORE_SULFUR                     = ITEMS.register("ore_sulfur",                      () -> new BlockItem(BlockReg.ORE_SULFUR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> ORE_TIN                        = ITEMS.register("ore_tin",                         () -> new BlockItem(BlockReg.ORE_TIN.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> ORE_URANIUM                    = ITEMS.register("ore_uranium",                     () -> new BlockItem(BlockReg.ORE_URANIUM.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
@@ -184,6 +185,7 @@ public class ItemReg {
 
     // Basic Crafting Items (No functionality)
     public static final RegistryObject<Item> POISON_POWDER                  = ITEMS.register("poison_powder",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> FLUORITE_CRYSTAL               = ITEMS.register("fluorite_crystal",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> SULFUR                         = ITEMS.register("sulfur",                          () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> COPPER_WIRE                    = ITEMS.register("copper_wire",                     () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CIRCUIT_BASIC                  = ITEMS.register("circuit_basic",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

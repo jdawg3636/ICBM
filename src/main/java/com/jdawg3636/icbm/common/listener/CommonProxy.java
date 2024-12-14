@@ -78,12 +78,14 @@ public class CommonProxy {
     }
 
     public void onBiomeLoadingEvent(final BiomeLoadingEvent event) {
-        if(ICBMReference.COMMON_CONFIG.getOreCopperCount() != 0)  registerOreGenFeature(event.getGeneration(), BlockReg.ORE_COPPER.get().defaultBlockState(),  ICBMReference.COMMON_CONFIG.getOreCopperSize(),  ICBMReference.COMMON_CONFIG.getOreCopperRange(),  ICBMReference.COMMON_CONFIG.getOreCopperCount());
-        if(ICBMReference.COMMON_CONFIG.getOreSulfurCount() != 0)  registerOreGenFeature(event.getGeneration(), BlockReg.ORE_SULFUR.get().defaultBlockState(),  ICBMReference.COMMON_CONFIG.getOreSulfurSize(),  ICBMReference.COMMON_CONFIG.getOreSulfurRange(),  ICBMReference.COMMON_CONFIG.getOreSulfurCount());
-        if(ICBMReference.COMMON_CONFIG.getOreTinCount() != 0)     registerOreGenFeature(event.getGeneration(), BlockReg.ORE_TIN.get().defaultBlockState(),     ICBMReference.COMMON_CONFIG.getOreTinSize(),     ICBMReference.COMMON_CONFIG.getOreTinRange(),     ICBMReference.COMMON_CONFIG.getOreTinCount());
-        if(ICBMReference.COMMON_CONFIG.getOreUraniumCount() != 0) registerOreGenFeature(event.getGeneration(), BlockReg.ORE_URANIUM.get().defaultBlockState(), ICBMReference.COMMON_CONFIG.getOreUraniumSize(), ICBMReference.COMMON_CONFIG.getOreUraniumRange(), ICBMReference.COMMON_CONFIG.getOreUraniumCount());
-//        if(ICBMReference.COMMON_CONFIG.getOreOilCount() != 0)     registerOreGenFeature(event.getGeneration(), BlockReg.OIL.get().defaultBlockState(),         ICBMReference.COMMON_CONFIG.getOreOilSize(),     ICBMReference.COMMON_CONFIG.getOreOilRange(),     ICBMReference.COMMON_CONFIG.getOreOilCount());
-        event.getGeneration().getFeatures(GenerationStage.Decoration.LAKES).add(() -> Feature.LAKE.configured(new BlockStateFeatureConfig(BlockReg.OIL.get().defaultBlockState())).decorated(Placement.LAVA_LAKE.configured(new ChanceConfig(30))));
+        // Ore Generation
+        if(ICBMReference.COMMON_CONFIG.getOreCopperCount() != 0)   registerOreGenFeature(event.getGeneration(), BlockReg.ORE_COPPER.get().defaultBlockState(),   ICBMReference.COMMON_CONFIG.getOreCopperSize(),   ICBMReference.COMMON_CONFIG.getOreCopperRange(),   ICBMReference.COMMON_CONFIG.getOreCopperCount());
+        if(ICBMReference.COMMON_CONFIG.getOreSulfurCount() != 0)   registerOreGenFeature(event.getGeneration(), BlockReg.ORE_SULFUR.get().defaultBlockState(),   ICBMReference.COMMON_CONFIG.getOreSulfurSize(),   ICBMReference.COMMON_CONFIG.getOreSulfurRange(),   ICBMReference.COMMON_CONFIG.getOreSulfurCount());
+        if(ICBMReference.COMMON_CONFIG.getOreTinCount() != 0)      registerOreGenFeature(event.getGeneration(), BlockReg.ORE_TIN.get().defaultBlockState(),      ICBMReference.COMMON_CONFIG.getOreTinSize(),      ICBMReference.COMMON_CONFIG.getOreTinRange(),      ICBMReference.COMMON_CONFIG.getOreTinCount());
+        if(ICBMReference.COMMON_CONFIG.getOreUraniumCount() != 0)  registerOreGenFeature(event.getGeneration(), BlockReg.ORE_URANIUM.get().defaultBlockState(),  ICBMReference.COMMON_CONFIG.getOreUraniumSize(),  ICBMReference.COMMON_CONFIG.getOreUraniumRange(),  ICBMReference.COMMON_CONFIG.getOreUraniumCount());
+        if(ICBMReference.COMMON_CONFIG.getOreFluoriteCount() != 0) registerOreGenFeature(event.getGeneration(), BlockReg.ORE_FLUORITE.get().defaultBlockState(), ICBMReference.COMMON_CONFIG.getOreFluoriteSize(), ICBMReference.COMMON_CONFIG.getOreFluoriteRange(), ICBMReference.COMMON_CONFIG.getOreFluoriteCount());
+        // Oil Lake Generation
+        if(ICBMReference.COMMON_CONFIG.getGenerateOilLakes()) event.getGeneration().getFeatures(GenerationStage.Decoration.LAKES).add(() -> Feature.LAKE.configured(new BlockStateFeatureConfig(BlockReg.OIL.get().defaultBlockState())).decorated(Placement.LAVA_LAKE.configured(new ChanceConfig(30))));
     }
 
     public static void registerOreGenFeature(BiomeGenerationSettingsBuilder builder, BlockState oreBlockState, int size, int range, int count) {

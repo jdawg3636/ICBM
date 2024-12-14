@@ -113,6 +113,8 @@
   "item.icbm.ingot_tin": "Tin Ingot",
   "item.icbm.ingot_uranium": "Uranium Ingot",
 
+  "item.icbm.fluorite_crystal": "Fluorite Crystal",
+
   "item.icbm.dust_bronze": "Bronze Dust",
   "item.icbm.dust_steel": "Steel Dust",
 
@@ -451,6 +453,7 @@
   "block.icbm.radioactive_material": "Radioactive Material",
 
   "block.icbm.ore_copper": "Copper Ore",
+  "block.icbm.ore_fluorite": "Fluorite Ore",
   "block.icbm.ore_sulfur": "Sulfur Ore",
   "block.icbm.ore_tin": "Tin Ore",
   "block.icbm.ore_uranium": "Uranium Ore",
