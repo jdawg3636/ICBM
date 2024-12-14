@@ -75,6 +75,9 @@ public class ICBMConfig {
         private final ForgeConfigSpec.IntValue oreUraniumSize;
         private final ForgeConfigSpec.IntValue oreUraniumRange;
         private final ForgeConfigSpec.IntValue oreUraniumCount;
+        private final ForgeConfigSpec.IntValue oreOilSize;
+        private final ForgeConfigSpec.IntValue oreOilRange;
+        private final ForgeConfigSpec.IntValue oreOilCount;
 
         private final ForgeConfigSpec.IntValue particleAcceleratorEnergyUsagePerTick;
         private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedIncreasePerTick;
@@ -236,6 +239,18 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the 'count' parameter of Uranium Ore vein generation.")
                     .defineInRange("oreUraniumCount", 1, 0, Integer.MAX_VALUE);
+            this.oreOilSize = builder
+                    .comment("",
+                            "Defines the 'size' parameter of Oil vein generation.")
+                    .defineInRange("oreOilSize", 16, 0, Integer.MAX_VALUE);
+            this.oreOilRange = builder
+                    .comment("",
+                            "Defines the 'range' parameter of Oil vein generation.")
+                    .defineInRange("oreOilRange", 20, 0, Integer.MAX_VALUE);
+            this.oreOilCount = builder
+                    .comment("",
+                            "Defines the 'count' parameter of Oil vein generation.")
+                    .defineInRange("oreOilCount", 10, 0, Integer.MAX_VALUE);
             this.particleAcceleratorEnergyUsagePerTick = builder
                     .comment("",
                             "Defines the amount of Forge Energy (FE) consumed per tick by a particle accelerator while it is active.")
@@ -397,6 +412,18 @@ public class ICBMConfig {
 
         public int getOreUraniumCount() {
             return oreUraniumCount.get();
+        }
+
+        public int getOreOilSize() {
+            return oreOilSize.get();
+        }
+
+        public int getOreOilRange() {
+            return oreOilRange.get();
+        }
+
+        public int getOreOilCount() {
+            return oreOilCount.get();
         }
 
         public int getParticleAcceleratorEnergyUsagePerTick() {

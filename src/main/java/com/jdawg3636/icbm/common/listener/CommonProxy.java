@@ -23,8 +23,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.placement.ChanceConfig;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -79,6 +82,8 @@ public class CommonProxy {
         if(ICBMReference.COMMON_CONFIG.getOreSulfurCount() != 0)  registerOreGenFeature(event.getGeneration(), BlockReg.ORE_SULFUR.get().defaultBlockState(),  ICBMReference.COMMON_CONFIG.getOreSulfurSize(),  ICBMReference.COMMON_CONFIG.getOreSulfurRange(),  ICBMReference.COMMON_CONFIG.getOreSulfurCount());
         if(ICBMReference.COMMON_CONFIG.getOreTinCount() != 0)     registerOreGenFeature(event.getGeneration(), BlockReg.ORE_TIN.get().defaultBlockState(),     ICBMReference.COMMON_CONFIG.getOreTinSize(),     ICBMReference.COMMON_CONFIG.getOreTinRange(),     ICBMReference.COMMON_CONFIG.getOreTinCount());
         if(ICBMReference.COMMON_CONFIG.getOreUraniumCount() != 0) registerOreGenFeature(event.getGeneration(), BlockReg.ORE_URANIUM.get().defaultBlockState(), ICBMReference.COMMON_CONFIG.getOreUraniumSize(), ICBMReference.COMMON_CONFIG.getOreUraniumRange(), ICBMReference.COMMON_CONFIG.getOreUraniumCount());
+//        if(ICBMReference.COMMON_CONFIG.getOreOilCount() != 0)     registerOreGenFeature(event.getGeneration(), BlockReg.OIL.get().defaultBlockState(),         ICBMReference.COMMON_CONFIG.getOreOilSize(),     ICBMReference.COMMON_CONFIG.getOreOilRange(),     ICBMReference.COMMON_CONFIG.getOreOilCount());
+        event.getGeneration().getFeatures(GenerationStage.Decoration.LAKES).add(() -> Feature.LAKE.configured(new BlockStateFeatureConfig(BlockReg.OIL.get().defaultBlockState())).decorated(Placement.LAVA_LAKE.configured(new ChanceConfig(30))));
     }
 
     public static void registerOreGenFeature(BiomeGenerationSettingsBuilder builder, BlockState oreBlockState, int size, int range, int count) {
