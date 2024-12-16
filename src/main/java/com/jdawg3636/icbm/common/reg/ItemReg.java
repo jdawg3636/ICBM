@@ -42,6 +42,12 @@ public class ItemReg {
     public static final RegistryObject<Item> FUEL_BUCKET                    = ITEMS.register("fuel_bucket",                     () -> new BucketItem(FluidReg.FUEL.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> OIL_BUCKET                     = ITEMS.register("oil_bucket",                      () -> new BucketItem(FluidReg.OIL.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
 
+    // Vegetation
+    public static final RegistryObject<Item> RUBBER_LEAVES                  = ITEMS.register("rubber_leaves",                   () -> new BlockItem(BlockReg.RUBBER_LEAVES.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_LOG                     = ITEMS.register("rubber_log",                      () -> new BlockItem(BlockReg.RUBBER_LOG.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> DRIED_RUBBER_LOG               = ITEMS.register("dried_rubber_log",                () -> new BlockItem(BlockReg.DRIED_RUBBER_LOG.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_SAPLING                 = ITEMS.register("rubber_sapling",                  () -> new BlockItem(BlockReg.RUBBER_SAPLING.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+
     // Explosives
     public static final RegistryObject<Item> EXPLOSIVES_CONDENSED           = ITEMS.register("explosives_condensed",            () -> new BlockItem(BlockReg.EXPLOSIVES_CONDENSED.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EXPLOSIVES_SHRAPNEL            = ITEMS.register("explosives_shrapnel",             () -> new BlockItem(BlockReg.EXPLOSIVES_SHRAPNEL.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
@@ -185,8 +191,10 @@ public class ItemReg {
 
     // Basic Crafting Items (No functionality)
     public static final RegistryObject<Item> POISON_POWDER                  = ITEMS.register("poison_powder",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> FLUORITE_CRYSTAL               = ITEMS.register("fluorite_crystal",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> SULFUR                         = ITEMS.register("sulfur",                          () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> FLUORITE_CRYSTAL               = ITEMS.register("fluorite_crystal",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RAW_RUBBER                     = ITEMS.register("raw_rubber",                      () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_BAR                     = ITEMS.register("rubber_bar",                      () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> COPPER_WIRE                    = ITEMS.register("copper_wire",                     () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CIRCUIT_BASIC                  = ITEMS.register("circuit_basic",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CIRCUIT_ADVANCED               = ITEMS.register("circuit_advanced",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

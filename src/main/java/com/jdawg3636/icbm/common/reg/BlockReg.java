@@ -11,12 +11,15 @@ import com.jdawg3636.icbm.common.block.launcher_platform.BlockLauncherPlatform;
 import com.jdawg3636.icbm.common.block.particle_accelerator.BlockParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.BlockRadarStation;
 import com.jdawg3636.icbm.common.block.siren.BlockSiren;
+import com.jdawg3636.icbm.common.worldgen.RubberTree;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -49,6 +52,12 @@ public class BlockReg {
     // Fluids
     public static final RegistryObject<FlowingFluidBlock> FUEL              = BLOCKS.register("fuel",                           () -> new FlowingFluidBlock(FluidReg.FUEL.source, AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
     public static final RegistryObject<FlowingFluidBlock> OIL               = BLOCKS.register("oil",                            () -> new FlowingFluidBlock(FluidReg.OIL.source, AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
+
+    // Vegetation
+    public static final RegistryObject<Block> RUBBER_LEAVES                 = BLOCKS.register("rubber_leaves",                  () -> new LeavesBlock(AbstractBlock.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((blockState, level, blockPos, entityType) -> false).isSuffocating((blockState, level, blockPos) -> false).isViewBlocking((blockState, level, blockPos) -> false)));
+    public static final RegistryObject<Block> RUBBER_LOG                    = BLOCKS.register("rubber_log",                     () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, blockState -> blockState.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? MaterialColor.WOOD : MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> DRIED_RUBBER_LOG              = BLOCKS.register("dried_rubber_log",               () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, blockState -> blockState.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? MaterialColor.WOOD : MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> RUBBER_SAPLING                = BLOCKS.register("rubber_sapling",                 () -> new SaplingBlock(new RubberTree(), AbstractBlock.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
 
     // Explosives
     public static final RegistryObject<Block> EXPLOSIVES_CONDENSED          = BLOCKS.register("explosives_condensed",           () -> new BlockExplosives(EntityReg.EXPLOSIVES_CONDENSED,           BlastEventReg.CONDENSED,          ItemReg.EXPLOSIVES_CONDENSED));

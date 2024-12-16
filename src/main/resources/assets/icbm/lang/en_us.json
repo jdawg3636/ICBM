@@ -114,6 +114,8 @@
   "item.icbm.ingot_uranium": "Uranium Ingot",
 
   "item.icbm.fluorite_crystal": "Fluorite Crystal",
+  "item.icbm.raw_rubber": "Raw Rubber",
+  "item.icbm.rubber_bar": "Rubber Bar",
 
   "item.icbm.dust_bronze": "Bronze Dust",
   "item.icbm.dust_steel": "Steel Dust",
@@ -183,6 +185,10 @@
   "block.icbm.electromagnet": "Electromagnet",
   "block.icbm.electromagnetic_glass": "Electromagnetic Glass",
 
+  "block.icbm.rubber_leaves": "Rubber Leaves",
+  "block.icbm.dried_rubber_log": "Dried Rubber Log",
+  "block.icbm.rubber_log": "Rubber Log",
+  "block.icbm.rubber_sapling": "Rubber Sapling",
 
   # ICBM Explosives
 

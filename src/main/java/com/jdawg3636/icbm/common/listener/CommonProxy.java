@@ -14,6 +14,7 @@ import com.jdawg3636.icbm.common.item.ItemDefuser;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
+import com.jdawg3636.icbm.common.worldgen.ICBMWorldGenFeatures;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
@@ -22,12 +23,10 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.placement.ChanceConfig;
-import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -85,7 +84,11 @@ public class CommonProxy {
         if(ICBMReference.COMMON_CONFIG.getOreUraniumCount() != 0)  registerOreGenFeature(event.getGeneration(), BlockReg.ORE_URANIUM.get().defaultBlockState(),  ICBMReference.COMMON_CONFIG.getOreUraniumSize(),  ICBMReference.COMMON_CONFIG.getOreUraniumRange(),  ICBMReference.COMMON_CONFIG.getOreUraniumCount());
         if(ICBMReference.COMMON_CONFIG.getOreFluoriteCount() != 0) registerOreGenFeature(event.getGeneration(), BlockReg.ORE_FLUORITE.get().defaultBlockState(), ICBMReference.COMMON_CONFIG.getOreFluoriteSize(), ICBMReference.COMMON_CONFIG.getOreFluoriteRange(), ICBMReference.COMMON_CONFIG.getOreFluoriteCount());
         // Oil Lake Generation
-        if(ICBMReference.COMMON_CONFIG.getGenerateOilLakes()) event.getGeneration().getFeatures(GenerationStage.Decoration.LAKES).add(() -> Feature.LAKE.configured(new BlockStateFeatureConfig(BlockReg.OIL.get().defaultBlockState())).decorated(Placement.LAVA_LAKE.configured(new ChanceConfig(30))));
+        if(ICBMReference.COMMON_CONFIG.getGenerateOilLakes()) event.getGeneration().getFeatures(GenerationStage.Decoration.LAKES).add(() -> ICBMWorldGenFeatures.OIL_LAKE);
+        // Rubber Tree Generation
+        if(event.getCategory() == Biome.Category.FOREST) {
+            event.getGeneration().getFeatures(GenerationStage.Decoration.VEGETAL_DECORATION).add(() -> ICBMWorldGenFeatures.RUBBER_TREE);
+        }
     }
 
     public static void registerOreGenFeature(BiomeGenerationSettingsBuilder builder, BlockState oreBlockState, int size, int range, int count) {
