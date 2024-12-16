@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "icbm:raw_rubber"
+  },
+  "result": "icbm:rubber_bar",
+  "experience": 0.7,
+  "cookingtime": 200
+}
