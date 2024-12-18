@@ -25,6 +25,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 
@@ -136,6 +137,22 @@ public class BlockExplosives extends Block {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Replicating the hardcoded behavior of vanilla TNT as defined by {@link net.minecraft.block.FireBlock#bootStrap}
+     */
+    @Override
+    public int getFireSpreadSpeed(BlockState state, IBlockReader level, BlockPos pos, Direction face) {
+        return 15;
+    }
+
+    /**
+     * Replicating the hardcoded behavior of vanilla TNT as defined by {@link net.minecraft.block.FireBlock#bootStrap}
+     */
+    @Override
+    public int getFlammability(BlockState state, IBlockReader level, BlockPos pos, Direction face) {
+        return 100;
     }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
