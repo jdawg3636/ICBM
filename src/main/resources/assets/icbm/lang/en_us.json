@@ -501,6 +501,7 @@
   "message.icbm.remote_detonator.frequency_set": "Set Frequency to %s!",
 
   "message.icbm.rocket_launcher.launch_failed": "Missile \"%s\" failed to launch!",
+  "message.icbm.rocket_launcher.no_fuel": "Failed to Launch! \"%s\" is not Fully Fueled!",
 
   "message.radarGun.scanned": "Scanned coordinates: X:%s Y:%s Z:%s - Distance: %s",
   "message.radarGun.nopower": "Radar Gun out of electricity!",
@@ -619,7 +620,8 @@
   "gui.icbm.platform.access": "User Access",
 
   # Tooltips
-  "icbm.info.radarGun.coordinates": "Scanned Coordinates:",
+  "info.icbm.radarGun.coordinates": "Scanned Coordinates:",
+  "info.icbm.missile.fuel_level": "%s%% Fueled",
   "info.misc.freq": "Frequency:",
   "info.tracker.tracking": "Tracking:",
   "info.designator.noFreq": "Frequency: Not set",

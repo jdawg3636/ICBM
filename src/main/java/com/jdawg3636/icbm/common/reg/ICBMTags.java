@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.Tags;
 
 /**
  * Based on net.minecraftforge.common.Tags
@@ -43,7 +44,11 @@ public class ICBMTags {
         public static final net.minecraftforge.common.Tags.IOptionalNamedTag<Item> RADIATION_PROTECTIVE = tag("radiation_protective");
 
         private static net.minecraftforge.common.Tags.IOptionalNamedTag<Item> tag(String name) {
-            return net.minecraft.tags.ItemTags.createOptional(new ResourceLocation(ICBMReference.MODID, name));
+            return tag(new ResourceLocation(ICBMReference.MODID, name));
+        }
+
+        private static net.minecraftforge.common.Tags.IOptionalNamedTag<Item> tag(ResourceLocation resourceLocation) {
+            return net.minecraft.tags.ItemTags.createOptional(resourceLocation);
         }
 
     }
@@ -52,8 +57,14 @@ public class ICBMTags {
 
         public static void makeSureThisClassIsLoaded() {}
 
+        public static final Tags.IOptionalNamedTag<Fluid> FUEL = tag(new ResourceLocation("forge", "fuel"));
+
         private static net.minecraftforge.common.Tags.IOptionalNamedTag<Fluid> tag(String name) {
-            return FluidTags.createOptional(new ResourceLocation(ICBMReference.MODID, name));
+            return tag(new ResourceLocation(ICBMReference.MODID, name));
+        }
+
+        private static net.minecraftforge.common.Tags.IOptionalNamedTag<Fluid> tag(ResourceLocation resourceLocation) {
+            return FluidTags.createOptional(resourceLocation);
         }
 
     }

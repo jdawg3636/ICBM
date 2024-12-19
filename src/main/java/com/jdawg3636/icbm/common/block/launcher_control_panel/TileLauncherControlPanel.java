@@ -2,6 +2,8 @@ package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
+import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -45,6 +47,11 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
     public void launchMissile() {
         if(level == null) return;
         BlockPos platformPos = getBlockPos().offset(getBlockState().getValue(BlockLauncherControlPanel.FACING).getOpposite().getNormal());
+        BlockState platformState = level.getBlockState(platformPos);
+        if(platformState.getBlock() instanceof AbstractBlockMulti) {
+            platformPos = ((AbstractBlockMulti) platformState.getBlock()).getMultiblockCenter(level, platformPos, platformState);
+            platformState = level.getBlockState(platformPos);
+        }
         TileEntity platformTile = level.getBlockEntity(platformPos);
         BlockPos targetPos = new BlockPos(getTargetX(), getTargetY(), getTargetZ());
         if(platformTile instanceof TileLauncherPlatform && ((TileLauncherPlatform) platformTile).usesControlPanel()) {

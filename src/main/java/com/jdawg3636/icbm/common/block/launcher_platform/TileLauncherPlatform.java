@@ -15,17 +15,24 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.Level;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class TileLauncherPlatform extends TileMachine {
@@ -57,14 +64,14 @@ public class TileLauncherPlatform extends TileMachine {
         return 0D;
     }
 
-    public void removeMissileItemWithAction(Function<EntityMissile, Boolean> action) {
+    public void removeMissileItemWithAction(BiFunction<ItemStack, EntityMissile, Boolean> action) {
         itemHandlerLazyOptional.ifPresent((itemHandlerUncast) -> {
             ItemStackHandler itemHandler = (ItemStackHandler)itemHandlerUncast;
             if(missileEntityID != null && level != null && !level.isClientSide()) {
-                Item item = itemHandler.getStackInSlot(0).getItem();
+                ItemStack itemStack = itemHandler.getStackInSlot(0);
                 EntityMissile entity = (EntityMissile)(((ServerWorld)level).getEntity(missileEntityID));
-                if(item instanceof ItemMissile) {
-                    if(action.apply(entity)) {
+                if(itemStack.getItem() instanceof ItemMissile) {
+                    if(action.apply(itemStack, entity)) {
                         missileEntityID = null; // Necessary to disconnect, otherwise ItemStackHandler would kill the entity when the slot is cleared
                         itemHandler.setStackInSlot(0, ItemStack.EMPTY);
                     }
@@ -74,15 +81,20 @@ public class TileLauncherPlatform extends TileMachine {
     }
 
     public void launchMissile(BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
-        removeMissileItemWithAction((entity) -> {
+        removeMissileItemWithAction((itemStack, entity) -> {
             assert level != null;
-            if(entity != null) {
-                entity.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, getMissileSourceType());
-                if(entity.launchMissile()) {
-                    this.level.playSound((PlayerEntity) null, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), SoundEventReg.EFFECT_MISSILE_LAUNCH.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from (%s, %s, %s) to (%s, %s, %s) with peak height '%s' and '%s' ticks of flight time.", entity.getName().getString(), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), destPos.getX(), destPos.getY(), destPos.getZ(), peakHeight, totalFlightTicks);
-                    return true;
-                }
+            if(entity == null) return false;
+            boolean hasEnoughFuel = Optional.of(itemStack)
+                    .filter(stack -> stack.getItem() instanceof ItemMissile)
+                    .map(stack -> ((ItemMissile)stack.getItem()).getPercentageFuelFilled(stack))
+                    .map(percentageFuel -> percentageFuel >= 1.0)
+                    .orElse(false);
+            if(!hasEnoughFuel) return false;
+            entity.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, getMissileSourceType());
+            if(entity.launchMissile()) {
+                this.level.playSound((PlayerEntity) null, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), SoundEventReg.EFFECT_MISSILE_LAUNCH.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from (%s, %s, %s) to (%s, %s, %s) with peak height '%s' and '%s' ticks of flight time.", entity.getName().getString(), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), destPos.getX(), destPos.getY(), destPos.getZ(), peakHeight, totalFlightTicks);
+                return true;
             }
             return false;
         });
@@ -125,6 +137,19 @@ public class TileLauncherPlatform extends TileMachine {
     @Override
     public boolean isInventoryItemValid(int slot, ItemStack stack) {
         return super.isInventoryItemValid(slot, stack) && (stack.getItem() instanceof ItemMissile);
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if(cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
+            return itemHandlerLazyOptional
+                    .map(handler -> handler.getStackInSlot(0))
+                    .filter(stack -> stack.getItem() instanceof ItemMissile)
+                    .map(stack -> (LazyOptional<T>) stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY))
+                    .orElse(super.getCapability(cap, side));
+        }
+        return super.getCapability(cap, side);
     }
 
     @Override

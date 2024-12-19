@@ -38,7 +38,12 @@ public class ItemRocketLauncher extends ShootableItem {
             final ItemStack itemstack = player.getProjectile(this.getDefaultInstance());
             EntityMissile entity = null;
             if(itemstack.getItem() instanceof ItemMissile) {
-                entity = ((ItemMissile)itemstack.getItem()).getMissileEntity().get().create(level);
+                if(((ItemMissile)itemstack.getItem()).getPercentageFuelFilled(itemstack) >= 1.0) {
+                    entity = ((ItemMissile) itemstack.getItem()).getMissileEntity().get().create(level);
+                }
+                else {
+                    player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".rocket_launcher.no_fuel", itemstack.getDisplayName()), Util.NIL_UUID);
+                }
             }
 
             // If ammo was present and missile created....

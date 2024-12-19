@@ -66,9 +66,11 @@ public class ItemBattery extends Item {
         return stack.getCapability(CapabilityEnergy.ENERGY).map((energyStorage) -> 1.0 - ((ICBMEnergyStorage)energyStorage).getEnergyPercentage()).orElse(0.0);
     }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable World level, List<ITextComponent> tooltip, ITooltipFlag tooltipFlag) {
         super.appendHoverText(stack, level, tooltip, tooltipFlag);
+        if(level == null) return;
         if(!this.infinite) {
             tooltip.add(stack.getCapability(CapabilityEnergy.ENERGY).map((energyStorage) -> {
                 IFormattableTextComponent stored = ((ICBMEnergyStorage) energyStorage).getEnergyStoredFormatted(2, true);
@@ -79,10 +81,12 @@ public class ItemBattery extends Item {
         }
     }
 
+    @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return slotChanged || !oldStack.getItem().equals(newStack.getItem());
     }
 
+    @Override
     public boolean shouldCauseBlockBreakReset(ItemStack oldStack, ItemStack newStack) {
         return oldStack.getItem() != newStack.getItem();
     }

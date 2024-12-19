@@ -86,7 +86,7 @@ public class ItemRadarGun extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable World level, List<ITextComponent> tooltip, ITooltipFlag flag) {
         if(hasCoordinates(itemStack)) {
             CompoundNBT nbt = itemStack.getOrCreateTag();
-            tooltip.add(new TranslationTextComponent("icbm.info.radarGun.coordinates"));
+            tooltip.add(new TranslationTextComponent("info." + ICBMReference.MODID + ".radarGun.coordinates"));
             tooltip.add(new StringTextComponent(String.format("X: %.3f", nbt.getDouble("target_x"))));
             tooltip.add(new StringTextComponent(String.format("Y: %.3f", nbt.getDouble("target_y"))));
             tooltip.add(new StringTextComponent(String.format("Z: %.3f", nbt.getDouble("target_z"))));
