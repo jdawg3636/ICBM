@@ -9,6 +9,7 @@ import com.jdawg3636.icbm.common.capability.missiledirector.IMissileDirectorCapa
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileDirectorCapabilityProvider;
 import com.jdawg3636.icbm.common.capability.trackingmanager.ITrackingManagerCapability;
 import com.jdawg3636.icbm.common.capability.trackingmanager.TrackingManagerCapabilityProvider;
+import com.jdawg3636.icbm.common.command.RealKillCommand;
 import com.jdawg3636.icbm.common.item.ItemAntidote;
 import com.jdawg3636.icbm.common.item.ItemDefuser;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
@@ -33,6 +34,7 @@ import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -63,6 +65,10 @@ public class CommonProxy {
             Blocks.OBSIDIAN.explosionResistance = ICBMReference.COMMON_CONFIG.getBlastResistanceObsidian();
         }
 
+    }
+
+    public void onRegisterCommandsEvent(final RegisterCommandsEvent event) {
+        RealKillCommand.register(event.getDispatcher());
     }
 
     public void onAttachCapabilitiesEventWorld(final AttachCapabilitiesEvent<World> event) {

@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.listener;
 import com.jdawg3636.icbm.ICBMReference;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -25,13 +26,18 @@ public class ICBMForgeEventListener {
     }
 
     @SubscribeEvent
+    public static void onLivingDeathEvent(final LivingDeathEvent event) {
+        ICBMReference.distProxy().onLivingDeathEvent(event);
+    }
+
+    @SubscribeEvent
     public static void onPlayerInteractEvent(final PlayerInteractEvent.EntityInteractSpecific event) {
         ICBMReference.distProxy().onPlayerInteractEvent(event);
     }
 
     @SubscribeEvent
-    public static void onLivingDeathEvent(final LivingDeathEvent event) {
-        ICBMReference.distProxy().onLivingDeathEvent(event);
+    public static void onRegisterCommandsEvent(final RegisterCommandsEvent event) {
+        ICBMReference.distProxy().onRegisterCommandsEvent(event);
     }
 
     @SubscribeEvent
