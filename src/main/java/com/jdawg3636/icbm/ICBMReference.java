@@ -5,6 +5,7 @@ import com.jdawg3636.icbm.common.listener.ClientProxy;
 import com.jdawg3636.icbm.common.listener.CommonProxy;
 import com.jdawg3636.icbm.common.reg.ItemReg;
 import com.jdawg3636.icbm.common.reg.ParticleTypeReg;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -108,6 +109,11 @@ public final class ICBMReference {
         double speedY = (random.nextDouble() - 0.5) / 8;
         double speedZ = (random.nextDouble() - 0.5) / 8;
         level.addParticle((BasicParticleType) ParticleTypeReg.RADIOACTIVE_EFFECT.get(), x, y, z, speedX, speedY, speedZ);
+    }
+
+    public static boolean entityIsAPlayerInCreativeOrSpectatorMode(Entity entity) {
+        if(!(entity instanceof ServerPlayerEntity)) return false;
+        return !((ServerPlayerEntity) entity).gameMode.getGameModeForPlayer().isSurvival();
     }
 
 }

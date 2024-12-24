@@ -61,6 +61,11 @@ public class EffectEngineeredPathogen extends Effect {
                 return;
             }
 
+            // Skip if in creative/spectator mode
+            if(ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(livingEntity)) {
+                return;
+            }
+
             // If villager, convert to zombie
             // Adapted from net.minecraft.entity.ZombieEntity::monsterkilled, MC 1.16.5, MCP Package/Class Names, Mojmap Method/Field Names
             if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && livingEntity instanceof VillagerEntity && net.minecraftforge.event.ForgeEventFactory.canLivingConvert(livingEntity, EntityType.ZOMBIE_VILLAGER, (timer) -> {})) {
@@ -104,8 +109,13 @@ public class EffectEngineeredPathogen extends Effect {
                     spreadRadius = Math.max(1, spreadRadius);
                     serverLevel.getEntities(
                             livingEntity,
-                            AxisAlignedBB.unitCubeFromLowerCorner(livingEntity.position()).inflate(spreadRadius - 1), LivingEntity.class::isInstance
-                    ).stream().map(LivingEntity.class::cast).forEach((LivingEntity otherNearbyLivingEntity) -> {
+                            AxisAlignedBB.unitCubeFromLowerCorner(livingEntity.position()).inflate(spreadRadius - 1),
+                            LivingEntity.class::isInstance
+                    )
+                    .stream()
+                    .filter(entity -> !ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(entity))
+                    .map(LivingEntity.class::cast)
+                    .forEach((LivingEntity otherNearbyLivingEntity) -> {
                         otherNearbyLivingEntity.addEffect(new EffectInstance(EffectReg.ENGINEERED_PATHOGEN.get(), 45 * 20, 0));
                     });
                 }

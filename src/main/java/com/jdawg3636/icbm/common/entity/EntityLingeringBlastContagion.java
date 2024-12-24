@@ -56,7 +56,7 @@ public class EntityLingeringBlastContagion extends EntityLingeringBlast {
             }
             // Player Effects
             for(LivingEntity livingEntity : this.level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().contract(0,1,0).inflate(radius))) {
-                if(livingEntity.isAffectedByPotions()) {
+                if(livingEntity.isAffectedByPotions() && !ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(livingEntity)) {
                     livingEntity.addEffect(new EffectInstance(EffectReg.ENGINEERED_PATHOGEN.get(), 45 * 20, 0));
                 }
             }
