@@ -208,21 +208,23 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         // North (-z)
         if(sourceState.getValue(FACING).getNormal().getZ() == -1) {
             offsetX *= -1;
+            offsetZ *= -1;
         }
         // East (+x)
         if(sourceState.getValue(FACING).getNormal().getX() == 1) {
             int temp = offsetX;
-            offsetX = -offsetZ;
+            offsetX = offsetZ;
             offsetZ = -temp;
         }
         // South (+z)
         else if(sourceState.getValue(FACING).getNormal().getZ() == 1) {
             offsetZ *= -1;
+            offsetZ *= -1;
         }
         // West (-x)
         else if(sourceState.getValue(FACING).getNormal().getX() == -1) {
             int temp = offsetX;
-            offsetX = offsetZ;
+            offsetX = -offsetZ;
             offsetZ = temp;
         }
 
