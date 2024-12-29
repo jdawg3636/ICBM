@@ -148,7 +148,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
                 }
                 if(i == -1) continue;
                 if(i < fluidTanks.size()) {
-                    CompoundNBT currentFluidNBT = new CompoundNBT();
+                    CompoundNBT currentFluidNBT = fluidsNBT.getCompound(key);
                     fluidTanks.get(i).ifPresent(fluidTank -> fluidTank.readFromNBT(currentFluidNBT));
                 }
             }
