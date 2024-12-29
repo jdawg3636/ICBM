@@ -22,6 +22,7 @@ public class AbstractContainerMachine extends Container {
 
     public static enum SlotTag {
         BATTERY(true, 18*1, 18*6),
+        FLUID_ITEM(true, 18*1, 18*7),
         INVENTORY_MACHINE,
         MISSILE(false),
         UNDECLARED;

@@ -6,6 +6,7 @@ import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
 import com.jdawg3636.icbm.common.block.emp_tower.ContainerEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
+import com.jdawg3636.icbm.common.block.oil_refinery.ContainerOilRefinery;
 import com.jdawg3636.icbm.common.block.particle_accelerator.ContainerParticleAccelerator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerInventory;
@@ -32,6 +33,7 @@ public class ContainerReg {
     public static final RegistryObject<ContainerType<ContainerCoalGenerator>> COAL_GENERATOR = registerContainer(BlockReg.COAL_GENERATOR, ContainerCoalGenerator::new, () -> ContainerReg.COAL_GENERATOR);
     public static final RegistryObject<ContainerType<ContainerCruiseLauncher>> CRUISE_LAUNCHER = registerContainer(BlockReg.CRUISE_LAUNCHER, ContainerCruiseLauncher::new, () -> ContainerReg.CRUISE_LAUNCHER);
     public static final RegistryObject<ContainerType<ContainerEMPTower>> EMP_TOWER = registerContainer(BlockReg.EMP_TOWER, ContainerEMPTower::new, () -> ContainerReg.EMP_TOWER);
+    public static final RegistryObject<ContainerType<ContainerOilRefinery>> OIL_REFINERY = registerContainer(BlockReg.OIL_REFINERY, ContainerOilRefinery::new, () -> ContainerReg.OIL_REFINERY);
 
     // Particle Accelerator Components
     public static final RegistryObject<ContainerType<ContainerParticleAccelerator>> PARTICLE_ACCELERATOR = registerContainer(BlockReg.PARTICLE_ACCELERATOR, ContainerParticleAccelerator::new, () -> ContainerReg.PARTICLE_ACCELERATOR);

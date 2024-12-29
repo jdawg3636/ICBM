@@ -173,6 +173,7 @@
   "block.icbm.missilecoordinator.info": "Oversized calculator. Calculates flight paths",
 
   "block.icbm.coal_generator": "Coal Generator",
+  "block.icbm.oil_refinery": "Oil Refinery",
 
   # Blocks
   "block.icbm.reinforcedRail": "Reinforced Rail",
@@ -581,6 +582,7 @@
   "gui.icbm.cruise_launcher.statusReady": "Ready!",
 
   "gui.icbm.coal_generator": "Coal Generator",
+  "gui.icbm.oil_refinery": "Oil Refinery",
 
   "gui.icbm.particle_accelerator": "Particle Accelerator",
 

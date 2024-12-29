@@ -108,7 +108,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if(itemHandlerLazyOptional.isPresent() && cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) return itemHandlerLazyOptional.cast();
         if(energyStorageLazyOptional.isPresent() && cap.equals(CapabilityEnergy.ENERGY)) return energyStorageLazyOptional.cast();
-        return super.getCapability(cap, side);
+        return LazyOptional.empty();
     }
 
     @Override

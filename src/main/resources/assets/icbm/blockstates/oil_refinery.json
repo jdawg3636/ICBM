@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "icbm:block/oil_refinery",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "icbm:block/oil_refinery",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "icbm:block/oil_refinery",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "icbm:block/oil_refinery",
+      "y": 270
+    }
+  }
+}

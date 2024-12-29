@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A A",
+    "ABA",
+    "CCC"
+  ],
+  "key": {
+    "A": {
+      "item": "icbm:reinforced_glass"
+    },
+    "B": {
+      "item": "icbm:coal_generator"
+    },
+    "C": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "result": {
+    "item": "icbm:oil_refinery",
+    "count": 1
+  }
+}

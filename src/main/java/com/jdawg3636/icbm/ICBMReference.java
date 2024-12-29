@@ -7,10 +7,12 @@ import com.jdawg3636.icbm.common.reg.ItemReg;
 import com.jdawg3636.icbm.common.reg.ParticleTypeReg;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.IParticleData;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
@@ -20,6 +22,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.DistExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -114,6 +118,15 @@ public final class ICBMReference {
     public static boolean entityIsAPlayerInCreativeOrSpectatorMode(Entity entity) {
         if(!(entity instanceof ServerPlayerEntity)) return false;
         return !((ServerPlayerEntity) entity).gameMode.getGameModeForPlayer().isSurvival();
+    }
+
+    public static boolean checkItemStackContainsFluidTag(ItemStack stack, ResourceLocation fluidTag) {
+        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+                .map(handler -> handler.getFluidInTank(0))
+                .map(FluidStack::getFluid)
+                .map(Fluid::getTags)
+                .map(set -> set.contains(fluidTag))
+                .orElse(false);
     }
 
 }

@@ -58,6 +58,7 @@ public class ICBMTags {
         public static void makeSureThisClassIsLoaded() {}
 
         public static final Tags.IOptionalNamedTag<Fluid> FUEL = tag(new ResourceLocation("forge", "fuel"));
+        public static final Tags.IOptionalNamedTag<Fluid> OIL  = tag(new ResourceLocation("forge", "crude_oil"));
 
         private static net.minecraftforge.common.Tags.IOptionalNamedTag<Fluid> tag(String name) {
             return tag(new ResourceLocation(ICBMReference.MODID, name));

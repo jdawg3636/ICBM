@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.block.coal_generator;
+package com.jdawg3636.icbm.common.block.oil_refinery;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
@@ -7,19 +7,19 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-public class ScreenCoalGenerator extends ScreenMachine<ContainerCoalGenerator> {
+public class ScreenOilRefinery extends ScreenMachine<ContainerOilRefinery> {
 
-    public static final ResourceLocation COAL_GENERATOR_BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_coal_generator.png");
+    public static final ResourceLocation OIL_REFINERY_BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_oil_refinery.png");
 
-    public final TileCoalGenerator TILE_ENTITY;
+    public final TileOilRefinery TILE_ENTITY;
 
-    public ScreenCoalGenerator(ContainerCoalGenerator container, PlayerInventory inventory, ITextComponent name) {
-        this(container, inventory, name, COAL_GENERATOR_BACKGROUND_TEXTURE, 352 / 2, 332 / 2);
+    public ScreenOilRefinery(ContainerOilRefinery container, PlayerInventory inventory, ITextComponent name) {
+        this(container, inventory, name, OIL_REFINERY_BACKGROUND_TEXTURE, 352 / 2, 332 / 2);
     }
 
-    public ScreenCoalGenerator(ContainerCoalGenerator container, PlayerInventory inventory, ITextComponent name, ResourceLocation backgroundTexture, int imageWidth, int imageHeight) {
+    public ScreenOilRefinery(ContainerOilRefinery container, PlayerInventory inventory, ITextComponent name, ResourceLocation backgroundTexture, int imageWidth, int imageHeight) {
         super(container, inventory, name, backgroundTexture, imageWidth, imageHeight);
-        TILE_ENTITY = (TileCoalGenerator)super.TILE_ENTITY;
+        TILE_ENTITY = (TileOilRefinery)super.TILE_ENTITY;
     }
 
     @Override

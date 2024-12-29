@@ -190,11 +190,14 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         }
     }
 
+    public boolean doesStateMatchPosition(BlockState state, Vector3i multiblockPosition) {
+        return state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL) == multiblockPosition.getX() &&
+               state.getValue(MULTIBLOCK_OFFSET_HEIGHT) == multiblockPosition.getY() &&
+               state.getValue(MULTIBLOCK_OFFSET_DEPTH) == multiblockPosition.getZ();
+    }
+
     public boolean isRootOfMultiblock(BlockState state) {
-        return
-            state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL) == 0 &&
-            state.getValue(MULTIBLOCK_OFFSET_HEIGHT) == 0 &&
-            state.getValue(MULTIBLOCK_OFFSET_DEPTH) == 0;
+        return doesStateMatchPosition(state, new Vector3i(0,0,0));
     }
 
     public BlockPos getMultiblockCenter(IBlockReader worldIn, BlockPos pos, BlockState sourceState) {
@@ -250,9 +253,9 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      * Takes in the BlockPos of the root node and the BlockState of any given node of this multiblock in the
      * world and returns the full set of BlockPos that comprise the full structure, EXCLUDING THE ROOT
      *
-     * Guaranteed to return in the same order as the offsets in this::getMultiblockOffsets
+     * Guaranteed to return in the same order as the offsets in {@link AbstractBlockMulti#getMultiblockOffsets}
      *
-     * See this::getMultiblockCenter for acquiring the root's BlockPos
+     * See {@link AbstractBlockMulti#getMultiblockCenter} for acquiring the root's BlockPos
      *
      * @return Array of all BlockPos that comprise this multiblock, EXCLUDING THE ROOT
      */
@@ -272,16 +275,18 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
             // North (-z) (Default)
             rotatedOffset = offset;
             // East (+x)
-            if (state.getValue(FACING).getOpposite().getNormal().getX() == 1)
-                rotatedOffset = new Vector3i(+offset.getZ(), offset.getY(), +offset.getX());
-                // South (+z)
-            else if (state.getValue(FACING).getOpposite().getNormal().getZ() == 1)
+            if (state.getValue(FACING).getOpposite().getNormal().getX() == 1) {
+                rotatedOffset = new Vector3i(-offset.getZ(), offset.getY(), +offset.getX());
+            }
+            // South (+z)
+            else if (state.getValue(FACING).getOpposite().getNormal().getZ() == 1) {
                 rotatedOffset = new Vector3i(-offset.getX(), offset.getY(), -offset.getZ());
-                // West (-x)
-            else if (state.getValue(FACING).getOpposite().getNormal().getX() == -1)
+            }
+            // West (-x)
+            else if (state.getValue(FACING).getOpposite().getNormal().getX() == -1) {
                 rotatedOffset = new Vector3i(+offset.getZ(), offset.getY(), -offset.getX());
+            }
 
-            // worldPos = rootPos + rotatedOffset
             BlockPos worldPos = rootPos.offset(rotatedOffset.getX(), rotatedOffset.getY(), rotatedOffset.getZ());
             positions[i] = worldPos;
 

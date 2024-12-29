@@ -18,6 +18,8 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherCont
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
 import com.jdawg3636.icbm.common.block.machine.IScreenMachine;
+import com.jdawg3636.icbm.common.block.oil_refinery.ContainerOilRefinery;
+import com.jdawg3636.icbm.common.block.oil_refinery.ScreenOilRefinery;
 import com.jdawg3636.icbm.common.block.particle_accelerator.ScreenParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
@@ -79,6 +81,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_SUPPORT_FRAME_T1.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_SUPPORT_FRAME_T2.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_SUPPORT_FRAME_T3.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.OIL_REFINERY.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_GLASS.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.RUBBER_LEAVES.get(), RenderType.cutoutMipped());
         RenderTypeLookup.setRenderLayer(BlockReg.RUBBER_SAPLING.get(), RenderType.cutout());
@@ -91,6 +94,7 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.<ContainerCoalGenerator, ScreenCoalGenerator>register(ContainerReg.COAL_GENERATOR.get(), ScreenCoalGenerator::new);
         ScreenManager.<ContainerCruiseLauncher, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
         ScreenManager.<ContainerEMPTower, ScreenEMPTower>register(ContainerReg.EMP_TOWER.get(), ScreenEMPTower::new);
+        ScreenManager.<ContainerOilRefinery, ScreenOilRefinery>register(ContainerReg.OIL_REFINERY.get(), ScreenOilRefinery::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
