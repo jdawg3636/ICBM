@@ -190,10 +190,10 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         }
     }
 
-    public boolean doesStateMatchPosition(BlockState state, Vector3i multiblockPosition) {
-        return state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL) == multiblockPosition.getX() &&
-               state.getValue(MULTIBLOCK_OFFSET_HEIGHT) == multiblockPosition.getY() &&
-               state.getValue(MULTIBLOCK_OFFSET_DEPTH) == multiblockPosition.getZ();
+    public static boolean doesStateMatchPosition(BlockState state, Vector3i multiblockPosition) {
+        return state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL) * (state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE) ? -1 : 1) == multiblockPosition.getX() &&
+               state.getValue(MULTIBLOCK_OFFSET_HEIGHT) * (state.getValue(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE) ? -1 : 1) == multiblockPosition.getY() &&
+               state.getValue(MULTIBLOCK_OFFSET_DEPTH) * (state.getValue(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE) ? -1 : 1) == multiblockPosition.getZ();
     }
 
     public boolean isRootOfMultiblock(BlockState state) {
@@ -250,6 +250,15 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      * DOES NOT INCLUDE THE ROOT (0, 0, 0)
      */
     public abstract Vector3i[] getMultiblockOffsets();
+
+    /**
+     * @return Array of Vector3i, each vector represents the horiz/height/depth offsets for multiblock components which
+     * should be given a {@link TileMultiblockPassthrough} to allow that position to implement capabilities on behalf
+     * of the root TileEntity.
+     */
+    public Vector3i[] getMutiblockOffsetsWhichHavePassthroughTileEntity() {
+        return new Vector3i[]{};
+    }
 
     /**
      * Takes in the BlockPos of the root node and the BlockState of any given node of this multiblock in the

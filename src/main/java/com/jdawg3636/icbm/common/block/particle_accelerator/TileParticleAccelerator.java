@@ -17,6 +17,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class TileParticleAccelerator extends TileMachine implements ITickableTileEntity {
@@ -26,7 +27,7 @@ public class TileParticleAccelerator extends TileMachine implements ITickableTil
     public boolean acceleratorIsActive = false;
 
     public TileParticleAccelerator(TileEntityType<?> tileEntityType) {
-        super(tileEntityType, ContainerReg.PARTICLE_ACCELERATOR::get, ContainerParticleAccelerator::new, 3, 1_000_000_000, 1_000_000_000, 0, DEFAULT_NAME);
+        super(tileEntityType, ContainerReg.PARTICLE_ACCELERATOR::get, ContainerParticleAccelerator::new, 3, 1_000_000_000, 1_000_000_000, 0, new ArrayList<>(), DEFAULT_NAME);
     }
 
     public static enum SlotIDs {

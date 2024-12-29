@@ -30,6 +30,7 @@ import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiFunction;
@@ -41,7 +42,7 @@ public class TileLauncherPlatform extends TileMachine {
     public UUID missileEntityID = null;
 
     public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor) {
-        super(tileEntityTypeIn, containerType, containerConstructor, 1, 0, 0, 0, DEFAULT_NAME);
+        super(tileEntityTypeIn, containerType, containerConstructor, 1, 0, 0, 0, new ArrayList<>(), DEFAULT_NAME);
     }
 
     public double getMissileEntityYOffset() {

@@ -15,7 +15,7 @@ public class ContainerOilRefinery extends AbstractContainerMachine {
         addSlot(80 - (2 * 18), 43 - 9, SlotTag.FLUID_ITEM);
         addSlot(80 - (1 * 18), 43 - 9, SlotTag.FLUID_ITEM);
         addSlot(80 + (2 * 18), 43 - 9, SlotTag.BATTERY);
-        addPlayerInventorySlots(8, 84);
+        addPlayerInventorySlots(8, 135);
     }
 
 }

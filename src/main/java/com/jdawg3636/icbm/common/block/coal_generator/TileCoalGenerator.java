@@ -18,6 +18,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class TileCoalGenerator extends TileMachine implements ITickableTileEntity {
@@ -37,7 +38,7 @@ public class TileCoalGenerator extends TileMachine implements ITickableTileEntit
     }
 
     public TileCoalGenerator(TileEntityType<?> tileEntityType, ITextComponent name) {
-        super(tileEntityType, ContainerReg.COAL_GENERATOR::get, ContainerCoalGenerator::new, 2, 0, 0, ICBMReference.COMMON_CONFIG.getCoalGeneratorEnergyGenerationPerTick(), name);
+        super(tileEntityType, ContainerReg.COAL_GENERATOR::get, ContainerCoalGenerator::new, 2, 0, 0, ICBMReference.COMMON_CONFIG.getCoalGeneratorEnergyGenerationPerTick(), new ArrayList<>(), name);
     }
 
     public Optional<IEnergyStorage> getBatteryEnergyStorage() {

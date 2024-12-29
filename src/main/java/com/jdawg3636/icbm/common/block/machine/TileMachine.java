@@ -26,11 +26,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class TileMachine extends TileEntity implements INamedContainerProvider, INameable {
@@ -43,18 +46,19 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     public final LazyOptional<IItemHandler> itemHandlerLazyOptional;
     private final ICBMEnergyStorage energyStorage;
     public final LazyOptional<IEnergyStorage> energyStorageLazyOptional;
+    public final ArrayList<LazyOptional<FluidTank>> fluidTanks;
 
     public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor) {
-        this(tileEntityTypeIn, containerType, containerConstructor, 0, 0, 0, 0, new TranslationTextComponent("gui.icbm.unspecialized_machine"));
+        this(tileEntityTypeIn, containerType, containerConstructor, 0, 0, 0, 0, new ArrayList<>(), new TranslationTextComponent("gui." + ICBMReference.MODID + ".unspecialized_machine"));
     }
 
-    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor, int inventorySize, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut, ITextComponent defaultName) {
+    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor, int inventorySize, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut, ArrayList<LazyOptional<FluidTank>> fluidTanks, ITextComponent defaultName) {
         super(tileEntityTypeIn);
         this.containerType = containerType;
         this.containerConstructor = containerConstructor;
 
         if(inventorySize > 0) {
-            itemHandler = createHandler(inventorySize);
+            itemHandler = createItemStackHandler(inventorySize);
             itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
         }
         else {
@@ -70,6 +74,8 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
             this.energyStorage = null;
             this.energyStorageLazyOptional = LazyOptional.empty();
         }
+
+        this.fluidTanks = fluidTanks;
 
         this.defaultName = defaultName;
 
@@ -99,7 +105,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         return true;
     }
 
-    private ICBMItemStackHandler createHandler(int inventorySize) {
+    private ICBMItemStackHandler createItemStackHandler(int inventorySize) {
         return new ICBMItemStackHandler(inventorySize, this::onInventorySlotChanged, this::isInventoryItemValid);
     }
 
@@ -108,7 +114,13 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if(itemHandlerLazyOptional.isPresent() && cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) return itemHandlerLazyOptional.cast();
         if(energyStorageLazyOptional.isPresent() && cap.equals(CapabilityEnergy.ENERGY)) return energyStorageLazyOptional.cast();
+        if(!fluidTanks.isEmpty() && cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) return fluidTanks.get(0).cast(); // TODO: if a future machine requires it, support multiple tanks.
         return LazyOptional.empty();
+    }
+
+    @Nonnull
+    public <T> LazyOptional<T> getCapabilityViaProxy(@Nonnull Capability<T> cap, @Nullable Direction side, BlockState proxyState) {
+        return getCapability(cap, side);
     }
 
     @Override
@@ -125,6 +137,22 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         if(tag.contains("CustomName", 8)) this.name = ITextComponent.Serializer.fromJson(tag.getString("CustomName"));
         if(tag.contains("inv") && itemHandlerLazyOptional.isPresent()) itemHandler.deserializeNBT(tag.getCompound("inv"));
         if(tag.contains("energy") && energyStorageLazyOptional.isPresent()) energyStorage.deserializeNBT(tag.getCompound("energy"));
+        if(tag.contains("fluids") && !fluidTanks.isEmpty()) {
+            CompoundNBT fluidsNBT = tag.getCompound("fluids");
+            for(String key : fluidsNBT.getAllKeys()) {
+                int i = -1;
+                try {
+                    i = Integer.parseInt(key);
+                } catch (NumberFormatException exception) {
+                    ICBMReference.logger().debug("Invalid key for fluid tank: {}", key);
+                }
+                if(i == -1) continue;
+                if(i < fluidTanks.size()) {
+                    CompoundNBT currentFluidNBT = new CompoundNBT();
+                    fluidTanks.get(i).ifPresent(fluidTank -> fluidTank.readFromNBT(currentFluidNBT));
+                }
+            }
+        }
         super.load(state, tag);
     }
 
@@ -133,6 +161,16 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         if (this.name != null) tag.putString("CustomName", ITextComponent.Serializer.toJson(this.name));
         if(itemHandlerLazyOptional.isPresent()) tag.put("inv", itemHandler.serializeNBT());
         if(energyStorageLazyOptional.isPresent()) tag.put("energy", energyStorage.serializeNBT());
+        final CompoundNBT fluidsNBT = new CompoundNBT();
+        for(int i = 0; i < fluidTanks.size(); ++i) {
+            final int finalI = i;
+            fluidTanks.get(i).ifPresent(fluidTank -> {
+                CompoundNBT currentFluidNBT = new CompoundNBT();
+                fluidTank.writeToNBT(currentFluidNBT);
+                fluidsNBT.put("" + finalI, currentFluidNBT);
+            });
+        }
+        if(!fluidTanks.isEmpty()) tag.put("fluids", fluidsNBT);
         return super.save(tag);
     }
 

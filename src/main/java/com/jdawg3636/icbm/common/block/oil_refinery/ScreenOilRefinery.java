@@ -1,6 +1,5 @@
 package com.jdawg3636.icbm.common.block.oil_refinery;
 
-import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -9,12 +8,11 @@ import net.minecraft.util.text.ITextComponent;
 
 public class ScreenOilRefinery extends ScreenMachine<ContainerOilRefinery> {
 
-    public static final ResourceLocation OIL_REFINERY_BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_oil_refinery.png");
-
     public final TileOilRefinery TILE_ENTITY;
 
     public ScreenOilRefinery(ContainerOilRefinery container, PlayerInventory inventory, ITextComponent name) {
-        this(container, inventory, name, OIL_REFINERY_BACKGROUND_TEXTURE, 352 / 2, 332 / 2);
+        super(container, inventory, name);
+        TILE_ENTITY = (TileOilRefinery)super.TILE_ENTITY;
     }
 
     public ScreenOilRefinery(ContainerOilRefinery container, PlayerInventory inventory, ITextComponent name, ResourceLocation backgroundTexture, int imageWidth, int imageHeight) {

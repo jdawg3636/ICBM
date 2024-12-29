@@ -1,7 +1,9 @@
 package com.jdawg3636.icbm.common.block.oil_refinery;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
+import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.ICBMTags;
 import net.minecraft.block.BlockState;
@@ -17,10 +19,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class TileOilRefinery extends TileMachine implements ITickableTileEntity {
@@ -33,6 +37,9 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
         BATTERY,
     }
 
+    private FluidTank inputTank = new FluidTank(64_000);
+    private FluidTank outputTank = new FluidTank(64_000);
+
     public int remainingBurnTicks = 0;
     public int totalBurnTicksForCurrentFuel = 0;
 
@@ -41,15 +48,46 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
     }
 
     public TileOilRefinery(TileEntityType<?> tileEntityType, ITextComponent name) {
-        super(tileEntityType, ContainerReg.OIL_REFINERY::get, ContainerOilRefinery::new, 3, 9_000, 9_000, 0, name);
+        super(tileEntityType, ContainerReg.OIL_REFINERY::get, ContainerOilRefinery::new, 3, 9_000, 9_000, 0, new ArrayList<>(2), name);
+        this.fluidTanks.add(LazyOptional.of(() -> inputTank));
+        this.fluidTanks.add(LazyOptional.of(() -> outputTank));
     }
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if(itemHandlerLazyOptional.isPresent() && cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) return itemHandlerLazyOptional.cast();
-        if(energyStorageLazyOptional.isPresent() && cap.equals(CapabilityEnergy.ENERGY)) return energyStorageLazyOptional.cast();
-        return super.getCapability(cap, side);
+        return LazyOptional.empty();
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapabilityViaProxy(@Nonnull Capability<T> cap, @Nullable Direction side, BlockState proxyState) {
+        // Accept Energy from Rear Power Port
+        if(
+            AbstractBlockMulti.doesStateMatchPosition(proxyState, BlockOilRefinery.POWER_POSITION) &&
+            side == getBlockState().getValue(AbstractBlockMachine.FACING).getOpposite() &&
+            energyStorageLazyOptional.isPresent() && cap.equals(CapabilityEnergy.ENERGY)
+        ) {
+            return energyStorageLazyOptional.cast();
+        }
+        // Connect Inlet (Oil) to Tank 0
+        if(
+            AbstractBlockMulti.doesStateMatchPosition(proxyState, BlockOilRefinery.INLET_POSITION) &&
+            side == Direction.UP &&
+            cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        ) {
+            return fluidTanks.get(0).cast();
+        }
+        // Connect Outlet (Fuel) to Tank 1
+        if(
+            AbstractBlockMulti.doesStateMatchPosition(proxyState, BlockOilRefinery.OULTET_POSITION) &&
+            side == Direction.UP &&
+            cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        ) {
+            return fluidTanks.get(1).cast();
+        }
+        return LazyOptional.empty();
     }
 
     public Optional<IEnergyStorage> getBatteryEnergyStorage() {

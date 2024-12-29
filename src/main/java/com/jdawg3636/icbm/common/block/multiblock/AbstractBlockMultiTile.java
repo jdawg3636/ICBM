@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.block.multiblock;
 
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
+import com.jdawg3636.icbm.common.reg.TileReg;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,6 +17,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
+
+import java.util.stream.Stream;
 
 public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
@@ -36,12 +39,20 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
 
     @Override
     public boolean hasTileEntity(BlockState state) {
-        return this.isRootOfMultiblock(state);
+        return this.isRootOfMultiblock(state) || Stream.of(getMutiblockOffsetsWhichHavePassthroughTileEntity()).map(vec -> doesStateMatchPosition(state, vec)).reduce(Boolean::logicalOr).orElse(false);
     }
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return hasTileEntity(state) ? tileEntityType.get().create() : null;
+        if(hasTileEntity(state)) {
+            if(this.isRootOfMultiblock(state)) {
+                return tileEntityType.get().create();
+            }
+            else {
+                return TileReg.MULTIBLOCK_PASSTHROUGH.get().create();
+            }
+        }
+        return null;
     }
 
     @SuppressWarnings("deprecation")

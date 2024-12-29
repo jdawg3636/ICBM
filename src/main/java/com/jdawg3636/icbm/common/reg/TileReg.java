@@ -10,6 +10,7 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherContro
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT3;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
+import com.jdawg3636.icbm.common.block.multiblock.TileMultiblockPassthrough;
 import com.jdawg3636.icbm.common.block.oil_refinery.TileOilRefinery;
 import com.jdawg3636.icbm.common.block.particle_accelerator.TileParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
@@ -72,5 +73,8 @@ public class TileReg {
 
     // Particle Accelerator Components
     public static final RegistryObject<TileEntityType<? extends TileEntity>> PARTICLE_ACCELERATOR = TILES.register(BlockReg.PARTICLE_ACCELERATOR.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileParticleAccelerator(TileReg.PARTICLE_ACCELERATOR.get()), BlockReg.PARTICLE_ACCELERATOR.get()).build(null));
+
+    // Internal
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> MULTIBLOCK_PASSTHROUGH = TILES.register("multiblock_passthrough", () -> TileEntityType.Builder.of(() -> new TileMultiblockPassthrough(TileReg.MULTIBLOCK_PASSTHROUGH.get())).build(null));
 
 }

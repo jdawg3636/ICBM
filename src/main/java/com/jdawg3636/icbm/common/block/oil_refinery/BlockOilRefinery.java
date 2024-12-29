@@ -8,9 +8,15 @@ import net.minecraftforge.fml.RegistryObject;
 
 public class BlockOilRefinery extends AbstractBlockMultiTile {
 
-    private static final Vector3i INLET_POSITION = new Vector3i(-1,1,-1);
-    private static final Vector3i OULTET_POSITION = new Vector3i(1,1,-1);
-    private static final Vector3i POWER_POSITION = new Vector3i(0,0,-1);
+    public static final Vector3i INLET_POSITION = new Vector3i(-1,1,-1);
+    public static final Vector3i OULTET_POSITION = new Vector3i(1,1,-1);
+    public static final Vector3i POWER_POSITION = new Vector3i(0,0,-1);
+
+    private static final Vector3i[] MULTIBLOCK_PASSTHROUGH_TILE_POSITIONS = {
+            INLET_POSITION,
+            OULTET_POSITION,
+            POWER_POSITION
+    };
 
     private static final Vector3i[] MULTIBLOCK_POSITIONS = {
             // Back Bottom
@@ -40,21 +46,14 @@ public class BlockOilRefinery extends AbstractBlockMultiTile {
         super(properties, tileEntityType, false);
     }
 
-//    @Override
-//    public boolean hasTileEntity(BlockState state) {
-//        return doesStateMatchPosition(state, INLET_POSITION) ||
-//               doesStateMatchPosition(state, OULTET_POSITION) ||
-//               doesStateMatchPosition(state, POWER_POSITION) ||
-//               this.isRootOfMultiblock(state);
-//    }
-//
-//    @Override
-//    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-//        return hasTileEntity(state) ? tileEntityType.get().create() : null;
-//    }
-
     @Override
     public Vector3i[] getMultiblockOffsets() {
         return MULTIBLOCK_POSITIONS;
     }
+
+    @Override
+    public Vector3i[] getMutiblockOffsetsWhichHavePassthroughTileEntity() {
+        return MULTIBLOCK_PASSTHROUGH_TILE_POSITIONS;
+    }
+
 }
