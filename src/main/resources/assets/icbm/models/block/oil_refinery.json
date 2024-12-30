@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench by jdawg3636",
 	"ambientocclusion": false,
+	"gui_light": "front",
 	"texture_size": [48, 48],
 	"textures": {
 		"0": "icbm:block/oil_refinery",

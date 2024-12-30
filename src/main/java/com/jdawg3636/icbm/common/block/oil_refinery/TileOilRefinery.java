@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
+import com.jdawg3636.icbm.common.capability.fluidhandler.ICBMFluidTank;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.ICBMTags;
 import net.minecraft.block.BlockState;
@@ -37,8 +38,8 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
         BATTERY,
     }
 
-    private FluidTank inputTank = new FluidTank(64_000);
-    private FluidTank outputTank = new FluidTank(64_000);
+    private FluidTank inputTank = new ICBMFluidTank(64_000, fluidStack -> true, tank -> this.updateNearbyClients(), false);
+    private FluidTank outputTank = new ICBMFluidTank(64_000, fluidStack -> false, tank -> this.updateNearbyClients(), true);
 
     public int remainingBurnTicks = 0;
     public int totalBurnTicksForCurrentFuel = 0;

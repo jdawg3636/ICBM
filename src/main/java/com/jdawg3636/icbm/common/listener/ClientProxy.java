@@ -20,6 +20,8 @@ import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
 import com.jdawg3636.icbm.common.block.machine.IScreenMachine;
 import com.jdawg3636.icbm.common.block.oil_refinery.ContainerOilRefinery;
 import com.jdawg3636.icbm.common.block.oil_refinery.ScreenOilRefinery;
+import com.jdawg3636.icbm.common.block.oil_refinery.TEROilRefinery;
+import com.jdawg3636.icbm.common.block.oil_refinery.TileOilRefinery;
 import com.jdawg3636.icbm.common.block.particle_accelerator.ScreenParticleAccelerator;
 import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
@@ -211,6 +213,7 @@ public class ClientProxy extends CommonProxy {
         // Register Tile Entity Renderers
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileEMPTower>) TileReg.EMP_TOWER.get(), TEREMPTower::new);
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileOilRefinery>) TileReg.OIL_REFINERY.get(), TEROilRefinery::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileRadarStation>) TileReg.RADAR_STATION.get(), TERRadarStation::new);
 
         // Register Item Model Properties
