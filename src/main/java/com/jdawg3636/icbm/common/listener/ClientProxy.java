@@ -77,6 +77,8 @@ public class ClientProxy extends CommonProxy {
         // Set Render Layers
         RenderTypeLookup.setRenderLayer(BlockReg.CAMOUFLAGE.get(), renderType -> true);
         RenderTypeLookup.setRenderLayer(BlockReg.ELECTROMAGNETIC_GLASS.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(FluidReg.FUEL.source.get(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(FluidReg.FUEL.flowing.get(), RenderType.translucent());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_PLATFORM_T3.get(), RenderType.cutout());

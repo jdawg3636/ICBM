@@ -38,7 +38,7 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
         BATTERY,
     }
 
-    private FluidTank inputTank = new ICBMFluidTank(64_000, fluidStack -> true, tank -> this.updateNearbyClients(), false);
+    private FluidTank inputTank = new ICBMFluidTank(64_000, fluidStack -> true, tank -> this.updateNearbyClients(), true);
     private FluidTank outputTank = new ICBMFluidTank(64_000, fluidStack -> false, tank -> this.updateNearbyClients(), true);
 
     public int remainingBurnTicks = 0;

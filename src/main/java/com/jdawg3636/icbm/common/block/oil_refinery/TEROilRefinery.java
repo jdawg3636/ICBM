@@ -19,8 +19,6 @@ import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-import java.util.function.BiConsumer;
-
 public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
 
     public TEROilRefinery(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
@@ -59,10 +57,10 @@ public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
             //noinspection deprecation
             TextureAtlasSprite textureAtlasSprite = Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(attributes.getStillTexture());
             int colorPacked = attributes.getColor(fluidStack);
-            float colorAlpha = (colorPacked >> 24 & 0xFF) / 256F;
-            float colorRed   = (colorPacked >> 16 & 0xFF) / 256F;
-            float colorGreen = (colorPacked >>  8 & 0xFF) / 256F;
-            float colorBlue  = (colorPacked >>  0 & 0xFF) / 256F;
+            float colorAlpha = (colorPacked >> 24 & 0xFF) / 255F;
+            float colorRed   = (colorPacked >> 16 & 0xFF) / 255F;
+            float colorGreen = (colorPacked >>  8 & 0xFF) / 255F;
+            float colorBlue  = (colorPacked >>  0 & 0xFF) / 255F;
             float uMin = textureAtlasSprite.getU0();
             float vMin = textureAtlasSprite.getV0();
             float uMax = textureAtlasSprite.getU1();
@@ -90,7 +88,7 @@ public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
             // Render
             IVertexBuilder vertexBuilder = renderBuffer.getBuffer(Atlases.translucentCullBlockSheet());
             Matrix4f pose = matrixStack.last().pose();
-            renderTiledAABB(vertexBuilder, pose, fluidAABBForTank, colorRed, colorGreen, colorBlue, colorAlpha, uMin, uMax, vMin, vMax, combinedOverlay, combinedLight);
+            renderTiledAABB(vertexBuilder, pose, fluidAABBForTank, colorRed, colorGreen, colorBlue, colorAlpha, uMin, uMax, vMin, vMax, combinedLight, combinedOverlay);
 
             // Pop for tank
             matrixStack.popPose();
@@ -102,22 +100,39 @@ public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
 
     }
 
-    // Pain, suffering, and ChatGPT.
-    public void renderTiledAABB(IVertexBuilder builder, Matrix4f pose, AxisAlignedBB box, float r, float g, float b, float a, float uMin, float uMax, float vMin, float vMax, int overlay, int light) {
-        float minX = (float) box.minX;
-        float maxX = (float) box.maxX;
-        float minY = (float) box.minY;
-        float maxY = (float) box.maxY;
-        float minZ = (float) box.minZ;
-        float maxZ = (float) box.maxZ;
+    // Helper function to render a single quad with counterclockwise winding
+    private void renderQuad(float[] positions, float[] normal, float width, float height, IVertexBuilder builder, Matrix4f pose, float r, float g, float b, float a, float uMin, float uMax, float vMin, float vMax, int combinedLight, int combinedOverlay) {
+        // Adjust UVs to match scale of width/height. Width will crop to center, height will crop to bottom.
+        // NOTE: U is height and V is width in the context do to wanting fluid texture to be rotated on sides
+        final float deltaU = uMax - uMin;
+        final float deltaV = vMax - vMin;
+        final float adjustmentU = deltaU * (1 - height);
+        final float adjustmentV = deltaV * (1 - width);
+        uMax -= adjustmentU;
+        vMin += (adjustmentV / 2F);
+        vMax -= (adjustmentV / 2F);
+        // Build Vertices
+        builder.vertex(pose, positions[0], positions[1], positions[2]).color(r, g, b, a).uv(uMin, vMin).overlayCoords(combinedOverlay).uv2(combinedLight).normal(normal[0], normal[1], normal[2]).endVertex();
+        builder.vertex(pose, positions[9], positions[10], positions[11]).color(r, g, b, a).uv(uMin, vMax).overlayCoords(combinedOverlay).uv2(combinedLight).normal(normal[0], normal[1], normal[2]).endVertex();
+        builder.vertex(pose, positions[6], positions[7], positions[8]).color(r, g, b, a).uv(uMax, vMax).overlayCoords(combinedOverlay).uv2(combinedLight).normal(normal[0], normal[1], normal[2]).endVertex();
+        builder.vertex(pose, positions[3], positions[4], positions[5]).color(r, g, b, a).uv(uMax, vMin).overlayCoords(combinedOverlay).uv2(combinedLight).normal(normal[0], normal[1], normal[2]).endVertex();
+    };
 
-        // Helper function to render a single quad with counterclockwise winding
-        BiConsumer<float[], float[]> renderQuad = (positions, normal) -> {
-            builder.vertex(pose, positions[0], positions[1], positions[2]).color(r, g, b, a).uv(uMin, vMin).overlayCoords(overlay).uv2(light).normal(normal[0], normal[1], normal[2]).endVertex();
-            builder.vertex(pose, positions[9], positions[10], positions[11]).color(r, g, b, a).uv(uMin, vMax).overlayCoords(overlay).uv2(light).normal(normal[0], normal[1], normal[2]).endVertex();
-            builder.vertex(pose, positions[6], positions[7], positions[8]).color(r, g, b, a).uv(uMax, vMax).overlayCoords(overlay).uv2(light).normal(normal[0], normal[1], normal[2]).endVertex();
-            builder.vertex(pose, positions[3], positions[4], positions[5]).color(r, g, b, a).uv(uMax, vMin).overlayCoords(overlay).uv2(light).normal(normal[0], normal[1], normal[2]).endVertex();
-        };
+    // Pain, suffering, and ChatGPT.
+    public void renderTiledAABB(IVertexBuilder builder, Matrix4f pose, AxisAlignedBB box, float r, float g, float b, float a, float uMin, float uMax, float vMin, float vMax, int combinedLight, int combinedOverlay) {
+
+        // Pre-cast values from AABB
+        final float minX = (float) box.minX;
+        final float maxX = (float) box.maxX;
+        final float minY = (float) box.minY;
+        final float maxY = (float) box.maxY;
+        final float minZ = (float) box.minZ;
+        final float maxZ = (float) box.maxZ;
+
+        // Pre-calculate deltas for use as width/heights
+        final float deltaX = maxX - minX;
+        final float deltaY = maxY - minY;
+        final float deltaZ = maxZ - minZ;
 
         // Bottom and top faces
         for (float x = minX; x < maxX; x += 1.0f) {
@@ -125,19 +140,29 @@ public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
                 float xEnd = Math.min(x + 1.0f, maxX);
                 float zEnd = Math.min(z + 1.0f, maxZ);
                 // Bottom face (counterclockwise when viewed from below)
-                renderQuad.accept(new float[]{
+                renderQuad(
+                    new float[] {
                         x, minY, zEnd,
                         xEnd, minY, zEnd,
                         xEnd, minY, z,
                         x, minY, z
-                }, new float[]{0, -1, 0});
+                    },
+                    new float[] {0, -1, 0},
+                    xEnd - x, zEnd - z,
+                    builder, pose, r, g, b, a, uMin, uMax, vMin, vMax, combinedLight, combinedOverlay
+                );
                 // Top face (counterclockwise when viewed from above)
-                renderQuad.accept(new float[]{
+                renderQuad(
+                    new float[]{
                         x, maxY, z,
                         xEnd, maxY, z,
                         xEnd, maxY, zEnd,
                         x, maxY, zEnd
-                }, new float[]{0, 1, 0});
+                    },
+                    new float[] {0, 1, 0},
+                    xEnd - x, zEnd - z,
+                    builder, pose, r, g, b, a, uMin, uMax, vMin, vMax, combinedLight, combinedOverlay
+                );
             }
         }
 
@@ -147,19 +172,29 @@ public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
                 float xEnd = Math.min(x + 1.0f, maxX);
                 float yEnd = Math.min(y + 1.0f, maxY);
                 // North face (counterclockwise when viewed from the south)
-                renderQuad.accept(new float[]{
-                        x, y, minZ,
+                renderQuad(
+                    new float[]{
                         xEnd, y, minZ,
                         xEnd, yEnd, minZ,
-                        x, yEnd, minZ
-                }, new float[]{0, 0, -1});
+                        x, yEnd, minZ,
+                        x, y, minZ
+                    },
+                    new float[]{0, 0, -1},
+                    xEnd - x, yEnd - y,
+                    builder, pose, r, g, b, a, uMin, uMax, vMin, vMax, combinedLight, combinedOverlay
+                );
                 // South face (counterclockwise when viewed from the north)
-                renderQuad.accept(new float[]{
+                renderQuad(
+                    new float[]{
+                        x, y, maxZ,
                         x, yEnd, maxZ,
                         xEnd, yEnd, maxZ,
-                        xEnd, y, maxZ,
-                        x, y, maxZ
-                }, new float[]{0, 0, 1});
+                        xEnd, y, maxZ
+                    },
+                    new float[]{0, 0, 1},
+                    xEnd - x, yEnd - y,
+                    builder, pose, r, g, b, a, uMin, uMax, vMin, vMax, combinedLight, combinedOverlay
+                );
             }
         }
 
@@ -169,19 +204,29 @@ public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
                 float zEnd = Math.min(z + 1.0f, maxZ);
                 float yEnd = Math.min(y + 1.0f, maxY);
                 // East face (counterclockwise when viewed from the west)
-                renderQuad.accept(new float[]{
+                renderQuad(
+                    new float[]{
                         maxX, y, zEnd,
                         maxX, yEnd, zEnd,
                         maxX, yEnd, z,
                         maxX, y, z
-                }, new float[]{1, 0, 0});
+                    },
+                    new float[]{1, 0, 0},
+                    zEnd - z, yEnd - y,
+                    builder, pose, r, g, b, a, uMin, uMax, vMin, vMax, combinedLight, combinedOverlay
+                );
                 // West face (counterclockwise when viewed from the east)
-                renderQuad.accept(new float[]{
+                renderQuad(
+                    new float[]{
                         minX, y, z,
                         minX, yEnd, z,
                         minX, yEnd, zEnd,
                         minX, y, zEnd
-                }, new float[]{-1, 0, 0});
+                    },
+                    new float[]{-1, 0, 0},
+                    zEnd - z, yEnd - y,
+                    builder, pose, r, g, b, a, uMin, uMax, vMin, vMax, combinedLight, combinedOverlay
+                );
             }
         }
     }
