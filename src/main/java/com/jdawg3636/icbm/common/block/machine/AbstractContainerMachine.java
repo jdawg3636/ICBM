@@ -47,7 +47,7 @@ public class AbstractContainerMachine extends Container {
 
     }
 
-    public static final Map<Integer, SlotTag> slotTags = new HashMap<>();
+    public final Map<Integer, SlotTag> slotTags = new HashMap<>();
 
     private final TileMachine tileEntity;
     private final IItemHandler playerInventoryWrapper;
