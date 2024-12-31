@@ -12,7 +12,7 @@ public class ContainerEMPTower extends AbstractContainerMachine {
 
     public ContainerEMPTower(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
         super(containerType, windowId, level, blockPos, playerInventory);
-        addSlot(151, 23, SlotTag.BATTERY);
+        addSlot(152, 22, SlotTag.BATTERY);
         addPlayerInventorySlots(8, 135);
     }
 
