@@ -15,16 +15,11 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
     private final Random random = new Random();
     private final ServerWorld level;
 
-//    public MissileDirectorCapability() {
-//        this(null);
-//    }
-
     public MissileDirectorCapability(ServerWorld level) {
         this.level = level;
     }
 
     public static void register() {
-//        CapabilityManager.INSTANCE.register(IMissileDirectorCapability.class, new MissileDirectorCapabilityStorage(), MissileDirectorCapability::new);
         CapabilityManager.INSTANCE.register(IMissileDirectorCapability.class, new MissileDirectorCapabilityStorage(), () -> null);
     }
 
@@ -37,7 +32,7 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
 
     @Override
     public Set<UUID> getLogicalMissileIDList() {
-        return logicalMissiles.keySet();
+        return new HashMap<>(logicalMissiles).keySet();
     }
 
     @Override
@@ -60,7 +55,7 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
         if(missileID == null) return;
         Optional.ofNullable(logicalMissiles.remove(missileID)).ifPresent(logicalMissile -> {
             logicalMissile.kill();
-            listeners.values().forEach(listener -> listener.accept(missileID, logicalMissile));
+            new HashMap<>(listeners).values().forEach(listener -> listener.accept(missileID, logicalMissile));
         });
     }
 
@@ -88,7 +83,8 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
             new HashMap<>(logicalMissiles).forEach((uuid, logicalMissile) -> {
                 boolean missileChanged = logicalMissile.tick((ServerWorld) event.world);
                 if (missileChanged) {
-                    listeners.values().forEach(listener -> listener.accept(uuid, logicalMissile));
+                    // Yet another HashMap to avoid ConcurrentModificationException - thanks to @neddierex on Discord for the report
+                    new HashMap<>(listeners).values().forEach(listener -> listener.accept(uuid, logicalMissile));
                 }
             });
         }
