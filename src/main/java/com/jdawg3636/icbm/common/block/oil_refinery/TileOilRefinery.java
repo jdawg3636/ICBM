@@ -123,8 +123,10 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
         return false;
     }
 
+    public int tempVar = 0;
     public double getPercentageFuelLeft() {
-        return totalBurnTicksForCurrentFuel == 0 ? 0 : remainingBurnTicks / (double)totalBurnTicksForCurrentFuel;
+        return ((tempVar++) % 500d) / 500d;
+//        return totalBurnTicksForCurrentFuel == 0 ? 0 : remainingBurnTicks / (double)totalBurnTicksForCurrentFuel;
     }
 
     @Override

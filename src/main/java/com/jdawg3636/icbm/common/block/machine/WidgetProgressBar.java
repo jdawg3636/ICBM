@@ -20,10 +20,10 @@ public class WidgetProgressBar extends Widget {
     Supplier<Float> valueSupplier;
     Supplier<ITextComponent> tooltipSupplier;
 
-    int emptyBarU = 40;
-    int emptyBarV = 0;
-    int fullBarU = 40;
-    int fullBarV = 65;
+    public int emptyBarU;
+    public int emptyBarV;
+    public int fullBarU;
+    public int fullBarV;
 
     public WidgetProgressBar(int posX, int posY, int width, int height, boolean horizontal, IScreenMachine screen, Supplier<Vector3f> colorSupplier, Supplier<Float> valueSupplier, Supplier<ITextComponent> tooltipSupplier) {
         super(posX, posY, width, height, new StringTextComponent(ICBMReference.MODID + " progress bar widget"));
@@ -32,6 +32,13 @@ public class WidgetProgressBar extends Widget {
         this.colorSupplier = colorSupplier;
         this.valueSupplier = valueSupplier;
         this.tooltipSupplier = tooltipSupplier;
+
+        // Not making these parameters for now, but they are public so can be changed after construction.
+        this.emptyBarU = this.horizontal ? 18 : 40;
+        this.emptyBarV = 0;
+        this.fullBarU = this.horizontal ? 18 : 40;
+        this.fullBarV = this.horizontal ? 15 : 65;
+
     }
 
     @Override
@@ -42,8 +49,8 @@ public class WidgetProgressBar extends Widget {
         blit(matrixStack, this.x, this.y, getBlitOffset(), emptyBarU,  emptyBarV, this.width, this.height, 256, 256);
         // Render Bar Contents
         Vector3f color = colorSupplier.get();
-        int missingPixels = this.height - (int)(this.valueSupplier.get() * this.height);
-        ScreenMachine.blitColored(matrixStack, this.x, this.y + missingPixels, getBlitOffset(), fullBarU, fullBarV + missingPixels, this.width, this.height - missingPixels, 256, 256, color.x(), color.y(), color.z(), 1.0F);
+        int missingPixels = (this.horizontal ? this.width : this.height) - (int)(this.valueSupplier.get() * (this.horizontal ? this.width : this.height));
+        ScreenMachine.blitColored(matrixStack, this.x, this.y + (this.horizontal ? 0 : missingPixels), getBlitOffset(), fullBarU, fullBarV + (this.horizontal ? 0 : missingPixels), this.width - (this.horizontal ? missingPixels : 0), this.height - (this.horizontal ? 0 : missingPixels), 256, 256, color.x(), color.y(), color.z(), 1.0F);
         // Render Tooltip
         if(this.isHovered()) {
             this.renderToolTip(matrixStack, mouseX, mouseY);

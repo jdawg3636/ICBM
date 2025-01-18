@@ -17,6 +17,7 @@ public class ScreenOilRefinery extends ScreenMachine<ContainerOilRefinery> {
     public WidgetProgressBar forgeEnergyStorageBar;
     public WidgetFluidTank inputTankView;
     public WidgetFluidTank outputTankView;
+    public WidgetProgressBar progressBar;
 
     public ScreenOilRefinery(ContainerOilRefinery container, PlayerInventory inventory, ITextComponent name) {
         super(container, inventory, name);
@@ -59,6 +60,15 @@ public class ScreenOilRefinery extends ScreenMachine<ContainerOilRefinery> {
                 TILE_ENTITY.fluidTanks.get(1)
         );
         addButton(this.outputTankView);
+
+        Vector3f progressBarColor = new Vector3f(1f, 1f, 1f);
+        this.progressBar = new WidgetProgressBar(
+                relX + 59, relY + 70, 22, 15, true, this,
+                () -> progressBarColor,
+                () -> (float) TILE_ENTITY.getPercentageFuelLeft(),
+                () -> new StringTextComponent(TILE_ENTITY.getPercentageFuelLeft() * 100 + "%")
+        );
+        addButton(this.progressBar);
 
     }
 
