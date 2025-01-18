@@ -107,7 +107,7 @@ public class TileRadarStation extends TileEMPTower implements ITickableTileEntit
     @Override
     @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return super.getRenderBoundingBox().expandTowards(0, 1, 0).inflate(1, 0, 1);
+        return new AxisAlignedBB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(2, 2, 2));
     }
 
 }

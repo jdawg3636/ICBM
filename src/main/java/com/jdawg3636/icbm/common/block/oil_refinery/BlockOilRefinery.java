@@ -1,6 +1,8 @@
 package com.jdawg3636.icbm.common.block.oil_refinery;
 
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.vector.Vector3i;
@@ -54,6 +56,11 @@ public class BlockOilRefinery extends AbstractBlockMultiTile {
     @Override
     public Vector3i[] getMutiblockOffsetsWhichHavePassthroughTileEntity() {
         return MULTIBLOCK_PASSTHROUGH_TILE_POSITIONS;
+    }
+
+    @Override
+    public BlockRenderType getRenderShape(BlockState state) {
+        return BlockRenderType.INVISIBLE;
     }
 
 }

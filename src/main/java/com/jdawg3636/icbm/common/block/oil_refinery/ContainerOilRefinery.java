@@ -12,9 +12,9 @@ public class ContainerOilRefinery extends AbstractContainerMachine {
 
     public ContainerOilRefinery(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
         super(containerType, windowId, level, blockPos, playerInventory);
-        addSlot(80 - (2 * 18), 43 - 9, SlotTag.FLUID_ITEM);
-        addSlot(80 - (1 * 18), 43 - 9, SlotTag.FLUID_ITEM);
-        addSlot(80 + (2 * 18), 43 - 9, SlotTag.BATTERY);
+        addSlot(152 - (7 * 18) - 9, 22, SlotTag.FLUID_ITEM);
+        addSlot(152 - (2 * 18) - 9, 22, SlotTag.FLUID_ITEM);
+        addSlot(152, 22, SlotTag.BATTERY);
         addPlayerInventorySlots(8, 135);
     }
 

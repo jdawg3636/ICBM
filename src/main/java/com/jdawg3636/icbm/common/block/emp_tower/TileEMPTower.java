@@ -131,7 +131,7 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
     @Override
     @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return super.getRenderBoundingBox().expandTowards(0, 1, 0).inflate(1D/16D, 0, 1D/16D);
+        return new AxisAlignedBB(getBlockPos(), getBlockPos().offset(1, 2, 1));
     }
 
 }

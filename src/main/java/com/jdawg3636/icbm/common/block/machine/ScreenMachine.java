@@ -128,10 +128,10 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
     }
 
     private static void innerBlitColored(MatrixStack pMatrixStack, int pX1, int pX2, int pY1, int pY2, int pBlitOffset, int pUWidth, int pVHeight, float pUOffset, float pVOffset, int pTextureWidth, int pTextureHeight, float red, float green, float blue, float alpha) {
-        innerBlitColoredTwo(pMatrixStack.last().pose(), pX1, pX2, pY1, pY2, pBlitOffset, (pUOffset + 0.0F) / (float)pTextureWidth, (pUOffset + (float)pUWidth) / (float)pTextureWidth, (pVOffset + 0.0F) / (float)pTextureHeight, (pVOffset + (float)pVHeight) / (float)pTextureHeight, red, green, blue, alpha);
+        innerBlitColored(pMatrixStack.last().pose(), pX1, pX2, pY1, pY2, pBlitOffset, (pUOffset + 0.0F) / (float)pTextureWidth, (pUOffset + (float)pUWidth) / (float)pTextureWidth, (pVOffset + 0.0F) / (float)pTextureHeight, (pVOffset + (float)pVHeight) / (float)pTextureHeight, red, green, blue, alpha);
     }
 
-    private static void innerBlitColoredTwo(Matrix4f pMatrix, int pX1, int pX2, int pY1, int pY2, int pBlitOffset, float pMinU, float pMaxU, float pMinV, float pMaxV, float red, float green, float blue, float alpha) {
+    public static void innerBlitColored(Matrix4f pMatrix, int pX1, int pX2, int pY1, int pY2, int pBlitOffset, float pMinU, float pMaxU, float pMinV, float pMaxV, float red, float green, float blue, float alpha) {
         BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR_TEX);
         bufferbuilder.vertex(pMatrix, (float)pX1, (float)pY2, (float)pBlitOffset).color(red, green, blue, alpha).uv(pMinU, pMaxV).overlayCoords(OverlayTexture.NO_OVERLAY).endVertex();

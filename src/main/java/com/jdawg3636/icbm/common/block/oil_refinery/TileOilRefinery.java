@@ -13,8 +13,11 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -109,7 +112,7 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
     @Override
     public boolean isInventoryItemValid(int slot, @Nonnull ItemStack stack) {
         if(slot == SlotIDs.BATTERY.ordinal()) {
-            return stack.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::canReceive).orElse(false);
+            return stack.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::canExtract).orElse(false);
         }
         if(slot == SlotIDs.OIL_INPUT.ordinal()) {
             return ICBMReference.checkItemStackContainsFluidTag(stack, ICBMTags.Fluids.OIL.getName());
@@ -137,6 +140,12 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
         tag.putInt("remainingBurnTicks", remainingBurnTicks);
         tag.putInt("totalBurnTicksForCurrentFuel", totalBurnTicksForCurrentFuel);
         return tag;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(2, 2, 2));
     }
 
 }

@@ -60,6 +60,7 @@ public class ClientProxy extends CommonProxy {
     public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE        = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
     public static final ResourceLocation MODEL_EMP_TOWER_COUNTERCLOCKWISE = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_counterclockwise");
     public static final ResourceLocation MODEL_EMP_TOWER_STATIC           = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_static");
+    public static final ResourceLocation MODEL_OIL_REFINERY               = new ResourceLocation(ICBMReference.MODID + ":block/oil_refinery");
     public static final ResourceLocation MODEL_RADAR_STATION_DYNAMIC      = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_dynamic");
     public static final ResourceLocation MODEL_RADAR_STATION_STATIC       = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_static");
 
@@ -252,6 +253,7 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_CLOCKWISE);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_COUNTERCLOCKWISE);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_STATIC);
+        ModelLoader.addSpecialModel(MODEL_OIL_REFINERY);
         ModelLoader.addSpecialModel(MODEL_RADAR_STATION_DYNAMIC);
         ModelLoader.addSpecialModel(MODEL_RADAR_STATION_STATIC);
 

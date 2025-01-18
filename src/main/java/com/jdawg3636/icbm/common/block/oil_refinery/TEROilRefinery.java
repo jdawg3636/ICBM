@@ -1,11 +1,15 @@
 package com.jdawg3636.icbm.common.block.oil_refinery;
 
 import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
+import com.jdawg3636.icbm.common.listener.ClientProxy;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -13,6 +17,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -21,13 +26,22 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
 
+    public final LazyOptional<IBakedModel> MODEL_STATIC;
+
     public TEROilRefinery(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
+        this(
+                tileEntityRendererDispatcher,
+                LazyOptional.of(() -> Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_OIL_REFINERY))
+        );
+    }
+
+    public TEROilRefinery(TileEntityRendererDispatcher tileEntityRendererDispatcher, LazyOptional<IBakedModel> modelStatic) {
         super(tileEntityRendererDispatcher);
+        this.MODEL_STATIC = modelStatic;
     }
 
     @Override
     public boolean shouldRenderOffScreen(TileOilRefinery tileEntity) {
-        // TODO: this doesn't appear to be working. Need to fix to avoid overzealous frustum culling.
         return true;
     }
 
@@ -42,6 +56,15 @@ public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
         final Vector3i normal = facingDir.getNormal();
         final int tangentSign = (facingDir.getAxis() == Direction.Axis.X) ? -1 : 1;
         final Vector3i tangent = new Vector3i(tangentSign * normal.getZ(), 0, tangentSign * normal.getX());
+
+        // Render the static model
+        matrixStack.pushPose();
+        matrixStack.translate(0.5, 0.5, 0.5);
+        if (facingDir == Direction.EAST)   matrixStack.mulPose(new Quaternion(0, 270, 0, true));
+        else if (facingDir == Direction.SOUTH)  matrixStack.mulPose(new Quaternion(0, 180, 0, true));
+        else if (facingDir == Direction.WEST)   matrixStack.mulPose(new Quaternion(0,  90, 0, true));
+        MODEL_STATIC.ifPresent(model -> Minecraft.getInstance().getItemRenderer().render(Blocks.STONE.asItem().getDefaultInstance(), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, model));
+        matrixStack.popPose();
 
         // Loop over tanks
         for(int i = 0; i < tileEntity.fluidTanks.size(); ++i) {
@@ -101,7 +124,7 @@ public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
     }
 
     // Helper function to render a single quad with counterclockwise winding
-    private void renderQuad(float[] positions, float[] normal, float width, float height, IVertexBuilder builder, Matrix4f pose, float r, float g, float b, float a, float uMin, float uMax, float vMin, float vMax, int combinedLight, int combinedOverlay) {
+    public static void renderQuad(float[] positions, float[] normal, float width, float height, IVertexBuilder builder, Matrix4f pose, float r, float g, float b, float a, float uMin, float uMax, float vMin, float vMax, int combinedLight, int combinedOverlay) {
         // Adjust UVs to match scale of width/height. Width will crop to center, height will crop to bottom.
         // NOTE: U is height and V is width in the context do to wanting fluid texture to be rotated on sides
         final float deltaU = uMax - uMin;
@@ -119,7 +142,7 @@ public class TEROilRefinery extends TileEntityRenderer<TileOilRefinery> {
     };
 
     // Pain, suffering, and ChatGPT.
-    public void renderTiledAABB(IVertexBuilder builder, Matrix4f pose, AxisAlignedBB box, float r, float g, float b, float a, float uMin, float uMax, float vMin, float vMax, int combinedLight, int combinedOverlay) {
+    public static void renderTiledAABB(IVertexBuilder builder, Matrix4f pose, AxisAlignedBB box, float r, float g, float b, float a, float uMin, float uMax, float vMin, float vMax, int combinedLight, int combinedOverlay) {
 
         // Pre-cast values from AABB
         final float minX = (float) box.minX;
