@@ -70,7 +70,7 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
 
         Vector3f forgeEnergyStorageBarColor = new Vector3f(29/255f, 194/255f, 68/255f);
         this.forgeEnergyStorageBar = new WidgetProgressBar(
-            relX + 152, relY + 46, 18, 65, this,
+            relX + 151, relY + 45, 18, 65, false, this,
             () -> forgeEnergyStorageBarColor,
             () -> TILE_ENTITY.energyStorageLazyOptional.map((energyStorage) -> energyStorage.getEnergyStored() / (float)energyStorage.getMaxEnergyStored()).orElse(0f),
             () -> TILE_ENTITY.energyStorageLazyOptional.map((energyStorage) ->

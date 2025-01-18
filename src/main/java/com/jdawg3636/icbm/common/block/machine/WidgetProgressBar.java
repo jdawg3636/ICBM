@@ -14,15 +14,20 @@ import java.util.function.Supplier;
 @OnlyIn(Dist.CLIENT)
 public class WidgetProgressBar extends Widget {
 
-    private static final int FULL_BAR_TEXTURE_HEIGHT = 65;
-
+    boolean horizontal;
     IScreenMachine screen;
     Supplier<Vector3f> colorSupplier;
     Supplier<Float> valueSupplier;
     Supplier<ITextComponent> tooltipSupplier;
 
-    public WidgetProgressBar(int posX, int posY, int width, int height, IScreenMachine screen, Supplier<Vector3f> colorSupplier, Supplier<Float> valueSupplier, Supplier<ITextComponent> tooltipSupplier) {
+    int emptyBarU = 40;
+    int emptyBarV = 0;
+    int fullBarU = 40;
+    int fullBarV = 65;
+
+    public WidgetProgressBar(int posX, int posY, int width, int height, boolean horizontal, IScreenMachine screen, Supplier<Vector3f> colorSupplier, Supplier<Float> valueSupplier, Supplier<ITextComponent> tooltipSupplier) {
         super(posX, posY, width, height, new StringTextComponent(ICBMReference.MODID + " progress bar widget"));
+        this.horizontal = horizontal;
         this.screen = screen;
         this.colorSupplier = colorSupplier;
         this.valueSupplier = valueSupplier;
@@ -34,11 +39,11 @@ public class WidgetProgressBar extends Widget {
         // Pulling from the gui_components.png texture
         this.screen.deobf$getMinecraft().getTextureManager().bind(ScreenMachine.DEFAULT_COMPONENTS_TEXTURE);
         // Render Empty Bar
-        blit(matrixStack, this.x - 1, this.y - 1, 100, 40,  0 * FULL_BAR_TEXTURE_HEIGHT, this.width, this.height, 256, 256);
+        blit(matrixStack, this.x, this.y, getBlitOffset(), emptyBarU,  emptyBarV, this.width, this.height, 256, 256);
         // Render Bar Contents
         Vector3f color = colorSupplier.get();
         int missingPixels = this.height - (int)(this.valueSupplier.get() * this.height);
-        ScreenMachine.blitColored(matrixStack, this.x - 1, this.y - 1 + missingPixels, 100, 40, (1 * FULL_BAR_TEXTURE_HEIGHT) + missingPixels, this.width, this.height - missingPixels, 256, 256, color.x(), color.y(), color.z(), 1.0F);
+        ScreenMachine.blitColored(matrixStack, this.x, this.y + missingPixels, getBlitOffset(), fullBarU, fullBarV + missingPixels, this.width, this.height - missingPixels, 256, 256, color.x(), color.y(), color.z(), 1.0F);
         // Render Tooltip
         if(this.isHovered()) {
             this.renderToolTip(matrixStack, mouseX, mouseY);
