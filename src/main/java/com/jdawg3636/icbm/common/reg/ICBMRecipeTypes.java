@@ -10,9 +10,11 @@ import net.minecraft.util.registry.Registry;
 public class ICBMRecipeTypes {
 
     public static IRecipeType<ParticleAcceleratorRecipe> PARTICLE_ACCELERATOR;
+    public static IRecipeType<ParticleAcceleratorRecipe> REFINERY;
 
     public static void registerAll() {
         PARTICLE_ACCELERATOR = register("particle_accelerator");
+        REFINERY = register("refinery");
     }
 
     private static <T extends IRecipe<?>> IRecipeType<T> register(final String identifier) {
