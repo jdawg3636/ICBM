@@ -2,10 +2,11 @@
   "type": "icbm:refinery",
   "ingredient": {
     "tag": "forge:crude_oil",
-    "amount": 1
+    "amount": 1000
   },
   "result": {
     "fluid": "icbm:fuel",
-    "amount": 1
-  }
+    "amount": 1000
+  },
+  "processing_time": 100
 }

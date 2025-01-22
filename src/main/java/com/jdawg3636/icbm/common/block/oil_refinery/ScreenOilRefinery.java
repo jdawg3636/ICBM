@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class ScreenOilRefinery extends ScreenMachine<ContainerOilRefinery> {
 
@@ -49,14 +49,18 @@ public class ScreenOilRefinery extends ScreenMachine<ContainerOilRefinery> {
 
         this.inputTankView = new WidgetFluidTank(
                 relX + 7, relY + 45, 36, 65, this,
-                () -> new StringTextComponent("" + TILE_ENTITY.fluidTanks.get(0).map(FluidTank::getFluidAmount).orElse(0)),
+                () -> TILE_ENTITY.fluidTanks.get(1).map(fluidTank -> {
+                    return new TranslationTextComponent(fluidTank.getFluid().getTranslationKey()).append(": " + fluidTank.getFluidAmount() + " / " + fluidTank.getCapacity());
+                }).orElse(new StringTextComponent("Error!")),
                 TILE_ENTITY.fluidTanks.get(0)
         );
         addButton(this.inputTankView);
 
         this.outputTankView = new WidgetFluidTank(
                 relX + 97, relY + 45, 36, 65, this,
-                () -> new StringTextComponent("" + TILE_ENTITY.fluidTanks.get(1).map(FluidTank::getFluidAmount).orElse(0)),
+                () -> TILE_ENTITY.fluidTanks.get(1).map(fluidTank -> {
+                    return new TranslationTextComponent(fluidTank.getFluid().getTranslationKey()).append(": " + fluidTank.getFluidAmount() + " / " + fluidTank.getCapacity());
+                }).orElse(new StringTextComponent("Error!")),
                 TILE_ENTITY.fluidTanks.get(1)
         );
         addButton(this.outputTankView);
@@ -65,8 +69,8 @@ public class ScreenOilRefinery extends ScreenMachine<ContainerOilRefinery> {
         this.progressBar = new WidgetProgressBar(
                 relX + 59, relY + 70, 22, 15, true, this,
                 () -> progressBarColor,
-                () -> (float) TILE_ENTITY.getPercentageFuelLeft(),
-                () -> new StringTextComponent(TILE_ENTITY.getPercentageFuelLeft() * 100 + "%")
+                () -> (float) TILE_ENTITY.getProcessingPercentage(),
+                null
         );
         addButton(this.progressBar);
 

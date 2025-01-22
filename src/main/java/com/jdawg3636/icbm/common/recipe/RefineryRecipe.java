@@ -12,7 +12,6 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -25,17 +24,20 @@ public class RefineryRecipe implements IRecipe<IInventory> {
     private final ResourceLocation recipeId;
     private FluidIngredient ingredient;
     private FluidStack result;
+    private int processingTime;
 
-    public RefineryRecipe(ResourceLocation recipeId, FluidIngredient ingredient, FluidStack result) {
+    public RefineryRecipe(ResourceLocation recipeId, FluidIngredient ingredient, FluidStack result, int processingTime) {
         this.recipeId = recipeId;
         this.ingredient = ingredient;
         this.result = result;
+        this.processingTime = processingTime;
     }
 
     public static Optional<RefineryRecipe> getRecipeFor(IRecipeType<RefineryRecipe> recipeType, FluidStack fluidStack, World level) {
-        return level.getRecipeManager().byType(recipeType).values().stream().flatMap((recipe) -> {
-            return Util.toStream(recipe instanceof RefineryRecipe && ((RefineryRecipe) recipe).matchesCustom(fluidStack) ? Optional.of((RefineryRecipe)recipe) : Optional.empty());
-        }).findFirst();
+        return level.getRecipeManager().byType(recipeType).values().stream()
+                .filter(RefineryRecipe.class::isInstance).map(RefineryRecipe.class::cast)
+                .filter(recipe -> recipe.matchesCustom(fluidStack))
+                .findFirst();
     }
 
     @Deprecated
@@ -47,6 +49,18 @@ public class RefineryRecipe implements IRecipe<IInventory> {
 
     public boolean matchesCustom(FluidStack input) {
         return this.ingredient.test(input);
+    }
+
+    public FluidIngredient getIngredient() {
+        return this.ingredient;
+    }
+
+    public FluidStack getResult() {
+        return this.result.copy();
+    }
+
+    public int getProcessingTime() {
+        return this.processingTime;
     }
 
     @Deprecated
@@ -87,7 +101,8 @@ public class RefineryRecipe implements IRecipe<IInventory> {
             if(json.has("ingredient") && json.has("result")) {
                 FluidIngredient ingredient = FluidIngredient.parseFromJson(json.get("ingredient").getAsJsonObject());
                 FluidStack result = FluidIngredient.parseFromJson(json.get("result").getAsJsonObject()).getAsFluidStack().orElse(FluidStack.EMPTY);
-                return new RefineryRecipe(recipeId, ingredient, result);
+                int processingTime = json.get("processing_time").getAsInt();
+                return new RefineryRecipe(recipeId, ingredient, result, processingTime);
             }
             throw new IllegalArgumentException("Recipe must contain both an 'ingredient' and a 'result' key");
         }
@@ -97,7 +112,8 @@ public class RefineryRecipe implements IRecipe<IInventory> {
             FluidIngredient ingredient = FluidIngredient.fromNetwork(buffer);
             Fluid resultFluid = ForgeRegistries.FLUIDS.getValue(buffer.readResourceLocation());
             int resultAmount = buffer.readInt();
-            return new RefineryRecipe(recipeId, ingredient, new FluidStack(resultFluid, resultAmount));
+            int processingTime = buffer.readInt();
+            return new RefineryRecipe(recipeId, ingredient, new FluidStack(resultFluid, resultAmount), processingTime);
         }
 
         @Override
@@ -105,6 +121,7 @@ public class RefineryRecipe implements IRecipe<IInventory> {
             recipe.ingredient.toNetwork(buffer);
             buffer.writeResourceLocation(recipe.result.getFluid().getRegistryName());
             buffer.writeInt(recipe.result.getAmount());
+            buffer.writeInt(recipe.processingTime);
         }
 
     }

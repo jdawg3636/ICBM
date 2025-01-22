@@ -59,7 +59,7 @@ public class WidgetProgressBar extends Widget {
 
     @Override
     public void renderToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
-        screen.deobf$renderTooltip(matrixStack, tooltipSupplier.get(), mouseX, mouseY);
+        if(tooltipSupplier != null) screen.deobf$renderTooltip(matrixStack, tooltipSupplier.get(), mouseX, mouseY);
     }
 
     @Override

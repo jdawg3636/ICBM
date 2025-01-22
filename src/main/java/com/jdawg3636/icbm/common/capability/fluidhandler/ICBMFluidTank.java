@@ -11,12 +11,17 @@ public class ICBMFluidTank extends FluidTank {
 
     private Consumer<ICBMFluidTank> onContentsChanged;
     private boolean canDrain;
-    private boolean bypassValidator = true;
+    private boolean bypassValidator = false;
 
     public ICBMFluidTank(int capacity, Predicate<FluidStack> validator, Consumer<ICBMFluidTank> onContentsChanged, boolean canDrain) {
         super(capacity, validator);
         this.onContentsChanged = onContentsChanged;
         this.canDrain = canDrain;
+    }
+
+    @Override
+    public FluidStack getFluid() {
+        return super.getFluid().copy();
     }
 
     @Override

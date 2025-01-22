@@ -17,9 +17,9 @@ public class FluidIngredient implements Predicate<FluidStack> {
         TAG
     }
 
-    public Type ingredientType;
-    public ResourceLocation resourceLocation;
-    public int amount;
+    private Type ingredientType;
+    private ResourceLocation resourceLocation;
+    private int amount;
 
     public FluidIngredient(Type ingredientType, ResourceLocation resourceLocation, int amount) {
         this.ingredientType = ingredientType;
@@ -34,13 +34,6 @@ public class FluidIngredient implements Predicate<FluidStack> {
             return fluidStack.getFluid().is(FluidTags.createOptional(resourceLocation));
         }
         return fluidStack.getFluid().equals(ForgeRegistries.FLUIDS.getValue(this.resourceLocation));
-    }
-
-    public Optional<FluidStack> getAsFluidStack() {
-        if(this.ingredientType != Type.FLUID) {
-            return Optional.empty();
-        }
-        return Optional.of(new FluidStack(ForgeRegistries.FLUIDS.getValue(this.resourceLocation), this.amount));
     }
 
     public static FluidIngredient parseFromJson(JsonObject json) {
@@ -80,6 +73,25 @@ public class FluidIngredient implements Predicate<FluidStack> {
         ResourceLocation resourceLocation = buffer.readResourceLocation();
         int amount = buffer.readInt();
         return new FluidIngredient(ingredientType, resourceLocation, amount);
+    }
+
+    public Type getIngredientType() {
+        return this.ingredientType;
+    }
+
+    public ResourceLocation getResourceLocation() {
+        return this.resourceLocation;
+    }
+
+    public int getAmount() {
+        return this.amount;
+    }
+
+    public Optional<FluidStack> getAsFluidStack() {
+        if(this.ingredientType != Type.FLUID) {
+            return Optional.empty();
+        }
+        return Optional.of(new FluidStack(ForgeRegistries.FLUIDS.getValue(this.resourceLocation), this.amount));
     }
 
 }

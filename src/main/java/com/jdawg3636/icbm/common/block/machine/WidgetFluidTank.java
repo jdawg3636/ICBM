@@ -35,6 +35,10 @@ public class WidgetFluidTank extends Widget {
     @Override
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 
+        // Render Tank Underlay
+        this.screen.deobf$getMinecraft().getTextureManager().bind(tankOverlayTexture);
+        blit(matrixStack, this.x, this.y, getBlitOffset(), tankOverlayU,  tankOverlayV + this.height, this.width, this.height, 256, 256);
+
         // Render Fluid Texture
         this.screen.deobf$getMinecraft().getTextureManager().bind(AtlasTexture.LOCATION_BLOCKS);
         fluidTankLazyOptional.ifPresent(fluidTank -> {
