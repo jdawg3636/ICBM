@@ -56,7 +56,7 @@ public class BlockLauncherPlatform extends AbstractBlockMultiTile implements IMi
             if (itemHandler.getStackInSlot(0).isEmpty() && player.getItemInHand(hand).getItem() instanceof ItemMissile) {
                 ItemStack itemStack = player.getItemInHand(hand);
                 if(!player.isCreative()) player.inventory.removeItem(itemStack);
-                itemHandler.setStackInSlot(0, itemStack);
+                itemHandler.setStackInSlot(0, itemStack.copy());
             }
             else {
                 NetworkHooks.openGui((ServerPlayerEntity) player, (TileMachine)tileEntity, tileEntity.getBlockPos());
