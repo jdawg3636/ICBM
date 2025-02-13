@@ -34,9 +34,9 @@ public class EventBlastExothermic extends AbstractBlastEvent {
         }
 
         ExothermicBlastManagerThread blastManagerThread = (ExothermicBlastManagerThread) abstractBlastManagerThread;
-        blastManagerThread.explosionCenterPosX = getBlastPosition().getX();
-        blastManagerThread.explosionCenterPosY = getBlastPosition().getY();
-        blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
+        blastManagerThread.explosionCenterPosX = getBlastPosition().getX() + 0.5;
+        blastManagerThread.explosionCenterPosY = getBlastPosition().getY() + 0.5;
+        blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ() + 0.5;
         blastManagerThread.radius = (float)ICBMReference.COMMON_CONFIG.getBlastRadiusExothermic();
         blastManagerThread.threadCount = 4;
         LazyOptional<IBlastControllerCapability> capOptional = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);

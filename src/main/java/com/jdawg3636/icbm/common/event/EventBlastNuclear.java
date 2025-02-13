@@ -34,9 +34,9 @@ public class EventBlastNuclear extends AbstractBlastEvent {
         }
 
         NuclearBlastManagerThread blastManagerThread = (NuclearBlastManagerThread) abstractBlastManagerThread;
-        blastManagerThread.explosionCenterPosX = getBlastPosition().getX();
-        blastManagerThread.explosionCenterPosY = getBlastPosition().getY();
-        blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
+        blastManagerThread.explosionCenterPosX = getBlastPosition().getX() + 0.5;
+        blastManagerThread.explosionCenterPosY = getBlastPosition().getY() + 0.5;
+        blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ() + 0.5;
         blastManagerThread.radius = (float)ICBMReference.COMMON_CONFIG.getBlastRadiusNuclear();
         blastManagerThread.threadCount = ICBMReference.COMMON_CONFIG.getNumWorkerThreadsPerNuclearBlast();
         LazyOptional<IBlastControllerCapability> capOptional = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);

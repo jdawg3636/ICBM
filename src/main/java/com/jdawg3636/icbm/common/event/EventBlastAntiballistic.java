@@ -26,8 +26,8 @@ public class EventBlastAntiballistic extends AbstractBlastEvent {
                 .filter(lm -> lm.missileLaunchPhase == MissileLaunchPhase.LAUNCHED && !lm.missileItem.equals(ItemReg.MISSILE_ANTIBALLISTIC))
                 .collect(Collectors.toCollection(ArrayList::new)) // Need this to avoid ConcurrentModificationException
                 .forEach(lm -> {
-                    double deltaX = getBlastPosition().getX() - lm.x;
-                    double deltaZ = getBlastPosition().getZ() - lm.z;
+                    double deltaX = getBlastPosition().getX() + 0.5 - lm.x;
+                    double deltaZ = getBlastPosition().getZ() + 0.5 - lm.z;
                     double horizDistance = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
                     if(horizDistance < ANTIBALLISTIC_BLAST_RADIUS) {
                         md.deleteMissile(lm);

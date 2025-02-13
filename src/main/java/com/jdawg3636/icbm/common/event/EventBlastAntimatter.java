@@ -35,9 +35,9 @@ public class EventBlastAntimatter extends AbstractBlastEvent {
         }
 
         AntimatterBlastManagerThread blastManagerThread = (AntimatterBlastManagerThread) abstractBlastManagerThread;
-        blastManagerThread.explosionCenterPosX = getBlastPosition().getX();
-        blastManagerThread.explosionCenterPosY = getBlastPosition().getY();
-        blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ();
+        blastManagerThread.explosionCenterPosX = getBlastPosition().getX() + 0.5;
+        blastManagerThread.explosionCenterPosY = getBlastPosition().getY() + 0.5;
+        blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ() + 0.5;
         blastManagerThread.radius = 50; // todo: make configurable
         blastManagerThread.fuzzyEdgeThickness = 2; // todo: make configurable
         blastManagerThread.canBreakBedrock = ICBMReference.COMMON_CONFIG.getAntimatterCanDestroyBedrock();

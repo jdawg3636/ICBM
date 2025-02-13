@@ -18,7 +18,7 @@ public class EventBlastFragmentation extends AbstractBlastEvent {
         for(double i = -0.5; i <= 0.5; i += 0.0625) {
             for(double j = -0.5; j <= 0.5; j += 0.0625) {
                 if(i * i + j * j > 0.5 * 0.5) continue; // Circle, not a square.
-                EntityShrapnel shrapnelEntity = new EntityShrapnel(getBlastWorld(), getBlastPosition().getX(), getBlastPosition().getY(), getBlastPosition().getZ(), true, getBlastType());
+                EntityShrapnel shrapnelEntity = new EntityShrapnel(getBlastWorld(), getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5, true, getBlastType());
                 shrapnelEntity.setDeltaMovement(i, getBlastWorld().random.nextFloat(), j);
                 getBlastWorld().addFreshEntity(shrapnelEntity);
             }

@@ -19,7 +19,7 @@ public class EventBlastDebilitation extends AbstractBlastEvent {
         ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition());
         EntityLingeringBlast entity = EntityReg.BLAST_DEBILITATION.get().create(getBlastWorld());
         if(entity != null) {
-            entity.setPos(getBlastPosition().getX(), getBlastPosition().getY(), getBlastPosition().getZ());
+            entity.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
             entity.ticksRemaining = 400;
             entity.blastType = getBlastType();
             getBlastWorld().addFreshEntity(entity);

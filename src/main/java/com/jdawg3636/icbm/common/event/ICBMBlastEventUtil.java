@@ -43,9 +43,9 @@ public class ICBMBlastEventUtil {
             // Sound
             Supplier<SoundEvent> soundEvent = event.getSoundEvent();
             if(soundEvent == null) soundEvent = SoundEventReg.EXPLOSION_GENERIC;
-            event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), soundEvent.get(), SoundCategory.BLOCKS, event.getSoundEventRangeMultiplier(), 1.0F);
+            event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX() + 0.5, event.getBlastPosition().getY() + 0.5, event.getBlastPosition().getZ() + 0.5, soundEvent.get(), SoundCategory.BLOCKS, event.getSoundEventRangeMultiplier(), 1.0F);
             // Particles - Handled Client Side by net.minecraft.client.network.play.ClientPlayNetHandler::handleParticleEvent (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
-            event.getBlastWorld().sendParticles(ParticleTypes.EXPLOSION_EMITTER, event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), 1, 0, 0, 0, 1.0D);
+            event.getBlastWorld().sendParticles(ParticleTypes.EXPLOSION_EMITTER, event.getBlastPosition().getX() + 0.5, event.getBlastPosition().getY() + 0.5, event.getBlastPosition().getZ() + 0.5, 1, 0, 0, 0, 1.0D);
         }
     }
 
@@ -54,11 +54,11 @@ public class ICBMBlastEventUtil {
     }
 
     public static void doVanillaExplosion(AbstractBlastEvent event, float explosionPower) {
-        doVanillaExplosion(event.getBlastWorld(), event.getBlastPosition().getX(), event.getBlastPosition().getY(), event.getBlastPosition().getZ(), explosionPower);
+        doVanillaExplosion(event.getBlastWorld(), event.getBlastPosition().getX() + 0.5, event.getBlastPosition().getY() + 0.5, event.getBlastPosition().getZ() + 0.5, explosionPower);
     }
 
     public static void doVanillaExplosion(ServerWorld level, BlockPos blockPos, float explosionPower) {
-        level.explode(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), explosionPower, Explosion.Mode.BREAK);
+        level.explode(null, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, explosionPower, Explosion.Mode.BREAK);
     }
 
     public static void doVanillaExplosion(ServerWorld level, double posX, double posY, double posZ, float explosionPower) {
@@ -66,11 +66,11 @@ public class ICBMBlastEventUtil {
     }
 
     public static void doVanillaExplosionServerOnly(ServerWorld level, BlockPos blockPos) {
-        doVanillaExplosionServerOnly(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 4.0F);
+        doVanillaExplosionServerOnly(level, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, 4.0F);
     }
 
     public static void doVanillaExplosionServerOnly(ServerWorld level, BlockPos blockPos, float explosionPower) {
-        doVanillaExplosionServerOnly(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), explosionPower);
+        doVanillaExplosionServerOnly(level, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, explosionPower);
     }
 
     public static void doVanillaExplosionServerOnly(ServerWorld level, double posX, double posY, double posZ, float explosionPower) {
@@ -95,9 +95,9 @@ public class ICBMBlastEventUtil {
         event.getBlastWorld().getEntities(null, new AxisAlignedBB(event.getBlastPosition()).inflate(radius)).forEach(
                 (Entity entity) -> {
 
-                    double deltaX = entity.getX() - event.getBlastPosition().getX();
-                    double deltaY = entity.getY() - event.getBlastPosition().getY();
-                    double deltaZ = entity.getZ() - event.getBlastPosition().getZ();
+                    double deltaX = entity.getX() - event.getBlastPosition().getX() + 0.5;
+                    double deltaY = entity.getY() - event.getBlastPosition().getY() + 0.5;
+                    double deltaZ = entity.getZ() - event.getBlastPosition().getZ() + 0.5;
                     double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
                     double basePushDistance = movementMultiplier * 10D;
 

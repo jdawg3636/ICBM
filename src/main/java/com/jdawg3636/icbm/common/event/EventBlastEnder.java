@@ -17,7 +17,7 @@ public class EventBlastEnder extends AbstractBlastEvent {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
         EntityLingeringBlastEnder entityLingeringBlast = new EntityLingeringBlastEnder(EntityReg.BLAST_ENDER.get(), getBlastWorld(), 10 * 20);
         entityLingeringBlast.blastType = getBlastType();
-        entityLingeringBlast.setPos(getBlastPosition().getX(), getBlastPosition().getY(), getBlastPosition().getZ());
+        entityLingeringBlast.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
         getBlastWorld().addFreshEntity(entityLingeringBlast);
         return true;
     }
