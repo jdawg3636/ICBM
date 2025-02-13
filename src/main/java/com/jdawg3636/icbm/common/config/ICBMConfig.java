@@ -92,6 +92,8 @@ public class ICBMConfig {
 
         private final ForgeConfigSpec.IntValue coalGeneratorEnergyGenerationPerTick;
 
+        private final ForgeConfigSpec.BooleanValue camouflageFlammable;
+
         public Common() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
             this.maxBlastManagerThreadCountPerLevel = builder
@@ -289,6 +291,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the amount of Forge Energy (FE) generated per tick by a coal generator while it is active.")
                     .defineInRange("coalGeneratorEnergyGenerationPerTick", 50, 0, Integer.MAX_VALUE);
+            this.camouflageFlammable = builder
+                    .comment("",
+                            "Enables/disables camouflage being flammable. If enabled, fire behavior is identical to vanilla vines.")
+                    .define("camouflageFlammable", true);
             this.spec = builder.build();
         }
 
@@ -466,6 +472,10 @@ public class ICBMConfig {
 
         public int getCoalGeneratorEnergyGenerationPerTick() {
             return coalGeneratorEnergyGenerationPerTick.get();
+        }
+
+        public boolean getCamouflageFlammable() {
+            return camouflageFlammable.get();
         }
 
     }

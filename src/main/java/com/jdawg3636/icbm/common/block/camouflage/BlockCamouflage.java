@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.camouflage;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.reg.TileReg;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,6 +16,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -156,6 +158,22 @@ public class BlockCamouflage extends Block {
                 .map(TileCamouflage::getAppearanceNoSelf)
                 .map(appearance -> appearance.propagatesSkylightDown(level, blockPos))
                 .orElseGet(() -> super.propagatesSkylightDown(blockState, level, blockPos));
+    }
+
+    /**
+     * Replicating the hardcoded behavior of vanilla vines as defined by {@link net.minecraft.block.FireBlock#bootStrap}
+     */
+    @Override
+    public int getFireSpreadSpeed(BlockState state, IBlockReader level, BlockPos pos, Direction face) {
+        return ICBMReference.COMMON_CONFIG.getCamouflageFlammable() ? 15 : 0;
+    }
+
+    /**
+     * Replicating the hardcoded behavior of vanilla vines as defined by {@link net.minecraft.block.FireBlock#bootStrap}
+     */
+    @Override
+    public int getFlammability(BlockState state, IBlockReader level, BlockPos pos, Direction face) {
+        return ICBMReference.COMMON_CONFIG.getCamouflageFlammable() ? 100 : 0;
     }
 
 }
