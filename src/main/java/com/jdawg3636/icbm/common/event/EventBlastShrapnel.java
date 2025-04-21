@@ -15,6 +15,12 @@ public class EventBlastShrapnel extends AbstractBlastEvent {
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
         ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition());
+
+        // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
+        if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
+            return true;
+        }
+
         for(double i = -0.5; i <= 0.5; i += 0.0625) {
             for(double j = -0.5; j <= 0.5; j += 0.0625) {
                 if(i * i + j * j > 0.5 * 0.5) continue; // Circle, not a square.

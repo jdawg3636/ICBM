@@ -1,11 +1,9 @@
 package com.jdawg3636.icbm.common.thread;
 
-import com.jdawg3636.icbm.common.event.ICBMBlastEventUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -91,7 +89,6 @@ public class RaytracedBlastManagerThread extends AbstractBlastManagerThread {
     public Runnable getPostCompletionFunction(final ServerWorld level) {
 
         return () -> {
-            ICBMBlastEventUtil.doExplosionDamageAndKnockback(level, new Vector3d(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ), null /* todo: pass specialized DamageSource with LivingEntity to blame */, radius);
             for(RaytracedBlastWorkerThread worker : threadPool) {
 
                 // Remove Blocks in World

@@ -23,6 +23,14 @@ public class EventBlastNuclear extends AbstractBlastEvent {
 
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
 
+        final double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusNuclear();
+        ICBMBlastEventUtil.doExplosionDamageAndKnockback(this, radius);
+
+        // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
+        if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
+            return true;
+        }
+
         AbstractBlastManagerThreadBuilder abstractBlastManagerThreadBuilder = BlastManagerThreadReg.getBuilderFromID("icbm:nuclear");
         if(abstractBlastManagerThreadBuilder == null) {
             return false;
@@ -34,10 +42,10 @@ public class EventBlastNuclear extends AbstractBlastEvent {
         }
 
         NuclearBlastManagerThread blastManagerThread = (NuclearBlastManagerThread) abstractBlastManagerThread;
-        blastManagerThread.explosionCenterPosX = getBlastPosition().getX() + 0.5;
-        blastManagerThread.explosionCenterPosY = getBlastPosition().getY() + 0.5;
-        blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ() + 0.5;
-        blastManagerThread.radius = (float)ICBMReference.COMMON_CONFIG.getBlastRadiusNuclear();
+        blastManagerThread.explosionCenterPosX = this.getBlastPosition().getX() + 0.5;
+        blastManagerThread.explosionCenterPosY = this.getBlastPosition().getY() + 0.5;
+        blastManagerThread.explosionCenterPosZ = this.getBlastPosition().getZ() + 0.5;
+        blastManagerThread.radius = (float) radius;
         blastManagerThread.threadCount = ICBMReference.COMMON_CONFIG.getNumWorkerThreadsPerNuclearBlast();
         LazyOptional<IBlastControllerCapability> capOptional = getBlastWorld().getCapability(ICBMCapabilities.BLAST_CONTROLLER_CAPABILITY);
         capOptional.ifPresent((IBlastControllerCapability cap) -> cap.enqueueBlastThread(blastManagerThread));

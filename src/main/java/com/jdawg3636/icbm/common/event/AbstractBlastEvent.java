@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
@@ -112,7 +113,10 @@ public abstract class AbstractBlastEvent extends Event {
         return blastSource;
     }
 
-    public Supplier<SoundEvent> getSoundEvent() {
+    public Supplier<SoundEvent> getSoundEvent(boolean dependOnFluidState) {
+        if(dependOnFluidState && getBlastWorld().getFluidState(getBlastPosition()).getExplosionResistance() > 0) {
+            return SoundEventReg.EXPLOSION_GENERIC;
+        }
         return soundEvent;
     }
 

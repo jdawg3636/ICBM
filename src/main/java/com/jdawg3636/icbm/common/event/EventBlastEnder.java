@@ -15,6 +15,12 @@ public class EventBlastEnder extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
+
+        // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
+        if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
+            return true;
+        }
+
         EntityLingeringBlastEnder entityLingeringBlast = new EntityLingeringBlastEnder(EntityReg.BLAST_ENDER.get(), getBlastWorld(), 10 * 20);
         entityLingeringBlast.blastType = getBlastType();
         entityLingeringBlast.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);

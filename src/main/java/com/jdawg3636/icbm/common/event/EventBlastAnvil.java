@@ -16,6 +16,10 @@ public class EventBlastAnvil extends AbstractBlastEvent {
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
         ICBMBlastEventUtil.doVanillaExplosion(this);
+        // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
+        if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
+            return true;
+        }
         final double range = (getBlastType() == AbstractBlastEvent.Type.GRENADE ? 0.3125 : 0.5);
         for(double i = -range; i <= range; i += 0.0625) {
             for(double j = -range; j <= range; j += 0.0625) {

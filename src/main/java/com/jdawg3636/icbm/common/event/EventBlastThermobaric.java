@@ -14,6 +14,12 @@ public class EventBlastThermobaric extends AbstractBlastEvent {
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
         ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition(), 4F * 4.0F);
+
+        // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
+        if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
+            return true;
+        }
+
         return true;
     }
 

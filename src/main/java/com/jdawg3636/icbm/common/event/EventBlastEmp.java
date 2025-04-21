@@ -37,7 +37,14 @@ public class EventBlastEmp extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        AxisAlignedBB aabb = new AxisAlignedBB(getBlastPosition()).inflate(ICBMReference.COMMON_CONFIG.getBlastRadiusEMP());
+
+        // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
+        if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
+            return true;
+        }
+
+        final double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusEMP();
+        AxisAlignedBB aabb = new AxisAlignedBB(getBlastPosition()).inflate(radius);
         new ArrayList<>(getBlastWorld().blockEntityList).stream()
                 .filter(tileEntity -> tileEntity != null && aabb.contains(Vector3d.atCenterOf(tileEntity.getBlockPos())))
                 .forEach(tileEntity -> {

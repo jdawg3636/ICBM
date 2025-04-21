@@ -19,6 +19,12 @@ public class EventBlastNightmare extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
+
+        // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
+        if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
+            return true;
+        }
+
         for(BlockPos pos : getAffectedBlockPositions(getBlastWorld(), getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5, /*10f*/50f, 3600002)) {
             //getBlastWorld().setBlockAndUpdate(pos, Blocks.RED_STAINED_GLASS.defaultBlockState());
             //getBlastWorld().setBlockAndUpdate(pos, Blocks.GREEN_STAINED_GLASS.defaultBlockState());

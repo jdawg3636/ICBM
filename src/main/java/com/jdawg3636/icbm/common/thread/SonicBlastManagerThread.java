@@ -1,13 +1,11 @@
 package com.jdawg3636.icbm.common.thread;
 
 import com.jdawg3636.icbm.common.entity.EntitySonicBlast;
-import com.jdawg3636.icbm.common.event.ICBMBlastEventUtil;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
@@ -105,9 +103,6 @@ public class SonicBlastManagerThread extends AbstractBlastManagerThread {
                 entity.blocksAffectedPerTick = blocksAffectedPerTick;
                 level.addFreshEntity(entity);
             }
-
-            // Damage/Knockback Entity
-            ICBMBlastEventUtil.doExplosionDamageAndKnockback(level, new Vector3d(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ), null /* todo: pass specialized DamageSource with LivingEntity to blame */, radius);
 
         };
     }

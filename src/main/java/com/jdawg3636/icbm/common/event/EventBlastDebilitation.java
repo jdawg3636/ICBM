@@ -17,6 +17,10 @@ public class EventBlastDebilitation extends AbstractBlastEvent {
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
         ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition());
+        // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
+        if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
+            return true;
+        }
         EntityLingeringBlast entity = EntityReg.BLAST_DEBILITATION.get().create(getBlastWorld());
         if(entity != null) {
             entity.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);

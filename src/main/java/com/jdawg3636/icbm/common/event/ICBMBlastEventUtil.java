@@ -41,7 +41,7 @@ public class ICBMBlastEventUtil {
         // Loosely Based on net.minecraft.world.Explosion::finalizeExplosion (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
         if (!event.getBlastWorld().isClientSide) {
             // Sound
-            Supplier<SoundEvent> soundEvent = event.getSoundEvent();
+            Supplier<SoundEvent> soundEvent = event.getSoundEvent(true);
             if(soundEvent == null) soundEvent = SoundEventReg.EXPLOSION_GENERIC;
             event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX() + 0.5, event.getBlastPosition().getY() + 0.5, event.getBlastPosition().getZ() + 0.5, soundEvent.get(), SoundCategory.BLOCKS, event.getSoundEventRangeMultiplier(), 1.0F);
             // Particles - Handled Client Side by net.minecraft.client.network.play.ClientPlayNetHandler::handleParticleEvent (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
@@ -90,6 +90,11 @@ public class ICBMBlastEventUtil {
         doBlastSoundAndParticles(event);
         doVanillaExplosion(event, 4.0F / 2F);
 
+        // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
+        if(event.getBlastWorld().getBlockState(event.getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
+            return;
+        }
+
         double radius = 10;
 
         event.getBlastWorld().getEntities(null, new AxisAlignedBB(event.getBlastPosition()).inflate(radius)).forEach(
@@ -112,6 +117,13 @@ public class ICBMBlastEventUtil {
 
                 }
         );
+    }
+
+    public static void doExplosionDamageAndKnockback(AbstractBlastEvent blastEvent, double radius) {
+        final double explosionCenterPosX = blastEvent.getBlastPosition().getX() + 0.5;
+        final double explosionCenterPosY = blastEvent.getBlastPosition().getY() + 0.5;
+        final double explosionCenterPosZ = blastEvent.getBlastPosition().getZ() + 0.5;
+        ICBMBlastEventUtil.doExplosionDamageAndKnockback(blastEvent.getBlastWorld(), new Vector3d(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ), null /* todo: pass specialized DamageSource with LivingEntity to blame */, radius);
     }
 
     // Adapted from a portion of net.minecraft.world.Explosion::explode (MC 1.16.5, MCP + Parchment Mappings)
