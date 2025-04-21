@@ -54,6 +54,7 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue engineeredPathogenSpreadRadius;
 
         private final ForgeConfigSpec.IntValue blastDepthBreaching;
+        private final ForgeConfigSpec.DoubleValue blastRadiusAntimatter;
         private final ForgeConfigSpec.DoubleValue blastRadiusContagion;
         private final ForgeConfigSpec.DoubleValue blastRadiusEMP;
         private final ForgeConfigSpec.DoubleValue blastRadiusEnder;
@@ -163,6 +164,10 @@ public class ICBMConfig {
                             "actual depth for a given blast may be lower, depending on the blast resistance of the blocks",
                             "in its way.")
                     .defineInRange("blastDepthBreaching", 7, 1, Integer.MAX_VALUE);
+            this.blastRadiusAntimatter = builder
+                    .comment("",
+                            "Defines the maximum radius of an Antimatter Blast.")
+                    .defineInRange("blastRadiusAntimatter", 50D, 0D, Float.MAX_VALUE);
             this.blastRadiusContagion = builder
                     .comment("",
                             "Defines the maximum radius of a Contagion Blast.")
@@ -344,6 +349,10 @@ public class ICBMConfig {
 
         public int getBlastDepthBreaching() {
             return blastDepthBreaching.get();
+        }
+
+        public double getBlastRadiusAntimatter() {
+            return blastRadiusAntimatter.get();
         }
 
         public double getBlastRadiusContagion() {
