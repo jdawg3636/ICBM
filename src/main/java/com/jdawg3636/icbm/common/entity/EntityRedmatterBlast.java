@@ -1,21 +1,21 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.event.ICBMBlastEventUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EntityRedmatterBlast extends EntityLingeringBlast {
 
-    public List<BlockPos> blocksToDestroy;
-    private Iterator<BlockPos> iterator;
-
-    double animationPercent = 0;
+    private double animationPercent = 0;
+    private final Queue<BlockPos> blocksToDestroy = new ArrayDeque<>();
+    private final int maxBlocksDestroyedPerTick = 50;
 
     public EntityRedmatterBlast(EntityType<?> entityType, World level) {
         super(entityType, level, 20 * 20); // todo: make lifetime configurable
@@ -28,25 +28,53 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
             if(level.isClientSide()) {
                 addAnimationPercent(0.25D);
             }
-            else {
+            else if (level instanceof ServerWorld) {
+                ServerWorld serverLevel = (ServerWorld) level;
                 // Check Lifetime
                 if(ticksRemaining <= 0) {
                     kill();
                     return;
                 }
-                // Confirm Iterator Exists
-                if(iterator == null && blocksToDestroy != null) {
-                    iterator = blocksToDestroy.iterator();
-                }
-                // Break Blocks
-                for(int i = 0; i < 50; ++i) {
-                    if(iterator != null && iterator.hasNext()) {
-                        level.setBlockAndUpdate(iterator.next(), Blocks.AIR.defaultBlockState());
+                // Only perform calculation logic once/second
+                if(tickCount % 20 == 0) {
+                    // If we're out of blocks to destroy, try to find more.
+                    if(blocksToDestroy.isEmpty()) {
+                        // Config values
+                        final int maxRadius = 50; // todo make configurable
+                        final double fuzzinessPercentage = ICBMReference.COMMON_CONFIG.getAntimatterFuzzinessPercentage(); // todo make configurable separate from antimatter
+                        final boolean canDestroyIndestructible = ICBMReference.COMMON_CONFIG.getAntimatterCanDestroyBedrock(); // todo make configurable separate from antimatter
+                        // Calculate current blocks that are candidates for deletion this tick. Radius is increased as-necessary to give illusion of blocks from the center being affected first
+                        List<BlockPos> candidates = null;
+                        for (int currentRadius = 8; currentRadius < maxRadius; ++currentRadius) {
+                            // Reset RNG each iteration so that repeat passes have deterministic noise patterns
+                            Random currentRandom = new Random(serverLevel.getSeed());
+                            // Use antimatter algorithm to calculate a sphere of blocks
+                            candidates = ICBMBlastEventUtil.getBlockPositionsWithinFuzzySphere(getX(), getY(), getZ(), currentRadius, currentRandom, fuzzinessPercentage).stream()
+                                    .filter(pos -> !level.getBlockState(pos).isAir(level, pos))
+                                    .filter(pos -> canDestroyIndestructible || level.getBlockState(pos).getBlock().explosionResistance < 3_600_000F)
+                                    .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
+                                        Collections.shuffle(list, currentRandom);
+                                        return list;
+                                    }));
+                            // If candidates are sufficient to satiate, break out of loop.
+                            if (candidates.size() >= 20 * maxBlocksDestroyedPerTick) {
+                                break;
+                            }
+                        }
+                        // Transfer local list into field queue
+                        blocksToDestroy.addAll(candidates);
+                    }
+                    // If we're up to maximum radius and still out of blocks, start depleting ticks remaining.
+                    if(blocksToDestroy.isEmpty()) {
+                        ticksRemaining -= 20;
                     }
                 }
-                // Decrement Lifetime
-                if(iterator == null || !iterator.hasNext()) {
-                    --ticksRemaining;
+                // Break Blocks
+                for(int i = 0; i < maxBlocksDestroyedPerTick; ++i) {
+                    if(!blocksToDestroy.isEmpty()) {
+                        // TODO sometimes make flying block instead of destroy
+                        level.setBlockAndUpdate(blocksToDestroy.remove(), Blocks.AIR.defaultBlockState());
+                    }
                 }
             }
         }
@@ -54,50 +82,13 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
 
     public void addAnimationPercent(double increment) {
         animationPercent += increment;
-        while(animationPercent > 100) animationPercent -= 100D;
+        while(animationPercent > 100) {
+            animationPercent -= 100D;
+        }
     }
 
     public float getAnimationRadians() {
         return (float)(animationPercent * 0.01 * 2 * Math.PI);
-    }
-
-    @Override
-    protected void addAdditionalSaveData(CompoundNBT nbt) {
-        // Call Super
-        super.addAdditionalSaveData(nbt);
-        // Confirm Iterator Exists (if possible)
-        if(iterator == null && blocksToDestroy != null) {
-            iterator = blocksToDestroy.iterator();
-        }
-        // If Iterator Exists, Serialize Blocks
-        if(iterator != null) {
-            CompoundNBT nbtBlocks = new CompoundNBT();
-            for(int i = 0; iterator.hasNext(); ++i) {
-                BlockPos posToSerialize = iterator.next();
-                nbtBlocks.putIntArray(Integer.toString(i), new int[]{posToSerialize.getX(), posToSerialize.getY(), posToSerialize.getZ()});
-            }
-            nbt.put("BlocksToDestroy", nbtBlocks);
-        }
-        // Hacky Fix to Preserve Data
-        readAdditionalSaveData(nbt);
-    }
-
-    @Override
-    protected void readAdditionalSaveData(CompoundNBT nbt) {
-        // Call Super
-        super.readAdditionalSaveData(nbt);
-        // Reinitialize List
-        blocksToDestroy = new ArrayList<BlockPos>();
-        // Read Into List
-        if(nbt.contains("BlocksToDestroy")) {
-            CompoundNBT nbtBlocks = nbt.getCompound("BlocksToDestroy");
-            for(int i = 0; nbtBlocks.contains(Integer.toString(i)); ++i) {
-                int[] currentBlockPosAsArray = nbtBlocks.getIntArray(Integer.toString(i));
-                blocksToDestroy.add(new BlockPos(currentBlockPosAsArray[0], currentBlockPosAsArray[1], currentBlockPosAsArray[2]));
-            }
-        }
-        // Reinitialize Iterator
-        iterator = blocksToDestroy.iterator();
     }
 
 }

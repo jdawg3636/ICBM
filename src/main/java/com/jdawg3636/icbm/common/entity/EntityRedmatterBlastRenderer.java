@@ -38,7 +38,7 @@ public class EntityRedmatterBlastRenderer extends EntityRenderer<EntityRedmatter
         matrixStack.pushPose();
 
         // Vertical Offset (should probably just adjust this in the model file)
-        matrixStack.translate(0D, 0.5D, 0D);
+        matrixStack.translate(0D, 0.5D + 0.125D, 0D);
 
         // Render Sphere
         Minecraft.getInstance().getItemRenderer().render(Items.STONE.getDefaultInstance(), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, OverlayTexture.NO_OVERLAY, MODEL_SPHERE);

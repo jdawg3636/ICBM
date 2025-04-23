@@ -22,13 +22,11 @@ public class BlastManagerThreadReg {
         return null;
     }
 
-    public static final RegistryObject<AbstractBlastManagerThreadBuilder> ANTIMATTER  = BLAST_MANAGER_THREADS.register("antimatter",  () -> new AbstractBlastManagerThreadBuilder(AntimatterBlastManagerThread::new));
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> ENDOTHERMIC = BLAST_MANAGER_THREADS.register("endothermic", () -> new AbstractBlastManagerThreadBuilder(EndothermicBlastManagerThread::new));
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> EXOTHERMIC  = BLAST_MANAGER_THREADS.register("exothermic",  () -> new AbstractBlastManagerThreadBuilder(ExothermicBlastManagerThread::new));
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> HYPERSONIC  = BLAST_MANAGER_THREADS.register("hypersonic",  () -> new AbstractBlastManagerThreadBuilder(() -> new SonicBlastManagerThread() { public String getRegistryName() { return "icbm:hypersonic"; } }));
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> NUCLEAR     = BLAST_MANAGER_THREADS.register("nuclear",     () -> new AbstractBlastManagerThreadBuilder(NuclearBlastManagerThread::new));
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> RAYTRACED   = BLAST_MANAGER_THREADS.register("raytraced",   () -> new AbstractBlastManagerThreadBuilder(RaytracedBlastManagerThread::new));
-    public static final RegistryObject<AbstractBlastManagerThreadBuilder> REDMATTER   = BLAST_MANAGER_THREADS.register("redmatter",   () -> new AbstractBlastManagerThreadBuilder(RedmatterBlastManagerThread::new));
     public static final RegistryObject<AbstractBlastManagerThreadBuilder> SONIC       = BLAST_MANAGER_THREADS.register("sonic",       () -> new AbstractBlastManagerThreadBuilder(SonicBlastManagerThread::new));
 
 }
