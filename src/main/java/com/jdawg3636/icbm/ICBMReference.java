@@ -129,4 +129,12 @@ public final class ICBMReference {
                 .orElse(false);
     }
 
+    public static int getMinYLevelForLevel(World level) {
+        return 0;
+    }
+
+    public static int getMaxYLevelForLevel(World level) {
+        return 255;
+    }
+
 }
