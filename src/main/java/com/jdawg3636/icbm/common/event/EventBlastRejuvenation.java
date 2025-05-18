@@ -42,9 +42,9 @@ public class EventBlastRejuvenation extends AbstractBlastEvent {
                 getBlastPosition().getX() + 0.5,
                 getBlastPosition().getY() + 0.5,
                 getBlastPosition().getZ() + 0.5,
-                30, // todo make config
+                ICBMReference.COMMON_CONFIG.getBlastRadiusRejuvenation(),
                 getBlastWorld().random,
-                ICBMReference.COMMON_CONFIG.getAntimatterFuzzinessPercentage() // todo make rejuv-specific config
+                ICBMReference.COMMON_CONFIG.getRejuvenationFuzzinessPercentage()
         );
 
         // Iterate over sphere

@@ -49,6 +49,7 @@ public class ICBMConfig {
         private final ForgeConfigSpec.BooleanValue antimatterCanDestroyBedrock;
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
         private final ForgeConfigSpec.BooleanValue redmatterCanDestroyBedrock;
+        private final ForgeConfigSpec.DoubleValue rejuventationFuzzinessPercentage;
 
         private final ForgeConfigSpec.BooleanValue engineeredPathogenPerpetualForPlayers;
         private final ForgeConfigSpec.DoubleValue engineeredPathogenSpreadRadius;
@@ -62,6 +63,7 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue blastRadiusExothermic;
         private final ForgeConfigSpec.DoubleValue blastRadiusHypersonic;
         private final ForgeConfigSpec.DoubleValue blastRadiusNuclear;
+        private final ForgeConfigSpec.DoubleValue blastRadiusRejuvenation;
         private final ForgeConfigSpec.DoubleValue blastRadiusSonic;
 
         private final ForgeConfigSpec.IntValue oreCopperSize;
@@ -147,6 +149,11 @@ public class ICBMConfig {
                     .comment("",
                             "Enables/disables the ability of Red Matter blasts to destroy normally indestructible blocks, such as bedrock.")
                     .define("redmatterCanDestroyBedrock", false);
+            this.rejuventationFuzzinessPercentage = builder
+                    .comment("",
+                            "Defines the percentage, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
+                            "section within the radius of an rejuvenation blast will be rejuvenated in the blast.")
+                    .defineInRange("rejuventationFuzzinessPercentage", 0.4D, 0D, 1D);
             this.engineeredPathogenPerpetualForPlayers = builder
                     .comment("",
                             "If enabled, players will never recover from The Engineered Pathogen unless they die or",
@@ -196,6 +203,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the maximum radius of a Nuclear Blast.")
                     .defineInRange("blastRadiusNuclear", 30D, 0D, Float.MAX_VALUE);
+            this.blastRadiusRejuvenation = builder
+                    .comment("",
+                            "Defines the maximum radius of a Rejuvenation Blast.")
+                    .defineInRange("blastRadiusRejuvenation", 30D, 0D, Float.MAX_VALUE);
             this.blastRadiusSonic = builder
                     .comment("",
                             "Defines the maximum radius of a Sonic Blast.")
@@ -339,6 +350,10 @@ public class ICBMConfig {
             return redmatterCanDestroyBedrock.get();
         }
 
+        public double getRejuvenationFuzzinessPercentage() {
+            return rejuventationFuzzinessPercentage.get();
+        }
+
         public boolean getEngineeredPathogenPerpetualForPlayers() {
             return  engineeredPathogenPerpetualForPlayers.get();
         }
@@ -381,6 +396,10 @@ public class ICBMConfig {
 
         public double getBlastRadiusNuclear() {
             return blastRadiusNuclear.get();
+        }
+
+        public double getBlastRadiusRejuvenation() {
+            return blastRadiusRejuvenation.get();
         }
 
         public double getBlastRadiusSonic() {
