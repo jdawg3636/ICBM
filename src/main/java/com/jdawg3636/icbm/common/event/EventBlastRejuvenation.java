@@ -18,10 +18,14 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.server.ServerWorldLightManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 public class EventBlastRejuvenation extends AbstractBlastEvent {
+
+    public HashMap<ChunkPos, ChunkPrimer> newChunks = new HashMap<>();
 
     public EventBlastRejuvenation(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection) {
         super(blastPosition, blastWorld, blastType, blastDirection);
@@ -29,16 +33,48 @@ public class EventBlastRejuvenation extends AbstractBlastEvent {
 
     @Override
     public boolean executeBlast() {
+
+        // Sound/particles
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        regenerateChunk(getBlastWorld(), new ChunkPos(getBlastPosition()));
+
+        // Calculate sphere
+        final List<BlockPos> rejuvenationCandidates = ICBMBlastEventUtil.getBlockPositionsWithinFuzzySphere(
+                getBlastPosition().getX() + 0.5,
+                getBlastPosition().getY() + 0.5,
+                getBlastPosition().getZ() + 0.5,
+                30, // todo make config
+                getBlastWorld().random,
+                ICBMReference.COMMON_CONFIG.getAntimatterFuzzinessPercentage() // todo make rejuv-specific config
+        );
+
+        // Iterate over sphere
+        for(BlockPos pos : rejuvenationCandidates) {
+            // Don't affect non-air blocks
+            if(getBlastWorld().getBlockState(pos).isAir()) {
+                // Lazy-generate replacement chunks and retrieve new block
+                final BlockState state = getRejuvenatedChunk(new ChunkPos(pos)).getBlockState(pos);
+                // Set position to match replacement. Flags: 32 = ?, 2 = update nav mesh, maybe other stuff?, 1 = cause block update
+                getBlastWorld().setBlock(pos, state, 32 + 2 + 1);
+            }
+        }
+
+        // Always return true - if something went wrong then we probably crashed.
         return true;
+
+    }
+
+    public ChunkPrimer getRejuvenatedChunk(ChunkPos chunkPos) {
+        if(!this.newChunks.containsKey(chunkPos)) {
+            this.newChunks.put(chunkPos, regenerateChunk(getBlastWorld(), chunkPos));
+        }
+        return this.newChunks.get(chunkPos);
     }
 
     /**
      * This code was greatly informed by the source code for ThutEssentials, by Thutmose
      * https://github.com/Thutmose/ThutEssentials/blob/580b1abc05b3d3e57c129ee21cebc7969bab91ce/src/main/java/thut/essentials/commands/structures/Structuregen.java#L90
      */
-    public void regenerateChunk(ServerWorld level, ChunkPos chunkPos) {
+    public ChunkPrimer regenerateChunk(ServerWorld level, ChunkPos chunkPos) {
 
         // Prepare the common parameters to the ChunkStatus generate function
         ChunkGenerator chunkGenerator = level.getChunkSource().getGenerator();
@@ -63,17 +99,7 @@ public class EventBlastRejuvenation extends AbstractBlastEvent {
         ChunkStatus.HEIGHTMAPS.generate(level, chunkGenerator, structureManager, lightEngine, loadingFunction, primers);
         ChunkStatus.FULL.generate(level, chunkGenerator, structureManager, lightEngine, loadingFunction, primers);
 
-        // Copy blocks from new chunk into the world
-        for (int y = ICBMReference.getMinYLevelForLevel(level); y <= ICBMReference.getMaxYLevelForLevel(level); y++) {
-            for (int x = chunkPos.getMinBlockX(); x <= chunkPos.getMaxBlockX(); x++) {
-                for (int z = chunkPos.getMinBlockZ(); z <= chunkPos.getMaxBlockZ(); z++) {
-                    final BlockPos blockPos = new BlockPos(x, y, z);
-                    final BlockState blockState = newChunkPrimer.getBlockState(blockPos);
-                    // 32 = ?, 2 = update nav mesh, maybe other stuff?, 1 = cause block update
-                    level.setBlock(blockPos, blockState, 32 + 2 + 1);
-                }
-            }
-        }
+        return newChunkPrimer;
 
     }
 
