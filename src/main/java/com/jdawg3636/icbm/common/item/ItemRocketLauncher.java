@@ -38,7 +38,7 @@ public class ItemRocketLauncher extends ShootableItem {
             final ItemStack itemstack = player.getProjectile(this.getDefaultInstance());
             EntityMissile entity = null;
             if(itemstack.getItem() instanceof ItemMissile) {
-                if(((ItemMissile)itemstack.getItem()).getPercentageFuelFilled(itemstack) >= 1.0) {
+                if(player.abilities.instabuild || ((ItemMissile)itemstack.getItem()).getPercentageFuelFilled(itemstack) >= 1.0) {
                     entity = ((ItemMissile) itemstack.getItem()).getMissileEntity().get().create(level);
                 }
                 else {
