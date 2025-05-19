@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.jdawg3636.icbm.ICBMReference;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -48,19 +49,30 @@ public class EventBlastRejuvenation extends AbstractBlastEvent {
         );
 
         // Iterate over sphere
-        for(BlockPos pos : rejuvenationCandidates) {
-            // Don't affect non-air blocks
-            if(getBlastWorld().getBlockState(pos).isAir()) {
-                // Lazy-generate replacement chunks and retrieve new block
-                final BlockState state = getRejuvenatedChunk(new ChunkPos(pos)).getBlockState(pos);
-                // Set position to match replacement. Flags: 32 = ?, 2 = update nav mesh, maybe other stuff?, 1 = cause block update
-                getBlastWorld().setBlock(pos, state, 32 + 2 + 1);
+        for(BlockPos blockPos : rejuvenationCandidates) {
+            // If currently air, then rejuvenate
+            if(getBlastWorld().getBlockState(blockPos).isAir()) {
+                rejuvenateBlockPos(blockPos);
+            }
+            // If currently flowing fluid (NOT a source block), then rejuvenate
+            else {
+                FluidState fluidState = getBlastWorld().getFluidState(blockPos);
+                if(!fluidState.isEmpty() && !fluidState.isSource()) {
+                    rejuvenateBlockPos(blockPos);
+                }
             }
         }
 
         // Always return true - if something went wrong then we probably crashed.
         return true;
 
+    }
+
+    public void rejuvenateBlockPos(BlockPos blockPos) {
+        // Lazy-generate replacement chunks and retrieve new block
+        final BlockState state = getRejuvenatedChunk(new ChunkPos(blockPos)).getBlockState(blockPos);
+        // Set position to match replacement. Flags: 32 = ?, 2 = update nav mesh, maybe other stuff?, 1 = cause block update
+        getBlastWorld().setBlock(blockPos, state, 32 + 2 + 1);
     }
 
     public ChunkPrimer getRejuvenatedChunk(ChunkPos chunkPos) {
