@@ -3,8 +3,10 @@ package com.jdawg3636.icbm.common.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityFancyFallingBlock extends FallingBlockEntity {
 
@@ -24,20 +26,25 @@ public class EntityFancyFallingBlock extends FallingBlockEntity {
         this.setStartPos(this.blockPosition());
     }
 
-    @Override
-    public boolean isNoGravity() {
-        // This prevents the vanilla code from applying gravity and allows us to handle it ourselves.
-        return true;
-    }
+//    @Override
+//    public boolean isNoGravity() {
+//        // This prevents the vanilla code from applying gravity and allows us to handle it ourselves.
+//        return true;
+//    }
 
     @Override
     public void tick() {
         // Emulate vanilla gravity behavior
-        if (!this.getBlockState().isAir() && this.time + 1 != 0 && !this.level.getBlockState(this.blockPosition()).is(this.getBlockState().getBlock()) && !this.level.isClientSide && !this.entityData.get(DATA_NO_GRAVITY)) {
-            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
-        }
+//        if (!this.getBlockState().isAir() && this.time + 1 != 0 && !this.level.getBlockState(this.blockPosition()).is(this.getBlockState().getBlock()) && !this.level.isClientSide && !this.entityData.get(DATA_NO_GRAVITY)) {
+//            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
+//        }
         // Call super
         super.tick();
+    }
+
+    @Override
+    public IPacket<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
 }

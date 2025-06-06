@@ -140,6 +140,7 @@ public final class EntityReg {
 
     // Other Entity Registration
     public static final RegistryObject<EntityType<EntityAcceleratingParticle>> ACCELERATING_PARTICLE = registerBlastUtilityEntity("accelerating_particle", EntityAcceleratingParticle::new, 1F, 1F);
+    public static final RegistryObject<EntityType<EntityFancyFallingBlock>> FANCY_FALLING_BLOCK = registerBlastUtilityEntity("fancy_falling_block", EntityFancyFallingBlock::new, 1F, 1F);
     public static final RegistryObject<EntityType<EntityLightningVisual>> LIGHTNING_VISUAL = registerBlastUtilityEntity("lightning_visual", EntityLightningVisual::new, 1F, 1F);
 
     public static RegistryObject<EntityType<EntityPrimedExplosives>> registerPrimedExplosives(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
