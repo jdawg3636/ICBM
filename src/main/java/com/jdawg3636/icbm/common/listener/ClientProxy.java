@@ -222,7 +222,7 @@ public class ClientProxy extends CommonProxy {
 
         // Register Item Model Properties
         ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation("angle"),          ItemTracker::getAngleFromItemStack);
-        ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation("icbm:hastarget"), ItemTracker::getHasTargetFromItemStack);
+        ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation(ICBMReference.MODID, "hastarget"), ItemTracker::getHasTargetFromItemStack);
 
         // Register ItemColors for Dyeable Armor
         Minecraft.getInstance().getItemColors().register(
