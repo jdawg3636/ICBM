@@ -33,11 +33,11 @@ public class EntityFancyFallingBlock extends FallingBlockEntity implements IEnti
         this.level.addFreshEntity(this);
     }
 
-//    @Override
-//    public boolean isNoGravity() {
-//        // This prevents the vanilla code from applying gravity and allows us to handle it ourselves.
-//        return true;
-//    }
+    @Override
+    public boolean isNoGravity() {
+        // This prevents the vanilla code from applying gravity and allows us to handle it ourselves.
+        return true;
+    }
 
     @Override
     public void tick() {
@@ -47,9 +47,9 @@ public class EntityFancyFallingBlock extends FallingBlockEntity implements IEnti
             this.setRot(this.yRot + xRotDelta, this.xRot + yRotDelta);
         }
         // Emulate vanilla gravity behavior
-//        if (!this.getBlockState().isAir() && this.time + 1 != 0 && !this.level.getBlockState(this.blockPosition()).is(this.getBlockState().getBlock()) && !this.level.isClientSide && !this.entityData.get(DATA_NO_GRAVITY)) {
-//            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
-//        }
+        if(!this.entityData.get(DATA_NO_GRAVITY)) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.04, 0.0));
+        }
         // Call super
         super.tick();
     }
