@@ -1,10 +1,10 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
@@ -30,6 +30,9 @@ public class EntitySonicBlast extends Entity {
 
     @Override
     public void tick() {
+
+        // Server-Side Only
+        if(level.isClientSide()) return;
 
         // Limit Blocks Affected per Tick
         for(int i = 0; i < blocksAffectedPerTick; ++i) {
@@ -64,12 +67,12 @@ public class EntitySonicBlast extends Entity {
             }
 
             // Affect Current Target
-            FallingBlockEntity fallingBlockEntity = new FallingBlockEntity(level, blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, level.getBlockState(blockPos));
-            fallingBlockEntity.time = Integer.MIN_VALUE;
-            fallingBlockEntity.dropItem = false;
-            fallingBlockEntity.push(2 * level.random.nextDouble() - 1D, 2 * level.random.nextDouble() + 4D, 2 * level.random.nextDouble() - 1D);
+            EntityFancyFallingBlock fancyFallingBlockEntity = EntityReg.FANCY_FALLING_BLOCK.get().create(level);
+            if(fancyFallingBlockEntity != null) {
+                fancyFallingBlockEntity.setDeltaMovement(2 * level.random.nextDouble() - 1D, 2 * level.random.nextDouble() + 4D, 2 * level.random.nextDouble() - 1D);
+                fancyFallingBlockEntity.addEntityToLevel(blockPos, level.getBlockState(blockPos));
+            }
             level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3);
-            level.addFreshEntity(fallingBlockEntity);
 
             // Remove Current Target from Queue
             targetBlocks.remove(0);

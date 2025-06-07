@@ -1,29 +1,36 @@
 package com.jdawg3636.icbm.common.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.network.IPacket;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class EntityFancyFallingBlock extends FallingBlockEntity {
+public class EntityFancyFallingBlock extends FallingBlockEntity implements IEntityAdditionalSpawnData {
 
-    public EntityFancyFallingBlock(EntityType<? extends FallingBlockEntity> entityType, World level) {
+    public EntityFancyFallingBlock(EntityType<? extends EntityFancyFallingBlock> entityType, World level) {
         super(entityType, level);
+        this.time = Integer.MIN_VALUE;
+        this.dropItem = false;
+        this.blocksBuilding = true;
     }
 
-    public EntityFancyFallingBlock(World level, double x, double y, double z, BlockState blockState) {
-        this(EntityType.FALLING_BLOCK, level);
+    public void addEntityToLevel(BlockPos initialPosition, BlockState blockState) {
         this.blockState = blockState;
-        this.blocksBuilding = true;
-        this.setPos(x, y + (double)((1.0F - this.getBbHeight()) / 2.0F), z);
-        this.setDeltaMovement(Vector3d.ZERO);
+        double x = initialPosition.getX() + 0.5;
+        double y = initialPosition.getY() + (double)((1.0F - this.getBbHeight()) / 2.0F);
+        double z = initialPosition.getZ() + 0.5;
         this.xo = x;
         this.yo = y;
         this.zo = z;
+        this.setPos(x, y, z);
         this.setStartPos(this.blockPosition());
+        this.level.addFreshEntity(this);
     }
 
 //    @Override
@@ -50,6 +57,16 @@ public class EntityFancyFallingBlock extends FallingBlockEntity {
     @Override
     public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @Override
+    public void writeSpawnData(PacketBuffer buffer) {
+        buffer.writeInt(Block.getId(this.getBlockState()));
+    }
+
+    @Override
+    public void readSpawnData(PacketBuffer additionalData) {
+        this.blockState = Block.stateById(additionalData.readInt());
     }
 
 }

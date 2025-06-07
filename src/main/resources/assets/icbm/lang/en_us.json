@@ -335,6 +335,8 @@
 
   # Other Entities
   "entity.icbm.accelerating_particle": "Accelerating Particle",
+  "entity.icbm.fancy_falling_block": "Fancy Falling Block",
+  "entity.icbm.lightning_visual": "Lightning",
 
   # Explosive Minecarts
   "item.icbm.minecart_explosive": "Explosive Cart",
