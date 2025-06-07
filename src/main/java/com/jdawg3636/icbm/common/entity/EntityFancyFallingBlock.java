@@ -34,6 +34,11 @@ public class EntityFancyFallingBlock extends FallingBlockEntity {
 
     @Override
     public void tick() {
+        if(level.isClientSide()) {
+            float xRotDelta = (this.uuid.getLeastSignificantBits() % 2 == 0 ? 1 : -1) * this.uuid.getLeastSignificantBits() / (float)Long.MAX_VALUE;
+            float yRotDelta = (this.uuid.getMostSignificantBits() % 2 == 0 ? 1 : -1) * this.uuid.getMostSignificantBits() / (float)Long.MAX_VALUE;
+            this.setRot(this.yRot + xRotDelta, this.xRot + yRotDelta);
+        }
         // Emulate vanilla gravity behavior
 //        if (!this.getBlockState().isAir() && this.time + 1 != 0 && !this.level.getBlockState(this.blockPosition()).is(this.getBlockState().getBlock()) && !this.level.isClientSide && !this.entityData.get(DATA_NO_GRAVITY)) {
 //            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
