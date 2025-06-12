@@ -200,6 +200,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.MINECART_REDMATTER.get(), TNTMinecartRenderer::new);
 
         // Register Blast Utility Entity Rendering Handlers
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_ANTIGRAVITATIONAL.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGION.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityNOPRenderer::new);

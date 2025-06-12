@@ -41,11 +41,22 @@ public class ICBMBlastEventUtil {
 
     public static void doBlastSoundAndParticles(AbstractBlastEvent event) {
         // Loosely Based on net.minecraft.world.Explosion::finalizeExplosion (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
+        doBlastSound(event);
+        doBlastParticles(event);
+    }
+
+    public static void doBlastSound(AbstractBlastEvent event) {
+        // Loosely Based on net.minecraft.world.Explosion::finalizeExplosion (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
         if (!event.getBlastWorld().isClientSide) {
             // Sound
             Supplier<SoundEvent> soundEvent = event.getSoundEvent(true);
             if(soundEvent == null) soundEvent = SoundEventReg.EXPLOSION_GENERIC;
             event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX() + 0.5, event.getBlastPosition().getY() + 0.5, event.getBlastPosition().getZ() + 0.5, soundEvent.get(), SoundCategory.BLOCKS, event.getSoundEventRangeMultiplier(), 1.0F);
+        }
+    }
+    public static void doBlastParticles(AbstractBlastEvent event) {
+        // Loosely Based on net.minecraft.world.Explosion::finalizeExplosion (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
+        if (!event.getBlastWorld().isClientSide) {
             // Particles - Handled Client Side by net.minecraft.client.network.play.ClientPlayNetHandler::handleParticleEvent (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
             event.getBlastWorld().sendParticles(ParticleTypes.EXPLOSION_EMITTER, event.getBlastPosition().getX() + 0.5, event.getBlastPosition().getY() + 0.5, event.getBlastPosition().getZ() + 0.5, 1, 0, 0, 0, 1.0D);
         }

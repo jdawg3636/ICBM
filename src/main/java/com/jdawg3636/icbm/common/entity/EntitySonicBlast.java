@@ -70,7 +70,7 @@ public class EntitySonicBlast extends Entity {
             EntityFancyFallingBlock fancyFallingBlockEntity = EntityReg.FANCY_FALLING_BLOCK.get().create(level);
             if(fancyFallingBlockEntity != null) {
                 fancyFallingBlockEntity.setDeltaMovement(2 * level.random.nextDouble() - 1D, 2 * level.random.nextDouble() + 4D, 2 * level.random.nextDouble() - 1D);
-                fancyFallingBlockEntity.addEntityToLevel(blockPos, level.getBlockState(blockPos));
+                fancyFallingBlockEntity.addEntityToLevel(blockPos, level.getBlockState(blockPos), -0.04f);
             }
             level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3);
 
