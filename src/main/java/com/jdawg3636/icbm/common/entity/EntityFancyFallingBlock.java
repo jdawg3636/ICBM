@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -21,6 +22,12 @@ import java.util.UUID;
 public class EntityFancyFallingBlock extends FallingBlockEntity implements IEntityAdditionalSpawnData {
 
     public static final DataParameter<Float> PER_TICK_GRAVITY = EntityDataManager.defineId(EntityFancyFallingBlock.class, DataSerializers.FLOAT);
+
+    public static boolean getBlockSafeToConvertToFallingEntity(World level, BlockPos blockPos) {
+        return level.getBlockState(blockPos).canDropFromExplosion(level, blockPos, null)
+                && !level.getBlockState(blockPos).hasTileEntity()
+                && !(level.getBlockState(blockPos).getBlock() instanceof FlowingFluidBlock);
+    }
 
     // These don't need synced - client-side only and derived from UUID
     public float xRotDelta;

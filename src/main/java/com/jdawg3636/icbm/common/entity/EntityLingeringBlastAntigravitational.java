@@ -62,7 +62,7 @@ public class EntityLingeringBlastAntigravitational extends EntityLingeringBlast 
         // Block Effects
         for(BlockPos blockPos : getAntigravityEligiblePositionsWithinSphere(level, getX(), getY(), getZ(), radius)) {
             // Valid Block + Random chance to affect
-            if(level.getBlockState(blockPos).getBlock().getExplosionResistance() <= 9.0f && level.getRandom().nextDouble() < 0.01) {
+            if(EntityFancyFallingBlock.getBlockSafeToConvertToFallingEntity(level, blockPos) && level.getBlockState(blockPos).getBlock().getExplosionResistance() <= 9.0f && level.getRandom().nextDouble() < 0.01) {
                 // Affect Current Target
                 EntityFancyFallingBlock fancyFallingBlockEntity = EntityReg.FANCY_FALLING_BLOCK.get().create(level);
                 if (fancyFallingBlockEntity != null) {

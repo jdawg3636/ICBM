@@ -55,7 +55,7 @@ public class EntitySonicBlast extends Entity {
 
             // Validate Current Target
             try {
-                if(!level.getBlockState(blockPos).canDropFromExplosion(level, blockPos, null) || level.getBlockState(blockPos).hasTileEntity() || level.getBlockState(blockPos).getBlock() instanceof FlowingFluidBlock) {
+                if(!EntityFancyFallingBlock.getBlockSafeToConvertToFallingEntity(level, blockPos)) {
                     level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3);
                     targetBlocks.remove(0);
                     continue;
