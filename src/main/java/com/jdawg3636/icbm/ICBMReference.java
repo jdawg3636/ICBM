@@ -5,7 +5,9 @@ import com.jdawg3636.icbm.common.listener.ClientProxy;
 import com.jdawg3636.icbm.common.listener.CommonProxy;
 import com.jdawg3636.icbm.common.reg.ItemReg;
 import com.jdawg3636.icbm.common.reg.ParticleTypeReg;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemGroup;
@@ -78,7 +80,7 @@ public final class ICBMReference {
     public static void broadcastToChat(IWorldReader level, String message) {
         if (level instanceof ServerWorld) {
             ((ServerWorld) level).players().forEach(
-                (ServerPlayerEntity serverPlayer) -> serverPlayer.sendMessage(new StringTextComponent(message), Util.NIL_UUID)
+                    (ServerPlayerEntity serverPlayer) -> serverPlayer.sendMessage(new StringTextComponent(message), Util.NIL_UUID)
             );
         }
     }
@@ -116,8 +118,7 @@ public final class ICBMReference {
     }
 
     public static boolean entityIsAPlayerInCreativeOrSpectatorMode(Entity entity) {
-        if(!(entity instanceof ServerPlayerEntity)) return false;
-        return !((ServerPlayerEntity) entity).gameMode.getGameModeForPlayer().isSurvival();
+        return entity instanceof PlayerEntity && (((PlayerEntity)entity).isCreative() || entity.isSpectator());
     }
 
     public static boolean checkItemStackContainsFluidTag(ItemStack stack, ResourceLocation fluidTag) {

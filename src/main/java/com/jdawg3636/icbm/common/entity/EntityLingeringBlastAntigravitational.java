@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.google.common.collect.Lists;
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.Blocks;
@@ -49,14 +50,10 @@ public class EntityLingeringBlastAntigravitational extends EntityLingeringBlast 
             float soundRadiusInChunks = (float)this.radius * 1.5f / 16.0f;
             this.level.playSound((PlayerEntity) null, getX() + 0.5, getY() + 0.5, getZ() + 0.5, soundEvent, SoundCategory.BLOCKS, soundRadiusInChunks, 1.0F);
         }
-        // Player Effects
-        for(LivingEntity livingEntity : this.level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().contract(0,1,0).inflate(radius))) {
-            boolean isCreativePlayer = false;
-            if(livingEntity instanceof PlayerEntity) {
-                isCreativePlayer = ((PlayerEntity)livingEntity).isCreative();
-            }
-            if(!isCreativePlayer && livingEntity.isAffectedByPotions()) {
-                livingEntity.addEffect(new EffectInstance(Effects.LEVITATION, 10 * 20, 1, false, false));
+        // Entity/Player Effects
+        for(LivingEntity livingEntity : this.level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().contract(0,1,0).inflate(radius, radius / 5.0, radius))) {
+            if(livingEntity.isAffectedByPotions() && !ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(livingEntity)) {
+                livingEntity.addEffect(new EffectInstance(Effects.LEVITATION, 21, 1, false, false));
             }
         }
         // Block Effects

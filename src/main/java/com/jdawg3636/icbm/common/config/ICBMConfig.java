@@ -63,6 +63,7 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue blastRadiusExothermic;
         private final ForgeConfigSpec.DoubleValue blastRadiusHypersonic;
         private final ForgeConfigSpec.DoubleValue blastRadiusNuclear;
+        private final ForgeConfigSpec.DoubleValue blastRadiusRedmatter;
         private final ForgeConfigSpec.DoubleValue blastRadiusRejuvenation;
         private final ForgeConfigSpec.DoubleValue blastRadiusSonic;
 
@@ -134,7 +135,7 @@ public class ICBMConfig {
                             "end stone is 9.0, normal stone is 6.0, and dirt is 0.5. IF THIS VALUE IS SET TO A NEGATIVE",
                             "NUMBER, THEN THE MOD WILL LEAVE THE EXPLOSION RESISTANCE UNCHANGED (DEFER TO VANILLA OR OTHER",
                             "MODS)."
-                            )
+                    )
                     .defineInRange("blastResistanceObsidian", 25.0, -1.0, Float.MAX_VALUE);
             this.antimatterCanDestroyBedrock = builder
                     .comment("",
@@ -203,6 +204,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the maximum radius of a Nuclear Blast.")
                     .defineInRange("blastRadiusNuclear", 30D, 0D, Float.MAX_VALUE);
+            this.blastRadiusRedmatter = builder
+                    .comment("",
+                            "Defines the maximum radius of a Red Matter Blast.")
+                    .defineInRange("blastRadiusRedmatter", 50D, 0D, Float.MAX_VALUE);
             this.blastRadiusRejuvenation = builder
                     .comment("",
                             "Defines the maximum radius of a Rejuvenation Blast.")
@@ -396,6 +401,10 @@ public class ICBMConfig {
 
         public double getBlastRadiusNuclear() {
             return blastRadiusNuclear.get();
+        }
+
+        public double getBlastRadiusRedmatter() {
+            return blastRadiusRedmatter.get();
         }
 
         public double getBlastRadiusRejuvenation() {

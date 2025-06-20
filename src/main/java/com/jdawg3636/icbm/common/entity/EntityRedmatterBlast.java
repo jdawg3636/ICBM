@@ -3,8 +3,13 @@ package com.jdawg3636.icbm.common.entity;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.event.ICBMBlastEventUtil;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -25,7 +30,16 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
     public void tick() {
         // TODO: Implement player movement for Red Matter (black hole)
         if(level != null) {
+            // Entity movement
+//            if(!level.isClientSide() && ticksRemaining % 5 == 0) {
+                for (Entity entity : this.level.getEntitiesOfClass(Entity.class, new AxisAlignedBB(blockPosition()).inflate(ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter()))) {
+                    if (!(entity instanceof EntityRedmatterBlast) && !(entity instanceof ItemEntity) && !(ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(entity))) {
+                        applyBlackHoleMovementToEntity(entity);
+                    }
+                }
+//            }
             if(level.isClientSide()) {
+                // Visual Animation
                 addAnimationPercent(0.25D);
             }
             else if (level instanceof ServerWorld) {
@@ -40,7 +54,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                     // If we're out of blocks to destroy, try to find more.
                     if(blocksToDestroy.isEmpty()) {
                         // Config values
-                        final int maxRadius = 50; // todo make configurable
+                        final double maxRadius = ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter();
                         final double fuzzinessPercentage = ICBMReference.COMMON_CONFIG.getAntimatterFuzzinessPercentage(); // todo make configurable separate from antimatter
                         final boolean canDestroyIndestructible = ICBMReference.COMMON_CONFIG.getAntimatterCanDestroyBedrock(); // todo make configurable separate from antimatter
                         // Calculate current blocks that are candidates for deletion this tick. Radius is increased as-necessary to give illusion of blocks from the center being affected first
@@ -78,6 +92,48 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                 }
             }
         }
+    }
+
+    public void applyBlackHoleMovementToEntity(Entity entity) {
+
+        double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter();
+        Vector3d entityPosition = entity.getPosition(0f);
+        Vector3d blackHolePosition = this.getPosition(0f);
+        Vector3d deltaPosition = entityPosition.subtract(blackHolePosition);
+
+        /** The percentage of the closeness of the entity. */
+        double xPercentage = 1 - (deltaPosition.x / radius);
+        double yPercentage = 1 - (deltaPosition.y / radius);
+        double zPercentage = 1 - (deltaPosition.z / radius);
+        double closenessPercentage = 1.0 - (entityPosition.distanceTo(blackHolePosition) / radius);
+
+        if(closenessPercentage > 1.0) {
+            return;
+        }
+
+        System.out.printf("%s, %s\n", deltaPosition, closenessPercentage);
+        Vector3d rotatedX = deltaPosition.xRot((float)(1.5 * closenessPercentage * 1.0));
+        Vector3d rotatedXY = rotatedX.yRot((float)(1.5 * closenessPercentage * 1.0));
+        Vector3d rotatedXYZ = rotatedXY.zRot((float)(1.5 * closenessPercentage * 1.0));
+        System.out.printf("%s, %s\n", rotatedXYZ, 1.0 - (rotatedXYZ.distanceTo(Vector3d.ZERO) / radius));
+        Vector3d newPosition = blackHolePosition.add(rotatedXYZ);
+        // Orbit Velocity
+//        entity.push(rotatedXYZ.x, rotatedXYZ.y, rotatedXYZ.z);
+
+        // Gravity Velocity
+//        double xGravity = -deltaPosition.x * 0.015 * xPercentage;
+//        double yGravity = -deltaPosition.y * 0.015 * yPercentage;
+//        double zGravity = -deltaPosition.z * 0.015 * zPercentage;
+//        System.out.printf("%s, %s, %s\n", xGravity, yGravity, zGravity);
+//        entity.push(xGravity, yGravity, zGravity);
+        Vector3d gravityVector = entity.getPosition(0f).vectorTo(blackHolePosition).scale(0.015);
+        entity.push(gravityVector.x, gravityVector.y, gravityVector.z);
+
+        if (entity instanceof LivingEntity)
+        {
+            entity.fallDistance = 0;
+        }
+
     }
 
     public void addAnimationPercent(double increment) {
