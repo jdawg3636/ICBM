@@ -112,13 +112,14 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
         }
 
         System.out.printf("%s, %s\n", deltaPosition, closenessPercentage);
-        Vector3d rotatedX = deltaPosition.xRot((float)(1.5 * closenessPercentage * 1.0));
-        Vector3d rotatedXY = rotatedX.yRot((float)(1.5 * closenessPercentage * 1.0));
-        Vector3d rotatedXYZ = rotatedXY.zRot((float)(1.5 * closenessPercentage * 1.0));
+//        Vector3d rotatedX = deltaPosition.xRot((float)(0.0261799 * closenessPercentage * 1.0));
+//        Vector3d rotatedXY = rotatedX.yRot((float)(0.0261799 * closenessPercentage * 1.0));
+//        Vector3d rotatedXYZ = rotatedXY.zRot((float)(0.0261799 * closenessPercentage * 1.0));
+        Vector3d rotatedXYZ = rotateVector(deltaPosition, 0.0261799 * closenessPercentage);
         System.out.printf("%s, %s\n", rotatedXYZ, 1.0 - (rotatedXYZ.distanceTo(Vector3d.ZERO) / radius));
         Vector3d newPosition = blackHolePosition.add(rotatedXYZ);
         // Orbit Velocity
-//        entity.push(rotatedXYZ.x, rotatedXYZ.y, rotatedXYZ.z);
+        entity.push(rotatedXYZ.x, rotatedXYZ.y, rotatedXYZ.z);
 
         // Gravity Velocity
 //        double xGravity = -deltaPosition.x * 0.015 * xPercentage;
@@ -127,7 +128,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
 //        System.out.printf("%s, %s, %s\n", xGravity, yGravity, zGravity);
 //        entity.push(xGravity, yGravity, zGravity);
         Vector3d gravityVector = entity.getPosition(0f).vectorTo(blackHolePosition).scale(0.015);
-        entity.push(gravityVector.x, gravityVector.y, gravityVector.z);
+//        entity.push(gravityVector.x, gravityVector.y, gravityVector.z);
 
         if (entity instanceof LivingEntity)
         {
@@ -145,6 +146,30 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
 
     public float getAnimationRadians() {
         return (float)(animationPercent * 0.01 * 2 * Math.PI);
+    }
+
+    public static Vector3d rotateVector(Vector3d vec, double angleDeg) {
+        return rotateVector(vec, angleDeg, angleDeg, angleDeg);
+    }
+
+    public static Vector3d rotateVector(Vector3d vec, double rollDeg, double pitchDeg, double yawDeg) {
+
+        // Apply pitch (X-axis rotation)
+        double x1 = vec.x;
+        double y1 = vec.y * Math.cos(pitchDeg) - vec.z * Math.sin(pitchDeg);
+        double z1 = vec.y * Math.sin(pitchDeg) + vec.z * Math.cos(pitchDeg);
+
+        // Apply yaw (Y-axis rotation)
+        double x2 = x1 * Math.cos(yawDeg) + z1 * Math.sin(yawDeg);
+        double y2 = y1;
+        double z2 = -x1 * Math.sin(yawDeg) + z1 * Math.cos(yawDeg);
+
+        // Apply roll (Z-axis rotation)
+        double x3 = x2 * Math.cos(rollDeg) - y2 * Math.sin(rollDeg);
+        double y3 = x2 * Math.sin(rollDeg) + y2 * Math.cos(rollDeg);
+        double z3 = z2;
+
+        return new Vector3d(x3, y3, z3);
     }
 
 }
