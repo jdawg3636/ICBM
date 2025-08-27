@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -95,44 +96,39 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
     }
 
     public void applyBlackHoleMovementToEntity(Entity entity) {
+        if(!(entity instanceof PlayerEntity) && !entity.level.isClientSide) {
 
-        double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter();
-        Vector3d entityPosition = entity.getPosition(0f);
-        Vector3d blackHolePosition = this.getPosition(0f);
-        Vector3d deltaPosition = entityPosition.subtract(blackHolePosition);
+            double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter();
+            Vector3d entityPosition = entity.getPosition(0f);
+            Vector3d blackHolePosition = this.getPosition(0f);
 
-        /** The percentage of the closeness of the entity. */
-        double xPercentage = 1 - (deltaPosition.x / radius);
-        double yPercentage = 1 - (deltaPosition.y / radius);
-        double zPercentage = 1 - (deltaPosition.z / radius);
-        double closenessPercentage = 1.0 - (entityPosition.distanceTo(blackHolePosition) / radius);
+            // Kill Entity if Too Close
+            double entityDistanceToBlackHole = entityPosition.distanceTo(blackHolePosition);
+            if(entityDistanceToBlackHole < 6.0) {
+                entity.kill();
+                return;
+            }
 
-        if(closenessPercentage > 1.0) {
-            return;
-        }
+            // Reduce cube to sphere
+            double closenessPercentage = 1.0 - (entityDistanceToBlackHole / radius);
+            if(closenessPercentage < 0.0) {
+                return;
+            }
 
-        System.out.printf("%s, %s\n", deltaPosition, closenessPercentage);
-//        Vector3d rotatedX = deltaPosition.xRot((float)(0.0261799 * closenessPercentage * 1.0));
-//        Vector3d rotatedXY = rotatedX.yRot((float)(0.0261799 * closenessPercentage * 1.0));
-//        Vector3d rotatedXYZ = rotatedXY.zRot((float)(0.0261799 * closenessPercentage * 1.0));
-        Vector3d rotatedXYZ = rotateVector(deltaPosition, 0.0261799 * closenessPercentage);
-        System.out.printf("%s, %s\n", rotatedXYZ, 1.0 - (rotatedXYZ.distanceTo(Vector3d.ZERO) / radius));
-        Vector3d newPosition = blackHolePosition.add(rotatedXYZ);
-        // Orbit Velocity
-        entity.push(rotatedXYZ.x, rotatedXYZ.y, rotatedXYZ.z);
+            // Orbit Velocity
+            Vector3d blackHoleToEntity = entityPosition.subtract(blackHolePosition);
+            Vector3d blackHoleToEntityRotated = rotateVector(blackHoleToEntity, 0.00390625);
+            Vector3d entityToTarget = blackHoleToEntityRotated.subtract(blackHoleToEntity);
+            entity.push(entityToTarget.x, entityToTarget.y, entityToTarget.z);
 
-        // Gravity Velocity
-//        double xGravity = -deltaPosition.x * 0.015 * xPercentage;
-//        double yGravity = -deltaPosition.y * 0.015 * yPercentage;
-//        double zGravity = -deltaPosition.z * 0.015 * zPercentage;
-//        System.out.printf("%s, %s, %s\n", xGravity, yGravity, zGravity);
-//        entity.push(xGravity, yGravity, zGravity);
-        Vector3d gravityVector = entity.getPosition(0f).vectorTo(blackHolePosition).scale(0.015);
-//        entity.push(gravityVector.x, gravityVector.y, gravityVector.z);
+            // Gravity Velocity
+            Vector3d gravityVector = entity.getPosition(0f).vectorTo(blackHolePosition).scale(0.015625);
+            entity.push(gravityVector.x, gravityVector.y, gravityVector.z);
 
-        if (entity instanceof LivingEntity)
-        {
-            entity.fallDistance = 0;
+            if (entity instanceof LivingEntity)
+            {
+                entity.fallDistance = 0;
+            }
         }
 
     }
@@ -149,7 +145,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
     }
 
     public static Vector3d rotateVector(Vector3d vec, double angleDeg) {
-        return rotateVector(vec, angleDeg, angleDeg, angleDeg);
+        return rotateVector(vec, 0.0, angleDeg, angleDeg);
     }
 
     public static Vector3d rotateVector(Vector3d vec, double rollDeg, double pitchDeg, double yawDeg) {
