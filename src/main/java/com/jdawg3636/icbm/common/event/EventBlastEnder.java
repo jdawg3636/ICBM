@@ -3,13 +3,14 @@ package com.jdawg3636.icbm.common.event;
 import com.jdawg3636.icbm.common.entity.EntityLingeringBlastEnder;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
 public class EventBlastEnder extends AbstractBlastEvent {
 
     public EventBlastEnder(BlockPos blastPosition, ServerWorld blastWorld, AbstractBlastEvent.Type blastType, Direction blastDirection) {
-        super(blastPosition, blastWorld, blastType, blastDirection);
+        super(blastPosition, blastWorld, blastType, blastDirection, () -> SoundEvents.END_PORTAL_SPAWN, 10F);
     }
 
     @Override

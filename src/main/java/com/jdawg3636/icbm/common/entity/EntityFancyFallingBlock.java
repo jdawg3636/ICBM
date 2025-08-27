@@ -90,7 +90,7 @@ public class EntityFancyFallingBlock extends FallingBlockEntity implements IEnti
             }
             // If negative, emulate vanilla gravity behavior
             else {
-                this.setDeltaMovement(this.getDeltaMovement().add(0.0, getEntityData().get(PER_TICK_GRAVITY), 0.0));
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0, perTickGravity, 0.0));
             }
         }
         // Call super
