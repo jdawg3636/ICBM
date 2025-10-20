@@ -96,6 +96,10 @@ public class ICBMBlastEventUtil {
     }
 
     public static void doVanillaExplosionParticlesAndSound(ServerWorld level, double x, double y, double z) {
+        doVanillaExplosionParticlesAndSound(level, x, y, z, 1.0F);
+    }
+
+    public static void doVanillaExplosionParticlesAndSound(ServerWorld level, double x, double y, double z, float volume) {
         level.playSound((PlayerEntity) null, x + 0.5, y + 0.5, z + 0.5, SoundEventReg.EXPLOSION_GENERIC.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
         level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x + 0.5, y + 0.5, z + 0.5, 1, 0, 0, 0, 1.0D);
     }

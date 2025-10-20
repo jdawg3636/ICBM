@@ -5,7 +5,6 @@ import com.jdawg3636.icbm.common.listener.ClientProxy;
 import com.jdawg3636.icbm.common.listener.CommonProxy;
 import com.jdawg3636.icbm.common.reg.ItemReg;
 import com.jdawg3636.icbm.common.reg.ParticleTypeReg;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;

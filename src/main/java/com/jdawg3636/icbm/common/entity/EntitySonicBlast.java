@@ -2,7 +2,6 @@ package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
