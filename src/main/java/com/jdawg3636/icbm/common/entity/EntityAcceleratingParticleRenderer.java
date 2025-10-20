@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
+import java.util.function.Function;
 
 public class EntityAcceleratingParticleRenderer extends EntityRenderer<EntityAcceleratingParticle> {
 
@@ -23,9 +25,7 @@ public class EntityAcceleratingParticleRenderer extends EntityRenderer<EntityAcc
         super(renderManagerIn);
     }
 
-    @Override
-    public void render(@Nonnull EntityAcceleratingParticle entity, float entityYaw, float partialTick, @Nonnull MatrixStack poseStack, @Nonnull IRenderTypeBuffer buffer, int light) {
-
+    public static void renderEnderDraganDeathRays(Entity entity, MatrixStack poseStack, IRenderTypeBuffer buffer, Function<Float, Float> getLength, Function<Float, Float> getWidth) {
         final float animationProgress = entity.tickCount / 100F;
         Random random = new Random(432L);
         IVertexBuilder vertexBuilder = buffer.getBuffer(RenderType.lightning());
@@ -45,8 +45,8 @@ public class EntityAcceleratingParticleRenderer extends EntityRenderer<EntityAcc
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(random.nextFloat() * 360.0F + animationProgress * 90.0F));
             // Side parameter constants (once again, "random.nextFloat" calls are deterministic due to fixed seed)
             Matrix4f latestPose = poseStack.last().pose();
-            final float length = random.nextFloat() * 1.25F + 0.75F;
-            final float width = random.nextFloat() * 0.65F + 0.1F;
+            final float length = getLength.apply(random.nextFloat());
+            final float width = getWidth.apply(random.nextFloat());
             // Side 1
             vertex1(vertexBuilder, latestPose);
             vertex2(vertexBuilder, latestPose, length, width);
@@ -63,7 +63,11 @@ public class EntityAcceleratingParticleRenderer extends EntityRenderer<EntityAcc
 
         // Outer Pop
         poseStack.popPose();
+    }
 
+    @Override
+    public void render(@Nonnull EntityAcceleratingParticle entity, float entityYaw, float partialTick, @Nonnull MatrixStack poseStack, @Nonnull IRenderTypeBuffer buffer, int light) {
+        renderEnderDraganDeathRays(entity, poseStack, buffer, length -> length * 1.25F + 0.75F, width -> width * 0.65F + 0.1F);
     }
 
     private static void vertex1(IVertexBuilder vertexBuilder, Matrix4f pose) {

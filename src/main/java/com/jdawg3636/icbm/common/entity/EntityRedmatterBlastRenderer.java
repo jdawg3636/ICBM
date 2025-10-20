@@ -52,6 +52,9 @@ public class EntityRedmatterBlastRenderer extends EntityRenderer<EntityRedmatter
         // Outer Pop
         matrixStack.popPose();
 
+        // Render Ender Dragon Death Rays
+        EntityAcceleratingParticleRenderer.renderEnderDraganDeathRays(entity, matrixStack, renderBuffer, length -> length * 15F + 3.75F, width -> width * 0.65F + 0.1F);
+
     }
 
     /**

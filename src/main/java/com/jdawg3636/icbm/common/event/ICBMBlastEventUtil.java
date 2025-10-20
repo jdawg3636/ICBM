@@ -95,6 +95,11 @@ public class ICBMBlastEventUtil {
         explosion.finalizeExplosion(false);
     }
 
+    public static void doVanillaExplosionParticlesAndSound(ServerWorld level, double x, double y, double z) {
+        level.playSound((PlayerEntity) null, x + 0.5, y + 0.5, z + 0.5, SoundEventReg.EXPLOSION_GENERIC.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+        level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x + 0.5, y + 0.5, z + 0.5, 1, 0, 0, 0, 1.0D);
+    }
+
     /**
      * Shared implementation for repulsive/attractive blasts
      * @param movementMultiplier positive -> away from source, negative -> towards source

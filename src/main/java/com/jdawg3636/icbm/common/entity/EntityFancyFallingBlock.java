@@ -42,7 +42,12 @@ public class EntityFancyFallingBlock extends FallingBlockEntity implements IEnti
     }
 
     public void addEntityToLevel(BlockPos initialPosition, BlockState blockState, float perTickGravity) {
+        addEntityToLevel(initialPosition, blockState, perTickGravity, Integer.MAX_VALUE);
+    }
+
+    public void addEntityToLevel(BlockPos initialPosition, BlockState blockState, float perTickGravity, int maxTicksAlive) {
         getEntityData().set(PER_TICK_GRAVITY, perTickGravity);
+        this.time = -maxTicksAlive;
         this.blockState = blockState;
         double x = initialPosition.getX() + 0.5;
         double y = initialPosition.getY();

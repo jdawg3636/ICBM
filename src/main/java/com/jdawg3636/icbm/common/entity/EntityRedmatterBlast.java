@@ -2,12 +2,13 @@ package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.event.ICBMBlastEventUtil;
+import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -21,7 +22,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
 
     private double animationPercent = 0;
     private final Queue<BlockPos> blocksToDestroy = new ArrayDeque<>();
-    private final int maxBlocksDestroyedPerTick = 50;
+    private final int maxBlocksDestroyedPerTick = 50; // TODO make configurable
 
     public EntityRedmatterBlast(EntityType<?> entityType, World level) {
         super(entityType, level, 20 * 20); // todo: make lifetime configurable
@@ -29,16 +30,15 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
 
     @Override
     public void tick() {
-        // TODO: Implement player movement for Red Matter (black hole)
         if(level != null) {
             // Entity movement
-//            if(!level.isClientSide() && ticksRemaining % 5 == 0) {
+            if(ticksRemaining % 5 == 0) {
                 for (Entity entity : this.level.getEntitiesOfClass(Entity.class, new AxisAlignedBB(blockPosition()).inflate(ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter()))) {
                     if (!(entity instanceof EntityRedmatterBlast) && !(entity instanceof ItemEntity) && !(ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(entity))) {
                         applyBlackHoleMovementToEntity(entity);
                     }
                 }
-//            }
+            }
             if(level.isClientSide()) {
                 // Visual Animation
                 addAnimationPercent(0.25D);
@@ -67,6 +67,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                             candidates = ICBMBlastEventUtil.getBlockPositionsWithinFuzzySphere(getX(), getY(), getZ(), currentRadius, currentRandom, fuzzinessPercentage).stream()
                                     .filter(pos -> !level.getBlockState(pos).isAir(level, pos))
                                     .filter(pos -> canDestroyIndestructible || level.getBlockState(pos).getBlock().explosionResistance < 3_600_000F)
+                                    .filter(pos -> level.getFluidState(pos).getType() == Fluids.EMPTY || level.getFluidState(pos).isSource())
                                     .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
                                         Collections.shuffle(list, currentRandom);
                                         return list;
@@ -79,16 +80,25 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                         // Transfer local list into field queue
                         blocksToDestroy.addAll(candidates);
                     }
-                    // If we're up to maximum radius and still out of blocks, start depleting ticks remaining.
-                    if(blocksToDestroy.isEmpty()) {
+                    // If we're up to maximum radius and still not able to keep up with our desired destruction rate, then start depleting ticks remaining.
+                    if(blocksToDestroy.size() < maxBlocksDestroyedPerTick) {
                         ticksRemaining -= 20;
                     }
+                    // Explosion Sound/Particles
+                    ICBMBlastEventUtil.doVanillaExplosionParticlesAndSound((ServerWorld) level, position().x, position().y, position().z);
                 }
                 // Break Blocks
                 for(int i = 0; i < maxBlocksDestroyedPerTick; ++i) {
                     if(!blocksToDestroy.isEmpty()) {
-                        // TODO sometimes make flying block instead of destroy
-                        level.setBlockAndUpdate(blocksToDestroy.remove(), Blocks.AIR.defaultBlockState());
+                        BlockPos blockPos = blocksToDestroy.remove();
+                        if(random.nextDouble() < 0.01 && EntityFancyFallingBlock.getBlockSafeToConvertToFallingEntity(level, blockPos)) {
+                            EntityFancyFallingBlock fancyFallingBlockEntity = EntityReg.FANCY_FALLING_BLOCK.get().create(level);
+                            if (fancyFallingBlockEntity != null) {
+                                fancyFallingBlockEntity.setDeltaMovement(level.random.nextDouble() - 0.5, level.random.nextDouble() - 0.5, level.random.nextDouble() - 0.5);
+                                fancyFallingBlockEntity.addEntityToLevel(blockPos, level.getBlockState(blockPos), -0.04f, 60 * 20);
+                            }
+                        }
+                        level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                     }
                 }
             }
@@ -96,39 +106,39 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
     }
 
     public void applyBlackHoleMovementToEntity(Entity entity) {
-        if(!(entity instanceof PlayerEntity) && !entity.level.isClientSide) {
 
-            double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter();
-            Vector3d entityPosition = entity.getPosition(0f);
-            Vector3d blackHolePosition = this.getPosition(0f);
+        // Get Constants
+        final double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter();
+        final Vector3d entityPosition = entity.getPosition(0f);
+        final Vector3d blackHolePosition = this.getPosition(0f);
 
-            // Kill Entity if Too Close
-            double entityDistanceToBlackHole = entityPosition.distanceTo(blackHolePosition);
-            if(entityDistanceToBlackHole < 6.0) {
-                entity.kill();
-                return;
-            }
+        // Kill Entity if Too Close
+        double entityDistanceToBlackHole = entityPosition.distanceTo(blackHolePosition);
+//            if(!entity.level.isClientSide() && entityDistanceToBlackHole < 6.0) {
+//                entity.kill();
+//                return;
+//            }
 
-            // Reduce cube to sphere
-            double closenessPercentage = 1.0 - (entityDistanceToBlackHole / radius);
-            if(closenessPercentage < 0.0) {
-                return;
-            }
+        // Reduce cube to sphere
+        double closenessPercentage = 1.0 - (entityDistanceToBlackHole / radius);
+        if(closenessPercentage < 0.0) {
+            return;
+        }
 
-            // Orbit Velocity
-            Vector3d blackHoleToEntity = entityPosition.subtract(blackHolePosition);
-            Vector3d blackHoleToEntityRotated = rotateVector(blackHoleToEntity, 0.00390625);
-            Vector3d entityToTarget = blackHoleToEntityRotated.subtract(blackHoleToEntity);
-            entity.push(entityToTarget.x, entityToTarget.y, entityToTarget.z);
+        // Orbit Velocity
+        Vector3d blackHoleToEntity = entityPosition.subtract(blackHolePosition);
+        Vector3d blackHoleToEntityRotated = rotateVector(blackHoleToEntity, 0.000244140625); // 2^(-12)
+        Vector3d entityToTarget = blackHoleToEntityRotated.subtract(blackHoleToEntity);
+        entity.push(entityToTarget.x, entityToTarget.y, entityToTarget.z);
 
-            // Gravity Velocity
-            Vector3d gravityVector = entity.getPosition(0f).vectorTo(blackHolePosition).scale(0.015625);
-            entity.push(gravityVector.x, gravityVector.y, gravityVector.z);
+        // Gravity Velocity
+        Vector3d gravityVector = entity.getPosition(0f).vectorTo(blackHolePosition).normalize().scale(0.125); // 2^(-4)
+        entity.push(gravityVector.x, gravityVector.y, gravityVector.z);
 
-            if (entity instanceof LivingEntity)
-            {
-                entity.fallDistance = 0;
-            }
+        // Prevent Fall Damage
+        if (entity instanceof LivingEntity)
+        {
+            entity.fallDistance = 0;
         }
 
     }
