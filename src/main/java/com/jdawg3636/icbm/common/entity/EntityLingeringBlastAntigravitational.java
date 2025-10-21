@@ -34,13 +34,22 @@ public class EntityLingeringBlastAntigravitational extends EntityLingeringBlast 
 
     @Override
     public void tick() {
+
         // Manage Lifetime
         if(ticksRemaining <= 0) {
             kill();
             return;
         }
         --ticksRemaining;
-        // Rate Limit
+
+        // Entity/Player Effects
+        for(LivingEntity livingEntity : this.level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().contract(0,1,0).inflate(radius, radius / 5.0, radius))) {
+            if(livingEntity.isAffectedByPotions() && !ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(livingEntity)) {
+                livingEntity.addEffect(new EffectInstance(Effects.LEVITATION, 21, 1, false, false));
+            }
+        }
+
+        // Rate Limit for All Remaining Effects
         if(ticksRemaining % 20 != 0) {
             return;
         }
@@ -49,12 +58,6 @@ public class EntityLingeringBlastAntigravitational extends EntityLingeringBlast 
             SoundEvent soundEvent = SoundEventReg.EXPLOSION_ANTIGRAVITATIONAL.get();
             float soundRadiusInChunks = (float)this.radius * 1.5f / 16.0f;
             this.level.playSound((PlayerEntity) null, getX() + 0.5, getY() + 0.5, getZ() + 0.5, soundEvent, SoundCategory.BLOCKS, soundRadiusInChunks, 1.0F);
-        }
-        // Entity/Player Effects
-        for(LivingEntity livingEntity : this.level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().contract(0,1,0).inflate(radius, radius / 5.0, radius))) {
-            if(livingEntity.isAffectedByPotions() && !ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(livingEntity)) {
-                livingEntity.addEffect(new EffectInstance(Effects.LEVITATION, 21, 1, false, false));
-            }
         }
         // Block Effects
         for(BlockPos blockPos : getAntigravityEligiblePositionsWithinSphere(level, getX(), getY(), getZ(), radius)) {
