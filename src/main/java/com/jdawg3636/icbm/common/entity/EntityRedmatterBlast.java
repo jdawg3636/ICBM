@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -98,7 +99,25 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                                     .filter(pos -> canDestroyIndestructible || level.getBlockState(pos).getBlock().explosionResistance < 3_600_000F)
                                     .filter(pos -> level.getFluidState(pos).getType() == Fluids.EMPTY || level.getFluidState(pos).isSource())
                                     .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
+                                        // Scramble first
                                         Collections.shuffle(list, currentRandom);
+                                        // Sort fluid source blocks to mitigate their self-regeneration
+                                        list.sort((aPos, bPos) -> {
+                                            final boolean aIsFluidSource = level.getFluidState(aPos).isSource();
+                                            final boolean bIsFluidSource = level.getFluidState(bPos).isSource();
+                                            // Handle cases where one or both of the blocks are not fluid sources
+                                            if(aIsFluidSource && !bIsFluidSource) {
+                                                return -1;
+                                            }
+                                            if(!aIsFluidSource && !bIsFluidSource) {
+                                                return 0;
+                                            }
+                                            if(!aIsFluidSource && bIsFluidSource) {
+                                                return 1;
+                                            }
+                                            // If both blocks are fluid sources, sort by y-axis and break tie with other axes.
+                                            return bPos.compareTo(aPos);
+                                        });
                                         return list;
                                     }));
                             // If candidates are sufficient to satiate, break out of loop.
@@ -126,7 +145,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                                 fancyFallingBlockEntity.addEntityToLevel(blockPos, level.getBlockState(blockPos), -0.04f, 60 * 20);
                             }
                         }
-                        level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                        level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), level.getFluidState(blockPos).getType() == Fluids.EMPTY ? 3 : 1);
                     }
                 }
             }
