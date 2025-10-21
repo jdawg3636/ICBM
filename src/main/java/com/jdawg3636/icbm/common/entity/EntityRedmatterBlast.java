@@ -183,7 +183,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
         final Vector3d entityToTarget = blackHoleToTarget.subtract(blackHoleToEntity);
 
         // Gravity Velocity
-        final Vector3d gravityVector = entity.getPosition(0f).vectorTo(blackHolePosition).normalize().scale(0.25 * entityMovementTickFrequency);
+        final Vector3d gravityVector = blackHoleToTarget.normalize().scale(-0.25 * entityMovementTickFrequency);
 
         // Apply Velocities to Entity (emulating Entity::push, but with capability to set instead of add).
         entity.setDeltaMovement(entityToTarget.add(gravityVector));
