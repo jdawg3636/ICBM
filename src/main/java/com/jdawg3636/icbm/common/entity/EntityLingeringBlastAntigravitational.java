@@ -63,8 +63,7 @@ public class EntityLingeringBlastAntigravitational extends EntityLingeringBlast 
                 // Affect Current Target
                 EntityFancyFallingBlock fancyFallingBlockEntity = EntityReg.FANCY_FALLING_BLOCK.get().create(level);
                 if (fancyFallingBlockEntity != null) {
-                    fancyFallingBlockEntity.time = -ticksRemaining - (random.nextInt() % 20);
-                    fancyFallingBlockEntity.addEntityToLevel(blockPos, level.getBlockState(blockPos), 0.02f);
+                    fancyFallingBlockEntity.addEntityToLevel(blockPos, level.getBlockState(blockPos), 0.02f, ticksRemaining + (random.nextInt() % 20));
                 }
                 level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3);
             }
