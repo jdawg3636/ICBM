@@ -145,7 +145,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                                 fancyFallingBlockEntity.addEntityToLevel(blockPos, level.getBlockState(blockPos), -0.04f, 60 * 20);
                             }
                         }
-                        level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), level.getFluidState(blockPos).getType() == Fluids.EMPTY ? 3 : 1);
+                        level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                     }
                 }
             }
