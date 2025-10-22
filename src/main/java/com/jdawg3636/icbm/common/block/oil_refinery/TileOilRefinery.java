@@ -39,8 +39,6 @@ import java.util.Optional;
 
 public class TileOilRefinery extends TileMachine implements ITickableTileEntity {
 
-    public static final int ENERGY_CONSUMPTION_PER_ACTIVE_TICK = 30; // todo make this configurable
-
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.oil_refinery");
 
     public static enum SlotIDs {
@@ -124,7 +122,7 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
         if(!this.level.isClientSide && this.activeRecipe.isPresent()) {
             // Perform processing if requirements are met
             boolean haveRoomForOutput = outputTank.getSpace() >= this.activeRecipe.get().getResult().getAmount();
-            if(haveRoomForOutput && tryConsumeEnergy(ENERGY_CONSUMPTION_PER_ACTIVE_TICK)) {
+            if(haveRoomForOutput && tryConsumeEnergy(ICBMReference.COMMON_CONFIG.getOilRefineryEnergyUsagePerTick())) {
                 this.ticksProcessing += 1;
                 updateNearbyClients();
             }

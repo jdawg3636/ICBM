@@ -52,6 +52,9 @@ public class ICBMConfig {
         private final ForgeConfigSpec.BooleanValue antimatterCanDestroyBedrock;
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
         private final ForgeConfigSpec.BooleanValue redmatterCanDestroyBedrock;
+        private final ForgeConfigSpec.DoubleValue redmatterFuzzinessPercentage;
+        private final ForgeConfigSpec.IntValue redmatterMaxBlocksDestroyedPerTick;
+        private final ForgeConfigSpec.IntValue redmatterNumTicksLingerAfterCompletion;
         private final ForgeConfigSpec.DoubleValue rejuventationFuzzinessPercentage;
 
         private final ForgeConfigSpec.BooleanValue engineeredPathogenPerpetualForPlayers;
@@ -93,6 +96,8 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedIncreasePerTick;
         private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedPenaltyForCollision;
         private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedRequiredToGenerateAntimatter;
+
+        private final ForgeConfigSpec.IntValue oilRefineryEnergyUsagePerTick;
 
         private final ForgeConfigSpec.DoubleValue empTowerRangeMinimum;
         private final ForgeConfigSpec.DoubleValue empTowerRangeMaximum;
@@ -159,16 +164,33 @@ public class ICBMConfig {
                     .define("antimatterCanDestroyBedrock", false);
             this.antimatterFuzzinessPercentage = builder
                     .comment("",
-                            "Defines the percentage, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
+                            "Defines the percentage chance, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
                             "section within the radius of an antimatter blast will be destroyed in the blast.")
                     .defineInRange("antimatterFuzzynessPercentage", 0.4D, 0D, 1D);
             this.redmatterCanDestroyBedrock = builder
                     .comment("",
                             "Enables/disables the ability of Red Matter blasts to destroy normally indestructible blocks, such as bedrock.")
                     .define("redmatterCanDestroyBedrock", false);
+            this.redmatterFuzzinessPercentage = builder
+                    .comment("",
+                            "Defines the percentage chance, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
+                            "section within the radius of a redmatter blast will be destroyed in the blast.")
+                    .defineInRange("redmatterFuzzinessPercentage", 0.4D, 0D, 1D);
+            this.redmatterMaxBlocksDestroyedPerTick = builder
+                    .comment("",
+                            "Defines the maximum number of blocks that a redmatter blast (black hole) can destroy per tick. 20 ticks = 1 second.")
+                    .defineInRange("redmatterMaxBlocksDestroyedPerTick", 50, 0, Integer.MAX_VALUE);
+            this.redmatterNumTicksLingerAfterCompletion = builder
+                    .comment("",
+                            "Defines the number of ticks (20 ticks = 1 second) that a black hole will survive after it is no longer",
+                            "able to find at least redmatterMaxBlocksDestroyedPerTick non-fluid blocks within its radius.",
+                            "Note: increasing this can have a significant performance penalty. Since the redmatterMaxBlocksDestroyedPerTick",
+                            "threshold is not being met, the black hole will re-search the entire blast area once every second looking",
+                            "for new blocks to destroy. This is expensive and WILL impact server TPS.")
+                    .defineInRange("redmatterNumTicksLingerAfterCompletion", 400, 0, Integer.MAX_VALUE);
             this.rejuventationFuzzinessPercentage = builder
                     .comment("",
-                            "Defines the percentage, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
+                            "Defines the percentage chance, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
                             "section within the radius of an rejuvenation blast will be rejuvenated in the blast.")
                     .defineInRange("rejuventationFuzzinessPercentage", 0.4D, 0D, 1D);
             this.engineeredPathogenPerpetualForPlayers = builder
@@ -316,6 +338,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the speed in blocks per tick that is required for a particle to be converted into antimatter in a particle accelerator.")
                     .defineInRange("particleAcceleratorSpeedRequiredToGenerateAntimatter", 0.885D, 0, Float.MAX_VALUE);
+            this.oilRefineryEnergyUsagePerTick = builder
+                    .comment("",
+                            "Defines the amount of Forge Energy (FE) consumed per tick by an oil refinery while it is active.")
+                    .defineInRange("oilRefineryEnergyUsagePerTick", 30, 0, Integer.MAX_VALUE);
             this.empTowerRangeMinimum = builder
                     .comment("",
                             "Defines the minimum effective radius that a user may specify for an EMP Tower")
@@ -386,6 +412,18 @@ public class ICBMConfig {
 
         public boolean getRedmatterCanDestroyBedrock() {
             return redmatterCanDestroyBedrock.get();
+        }
+
+        public double getRedmatterFuzzinessPercentage() {
+            return redmatterFuzzinessPercentage.get();
+        }
+
+        public int getRedmatterMaxBlocksDestroyedPerTick() {
+            return redmatterMaxBlocksDestroyedPerTick.get();
+        }
+
+        public int getRedmatterNumTicksLingerAfterCompletion() {
+            return redmatterNumTicksLingerAfterCompletion.get();
         }
 
         public double getRejuvenationFuzzinessPercentage() {
@@ -530,6 +568,10 @@ public class ICBMConfig {
 
         public double getParticleAcceleratorSpeedRequiredToGenerateAntimatter() {
             return particleAcceleratorSpeedRequiredToGenerateAntimatter.get();
+        }
+
+        public int getOilRefineryEnergyUsagePerTick() {
+            return oilRefineryEnergyUsagePerTick.get();
         }
 
         public double getEMPTowerRangeMinimum() {

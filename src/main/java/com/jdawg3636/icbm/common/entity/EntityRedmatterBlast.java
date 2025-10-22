@@ -27,11 +27,10 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
 
     private double animationPercent = 0;
     private final Queue<BlockPos> blocksToDestroy = new ArrayDeque<>();
-    private static final int maxBlocksDestroyedPerTick = 50; // TODO make configurable
     private static final int entityMovementTickFrequency = 1;
 
     public EntityRedmatterBlast(EntityType<?> entityType, World level) {
-        super(entityType, level, 20 * 20); // todo: make lifetime configurable
+        super(entityType, level, ICBMReference.COMMON_CONFIG.getRedmatterNumTicksLingerAfterCompletion());
     }
 
     @Override
@@ -85,8 +84,8 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                         unableToFindEnoughBlocks = true;
                         // Config values
                         final double maxRadius = ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter();
-                        final double fuzzinessPercentage = ICBMReference.COMMON_CONFIG.getAntimatterFuzzinessPercentage(); // todo make configurable separate from antimatter
-                        final boolean canDestroyIndestructible = ICBMReference.COMMON_CONFIG.getAntimatterCanDestroyBedrock(); // todo make configurable separate from antimatter
+                        final double fuzzinessPercentage = ICBMReference.COMMON_CONFIG.getRedmatterFuzzinessPercentage();
+                        final boolean canDestroyIndestructible = ICBMReference.COMMON_CONFIG.getRedmatterCanDestroyBedrock();
                         // Calculate current blocks that are candidates for deletion this tick. Radius is increased as-necessary to give illusion of blocks from the center being affected first
                         List<BlockPos> candidates = Collections.emptyList();
                         for (int currentRadius = 8; currentRadius < maxRadius; ++currentRadius) {
@@ -120,7 +119,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                                         return list;
                                     }));
                             // If candidates are sufficient to satiate, break out of loop.
-                            if (candidates.size() >= maxBlocksDestroyedPerTick && candidates.stream().anyMatch(pos -> level.getFluidState(pos).getType() == Fluids.EMPTY)) {
+                            if (candidates.size() >= ICBMReference.COMMON_CONFIG.getRedmatterMaxBlocksDestroyedPerTick() && candidates.stream().anyMatch(pos -> level.getFluidState(pos).getType() == Fluids.EMPTY)) {
                                 unableToFindEnoughBlocks = false;
                                 break;
                             }
@@ -134,7 +133,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
                     }
                 }
                 // Break Blocks
-                for(int i = 0; i < maxBlocksDestroyedPerTick; ++i) {
+                for(int i = 0; i < ICBMReference.COMMON_CONFIG.getRedmatterMaxBlocksDestroyedPerTick(); ++i) {
                     if(!blocksToDestroy.isEmpty()) {
                         BlockPos blockPos = blocksToDestroy.remove();
                         if(random.nextDouble() < 0.01 && EntityFancyFallingBlock.getBlockSafeToConvertToFallingEntity(level, blockPos)) {
