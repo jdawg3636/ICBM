@@ -45,6 +45,9 @@ public class ICBMConfig {
         private final ForgeConfigSpec.BooleanValue enableEasterEggForRedcoats;
 
         private final ForgeConfigSpec.DoubleValue blastResistanceObsidian;
+        private final ForgeConfigSpec.DoubleValue blastResistanceConcreteBasic;
+        private final ForgeConfigSpec.DoubleValue blastResistanceConcreteCompact;
+        private final ForgeConfigSpec.DoubleValue blastResistanceConcreteReinforced;
 
         private final ForgeConfigSpec.BooleanValue antimatterCanDestroyBedrock;
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
@@ -137,6 +140,18 @@ public class ICBMConfig {
                             "MODS)."
                     )
                     .defineInRange("blastResistanceObsidian", 25.0, -1.0, Float.MAX_VALUE);
+            this.blastResistanceConcreteBasic = builder
+                    .comment("",
+                            "Blast/explosion resistance of Basic Concrete. For context, end stone is 9.0, normal stone is 6.0, and dirt is 0.5.")
+                    .defineInRange("blastResistanceConcreteBasic", 25.0, 0.0, Float.MAX_VALUE);
+            this.blastResistanceConcreteCompact = builder
+                    .comment("",
+                            "Blast/explosion resistance of Compact Concrete. For context, end stone is 9.0, normal stone is 6.0, and dirt is 0.5.")
+                    .defineInRange("blastResistanceConcreteCompact", 50.0, 0.0, Float.MAX_VALUE);
+            this.blastResistanceConcreteReinforced = builder
+                    .comment("",
+                            "Blast/explosion resistance of Reinforced Concrete. For context, end stone is 9.0, normal stone is 6.0, and dirt is 0.5.")
+                    .defineInRange("blastResistanceConcreteReinforced", 75.0, 0.0, Float.MAX_VALUE);
             this.antimatterCanDestroyBedrock = builder
                     .comment("",
                             "Enables/disables the ability of Antimatter blasts to destroy normally indestructible blocks, such as bedrock.")
@@ -342,6 +357,19 @@ public class ICBMConfig {
         public float getBlastResistanceObsidian() {
             return blastResistanceObsidian.get().floatValue();
         }
+
+        public float getBlastResistanceConcreteBasic() {
+            return  blastResistanceConcreteBasic.get().floatValue();
+        }
+
+        public float getBlastResistanceConcreteCompact() {
+            return  blastResistanceConcreteCompact.get().floatValue();
+        }
+
+        public float getBlastResistanceConcreteReinforced() {
+            return  blastResistanceConcreteReinforced.get().floatValue();
+        }
+
 
         public boolean getAntimatterCanDestroyBedrock() {
             return antimatterCanDestroyBedrock.get();
