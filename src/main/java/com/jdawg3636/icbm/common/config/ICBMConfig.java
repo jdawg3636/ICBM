@@ -59,6 +59,7 @@ public class ICBMConfig {
 
         private final ForgeConfigSpec.IntValue blastDepthBreaching;
         private final ForgeConfigSpec.DoubleValue blastRadiusAntimatter;
+        private final ForgeConfigSpec.DoubleValue blastRadiusAntigravitational;
         private final ForgeConfigSpec.DoubleValue blastRadiusContagion;
         private final ForgeConfigSpec.DoubleValue blastRadiusEMP;
         private final ForgeConfigSpec.DoubleValue blastRadiusEnder;
@@ -187,6 +188,10 @@ public class ICBMConfig {
                             "actual depth for a given blast may be lower, depending on the blast resistance of the blocks",
                             "in its way.")
                     .defineInRange("blastDepthBreaching", 7, 1, Integer.MAX_VALUE);
+            this.blastRadiusAntigravitational = builder
+                    .comment("",
+                            "Defines the maximum radius of an Antimatter Blast.")
+                    .defineInRange("blastRadiusAntigravitational", 20D, 0D, Float.MAX_VALUE);
             this.blastRadiusAntimatter = builder
                     .comment("",
                             "Defines the maximum radius of an Antimatter Blast.")
@@ -397,6 +402,10 @@ public class ICBMConfig {
 
         public int getBlastDepthBreaching() {
             return blastDepthBreaching.get();
+        }
+
+        public double getBlastRadiusAntigravitational() {
+            return blastRadiusAntigravitational.get();
         }
 
         public double getBlastRadiusAntimatter() {

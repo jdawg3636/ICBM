@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityLingeringBlastAntigravitational;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
@@ -15,19 +16,25 @@ public class EventBlastAntigravitational extends AbstractBlastEvent {
 
     @Override
     public boolean executeBlast() {
+        // Particles
         ICBMBlastEventUtil.doBlastParticles(this);
         // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
         if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
             return true;
         }
+        // Get radius from config
+        final double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusAntigravitational();
+        // Try to construct entity
         EntityLingeringBlastAntigravitational entity = EntityReg.BLAST_ANTIGRAVITATIONAL.get().create(getBlastWorld());
+        // If successful, initialize its variable, add it to the level, and return true.
         if(entity != null) {
             entity.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
             entity.ticksRemaining = 25 * 20;
             entity.blastType = getBlastType();
-            entity.addEntityToLevel(getBlastType() == Type.GRENADE ? 10 : 20); //todo: make configurable
+            entity.addEntityToLevel(getBlastType() == Type.GRENADE ? (radius / 2.0) : radius);
             return true;
         }
+        // Else, return false.
         return false;
     }
 
