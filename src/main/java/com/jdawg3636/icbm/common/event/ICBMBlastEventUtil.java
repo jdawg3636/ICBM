@@ -108,7 +108,7 @@ public class ICBMBlastEventUtil {
      * Shared implementation for repulsive/attractive blasts
      * @param movementMultiplier positive -> away from source, negative -> towards source
      */
-    public static void doMovementBlast(AbstractBlastEvent event, double movementMultiplier) {
+    public static void doMovementBlast(AbstractBlastEvent event, double movementMultiplier, double radius) {
         doBlastSoundAndParticles(event);
         doVanillaExplosion(event, 4.0F / 2F);
 
@@ -117,8 +117,6 @@ public class ICBMBlastEventUtil {
             return;
         }
 
-        double radius = 10;
-
         event.getBlastWorld().getEntities(null, new AxisAlignedBB(event.getBlastPosition()).inflate(radius)).forEach(
                 (Entity entity) -> {
 
@@ -126,7 +124,7 @@ public class ICBMBlastEventUtil {
                     double deltaY = entity.getY() - event.getBlastPosition().getY() + 0.5;
                     double deltaZ = entity.getZ() - event.getBlastPosition().getZ() + 0.5;
                     double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
-                    double basePushDistance = movementMultiplier * 10D;
+                    double basePushDistance = movementMultiplier * radius;
 
                     Vector3d deltaMovement = new Vector3d(basePushDistance * deltaX / distance, basePushDistance * deltaY / distance / 3, basePushDistance * deltaZ / distance);
                     entity.setDeltaMovement(entity.getDeltaMovement().add(deltaMovement));

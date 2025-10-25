@@ -65,6 +65,7 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue blastRadiusAntigravitational;
         private final ForgeConfigSpec.DoubleValue blastRadiusAntimatter;
         private final ForgeConfigSpec.DoubleValue blastRadiusAnvil;
+        private final ForgeConfigSpec.DoubleValue blastRadiusAttractive;
         private final ForgeConfigSpec.DoubleValue blastRadiusContagion;
         private final ForgeConfigSpec.DoubleValue blastRadiusEMP;
         private final ForgeConfigSpec.DoubleValue blastRadiusEnder;
@@ -74,6 +75,7 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue blastRadiusNuclear;
         private final ForgeConfigSpec.DoubleValue blastRadiusRedmatter;
         private final ForgeConfigSpec.DoubleValue blastRadiusRejuvenation;
+        private final ForgeConfigSpec.DoubleValue blastRadiusRepulsive;
         private final ForgeConfigSpec.DoubleValue blastRadiusSonic;
 
         private final ForgeConfigSpec.IntValue oreCopperSize;
@@ -228,6 +230,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the approximate radius of an Anvil Blast. The actual radius will usually be slightly higher.")
                     .defineInRange("blastRadiusAnvil", 15D, 0D, Float.MAX_VALUE);
+            this.blastRadiusAttractive = builder
+                    .comment("",
+                            "Defines the maximum radius of an Attractive Blast.")
+                    .defineInRange("blastRadiusAttractive", 10D, 0D, Float.MAX_VALUE);
             this.blastRadiusContagion = builder
                     .comment("",
                             "Defines the maximum radius of a Contagion Blast.")
@@ -264,6 +270,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the maximum radius of a Rejuvenation Blast.")
                     .defineInRange("blastRadiusRejuvenation", 30D, 0D, Float.MAX_VALUE);
+            this.blastRadiusRepulsive = builder
+                    .comment("",
+                            "Defines the maximum radius of a Repulsive Blast.")
+                    .defineInRange("blastRadiusRepulsive", 10D, 0D, Float.MAX_VALUE);
             this.blastRadiusSonic = builder
                     .comment("",
                             "Defines the maximum radius of a Sonic Blast.")
@@ -467,6 +477,10 @@ public class ICBMConfig {
             return blastRadiusAnvil.get();
         }
 
+        public double getBlastRadiusAttractive() {
+            return blastRadiusAttractive.get();
+        }
+
         public double getBlastRadiusContagion() {
             return blastRadiusContagion.get();
         }
@@ -501,6 +515,10 @@ public class ICBMConfig {
 
         public double getBlastRadiusRejuvenation() {
             return blastRadiusRejuvenation.get();
+        }
+
+        public double getBlastRadiusRepulsive() {
+            return blastRadiusRepulsive.get();
         }
 
         public double getBlastRadiusSonic() {
