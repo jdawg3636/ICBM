@@ -52,11 +52,16 @@ public class ICBMConfig {
         private final ForgeConfigSpec.IntValue antigravitationalBlastLingerDuration;
         private final ForgeConfigSpec.BooleanValue antimatterCanDestroyBedrock;
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
+        private final ForgeConfigSpec.IntValue chemicalBlastLingerDuration;
+        private final ForgeConfigSpec.IntValue contagionBlastLingerDuration;
+        private final ForgeConfigSpec.IntValue debilitationBlastLingerDuration;
+        private final ForgeConfigSpec.IntValue enderBlastLingerDuration;
+        private final ForgeConfigSpec.IntValue nuclearBlastRadiationLingerDuration;
         private final ForgeConfigSpec.BooleanValue redmatterCanDestroyBedrock;
         private final ForgeConfigSpec.DoubleValue redmatterFuzzinessPercentage;
         private final ForgeConfigSpec.IntValue redmatterMaxBlocksDestroyedPerTick;
         private final ForgeConfigSpec.IntValue redmatterNumTicksLingerAfterCompletion;
-        private final ForgeConfigSpec.DoubleValue rejuventationFuzzinessPercentage;
+        private final ForgeConfigSpec.DoubleValue rejuvenationFuzzinessPercentage;
 
         private final ForgeConfigSpec.BooleanValue engineeredPathogenPerpetualForPlayers;
         private final ForgeConfigSpec.DoubleValue engineeredPathogenSpreadRadius;
@@ -66,17 +71,23 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue blastRadiusAntimatter;
         private final ForgeConfigSpec.DoubleValue blastRadiusAnvil;
         private final ForgeConfigSpec.DoubleValue blastRadiusAttractive;
+        private final ForgeConfigSpec.DoubleValue blastRadiusCondensed;
         private final ForgeConfigSpec.DoubleValue blastRadiusContagion;
         private final ForgeConfigSpec.DoubleValue blastRadiusEMP;
         private final ForgeConfigSpec.DoubleValue blastRadiusEnder;
         private final ForgeConfigSpec.DoubleValue blastRadiusEndothermic;
         private final ForgeConfigSpec.DoubleValue blastRadiusExothermic;
         private final ForgeConfigSpec.DoubleValue blastRadiusHypersonic;
+        private final ForgeConfigSpec.DoubleValue blastRadiusIncendiary;
+        private final ForgeConfigSpec.DoubleValue blastRadiusNightmare;
         private final ForgeConfigSpec.DoubleValue blastRadiusNuclear;
         private final ForgeConfigSpec.DoubleValue blastRadiusRedmatter;
         private final ForgeConfigSpec.DoubleValue blastRadiusRejuvenation;
         private final ForgeConfigSpec.DoubleValue blastRadiusRepulsive;
+        private final ForgeConfigSpec.DoubleValue blastRadiusShrapnelImpact;
+        private final ForgeConfigSpec.DoubleValue blastRadiusSMine;
         private final ForgeConfigSpec.DoubleValue blastRadiusSonic;
+        private final ForgeConfigSpec.DoubleValue blastRadiusThermobaric;
 
         private final ForgeConfigSpec.IntValue oreCopperSize;
         private final ForgeConfigSpec.IntValue oreCopperRange;
@@ -175,6 +186,26 @@ public class ICBMConfig {
                             "Defines the percentage chance, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
                             "section within the radius of an antimatter blast will be destroyed in the blast.")
                     .defineInRange("antimatterFuzzynessPercentage", 0.4D, 0D, 1D);
+            this.chemicalBlastLingerDuration = builder
+                    .comment("",
+                            "Duration in ticks that the chemical blast lingers after detonation. 20 ticks = 1 second.")
+                    .defineInRange("chemicalBlastLingerDuration", 100, 0, Integer.MAX_VALUE);
+            this.contagionBlastLingerDuration = builder
+                    .comment("",
+                            "Duration in ticks that the contagion blast lingers after detonation. 20 ticks = 1 second.")
+                    .defineInRange("contagionBlastLingerDuration", 400, 0, Integer.MAX_VALUE);
+            this.debilitationBlastLingerDuration = builder
+                    .comment("",
+                            "Duration in ticks that the debilitation blast lingers after detonation. 20 ticks = 1 second.")
+                    .defineInRange("debilitationBlastLingerDuration", 400, 0, Integer.MAX_VALUE);
+            this.enderBlastLingerDuration = builder
+                    .comment("",
+                            "Duration in ticks that the ender blast lingers after detonation. 20 ticks = 1 second.")
+                    .defineInRange("enderBlastLingerDuration", 200, 0, Integer.MAX_VALUE);
+            this.nuclearBlastRadiationLingerDuration = builder
+                    .comment("",
+                            "Duration in ticks that the radiation lingers after a nuclear blast. 20 ticks = 1 second.")
+                    .defineInRange("nuclearBlastRadiationLingerDuration", 6000, 0, Integer.MAX_VALUE);
             this.redmatterCanDestroyBedrock = builder
                     .comment("",
                             "Enables/disables the ability of Red Matter blasts to destroy normally indestructible blocks, such as bedrock.")
@@ -196,11 +227,11 @@ public class ICBMConfig {
                             "threshold is not being met, the black hole will re-search the entire blast area once every second looking",
                             "for new blocks to destroy. This is expensive and WILL impact server TPS.")
                     .defineInRange("redmatterNumTicksLingerAfterCompletion", 400, 0, Integer.MAX_VALUE);
-            this.rejuventationFuzzinessPercentage = builder
+            this.rejuvenationFuzzinessPercentage = builder
                     .comment("",
                             "Defines the percentage chance, as a decimal (0.0 = 0%, 1.0 = 100%), that a block within the \"fuzzy\"",
                             "section within the radius of an rejuvenation blast will be rejuvenated in the blast.")
-                    .defineInRange("rejuventationFuzzinessPercentage", 0.4D, 0D, 1D);
+                    .defineInRange("rejuvenationFuzzinessPercentage", 0.4D, 0D, 1D);
             this.engineeredPathogenPerpetualForPlayers = builder
                     .comment("",
                             "If enabled, players will never recover from The Engineered Pathogen unless they die or",
@@ -234,6 +265,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the maximum radius of an Attractive Blast.")
                     .defineInRange("blastRadiusAttractive", 10D, 0D, Float.MAX_VALUE);
+            this.blastRadiusCondensed = builder
+                    .comment("",
+                            "Defines the maximum radius of a Condensed/Conventional Blast.")
+                    .defineInRange("blastRadiusCondensed", 7D, 0D, Float.MAX_VALUE);
             this.blastRadiusContagion = builder
                     .comment("",
                             "Defines the maximum radius of a Contagion Blast.")
@@ -258,6 +293,14 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the maximum radius of a Hypersonic Blast.")
                     .defineInRange("blastRadiusHypersonic", 13D, 0D, Float.MAX_VALUE);
+            this.blastRadiusIncendiary = builder
+                    .comment("",
+                            "Defines the maximum radius of an Incendiary Blast.")
+                    .defineInRange("blastRadiusIncendiary", 14D, 0D, Float.MAX_VALUE);
+            this.blastRadiusNightmare = builder
+                    .comment("",
+                            "Defines the maximum radius of a Nightmare Blast.")
+                    .defineInRange("blastRadiusNightmare", 50D, 0D, Float.MAX_VALUE);
             this.blastRadiusNuclear = builder
                     .comment("",
                             "Defines the maximum radius of a Nuclear Blast.")
@@ -265,7 +308,7 @@ public class ICBMConfig {
             this.blastRadiusRedmatter = builder
                     .comment("",
                             "Defines the maximum radius of a Red Matter Blast.")
-                    .defineInRange("blastRadiusRedmatter", 50D, 0D, Float.MAX_VALUE);
+                    .defineInRange("blastRadiusRedmatter", 50D, 8, Float.MAX_VALUE);
             this.blastRadiusRejuvenation = builder
                     .comment("",
                             "Defines the maximum radius of a Rejuvenation Blast.")
@@ -274,10 +317,24 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the maximum radius of a Repulsive Blast.")
                     .defineInRange("blastRadiusRepulsive", 10D, 0D, Float.MAX_VALUE);
+            this.blastRadiusShrapnelImpact = builder
+                    .comment("",
+                            "Defines the maximum radius of a the blast resulting from a shrapnel impact. Note that this",
+                            "is the radius of the explosion produced by each individual piece of shrapnel, not",
+                            "the radius over which the Shrapnel Blast distributes the shrapnel to begin with.")
+                    .defineInRange("blastRadiusShrapnelImpact", 2D, 0D, Float.MAX_VALUE);
+            this.blastRadiusSMine = builder
+                    .comment("",
+                            "Defines the maximum radius of an S-Mine.")
+                    .defineInRange("blastRadiusSMine", 7D, 0D, Float.MAX_VALUE);
             this.blastRadiusSonic = builder
                     .comment("",
                             "Defines the maximum radius of a Sonic Blast.")
                     .defineInRange("blastRadiusSonic", 9D, 0D, Float.MAX_VALUE);
+            this.blastRadiusThermobaric = builder
+                    .comment("",
+                            "Defines the maximum radius of a Thermobaric Blast.")
+                    .defineInRange("blastRadiusThermobaric", 16D, 0D, Float.MAX_VALUE);
             this.oreCopperSize = builder
                     .comment("",
                             "Defines the 'size' parameter of Copper Ore vein generation.")
@@ -433,6 +490,26 @@ public class ICBMConfig {
             return antimatterFuzzinessPercentage.get();
         }
 
+        public int getChemicalBlastLingerDuration() {
+            return chemicalBlastLingerDuration.get();
+        }
+
+        public int getContagionBlastLingerDuration() {
+            return contagionBlastLingerDuration.get();
+        }
+
+        public int getDebilitationBlastLingerDuration() {
+            return debilitationBlastLingerDuration.get();
+        }
+
+        public int getEnderBlastLingerDuration() {
+            return enderBlastLingerDuration.get();
+        }
+
+        public int getNuclearBlastRadiationLingerDuration() {
+            return nuclearBlastRadiationLingerDuration.get();
+        }
+
         public boolean getRedmatterCanDestroyBedrock() {
             return redmatterCanDestroyBedrock.get();
         }
@@ -450,7 +527,7 @@ public class ICBMConfig {
         }
 
         public double getRejuvenationFuzzinessPercentage() {
-            return rejuventationFuzzinessPercentage.get();
+            return rejuvenationFuzzinessPercentage.get();
         }
 
         public boolean getEngineeredPathogenPerpetualForPlayers() {
@@ -481,6 +558,10 @@ public class ICBMConfig {
             return blastRadiusAttractive.get();
         }
 
+        public double getBlastRadiusCondensed() {
+            return blastRadiusCondensed.get();
+        }
+
         public double getBlastRadiusContagion() {
             return blastRadiusContagion.get();
         }
@@ -505,6 +586,14 @@ public class ICBMConfig {
             return blastRadiusHypersonic.get();
         }
 
+        public double getBlastRadiusIncendiary() {
+            return blastRadiusIncendiary.get();
+        }
+
+        public double getBlastRadiusNightmare() {
+            return blastRadiusNightmare.get();
+        }
+
         public double getBlastRadiusNuclear() {
             return blastRadiusNuclear.get();
         }
@@ -521,8 +610,20 @@ public class ICBMConfig {
             return blastRadiusRepulsive.get();
         }
 
+        public double getBlastRadiusShrapnelImpact() {
+            return blastRadiusShrapnelImpact.get();
+        }
+
+        public double getBlastRadiusSMine() {
+            return blastRadiusSMine.get();
+        }
+
         public double getBlastRadiusSonic() {
             return blastRadiusSonic.get();
+        }
+
+        public double getBlastRadiusThermobaric() {
+            return blastRadiusThermobaric.get();
         }
 
         public int getOreCopperSize() {

@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.thread;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityLingeringBlastRadiation;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.EntityReg;
@@ -31,7 +32,7 @@ public class NuclearBlastManagerThread extends RaytracedBlastManagerThread {
             EntityLingeringBlastRadiation entity = EntityReg.BLAST_RADIATION.get().create(level);
             if(entity != null) {
                 entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
-                entity.ticksRemaining = 300 * 20;
+                entity.ticksRemaining = ICBMReference.COMMON_CONFIG.getNuclearBlastRadiationLingerDuration();
                 entity.radius = radius;
                 level.addFreshEntity(entity);
             }

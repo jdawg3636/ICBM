@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -30,7 +31,7 @@ public class EventBlastIncendiary extends AbstractBlastEvent {
         // Would like to clean this up a bit if possible
         if (!getBlastWorld().isClientSide) {
 
-            int radius = (!(getBlastType() == AbstractBlastEvent.Type.GRENADE)) ? 14 : 7;
+            int radius = (int)((getBlastType() == AbstractBlastEvent.Type.GRENADE ? 0.5 : 1) * ICBMReference.COMMON_CONFIG.getBlastRadiusIncendiary());
 
             for (int x = 0; x < radius; ++x) {
                 for (int y = 0; y < radius; ++y) {

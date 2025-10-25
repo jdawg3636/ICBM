@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityLingeringBlast;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
@@ -24,7 +25,7 @@ public class EventBlastContagion extends AbstractBlastEvent {
         EntityLingeringBlast entity = EntityReg.BLAST_CONTAGION.get().create(getBlastWorld());
         if(entity != null) {
             entity.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
-            entity.ticksRemaining = 400;
+            entity.ticksRemaining = ICBMReference.COMMON_CONFIG.getContagionBlastLingerDuration();
             entity.blastType = getBlastType();
             getBlastWorld().addFreshEntity(entity);
             return true;
