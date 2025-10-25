@@ -29,7 +29,7 @@ public class EventBlastAntigravitational extends AbstractBlastEvent {
         // If successful, initialize its variable, add it to the level, and return true.
         if(entity != null) {
             entity.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
-            entity.ticksRemaining = 25 * 20;
+            entity.ticksRemaining = ICBMReference.COMMON_CONFIG.getAntigravitationalBlastLingerDuration();
             entity.blastType = getBlastType();
             entity.addEntityToLevel(getBlastType() == Type.GRENADE ? (radius / 2.0) : radius);
             return true;

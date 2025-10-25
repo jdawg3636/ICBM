@@ -49,6 +49,7 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue blastResistanceConcreteCompact;
         private final ForgeConfigSpec.DoubleValue blastResistanceConcreteReinforced;
 
+        private final ForgeConfigSpec.IntValue antigravitationalBlastLingerDuration;
         private final ForgeConfigSpec.BooleanValue antimatterCanDestroyBedrock;
         private final ForgeConfigSpec.DoubleValue antimatterFuzzinessPercentage;
         private final ForgeConfigSpec.BooleanValue redmatterCanDestroyBedrock;
@@ -61,8 +62,9 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue engineeredPathogenSpreadRadius;
 
         private final ForgeConfigSpec.IntValue blastDepthBreaching;
-        private final ForgeConfigSpec.DoubleValue blastRadiusAntimatter;
         private final ForgeConfigSpec.DoubleValue blastRadiusAntigravitational;
+        private final ForgeConfigSpec.DoubleValue blastRadiusAntimatter;
+        private final ForgeConfigSpec.DoubleValue blastRadiusAnvil;
         private final ForgeConfigSpec.DoubleValue blastRadiusContagion;
         private final ForgeConfigSpec.DoubleValue blastRadiusEMP;
         private final ForgeConfigSpec.DoubleValue blastRadiusEnder;
@@ -158,6 +160,10 @@ public class ICBMConfig {
                     .comment("",
                             "Blast/explosion resistance of Reinforced Concrete. For context, end stone is 9.0, normal stone is 6.0, and dirt is 0.5.")
                     .defineInRange("blastResistanceConcreteReinforced", 75.0, 0.0, Float.MAX_VALUE);
+            this.antigravitationalBlastLingerDuration = builder
+                    .comment("",
+                            "Duration in ticks of the antigravitational blast effect after detonation. 20 ticks = 1 second.")
+                    .defineInRange("antigravitationalBlastLingerDuration", 500, 0, Integer.MAX_VALUE);
             this.antimatterCanDestroyBedrock = builder
                     .comment("",
                             "Enables/disables the ability of Antimatter blasts to destroy normally indestructible blocks, such as bedrock.")
@@ -218,6 +224,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the maximum radius of an Antimatter Blast.")
                     .defineInRange("blastRadiusAntimatter", 50D, 0D, Float.MAX_VALUE);
+            this.blastRadiusAnvil = builder
+                    .comment("",
+                            "Defines the approximate radius of an Anvil Blast. The actual radius will usually be slightly higher.")
+                    .defineInRange("blastRadiusAnvil", 15D, 0D, Float.MAX_VALUE);
             this.blastRadiusContagion = builder
                     .comment("",
                             "Defines the maximum radius of a Contagion Blast.")
@@ -390,17 +400,20 @@ public class ICBMConfig {
         }
 
         public float getBlastResistanceConcreteBasic() {
-            return  blastResistanceConcreteBasic.get().floatValue();
+            return blastResistanceConcreteBasic.get().floatValue();
         }
 
         public float getBlastResistanceConcreteCompact() {
-            return  blastResistanceConcreteCompact.get().floatValue();
+            return blastResistanceConcreteCompact.get().floatValue();
         }
 
         public float getBlastResistanceConcreteReinforced() {
-            return  blastResistanceConcreteReinforced.get().floatValue();
+            return blastResistanceConcreteReinforced.get().floatValue();
         }
 
+        public int getAntigravitationalBlastLingerDuration() {
+            return antigravitationalBlastLingerDuration.get();
+        }
 
         public boolean getAntimatterCanDestroyBedrock() {
             return antimatterCanDestroyBedrock.get();
@@ -448,6 +461,10 @@ public class ICBMConfig {
 
         public double getBlastRadiusAntimatter() {
             return blastRadiusAntimatter.get();
+        }
+
+        public double getBlastRadiusAnvil() {
+            return blastRadiusAnvil.get();
         }
 
         public double getBlastRadiusContagion() {
