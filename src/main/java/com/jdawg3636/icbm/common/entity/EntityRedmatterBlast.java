@@ -40,7 +40,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
             // Entity Movement (Client + Server)
             if(tickCount % entityMovementTickFrequency == 0) {
                 for (Entity entity : this.level.getEntitiesOfClass(Entity.class, new AxisAlignedBB(blockPosition()).inflate(ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter()))) {
-                    if (!(entity instanceof EntityRedmatterBlast) && !(entity instanceof ItemEntity) && !(ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(entity))) {
+                    if (!(entity instanceof EntityRedmatterBlast) && !(ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(entity))) {
                         applyBlackHoleMovementToEntity(entity);
                     }
                 }
