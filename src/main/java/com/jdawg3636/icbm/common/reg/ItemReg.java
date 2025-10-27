@@ -57,7 +57,6 @@ public class ItemReg {
     public static final RegistryObject<Item> EXPLOSIVES_ANVIL               = ITEMS.register("explosives_anvil",                () -> new BlockItem(BlockReg.EXPLOSIVES_ANVIL.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EXPLOSIVES_REPULSIVE           = ITEMS.register("explosives_repulsive",            () -> new BlockItem(BlockReg.EXPLOSIVES_REPULSIVE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EXPLOSIVES_ATTRACTIVE          = ITEMS.register("explosives_attractive",           () -> new BlockItem(BlockReg.EXPLOSIVES_ATTRACTIVE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> EXPLOSIVES_NIGHTMARE           = ITEMS.register("explosives_nightmare",            () -> new BlockItem(BlockReg.EXPLOSIVES_NIGHTMARE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EXPLOSIVES_FRAGMENTATION       = ITEMS.register("explosives_fragmentation",        () -> new BlockItem(BlockReg.EXPLOSIVES_FRAGMENTATION.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EXPLOSIVES_CONTAGION           = ITEMS.register("explosives_contagion",            () -> new BlockItem(BlockReg.EXPLOSIVES_CONTAGION.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EXPLOSIVES_SONIC               = ITEMS.register("explosives_sonic",                () -> new BlockItem(BlockReg.EXPLOSIVES_SONIC.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
@@ -73,6 +72,7 @@ public class ItemReg {
     public static final RegistryObject<Item> EXPLOSIVES_HYPERSONIC          = ITEMS.register("explosives_hypersonic",           () -> new BlockItem(BlockReg.EXPLOSIVES_HYPERSONIC.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EXPLOSIVES_ANTIMATTER          = ITEMS.register("explosives_antimatter",           () -> new BlockItem(BlockReg.EXPLOSIVES_ANTIMATTER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EXPLOSIVES_REDMATTER           = ITEMS.register("explosives_redmatter",            () -> new BlockItem(BlockReg.EXPLOSIVES_REDMATTER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> EXPLOSIVES_NIGHTMARE           = ITEMS.register("explosives_nightmare",            () -> new BlockItem(BlockReg.EXPLOSIVES_NIGHTMARE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Unconventional Explosives
     public static final RegistryObject<Item> S_MINE                         = ITEMS.register("s_mine",                          () -> new BlockItem(BlockReg.S_MINE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
@@ -87,7 +87,6 @@ public class ItemReg {
     public static final RegistryObject<Item> MISSILE_ANVIL                  = ITEMS.register("missile_anvil",                   () -> new ItemMissile(EntityReg.MISSILE_ANVIL));
     public static final RegistryObject<Item> MISSILE_REPULSIVE              = ITEMS.register("missile_repulsive",               () -> new ItemMissile(EntityReg.MISSILE_REPULSIVE));
     public static final RegistryObject<Item> MISSILE_ATTRACTIVE             = ITEMS.register("missile_attractive",              () -> new ItemMissile(EntityReg.MISSILE_ATTRACTIVE));
-    public static final RegistryObject<Item> MISSILE_NIGHTMARE              = ITEMS.register("missile_nightmare",               () -> new ItemMissile(EntityReg.MISSILE_NIGHTMARE));
     public static final RegistryObject<Item> MISSILE_FRAGMENTATION          = ITEMS.register("missile_fragmentation",           () -> new ItemMissile(EntityReg.MISSILE_FRAGMENTATION));
     public static final RegistryObject<Item> MISSILE_CONTAGION              = ITEMS.register("missile_contagion",               () -> new ItemMissile(EntityReg.MISSILE_CONTAGION));
     public static final RegistryObject<Item> MISSILE_SONIC                  = ITEMS.register("missile_sonic",                   () -> new ItemMissile(EntityReg.MISSILE_SONIC));
@@ -103,6 +102,7 @@ public class ItemReg {
     public static final RegistryObject<Item> MISSILE_HYPERSONIC             = ITEMS.register("missile_hypersonic",              () -> new ItemMissile(EntityReg.MISSILE_HYPERSONIC));
     public static final RegistryObject<Item> MISSILE_ANTIMATTER             = ITEMS.register("missile_antimatter",              () -> new ItemMissile(EntityReg.MISSILE_ANTIMATTER));
     public static final RegistryObject<Item> MISSILE_REDMATTER              = ITEMS.register("missile_redmatter",               () -> new ItemMissile(EntityReg.MISSILE_REDMATTER));
+    public static final RegistryObject<Item> MISSILE_NIGHTMARE              = ITEMS.register("missile_nightmare",               () -> new ItemMissile(EntityReg.MISSILE_NIGHTMARE));
     public static final RegistryObject<Item> MISSILE_HOMING                 = ITEMS.register("missile_homing",                  () -> new ItemMissile(EntityReg.MISSILE_HOMING));
     public static final RegistryObject<Item> MISSILE_ANTIBALLISTIC          = ITEMS.register("missile_antiballistic",           () -> new ItemMissile(EntityReg.MISSILE_ANTIBALLISTIC));
     public static final RegistryObject<Item> MISSILE_CLUSTER                = ITEMS.register("missile_cluster",                 () -> new ItemMissile(EntityReg.MISSILE_CLUSTER));
@@ -117,7 +117,6 @@ public class ItemReg {
     public static final RegistryObject<Item> MINECART_ANVIL                 = ITEMS.register("minecart_anvil",                  () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_ANVIL));
     public static final RegistryObject<Item> MINECART_REPULSIVE             = ITEMS.register("minecart_repulsive",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_REPULSIVE));
     public static final RegistryObject<Item> MINECART_ATTRACTIVE            = ITEMS.register("minecart_attractive",             () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_ATTRACTIVE));
-    public static final RegistryObject<Item> MINECART_NIGHTMARE             = ITEMS.register("minecart_nightmare",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_NIGHTMARE));
     public static final RegistryObject<Item> MINECART_FRAGMENTATION         = ITEMS.register("minecart_fragmentation",          () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_FRAGMENTATION));
     public static final RegistryObject<Item> MINECART_CONTAGION             = ITEMS.register("minecart_contagion",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_CONTAGION));
     public static final RegistryObject<Item> MINECART_SONIC                 = ITEMS.register("minecart_sonic",                  () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_SONIC));
@@ -133,6 +132,7 @@ public class ItemReg {
     public static final RegistryObject<Item> MINECART_HYPERSONIC            = ITEMS.register("minecart_hypersonic",             () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_HYPERSONIC));
     public static final RegistryObject<Item> MINECART_ANTIMATTER            = ITEMS.register("minecart_antimatter",             () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_ANTIMATTER));
     public static final RegistryObject<Item> MINECART_REDMATTER             = ITEMS.register("minecart_redmatter",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_REDMATTER));
+    public static final RegistryObject<Item> MINECART_NIGHTMARE             = ITEMS.register("minecart_nightmare",              () -> new ItemMinecartExplosives((new Item.Properties()).stacksTo(1).tab(ICBMReference.CREATIVE_TAB), EntityReg.MINECART_NIGHTMARE));
 
     // Grenades
     public static final RegistryObject<Item> GRENADE_CONVENTIONAL           = ITEMS.register("grenade_conventional",            () -> new ItemGrenade(EntityReg.GRENADE_CONVENTIONAL));
