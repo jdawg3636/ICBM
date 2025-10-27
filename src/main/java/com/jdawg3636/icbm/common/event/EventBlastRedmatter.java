@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.event;
 
-import com.jdawg3636.icbm.common.entity.EntityRedmatterBlast;
+import com.jdawg3636.icbm.common.entity.EntityBlastRedmatter;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.util.Direction;
@@ -23,7 +23,7 @@ public class EventBlastRedmatter extends AbstractBlastEvent {
         double explosionCenterPosY = getBlastPosition().getY() + 0.5;
         double explosionCenterPosZ = getBlastPosition().getZ() + 0.5;
 
-        EntityRedmatterBlast entity = EntityReg.BLAST_REDMATTER.get().create(level);
+        EntityBlastRedmatter entity = EntityReg.BLAST_REDMATTER.get().create(level);
         if(entity != null) {
             entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
             // Spawn Entity

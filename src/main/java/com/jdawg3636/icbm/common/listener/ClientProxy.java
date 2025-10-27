@@ -204,16 +204,17 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CHEMICAL.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_CONTAGION.get(), EntityNOPRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_DEBILITATION.get(), EntityNOPRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_ENDER.get(), EntityLingeringBlastEnderRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_ENDER.get(), EntityBlastEnderRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_NIGHTMARE.get(), rendererManager -> new EntityBlastRedmatterRenderer(rendererManager, 0.047F, 0.6F, 0.047F, 1F, 0.533F, 0F));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_RADIATION.get(), EntityNOPRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_REDMATTER.get(), EntityRedmatterBlastRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_REDMATTER.get(), rendererManager -> new EntityBlastRedmatterRenderer(rendererManager, 0.047F, 0.45F, 1F, 1F, 0F, 1F));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.BLAST_SONIC.get(), EntityNOPRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 
         // Register Other Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.ACCELERATING_PARTICLE.get(), EntityAcceleratingParticleRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.FANCY_FALLING_BLOCK.get(), EntityFancyFallingBlockRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.LIGHTNING_VISUAL.get(), EntityLightningVisualRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 
         // Register Tile Entity Renderers
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);

@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.entity.EntityLingeringBlast;
+import com.jdawg3636.icbm.common.entity.EntityBlastLingering;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.util.Direction;
@@ -22,7 +22,7 @@ public class EventBlastContagion extends AbstractBlastEvent {
         if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
             return true;
         }
-        EntityLingeringBlast entity = EntityReg.BLAST_CONTAGION.get().create(getBlastWorld());
+        EntityBlastLingering entity = EntityReg.BLAST_CONTAGION.get().create(getBlastWorld());
         if(entity != null) {
             entity.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
             entity.ticksRemaining = ICBMReference.COMMON_CONFIG.getContagionBlastLingerDuration();

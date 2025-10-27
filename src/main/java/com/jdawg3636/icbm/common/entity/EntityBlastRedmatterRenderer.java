@@ -20,14 +20,27 @@ import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nonnull;
 
-public class EntityRedmatterBlastRenderer extends EntityRenderer<EntityRedmatterBlast> {
+public class EntityBlastRedmatterRenderer extends EntityRenderer<EntityBlastRedmatter> {
 
-    public EntityRedmatterBlastRenderer(EntityRendererManager renderManagerIn) {
+    final float diskColorR;
+    final float diskColorG;
+    final float diskColorB;
+    final int rayColorR;
+    final int rayColorG;
+    final int rayColorB;
+
+    public EntityBlastRedmatterRenderer(EntityRendererManager renderManagerIn, float diskColorR, float diskColorG, float diskColorB, float rayColorR, float rayColorG, float rayColorB) {
         super(renderManagerIn);
+        this.diskColorR = diskColorR;
+        this.diskColorG = diskColorG;
+        this.diskColorB = diskColorB;
+        this.rayColorR = (int)(255 * rayColorR);
+        this.rayColorG = (int)(255 * rayColorG);
+        this.rayColorB = (int)(255 * rayColorB);
     }
 
     @Override
-    public void render(@Nonnull EntityRedmatterBlast entity, float entityYaw, float partialTicks, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer renderBuffer, int combinedLight) {
+    public void render(@Nonnull EntityBlastRedmatter entity, float entityYaw, float partialTicks, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer renderBuffer, int combinedLight) {
 
         IBakedModel MODEL_ACCRETION_DISK = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_REDMATTER_BLAST_ACCRETION_DISK);
         IBakedModel MODEL_SPHERE = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_REDMATTER_BLAST_SPHERE);
@@ -47,13 +60,13 @@ public class EntityRedmatterBlastRenderer extends EntityRenderer<EntityRedmatter
         matrixStack.mulPose(new Quaternion(new Vector3f(0, 1, 0), -animationRadians, false));
 
         // Render Accretion Disk
-        Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matrixStack.last(), renderBuffer.getBuffer(Atlases.translucentItemSheet()), Blocks.BLACK_STAINED_GLASS.defaultBlockState(), MODEL_ACCRETION_DISK, 1F, 1F, 1F, combinedLight, OverlayTexture.NO_OVERLAY, net.minecraftforge.client.model.data.EmptyModelData.INSTANCE);
+        Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matrixStack.last(), renderBuffer.getBuffer(Atlases.translucentItemSheet()), Blocks.BLACK_STAINED_GLASS.defaultBlockState(), MODEL_ACCRETION_DISK, diskColorR, diskColorG, diskColorB, combinedLight, OverlayTexture.NO_OVERLAY, net.minecraftforge.client.model.data.EmptyModelData.INSTANCE);
 
         // Outer Pop
         matrixStack.popPose();
 
         // Render Ender Dragon Death Rays
-        EntityAcceleratingParticleRenderer.renderEnderDraganDeathRays(entity, matrixStack, renderBuffer, length -> length * 15F + 3.75F, width -> width * 1.25F + 0.25F);
+        EntityAcceleratingParticleRenderer.renderEnderDraganDeathRays(entity, matrixStack, renderBuffer, length -> length * 15F + 3.75F, width -> width * 1.25F + 0.25F, rayColorR, rayColorG, rayColorB);
 
     }
 
@@ -62,13 +75,13 @@ public class EntityRedmatterBlastRenderer extends EntityRenderer<EntityRedmatter
      * Implemented preemptively to avoid issues with the hitbox not being properly aligned
      */
     @Override
-    public boolean shouldRender(EntityRedmatterBlast livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(EntityBlastRedmatter livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
         return true;
     }
 
     @Nonnull
     @Override
-    public ResourceLocation getTextureLocation(@Nonnull EntityRedmatterBlast entity) {
+    public ResourceLocation getTextureLocation(@Nonnull EntityBlastRedmatter entity) {
         return PlayerContainer.BLOCK_ATLAS;
     }
 

@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.entity.EntityLingeringBlastEnder;
+import com.jdawg3636.icbm.common.entity.EntityBlastEnder;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
@@ -23,7 +23,7 @@ public class EventBlastEnder extends AbstractBlastEvent {
             return true;
         }
 
-        EntityLingeringBlastEnder entityLingeringBlast = new EntityLingeringBlastEnder(
+        EntityBlastEnder entityLingeringBlast = new EntityBlastEnder(
                 EntityReg.BLAST_ENDER.get(),
                 getBlastWorld(),
                 ICBMReference.COMMON_CONFIG.getEnderBlastLingerDuration()

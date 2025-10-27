@@ -12,16 +12,16 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.ArrayList;
 
-public class EntitySonicBlast extends Entity {
+public class EntityBlastSonic extends Entity {
 
     public ArrayList<BlockPos> targetBlocks;
     public int blocksAffectedPerTick;
 
-    public EntitySonicBlast(EntityType<?> entityType, World level) {
+    public EntityBlastSonic(EntityType<?> entityType, World level) {
         this(entityType, level, new ArrayList<>(), 15);
     }
 
-    public EntitySonicBlast(EntityType<?> entityType, World level, ArrayList<BlockPos> targetBlocks, int blocksAffectedPerTick) {
+    public EntityBlastSonic(EntityType<?> entityType, World level, ArrayList<BlockPos> targetBlocks, int blocksAffectedPerTick) {
         super(entityType, level);
         this.targetBlocks = targetBlocks;
         this.blocksAffectedPerTick = blocksAffectedPerTick;

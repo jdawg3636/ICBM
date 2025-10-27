@@ -10,17 +10,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public abstract class EntityLingeringBlast extends Entity {
+public abstract class EntityBlastLingering extends Entity {
 
     public int ticksRemaining;
     // Note: blastType is never updated for EntityRedmatterBlast or EntityLingeringBlastRadiation
     public AbstractBlastEvent.Type blastType = AbstractBlastEvent.Type.EXPLOSIVES;
 
-    public EntityLingeringBlast(EntityType<?> entityType, World level) {
+    public EntityBlastLingering(EntityType<?> entityType, World level) {
         this(entityType, level, 20);
     }
 
-    public EntityLingeringBlast(EntityType<?> entityType, World level, int ticksAlive) {
+    public EntityBlastLingering(EntityType<?> entityType, World level, int ticksAlive) {
         super(entityType, level);
         this.ticksRemaining = ticksAlive;
     }

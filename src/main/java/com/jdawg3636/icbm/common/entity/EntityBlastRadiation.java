@@ -11,11 +11,11 @@ import net.minecraft.world.World;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class EntityLingeringBlastRadiation extends EntityLingeringBlast {
+public class EntityBlastRadiation extends EntityBlastLingering {
 
     public double radius = 1;
 
-    public EntityLingeringBlastRadiation(EntityType<?> entityType, World level) {
+    public EntityBlastRadiation(EntityType<?> entityType, World level) {
         super(entityType, level);
     }
 

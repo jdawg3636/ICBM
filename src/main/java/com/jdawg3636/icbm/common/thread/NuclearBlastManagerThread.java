@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.thread;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.entity.EntityLingeringBlastRadiation;
+import com.jdawg3636.icbm.common.entity.EntityBlastRadiation;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +29,7 @@ public class NuclearBlastManagerThread extends RaytracedBlastManagerThread {
     public Runnable getPostCompletionFunction(final ServerWorld level) {
         return () -> {
             super.getPostCompletionFunction(level).run();
-            EntityLingeringBlastRadiation entity = EntityReg.BLAST_RADIATION.get().create(level);
+            EntityBlastRadiation entity = EntityReg.BLAST_RADIATION.get().create(level);
             if(entity != null) {
                 entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
                 entity.ticksRemaining = ICBMReference.COMMON_CONFIG.getNuclearBlastRadiationLingerDuration();

@@ -8,7 +8,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.DamageSource;
@@ -23,13 +22,12 @@ import net.minecraft.world.server.ServerWorld;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EntityRedmatterBlast extends EntityLingeringBlast {
+public class EntityBlastRedmatter extends EntityBlastLingering {
 
     private double animationPercent = 0;
     private final Queue<BlockPos> blocksToDestroy = new ArrayDeque<>();
-    private static final int entityMovementTickFrequency = 1;
 
-    public EntityRedmatterBlast(EntityType<?> entityType, World level) {
+    public EntityBlastRedmatter(EntityType<?> entityType, World level) {
         super(entityType, level, ICBMReference.COMMON_CONFIG.getRedmatterNumTicksLingerAfterCompletion());
     }
 
@@ -38,12 +36,8 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
         if(level != null) {
 
             // Entity Movement (Client + Server)
-            if(tickCount % entityMovementTickFrequency == 0) {
-                for (Entity entity : this.level.getEntitiesOfClass(Entity.class, new AxisAlignedBB(blockPosition()).inflate(ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter()))) {
-                    if (!(entity instanceof EntityRedmatterBlast) && !(ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(entity))) {
-                        applyBlackHoleMovementToEntity(entity);
-                    }
-                }
+            for (Entity entity : this.level.getEntitiesOfClass(Entity.class, new AxisAlignedBB(blockPosition()).inflate(ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter()))) {
+                tickAffectNearbyEntities(entity);
             }
 
             // Client-Side Only
@@ -150,7 +144,12 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
         }
     }
 
-    public void applyBlackHoleMovementToEntity(Entity entity) {
+    public void tickAffectNearbyEntities(Entity entity) {
+
+        // Early return if immune
+        if (entity instanceof EntityBlastRedmatter || ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(entity)) {
+            return;
+        }
 
         // Get Constants
         final double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusRedmatter();
@@ -160,13 +159,7 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
         // Kill Entity if Too Close
         double entityDistanceToBlackHole = entityPosition.distanceTo(blackHolePosition);
         if(!entity.level.isClientSide() && entityDistanceToBlackHole < 6.0) {
-            if(entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
-                livingEntity.hurt(DamageSource.explosion((Explosion) null /* todo - chain of blame */), 20F);
-            }
-            else {
-                entity.kill();
-            }
+            killEntityInCenter(entity);
         }
 
         // Reduce cube to sphere
@@ -177,11 +170,14 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
 
         // Orbit Velocity
         final Vector3d blackHoleToEntity = entityPosition.subtract(blackHolePosition);
-        final Vector3d blackHoleToTarget = rotateVector(blackHoleToEntity, -1d/20d * entityMovementTickFrequency);
+        final Vector3d blackHoleToTarget = rotateVector(blackHoleToEntity, -1d/20d);
         final Vector3d entityToTarget = blackHoleToTarget.subtract(blackHoleToEntity);
 
         // Gravity Velocity
-        final Vector3d gravityVector = blackHoleToTarget.normalize().scale(-0.25 * entityMovementTickFrequency);
+        Vector3d gravityVector = blackHoleToTarget.normalize().scale(-0.25);
+
+        // Call hook to allow child classes to adjust physics
+        gravityVector = adjustPhysics(entity, gravityVector);
 
         // Apply Velocities to Entity (emulating Entity::push, but with capability to set instead of add).
         entity.setDeltaMovement(entityToTarget.add(gravityVector));
@@ -193,6 +189,20 @@ public class EntityRedmatterBlast extends EntityLingeringBlast {
             entity.fallDistance = 0;
         }
 
+    }
+
+    public void killEntityInCenter(Entity entity) {
+        if(entity instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            livingEntity.hurt(DamageSource.explosion((Explosion) null /* todo - chain of blame */), 20F);
+        }
+        else {
+            entity.kill();
+        }
+    }
+
+    public Vector3d adjustPhysics(Entity entity, Vector3d gravityVector) {
+        return gravityVector;
     }
 
     public void addAnimationPercent(double increment) {

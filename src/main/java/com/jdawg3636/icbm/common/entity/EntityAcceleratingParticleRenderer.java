@@ -25,7 +25,7 @@ public class EntityAcceleratingParticleRenderer extends EntityRenderer<EntityAcc
         super(renderManagerIn);
     }
 
-    public static void renderEnderDraganDeathRays(Entity entity, MatrixStack poseStack, IRenderTypeBuffer buffer, Function<Float, Float> getLength, Function<Float, Float> getWidth) {
+    public static void renderEnderDraganDeathRays(Entity entity, MatrixStack poseStack, IRenderTypeBuffer buffer, Function<Float, Float> getLength, Function<Float, Float> getWidth, int colorR, int colorG, int colorB) {
         final float animationProgress = entity.tickCount / 100F;
         Random random = new Random(432L);
         IVertexBuilder vertexBuilder = buffer.getBuffer(RenderType.lightning());
@@ -49,16 +49,16 @@ public class EntityAcceleratingParticleRenderer extends EntityRenderer<EntityAcc
             final float width = getWidth.apply(random.nextFloat());
             // Side 1
             vertex1(vertexBuilder, latestPose);
-            vertex2(vertexBuilder, latestPose, length, width);
-            vertex3(vertexBuilder, latestPose, length, width);
+            vertex2(vertexBuilder, latestPose, length, width, colorR, colorG, colorB);
+            vertex3(vertexBuilder, latestPose, length, width, colorR, colorG, colorB);
             // Side 2
             vertex1(vertexBuilder, latestPose);
-            vertex3(vertexBuilder, latestPose, length, width);
-            vertex4(vertexBuilder, latestPose, length, width);
+            vertex3(vertexBuilder, latestPose, length, width, colorR, colorG, colorB);
+            vertex4(vertexBuilder, latestPose, length, width, colorR, colorG, colorB);
             // Side 3
             vertex1(vertexBuilder, latestPose);
-            vertex4(vertexBuilder, latestPose, length, width);
-            vertex2(vertexBuilder, latestPose, length, width);
+            vertex4(vertexBuilder, latestPose, length, width, colorR, colorG, colorB);
+            vertex2(vertexBuilder, latestPose, length, width, colorR, colorG, colorB);
         }
 
         // Outer Pop
@@ -67,7 +67,7 @@ public class EntityAcceleratingParticleRenderer extends EntityRenderer<EntityAcc
 
     @Override
     public void render(@Nonnull EntityAcceleratingParticle entity, float entityYaw, float partialTick, @Nonnull MatrixStack poseStack, @Nonnull IRenderTypeBuffer buffer, int light) {
-        renderEnderDraganDeathRays(entity, poseStack, buffer, length -> length * 1.25F + 0.75F, width -> width * 0.65F + 0.1F);
+        renderEnderDraganDeathRays(entity, poseStack, buffer, length -> length * 1.25F + 0.75F, width -> width * 0.65F + 0.1F, 255, 0, 255);
     }
 
     private static void vertex1(IVertexBuilder vertexBuilder, Matrix4f pose) {
@@ -75,16 +75,16 @@ public class EntityAcceleratingParticleRenderer extends EntityRenderer<EntityAcc
         vertexBuilder.vertex(pose, 0.0F, 0.0F, 0.0F).color(255, 255, 255, 128).endVertex();
     }
 
-    private static void vertex2(IVertexBuilder vertexBuilder, Matrix4f pose, float length, float width) {
-        vertexBuilder.vertex(pose, -HALF_SQRT_3 * width, length, -0.5F * width).color(255, 0, 255, 0).endVertex();
+    private static void vertex2(IVertexBuilder vertexBuilder, Matrix4f pose, float length, float width, int colorR, int colorG, int colorB) {
+        vertexBuilder.vertex(pose, -HALF_SQRT_3 * width, length, -0.5F * width).color(colorR, colorG, colorB, 0).endVertex();
     }
 
-    private static void vertex3(IVertexBuilder vertexBuilder, Matrix4f pose, float length, float width) {
-        vertexBuilder.vertex(pose, HALF_SQRT_3 * width, length, -0.5F * width).color(255, 0, 255, 0).endVertex();
+    private static void vertex3(IVertexBuilder vertexBuilder, Matrix4f pose, float length, float width, int colorR, int colorG, int colorB) {
+        vertexBuilder.vertex(pose, HALF_SQRT_3 * width, length, -0.5F * width).color(colorR, colorG, colorB, 0).endVertex();
     }
 
-    private static void vertex4(IVertexBuilder vertexBuilder, Matrix4f pose, float length, float width) {
-        vertexBuilder.vertex(pose, 0.0F, length, width).color(255, 0, 255, 0).endVertex();
+    private static void vertex4(IVertexBuilder vertexBuilder, Matrix4f pose, float length, float width, int colorR, int colorG, int colorB) {
+        vertexBuilder.vertex(pose, 0.0F, length, width).color(colorR, colorG, colorB, 0).endVertex();
     }
 
     @Nonnull

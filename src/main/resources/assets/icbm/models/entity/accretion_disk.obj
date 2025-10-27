@@ -1,4 +1,4 @@
-mtllib redmatter_blast_accretion_disk.mtl
+mtllib accretion_disk.mtl
 o AccretionDiskTop
 v -11.342099 0.000000 12.342099
 v 12.342099 0.000000 12.342099

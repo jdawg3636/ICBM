@@ -1,23 +1,24 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.common.reg.EffectReg;
 import com.jdawg3636.icbm.common.reg.ParticleTypeReg;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class EntityLingeringBlastDebilitation extends EntityLingeringBlast {
+public class EntityBlastContagion extends EntityBlastLingering {
 
-    public EntityLingeringBlastDebilitation(EntityType<?> entityType, World level) {
+    public EntityBlastContagion(EntityType<?> entityType, World level) {
         super(entityType, level);
     }
 
-    public EntityLingeringBlastDebilitation(EntityType<?> entityType, World level, int ticksAlive) {
+    public EntityBlastContagion(EntityType<?> entityType, World level, int ticksAlive) {
         super(entityType, level, ticksAlive);
     }
 
@@ -29,11 +30,14 @@ public class EntityLingeringBlastDebilitation extends EntityLingeringBlast {
                 kill();
                 return;
             }
+            // Calculate radius
+            double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusContagion();
+            if(blastType == AbstractBlastEvent.Type.GRENADE) radius *= 2.0/3.0;
+            int radiusInt = (int)radius;
             // Particles
-            int radius = blastType == AbstractBlastEvent.Type.GRENADE ? 6 : 9;
-            for(int i = -radius; i <= radius; i+=3) {
-                for(int j = -radius; j <= radius; j+=3) {
-                    for(int k = -radius; k <= radius; k+=3) {
+            for(int i = -radiusInt; i <= radiusInt; i+=3) {
+                for(int j = -radiusInt; j <= radiusInt; j+=3) {
+                    for(int k = -radiusInt; k <= radiusInt; k+=3) {
                         if(level.random.nextFloat() < 0.3F) {
                             ((ServerWorld)level).sendParticles(
                                     getParticleType(level.random.nextDouble()),
@@ -52,10 +56,8 @@ public class EntityLingeringBlastDebilitation extends EntityLingeringBlast {
             }
             // Player Effects
             for(LivingEntity livingEntity : this.level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().contract(0,1,0).inflate(radius))) {
-                if(livingEntity.isAffectedByPotions()) {
-                    livingEntity.addEffect(new EffectInstance(Effects.CONFUSION,         18 * 20, 0));
-                    livingEntity.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN,      60 * 20, 0));
-                    livingEntity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60 * 20, 2));
+                if(livingEntity.isAffectedByPotions() && !ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(livingEntity)) {
+                    livingEntity.addEffect(new EffectInstance(EffectReg.ENGINEERED_PATHOGEN.get(), 45 * 20, 0));
                 }
             }
             --ticksRemaining;
@@ -66,19 +68,19 @@ public class EntityLingeringBlastDebilitation extends EntityLingeringBlast {
         ParticleType<BasicParticleType> particle;
         switch((int)(5*seed) % 5) {
             case 0:
-                particle = ParticleTypeReg.SMOKE_DEBILITATION_A.get();
+                particle = ParticleTypeReg.SMOKE_CONTAGION_A.get();
                 break;
             case 1:
-                particle = ParticleTypeReg.SMOKE_DEBILITATION_B.get();
+                particle = ParticleTypeReg.SMOKE_CONTAGION_B.get();
                 break;
             case 2:
-                particle = ParticleTypeReg.SMOKE_DEBILITATION_C.get();
+                particle = ParticleTypeReg.SMOKE_CONTAGION_C.get();
                 break;
             case 3:
-                particle = ParticleTypeReg.SMOKE_DEBILITATION_D.get();
+                particle = ParticleTypeReg.SMOKE_CONTAGION_D.get();
                 break;
             default: // case 4
-                particle = ParticleTypeReg.SMOKE_DEBILITATION_E.get();
+                particle = ParticleTypeReg.SMOKE_CONTAGION_E.get();
         }
         return (BasicParticleType)particle;
     }

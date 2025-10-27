@@ -19,11 +19,11 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class EntityLingeringBlastAntigravitational extends EntityLingeringBlast {
+public class EntityBlastAntigravitational extends EntityBlastLingering {
 
     public double radius = 1;
 
-    public EntityLingeringBlastAntigravitational(EntityType<?> entityType, World level) {
+    public EntityBlastAntigravitational(EntityType<?> entityType, World level) {
         super(entityType, level);
     }
 

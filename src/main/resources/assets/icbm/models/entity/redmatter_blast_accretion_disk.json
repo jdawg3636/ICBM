@@ -1,6 +1,6 @@
 {
     "loader": "forge:obj",
-    "model": "icbm:models/entity/redmatter_blast_accretion_disk.obj",
+    "model": "icbm:models/entity/accretion_disk.obj",
     "detectCullableFaces": false,
     "diffuseLighting": false,
     "flip-v": true,

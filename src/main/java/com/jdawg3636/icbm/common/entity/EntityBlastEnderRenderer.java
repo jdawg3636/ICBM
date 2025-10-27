@@ -17,14 +17,14 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class EntityLingeringBlastEnderRenderer extends EntityRenderer<EntityLingeringBlastEnder> {
+public class EntityBlastEnderRenderer extends EntityRenderer<EntityBlastEnder> {
 
-    public EntityLingeringBlastEnderRenderer(EntityRendererManager renderManagerIn) {
+    public EntityBlastEnderRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
     }
 
     @Override
-    public void render(@Nonnull EntityLingeringBlastEnder entity, float entityYaw, float partialTicks, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer renderBuffer, int combinedLight) {
+    public void render(@Nonnull EntityBlastEnder entity, float entityYaw, float partialTicks, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer renderBuffer, int combinedLight) {
 
         IBakedModel MODEL_SPHERE = Minecraft.getInstance().getModelManager().getModel(ClientProxy.MODEL_ENDER_BLAST_SPHERE);
 
@@ -51,13 +51,13 @@ public class EntityLingeringBlastEnderRenderer extends EntityRenderer<EntityLing
      * Implemented preemptively to avoid issues with the hitbox not being properly aligned
      */
     @Override
-    public boolean shouldRender(EntityLingeringBlastEnder livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(EntityBlastEnder livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
         return true;
     }
 
     @Nonnull
     @Override
-    public ResourceLocation getTextureLocation(@Nonnull EntityLingeringBlastEnder entity) {
+    public ResourceLocation getTextureLocation(@Nonnull EntityBlastEnder entity) {
         return PlayerContainer.BLOCK_ATLAS;
     }
 

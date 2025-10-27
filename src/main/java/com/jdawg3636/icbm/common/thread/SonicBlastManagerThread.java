@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.thread;
 
-import com.jdawg3636.icbm.common.entity.EntitySonicBlast;
+import com.jdawg3636.icbm.common.entity.EntityBlastSonic;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -96,7 +96,7 @@ public class SonicBlastManagerThread extends AbstractBlastManagerThread {
             });
 
             // Spawn Blast Entity
-            EntitySonicBlast entity = EntityReg.BLAST_SONIC.get().create(level);
+            EntityBlastSonic entity = EntityReg.BLAST_SONIC.get().create(level);
             if(entity != null) {
                 entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
                 entity.targetBlocks = workerResults;

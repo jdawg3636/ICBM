@@ -16,15 +16,15 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.List;
 
-public class EntityLingeringBlastEnder extends EntityLingeringBlast {
+public class EntityBlastEnder extends EntityBlastLingering {
 
     private int totalTicksAlive;
 
-    public EntityLingeringBlastEnder(EntityType<?> entityType, World level) {
+    public EntityBlastEnder(EntityType<?> entityType, World level) {
         super(entityType, level);
     }
 
-    public EntityLingeringBlastEnder(EntityType<?> entityType, World level, int ticksAlive) {
+    public EntityBlastEnder(EntityType<?> entityType, World level, int ticksAlive) {
         super(entityType, level, ticksAlive);
         this.totalTicksAlive = ticksAlive;
     }

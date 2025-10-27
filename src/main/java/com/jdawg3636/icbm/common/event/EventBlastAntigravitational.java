@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.entity.EntityLingeringBlastAntigravitational;
+import com.jdawg3636.icbm.common.entity.EntityBlastAntigravitational;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.util.Direction;
@@ -25,7 +25,7 @@ public class EventBlastAntigravitational extends AbstractBlastEvent {
         // Get radius from config
         final double radius = ICBMReference.COMMON_CONFIG.getBlastRadiusAntigravitational();
         // Try to construct entity
-        EntityLingeringBlastAntigravitational entity = EntityReg.BLAST_ANTIGRAVITATIONAL.get().create(getBlastWorld());
+        EntityBlastAntigravitational entity = EntityReg.BLAST_ANTIGRAVITATIONAL.get().create(getBlastWorld());
         // If successful, initialize its variable, add it to the level, and return true.
         if(entity != null) {
             entity.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
