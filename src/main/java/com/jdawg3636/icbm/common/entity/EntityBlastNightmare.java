@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -106,7 +107,14 @@ public class EntityBlastNightmare extends EntityBlastRedmatter {
 
     public LivingEntity createTamedHorse(World level, Function<World, AbstractHorseEntity> horseConstructor) {
         AbstractHorseEntity horse = horseConstructor.apply(level);
+        // Set tamed
         horse.setTamed(true);
+        // Set attributes to maximum values achievable by breeding normal horses
+        // Vanilla breeding logic is here: AbstractHorseEntity::setOffspringAttributes
+        // Matches the maximum values listed on the wiki: https://minecraft.wiki/w/Horse#Statistics
+        horse.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30.0d);
+        horse.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(1.0d);
+        horse.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.3375d);
         return horse;
     }
 
