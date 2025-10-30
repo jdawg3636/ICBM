@@ -7,13 +7,13 @@
   ],
   "key": {
     "A": {
-      "item": "icbm:explosives_condensed"
+      "item": "icbm:explosives_redmatter"
     },
     "B": {
-      "item": "minecraft:rotten_flesh"
+      "item": "minecraft:carved_pumpkin"
     },
     "C": {
-      "tag": "forge:dusts/poison"
+      "item": "minecraft:rotten_flesh"
     }
   },
   "result": {

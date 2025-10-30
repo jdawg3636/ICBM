@@ -22,11 +22,16 @@ public class EventBlastNightmare extends AbstractBlastEvent {
         double explosionCenterPosY = getBlastPosition().getY() + 0.5;
         double explosionCenterPosZ = getBlastPosition().getZ() + 0.5;
 
+        // Spawn Entity
         EntityBlastNightmare entity = EntityReg.BLAST_NIGHTMARE.get().create(level);
         if(entity != null) {
             entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
-            // Spawn Entity
             level.addFreshEntity(entity);
+        }
+
+        // Set time
+        for(ServerWorld serverLevel : level.getServer().getAllLevels()) {
+            serverLevel.setDayTime(18_000L);
         }
 
         return true;
