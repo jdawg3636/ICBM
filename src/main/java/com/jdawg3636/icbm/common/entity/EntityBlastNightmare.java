@@ -44,19 +44,17 @@ public class EntityBlastNightmare extends EntityBlastRedmatter {
     @Override
     public void tick() {
         // Only run on server
-        if(level.isClientSide) {
-            return;
-        }
-        // Random
-        final Random random = this.level.random;
-        // Approx. once per second
-        if(random.nextInt() % 20 == 0) {
-            // Spawn 0-3 new entities
-            for(int i = 0; i < random.nextInt(3 + 1); ++i) {
-                // Select random entity from list
-                final int idx = random.nextInt(entitySpawnFunctions.size());
-                // Create + Spawn Entity
-                entitySpawnFunctions.get(idx).accept(level);
+        if(!level.isClientSide) {
+            final Random random = this.level.random;
+            // Approx. once per second
+            if(random.nextInt() % 20 == 0) {
+                // Spawn 0-3 new entities
+                for(int i = 0; i < random.nextInt(3 + 1); ++i) {
+                    // Select random entity from list
+                    final int idx = random.nextInt(entitySpawnFunctions.size());
+                    // Create + Spawn Entity
+                    entitySpawnFunctions.get(idx).accept(level);
+                }
             }
         }
         // Call super
