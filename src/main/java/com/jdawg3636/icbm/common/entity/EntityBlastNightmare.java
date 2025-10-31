@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,6 +16,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +27,7 @@ import java.util.function.Function;
 public class EntityBlastNightmare extends EntityBlastRedmatter {
 
     public final List<Consumer<World>> entitySpawnFunctions = Arrays.asList(
-        level -> this.prepareAndSpawnEntity(level, EntityType.CREEPER::create, false), // No status buffs for creeper - would spread to nearby entities (including the player) upon explosion
+        level -> this.prepareAndSpawnEntity(level, this::createChargedCreeper, false), // No status buffs for creeper - would spread to nearby entities (including the player) upon explosion
         level -> this.prepareAndSpawnEntity(level, EntityType.ENDERMAN::create),
         level -> this.prepareAndSpawnEntity(level, EntityType.SPIDER::create),
         level -> this.prepareAndSpawnEntity(level, EntityType.ZOMBIE::create),
@@ -41,6 +43,11 @@ public class EntityBlastNightmare extends EntityBlastRedmatter {
 
     @Override
     public void tick() {
+        // Only run on server
+        if(level.isClientSide) {
+            return;
+        }
+        // Random
         final Random random = this.level.random;
         // Approx. once per second
         if(random.nextInt() % 20 == 0) {
@@ -116,6 +123,12 @@ public class EntityBlastNightmare extends EntityBlastRedmatter {
         horse.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(1.0d);
         horse.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.3375d);
         return horse;
+    }
+
+    public LivingEntity createChargedCreeper(World level) {
+        CreeperEntity creeper = EntityType.CREEPER.create(level);
+        creeper.thunderHit((ServerWorld) level, EntityType.LIGHTNING_BOLT.create(level));
+        return creeper;
     }
 
     @Override
