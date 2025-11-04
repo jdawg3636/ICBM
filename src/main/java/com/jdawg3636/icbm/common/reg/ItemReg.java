@@ -181,7 +181,7 @@ public class ItemReg {
     public static final RegistryObject<Item> REMOTE_DETONATOR               = ITEMS.register("remote_detonator",                ItemRemoteDetonator::new);
     public static final RegistryObject<Item> ROCKET_LAUNCHER                = ITEMS.register("rocket_launcher",                 ItemRocketLauncher::new);
     public static final RegistryObject<Item> SCANNER                        = ITEMS.register("scanner",                         ItemScanner::new);
-    public static final RegistryObject<Item> SIGNAL_DISRUPTOR               = ITEMS.register("signal_disruptor",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> SIGNAL_DISRUPTOR               = ITEMS.register("signal_disruptor",                ItemSignalDisruptor::new);
     public static final RegistryObject<Item> TRACKER                        = ITEMS.register("tracker",                         ItemTracker::new);
 
     // Material Cells

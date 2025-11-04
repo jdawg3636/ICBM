@@ -23,7 +23,7 @@ import java.util.List;
 
 public class ItemBattery extends Item {
 
-    public static final int ENERGY_CAPACITY = 1_000_000;
+    public static final int ENERGY_CAPACITY = 1_000_000; // todo make configurable
     public final boolean infinite;
 
     public ItemBattery(boolean infinite) {
