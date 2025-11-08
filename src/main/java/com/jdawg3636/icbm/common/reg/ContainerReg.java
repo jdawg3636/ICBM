@@ -8,6 +8,7 @@ import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatfo
 import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
 import com.jdawg3636.icbm.common.block.oil_refinery.ContainerOilRefinery;
 import com.jdawg3636.icbm.common.block.particle_accelerator.ContainerParticleAccelerator;
+import com.jdawg3636.icbm.common.block.proximity_detector.ContainerProximityDetector;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
@@ -34,6 +35,7 @@ public class ContainerReg {
     public static final RegistryObject<ContainerType<ContainerCruiseLauncher>> CRUISE_LAUNCHER = registerContainer(BlockReg.CRUISE_LAUNCHER, ContainerCruiseLauncher::new, () -> ContainerReg.CRUISE_LAUNCHER);
     public static final RegistryObject<ContainerType<ContainerEMPTower>> EMP_TOWER = registerContainer(BlockReg.EMP_TOWER, ContainerEMPTower::new, () -> ContainerReg.EMP_TOWER);
     public static final RegistryObject<ContainerType<ContainerOilRefinery>> OIL_REFINERY = registerContainer(BlockReg.OIL_REFINERY, ContainerOilRefinery::new, () -> ContainerReg.OIL_REFINERY);
+    public static final RegistryObject<ContainerType<ContainerProximityDetector>> PROXIMITY_DETECTOR = registerContainer(BlockReg.PROXIMITY_DETECTOR, ContainerProximityDetector::new, () -> ContainerReg.PROXIMITY_DETECTOR);
 
     // Particle Accelerator Components
     public static final RegistryObject<ContainerType<ContainerParticleAccelerator>> PARTICLE_ACCELERATOR = registerContainer(BlockReg.PARTICLE_ACCELERATOR, ContainerParticleAccelerator::new, () -> ContainerReg.PARTICLE_ACCELERATOR);

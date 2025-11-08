@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "icbm:block/machine",
+    "north": "icbm:block/proximity_detector",
+    "south": "icbm:block/machine_side",
+    "east": "icbm:block/machine_side",
+    "west": "icbm:block/machine_side",
+    "up": "icbm:block/machine",
+    "down": "icbm:block/machine"
+  }
+}

@@ -23,6 +23,8 @@ import com.jdawg3636.icbm.common.block.oil_refinery.ScreenOilRefinery;
 import com.jdawg3636.icbm.common.block.oil_refinery.TEROilRefinery;
 import com.jdawg3636.icbm.common.block.oil_refinery.TileOilRefinery;
 import com.jdawg3636.icbm.common.block.particle_accelerator.ScreenParticleAccelerator;
+import com.jdawg3636.icbm.common.block.proximity_detector.ContainerProximityDetector;
+import com.jdawg3636.icbm.common.block.proximity_detector.ScreenProximityDetector;
 import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.*;
@@ -99,10 +101,11 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.<ContainerCoalGenerator, ScreenCoalGenerator>register(ContainerReg.COAL_GENERATOR.get(), ScreenCoalGenerator::new);
         ScreenManager.<ContainerCruiseLauncher, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
         ScreenManager.<ContainerEMPTower, ScreenEMPTower>register(ContainerReg.EMP_TOWER.get(), ScreenEMPTower::new);
-        ScreenManager.<ContainerOilRefinery, ScreenOilRefinery>register(ContainerReg.OIL_REFINERY.get(), ScreenOilRefinery::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
+        ScreenManager.<ContainerOilRefinery, ScreenOilRefinery>register(ContainerReg.OIL_REFINERY.get(), ScreenOilRefinery::new);
+        ScreenManager.<ContainerProximityDetector, ScreenProximityDetector>register(ContainerReg.PROXIMITY_DETECTOR.get(), ScreenProximityDetector::new);
         ScreenManager.register(ContainerReg.PARTICLE_ACCELERATOR.get(), ScreenParticleAccelerator::new);
 
         // Register Explosives Entity Rendering Handlers
