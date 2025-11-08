@@ -101,13 +101,6 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
         return LazyOptional.empty();
     }
 
-    public Optional<IEnergyStorage> getBatteryEnergyStorage() {
-        return itemHandlerLazyOptional
-                .filter(ih -> SlotIDs.BATTERY.ordinal() < ih.getSlots())
-                .map(ih -> ih.getStackInSlot(SlotIDs.BATTERY.ordinal()))
-                .flatMap(stack -> stack.getCapability(ICBMReference.FORGE_ENERGY_CAPABILITY).resolve());
-    }
-
     public void onInputTankContentsChanged(FluidTank tank) {
         if(activeRecipe.map(rr -> !rr.getIngredient().test(tank.getFluid())).orElse(true)) {
             this.activeRecipe = RefineryRecipe.getRecipeFor(ICBMRecipeTypes.REFINERY, tank.getFluid(), this.level);
@@ -139,7 +132,7 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
             }
         }
         // Ingest energy from battery
-        getBatteryEnergyStorage().ifPresent(bes -> tryReceiveEnergy(bes, bes.getEnergyStored()));
+        getEnergyStorageOfItemInSlot(SlotIDs.BATTERY.ordinal()).ifPresent(bes -> tryReceiveEnergy(bes, bes.getEnergyStored()));
         // Ingest fluid from input item
         itemHandlerLazyOptional.filter(ICBMItemStackHandler.class::isInstance).map(ICBMItemStackHandler.class::cast).ifPresent(itemHandler -> {
             ItemStack itemStackInInputSlot = itemHandler.getStackInSlot(SlotIDs.OIL_INPUT.ordinal());

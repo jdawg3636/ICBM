@@ -34,6 +34,7 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class TileMachine extends TileEntity implements INamedContainerProvider, INameable {
@@ -306,6 +307,13 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
             ICBMReference.logger().warn(String.format("(This is a bug, please report to mod author!) Error in energy reception logic for %s! Should have received %s, but instead received %s.", this, energyExtracted, energyReceived));
         }
         return energyReceived;
+    }
+
+    public Optional<IEnergyStorage> getEnergyStorageOfItemInSlot(int batterySlotID) {
+        return itemHandlerLazyOptional
+                .filter(ih -> batterySlotID < ih.getSlots())
+                .map(ih -> ih.getStackInSlot(batterySlotID))
+                .flatMap(stack -> stack.getCapability(ICBMReference.FORGE_ENERGY_CAPABILITY).resolve());
     }
 
     public void setChanged() {
