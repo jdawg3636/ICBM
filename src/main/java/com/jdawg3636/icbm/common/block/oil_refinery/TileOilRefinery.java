@@ -112,6 +112,7 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
     @Override
     public void tick() {
         assert this.level != null;
+        // Handle processing for active recipes
         if(!this.level.isClientSide && this.activeRecipe.isPresent()) {
             // Perform processing if requirements are met
             boolean haveRoomForOutput = outputTank.getSpace() >= this.activeRecipe.get().getResult().getAmount();

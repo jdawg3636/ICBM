@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.block.proximity_detector;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
 import com.jdawg3636.icbm.common.block.machine.WidgetProgressBar;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
@@ -42,6 +43,12 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
         );
         addButton(this.forgeEnergyStorageBar);
 
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        this.font.draw(matrixStack, "amongus", relX + (float)this.inventoryLabelX, (float)this.inventoryLabelY + 10, 0x404040);
     }
 
 }

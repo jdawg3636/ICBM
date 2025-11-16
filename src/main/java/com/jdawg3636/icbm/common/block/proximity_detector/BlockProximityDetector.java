@@ -13,11 +13,13 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -53,6 +55,21 @@ public class BlockProximityDetector extends AbstractBlockMachineTile {
         else {
             return super.use(blockState, level, blockPos, playerEntity, hand, hit);
         }
+    }
+
+    // Non-deprecated call is IForgeBlock::canConnectRedstone, which just redirects to this.
+    @Override
+    public boolean isSignalSource(BlockState blockState) {
+        return true;
+    }
+
+    @Override
+    public int getSignal(BlockState blockState, IBlockReader level, BlockPos blockPos, Direction p_180656_4_) {
+        TileEntity tileEntity = level.getBlockEntity(blockPos);
+        if(tileEntity instanceof TileProximityDetector) {
+            return ((TileProximityDetector)tileEntity).getSignal(blockState, level, blockPos, p_180656_4_);
+        }
+        return 0;
     }
 
 }
