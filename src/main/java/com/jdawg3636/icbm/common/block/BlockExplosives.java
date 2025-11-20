@@ -36,6 +36,23 @@ public class BlockExplosives extends Block {
     public final RegistryObject<EntityType<EntityPrimedExplosives>> entityForm;
     public final RegistryObject<BlastEventRegistryEntry> blastEventProvider;
     public final RegistryObject<Item> itemForm;
+    // TODO: Automatically derive this from the model (datagen?). Will be difficult with OBJs.
+    public static VoxelShape EXPLOSIVES_SHAPE = combine(
+            // Wrapping
+            Block.box(0D, 4D, 0D, 16D, 12D, 16D),
+            // Tubes
+            Block.box(01D, 0D,  1D,  5D, 16D,  5D),
+            Block.box(01D, 0D,  6D,  5D, 16D, 10D),
+            Block.box(01D, 0D, 11D,  5D, 16D, 15D),
+            Block.box(06D, 0D,  1D, 10D, 16D,  5D),
+            Block.box(06D, 0D,  6D, 10D, 16D, 10D),
+            Block.box(06D, 0D, 11D, 10D, 16D, 15D),
+            Block.box(11D, 0D,  1D, 15D, 16D,  5D),
+            Block.box(11D, 0D,  6D, 15D, 16D, 10D),
+            Block.box(11D, 0D, 11D, 15D, 16D, 15D)
+    );
+    public VoxelShape customShape = null;
+    public boolean useCustomShape = false;
 
     /**
      * Parameterless Constructor
