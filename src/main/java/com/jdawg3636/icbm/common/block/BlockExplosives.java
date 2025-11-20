@@ -39,7 +39,7 @@ public class BlockExplosives extends Block {
     public final RegistryObject<EntityType<EntityPrimedExplosives>> entityForm;
     public final RegistryObject<BlastEventRegistryEntry> blastEventProvider;
     public final RegistryObject<Item> itemForm;
-    // TODO: Automatically derive this from the model (datagen?). Will be difficult with OBJs.
+
     public static VoxelShape EXPLOSIVES_SHAPE = combine(
             // Wrapping
             Block.box(0D, 4D, 0D, 16D, 12D, 16D),
@@ -56,11 +56,21 @@ public class BlockExplosives extends Block {
     );
     public VoxelShape customShape = null;
 
+    public static AbstractBlock.Properties getExplosivesBlockProperties(boolean noOcclusion) {
+        Block.Properties properties =  Block.Properties.of(Material.EXPLOSIVE)
+                .instabreak()
+                .sound(SoundType.GRASS);
+        if(noOcclusion) {
+            properties = properties.noOcclusion().isViewBlocking((BlockState state, IBlockReader reader, BlockPos pos)->false);
+        }
+        return properties;
+    }
+
     /**
      * Parameterless Constructor
      * */
     public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
-        this(Block.Properties.of(Material.EXPLOSIVE).instabreak().sound(SoundType.GRASS).noOcclusion().isViewBlocking((a, b, c) -> false), entityForm, blastEventProvider, itemForm);
+        this(entityForm, blastEventProvider, itemForm, null);
     }
 
     /**
@@ -68,19 +78,19 @@ public class BlockExplosives extends Block {
      * */
     // TODO: use this for S-Mine instead of directly overriding getShape()
     public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm, VoxelShape customShape) {
-        this(entityForm, blastEventProvider, itemForm);
-        this.customShape = customShape;
+        this(getExplosivesBlockProperties(customShape != null), entityForm, blastEventProvider, itemForm, customShape);
     }
 
     /**
      * Verbose Constructor (Used by S-Mine to implement a custom material)
      * */
-    public BlockExplosives(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
+    public BlockExplosives(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm, VoxelShape customShape) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(UNSTABLE, Boolean.FALSE));
         this.entityForm = entityForm;
         this.blastEventProvider = blastEventProvider;
         this.itemForm = itemForm;
+        this.customShape = customShape;
     }
 
     @Override

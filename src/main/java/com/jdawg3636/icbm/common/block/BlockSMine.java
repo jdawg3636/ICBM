@@ -23,9 +23,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -37,12 +35,14 @@ public class BlockSMine extends BlockExplosives {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+    public static VoxelShape S_MINE_SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
+
     public BlockSMine(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
         this(AbstractBlockMulti.getMultiblockMachineBlockProperties().noCollission().strength(0.5F), entityForm, blastEventProvider, itemForm);
     }
 
     public BlockSMine(AbstractBlock.Properties properties, RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
-        super(properties, entityForm, blastEventProvider, itemForm);
+        super(properties, entityForm, blastEventProvider, itemForm, S_MINE_SHAPE);
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
     }
 
@@ -87,11 +87,6 @@ public class BlockSMine extends BlockExplosives {
     @Override
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
         return facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return Block.box(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
     }
 
     @SuppressWarnings("deprecation")
