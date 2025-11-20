@@ -21,6 +21,9 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
@@ -52,13 +55,21 @@ public class BlockExplosives extends Block {
             Block.box(11D, 0D, 11D, 15D, 16D, 15D)
     );
     public VoxelShape customShape = null;
-    public boolean useCustomShape = false;
 
     /**
      * Parameterless Constructor
      * */
     public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm) {
-        this(Block.Properties.of(Material.EXPLOSIVE).instabreak().sound(SoundType.GRASS), entityForm, blastEventProvider, itemForm);
+        this(Block.Properties.of(Material.EXPLOSIVE).instabreak().sound(SoundType.GRASS).noOcclusion().isViewBlocking((a, b, c) -> false), entityForm, blastEventProvider, itemForm);
+    }
+
+    /**
+     * Custom Shape Constructor
+     * */
+    // TODO: use this for S-Mine instead of directly overriding getShape()
+    public BlockExplosives(RegistryObject<EntityType<EntityPrimedExplosives>> entityForm, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> itemForm, VoxelShape customShape) {
+        this(entityForm, blastEventProvider, itemForm);
+        this.customShape = customShape;
     }
 
     /**
@@ -70,6 +81,26 @@ public class BlockExplosives extends Block {
         this.entityForm = entityForm;
         this.blastEventProvider = blastEventProvider;
         this.itemForm = itemForm;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
+        return customShape != null ? customShape : super.getShape(state, level, pos, context);
+    }
+
+    @Override
+    public VoxelShape getOcclusionShape(BlockState state, IBlockReader level, BlockPos pos) {
+        return customShape != null ? customShape : super.getOcclusionShape(state, level, pos);
+    }
+
+    @Override
+    public boolean useShapeForLightOcclusion(BlockState state) {
+        return customShape != null;
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(BlockState blockState, IBlockReader level, BlockPos blockPos) {
+        return customShape != null;
     }
 
     /**
@@ -264,6 +295,15 @@ public class BlockExplosives extends Block {
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(UNSTABLE);
+    }
+
+    public static VoxelShape combine(VoxelShape... shapes) {
+        if(shapes.length == 0) return null;
+        VoxelShape combined = shapes[0];
+        for(int i = 1; i < shapes.length; ++i) {
+            combined = VoxelShapes.or(combined, shapes[i]);
+        }
+        return combined;
     }
 
 }
