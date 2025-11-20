@@ -108,11 +108,6 @@ public class BlockExplosives extends Block {
         return customShape != null;
     }
 
-    @Override
-    public boolean propagatesSkylightDown(BlockState blockState, IBlockReader level, BlockPos blockPos) {
-        return customShape != null;
-    }
-
     /**
      * Normal Ignition Routine
      * */
