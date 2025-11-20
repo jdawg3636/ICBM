@@ -1,12 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "icbm:block/explosives_widehex",
   "textures": {
-    "particle": "icbm:block/explosive_base_1",
-    "down": "icbm:block/explosive_bottom_1",
-    "up": "icbm:block/explosive_anvil_top",
-    "north": "icbm:block/explosive_anvil_side",
-    "east": "icbm:block/explosive_anvil_side",
-    "south": "icbm:block/explosive_anvil_side",
-    "west": "icbm:block/explosive_anvil_side"
+    "hexagon": "icbm:block/explosive_anvil_hexagon"
   }
 }
