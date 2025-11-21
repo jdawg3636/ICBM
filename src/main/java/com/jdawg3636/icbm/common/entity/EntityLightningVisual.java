@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.entity;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class EntityLightningVisual extends Entity {
+public class EntityLightningVisual extends LightningBoltEntity {
 
     public long seed = this.random.nextLong();
     public int remainingTicks = 40;
@@ -24,7 +24,7 @@ public class EntityLightningVisual extends Entity {
     private static final DataParameter<Integer> NUM_SEGMENTS = EntityDataManager.defineId(EntityLightningVisual.class, DataSerializers.INT);
     private static final DataParameter<Float> SCALE = EntityDataManager.defineId(EntityLightningVisual.class, DataSerializers.FLOAT);
 
-    public EntityLightningVisual(EntityType<?> entityType, World level) {
+    public EntityLightningVisual(EntityType<? extends LightningBoltEntity> entityType, World level) {
         super(entityType, level);
     }
 
