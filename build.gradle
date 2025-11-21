@@ -65,7 +65,7 @@ minecraft {
     // Simply re-run your setup task after changing the mappings to update your workspace.
     mappings channel: 'parchment', version: '2022.03.06-1.16.5'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    
+
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
@@ -186,13 +186,19 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-//    runtimeOnly fg.deobf("curse.maven:ctm-267602:3137659")
-//    runtimeOnly fg.deobf("curse.maven:hwyla-253449:3033593")
-//    runtimeOnly fg.deobf("curse.maven:jei-238222:3681294")
     runtimeOnly fg.deobf("curse.maven:mekanism-268560:3659389")
     runtimeOnly fg.deobf("curse.maven:mekanism-generators-268566:3659391")
     runtimeOnly fg.deobf("curse.maven:mekanism-tools-268567:3659392")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:3283693")
+
+    // (Optional) Client-Only Shader Support
+    runtimeOnly fg.deobf("curse.maven:embeddium-908741:5322311")
+    runtimeOnly fg.deobf("curse.maven:oculus-581495:5194273")
+
+    // (Optional) Other Client-Only
+    runtimeOnly fg.deobf("curse.maven:ctm-267602:3137659")
+    runtimeOnly fg.deobf("curse.maven:hwyla-253449:3033593")
+    runtimeOnly fg.deobf("curse.maven:jei-238222:3681294")
 
 }
 
@@ -214,7 +220,7 @@ jar {
 
 // Example configuration to allow publishing using the maven-publish task
 // This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar') 
+jar.finalizedBy('reobfJar')
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
 //publish.dependsOn('reobfJar')
 
