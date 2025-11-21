@@ -4,10 +4,12 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -16,12 +18,18 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TileProximityDetector extends TileMachine implements ITickableTileEntity {
 
     public static enum SlotIDs {
         BATTERY,
     }
+
+    // TODO make this user-defined NBT data
+    public static final int RADIUS = 15;
+    // TODO make this persistent NBT too
+    public int currentSignal = 0;
 
     public TileProximityDetector(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn, ContainerReg.PROXIMITY_DETECTOR::get, ContainerProximityDetector::new, 1, 10_000, 50, 0, new ArrayList<>(), new TranslationTextComponent("gui." + ICBMReference.MODID + ".proximity_detector"));
@@ -34,6 +42,22 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
         this.getEnergyStorageOfItemInSlot(SlotIDs.BATTERY.ordinal()).ifPresent(batteryEnergyStorage -> {
             tryReceiveEnergy(batteryEnergyStorage, batteryEnergyStorage.getEnergyStored());
         });
+        // Calculate Redstone Signal
+        final BlockPos blockPos = getBlockPos();
+        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(blockPos).inflate(RADIUS), entity -> true);
+        int newSignal = targets.stream()
+                .map(target -> getBlockPos().distSqr(target.position(), true)) // Map target to square of distance
+                .min(Double::compare) // Find minimum distance (closest target)
+                .map(Math::sqrt) // Take square root (only performed on the  - not entire stream)
+                .filter(distance -> distance <= RADIUS) // Ensure target is within radius (spherical/Euclidean, as opposed to bounding box check).
+                .map(distance -> 15 * (1 - (distance / RADIUS))) // Convert distance into a 0-15 signal
+                .map(floatSignal -> (int)Math.ceil(floatSignal)) // Round up and cast to int
+                .orElse(0); // If no targets exist, signal strength is zero.
+        // Update Redstone Signal (if necessary)
+        if(newSignal != currentSignal) {
+            this.currentSignal = newSignal;
+            level.blockUpdated(blockPos, level.getBlockState(blockPos).getBlock());
+        }
     }
 
     @Override
@@ -45,7 +69,7 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
     }
 
     public int getSignal(BlockState blockState, IBlockReader level, BlockPos blockPos, Direction p_180656_4_) {
-        return 15;
+        return currentSignal;
     }
 
 }
