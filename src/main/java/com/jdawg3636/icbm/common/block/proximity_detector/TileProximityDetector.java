@@ -60,6 +60,7 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
                 .map(target -> getBlockPos().distSqr(target.position(), true)) // Map target to square of distance
                 .min(Double::compare) // Find minimum distance (closest target). Returns Optional<Double> (no longer a Stream).
                 .map(Math::sqrt) // Take square root
+                .map(distance -> Math.max(0, distance - 0.86602540378)) // Reduce distance by sqrt(0.75) to account for the size of the block itself
                 .filter(distance -> distance <= detectionRadius) // Ensure target is within radius (spherical/Euclidean, as opposed to bounding box check).
                 .map(distance -> 15 * (1 - (distance / detectionRadius))) // Convert distance into a 0-15 signal
                 .map(floatSignal -> (int)Math.ceil(floatSignal)) // Round up and cast to int
