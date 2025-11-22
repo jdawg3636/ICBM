@@ -10,6 +10,7 @@ import com.jdawg3636.icbm.common.network.CPacketUpdateProximityDetector;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -27,6 +28,7 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
     public WidgetProgressBar forgeEnergyStorageBar;
     public WidgetCustomizableSlider detectionRadiusSlider;
     public TextFieldWidget textFieldExclusionFrequency;
+    public Button[] buttonsDetectionMode;
 
     private boolean hasBeenUpdated;
 
@@ -64,8 +66,28 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
         );
         addButton(this.forgeEnergyStorageBar);
 
+        // Detection Mode (3 Buttons)
+        final int numDetectionModes = TileProximityDetector.DetectionModes.values().length;
+        final int detectionModeButtonPadding = 1;
+        final int buttonDetectionModeWidth = (137 - detectionModeButtonPadding * (numDetectionModes - 1)) / numDetectionModes;
+        this.buttonsDetectionMode = new Button[numDetectionModes];
+        for(int i = 0; i < numDetectionModes; ++i) {
+            TileProximityDetector.DetectionModes detectionMode = TileProximityDetector.DetectionModes.values()[i];
+            final int buttonX = relX + 7 + i * (detectionModeButtonPadding + buttonDetectionModeWidth);
+            this.buttonsDetectionMode[i] = new Button(buttonX, relY + 21, buttonDetectionModeWidth, 20, detectionMode.buttonLabel, button -> {
+                for(Button otherButton : this.buttonsDetectionMode) {
+                    otherButton.active = true;
+                }
+                button.active = false;
+            });
+            if(TILE_ENTITY.getDetectionMode() == detectionMode) {
+                this.buttonsDetectionMode[i].active = false;
+            }
+            addButton(this.buttonsDetectionMode[i]);
+        }
+
         this.detectionRadiusSlider = new WidgetCustomizableSlider(
-                (this.width / 2) - 75, relY + 61, 130, 20,
+                relX + 7, relY + 45, 137, 20,
                 new TranslationTextComponent(TILE_ENTITY.getRadiusSliderText()),
                 rawRangeToSliderValue(TILE_ENTITY.getDetectionRadius()),
                 (slider) -> {
@@ -78,21 +100,19 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
         );
         addButton(this.detectionRadiusSlider);
 
-        this.textFieldExclusionFrequency = new TextFieldWidget(this.font, this.width / 2 + 7, ((height - imageHeight) / 2) + 20 + (15 * 1), (imageWidth / 2) - 14, 12, new TranslationTextComponent("gui." + ICBMReference.MODID + ".proximity_detector.exclusion_frequency"));
+        this.textFieldExclusionFrequency = new TextFieldWidget(this.font, this.width / 2 + 7, relY + 100, (imageWidth / 2) - 14, 12, new TranslationTextComponent("gui." + ICBMReference.MODID + ".proximity_detector.exclusion_frequency"));
         this.textFieldExclusionFrequency.setFilter(ScreenLauncherControlPanel::stringIsPositiveInteger);
         this.textFieldExclusionFrequency.setMaxLength(32500);
         this.textFieldExclusionFrequency.setValue(String.valueOf(TILE_ENTITY.getExclusionFrequency()));
         this.textFieldExclusionFrequency.moveCursorToStart();
         addButton(this.textFieldExclusionFrequency);
 
-        // TODO: Detection Mode (3 Buttons)
-
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        int relX = (this.getWidth() - this.getImageWidth()) / 2;
+        final int relX = (this.getWidth() - this.getImageWidth()) / 2;
         this.font.draw(matrixStack, "amongus", relX + (float)this.inventoryLabelX, (float)this.inventoryLabelY + 10, 0x404040);
     }
 
@@ -100,9 +120,12 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
     public void updateGui() {
         if(!this.hasBeenUpdated) {
             this.hasBeenUpdated = true;
+            for(Button button : this.buttonsDetectionMode) {
+                button.active = true;
+            }
+            this.buttonsDetectionMode[TILE_ENTITY.getDetectionMode().ordinal()].active = false;
             this.detectionRadiusSlider.setValue(this.rawRangeToSliderValue(TILE_ENTITY.getDetectionRadius()));
             this.textFieldExclusionFrequency.setValue(String.valueOf(TILE_ENTITY.getExclusionFrequency()));
-            // TODO update for detection mode
         }
     }
     
@@ -115,8 +138,13 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
         try {
             exclusionFrequency = Integer.parseInt(textFieldExclusionFrequency.getValue());
         } catch (NumberFormatException ignored) {}
-        // TODO update for detection mode
-        ICBMNetworking.INSTANCE.sendToServer(new CPacketUpdateProximityDetector(pos, detectionRadius, exclusionFrequency));
+        int detectionMode = 0;
+        for(int i = 0; i < buttonsDetectionMode.length; ++i) {
+            if(!buttonsDetectionMode[i].active) {
+                detectionMode = i;
+            }
+        }
+        ICBMNetworking.INSTANCE.sendToServer(new CPacketUpdateProximityDetector(pos, detectionMode, detectionRadius, exclusionFrequency));
     }
 
 }

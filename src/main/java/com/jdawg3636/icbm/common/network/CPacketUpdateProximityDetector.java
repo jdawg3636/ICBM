@@ -21,17 +21,20 @@ import java.util.function.Supplier;
 public class CPacketUpdateProximityDetector {
 
     public final BlockPos pos;
+    public final int detectionMode;
     public final double detectionRadius;
     public final int exclusionFrequency;
 
-    public CPacketUpdateProximityDetector(BlockPos pos, double detectionRadius, int exclusionFrequency) {
+    public CPacketUpdateProximityDetector(BlockPos pos, int detectionMode, double detectionRadius, int exclusionFrequency) {
         this.pos = pos;
+        this.detectionMode = detectionMode;
         this.detectionRadius = detectionRadius;
         this.exclusionFrequency = exclusionFrequency;
     }
 
     public static void write(CPacketUpdateProximityDetector packet, PacketBuffer buffer) {
         buffer.writeBlockPos(packet.pos);
+        buffer.writeInt(packet.detectionMode);
         buffer.writeDouble(packet.detectionRadius);
         buffer.writeInt(packet.exclusionFrequency);
     }
@@ -39,6 +42,7 @@ public class CPacketUpdateProximityDetector {
     public static CPacketUpdateProximityDetector read(PacketBuffer buffer) {
         return new CPacketUpdateProximityDetector(
             buffer.readBlockPos(),
+            buffer.readInt(),
             buffer.readDouble(),
             buffer.readInt()
         );
@@ -63,6 +67,7 @@ public class CPacketUpdateProximityDetector {
 
             // If all checks passed, perform update
             // Note: setters may have their own checks
+            ((TileProximityDetector) tileEntity).setDetectionMode(packet.detectionMode);
             ((TileProximityDetector) tileEntity).setDetectionRadius(packet.detectionRadius);
             ((TileProximityDetector) tileEntity).setExclusionFrequency(packet.exclusionFrequency);
 

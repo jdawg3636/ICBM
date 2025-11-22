@@ -534,9 +534,9 @@
 
   "gui.icbm.tracker.freq": "Frequency",
   "gui.icbm.proximity_detector": "Proximity Detector",
-  "gui.icbm.proximity_detector.all": "All",
-  "gui.icbm.proximity_detector.players": "Players",
-  "gui.icbm.proximity_detector.mobs": "Mobs",
+  "gui.icbm.proximity_detector.detection_mode.players_and_mobs": "Both",
+  "gui.icbm.proximity_detector.detection_mode.players": "Players",
+  "gui.icbm.proximity_detector.detection_mode.mobs": "Mobs",
   "gui.icbm.proximity_detector.radius": "Detection Radius",
   "gui.icbm.proximity_detector.min": "Min",
   "gui.icbm.proximity_detector.max": "Max",

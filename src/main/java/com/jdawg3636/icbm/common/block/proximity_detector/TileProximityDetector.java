@@ -5,6 +5,7 @@ import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -29,13 +30,17 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
     }
 
     public static enum DetectionModes {
-        PLAYERS, MOBS, BOTH
+        PLAYERS("players"), MOBS("mobs"), BOTH("players_and_mobs");
+        final TranslationTextComponent buttonLabel;
+        DetectionModes(String buttonLabel) {
+            this.buttonLabel = new TranslationTextComponent("gui." + ICBMReference.MODID + ".proximity_detector.detection_mode." + buttonLabel);
+        }
     }
 
     // User-controlled parameters
     private double detectionRadius = ICBMReference.COMMON_CONFIG.getProximityDetectorRadiusMaximum();
     private int exclusionFrequency = 0;
-    public DetectionModes detectionMode = DetectionModes.BOTH;
+    private DetectionModes detectionMode = DetectionModes.BOTH;
 
     public int currentSignal = 0;
 
@@ -51,11 +56,16 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
             tryReceiveEnergy(batteryEnergyStorage, batteryEnergyStorage.getEnergyStored());
         });
         // TODO Only output signal if sufficient power provided
-        // TODO original mod had max radius of 30 blocks. Should probably make that a config.
         // TODO implement signal disruptor support
         // Calculate Redstone Signal
         final BlockPos blockPos = getBlockPos();
-        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(blockPos).inflate(detectionRadius), entity -> true);
+        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(blockPos).inflate(detectionRadius), entity -> {
+            return !entity.isSpectator() && (
+                this.detectionMode == DetectionModes.BOTH ||
+                (this.detectionMode == DetectionModes.PLAYERS && entity instanceof PlayerEntity) ||
+                (this.detectionMode == DetectionModes.MOBS && !(entity instanceof PlayerEntity))
+            );
+        });
         int newSignal = targets.stream()
                 .map(target -> getBlockPos().distSqr(target.position(), true)) // Map target to square of distance
                 .min(Double::compare) // Find minimum distance (closest target). Returns Optional<Double> (no longer a Stream).
@@ -63,7 +73,7 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
                 .map(distance -> Math.max(0, distance - 0.86602540378)) // Reduce distance by sqrt(0.75) to account for the size of the block itself
                 .filter(distance -> distance <= detectionRadius) // Ensure target is within radius (spherical/Euclidean, as opposed to bounding box check).
                 .map(distance -> 15 * (1 - (distance / detectionRadius))) // Convert distance into a 0-15 signal
-                .map(floatSignal -> (int)Math.ceil(floatSignal)) // Round up and cast to int
+                .map(floatSignal -> (int)Math.ceil(floatSignal)) // Round up and cast to int. Has the side effect of converting NaN to zero.
                 .orElse(0); // If no targets exist, signal strength is zero.
         // Update Redstone Signal (if necessary)
         if(newSignal != currentSignal) {
@@ -129,6 +139,17 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
 
     public void setExclusionFrequency(int exclusionFrequency) {
         this.exclusionFrequency = Math.max(0, exclusionFrequency);
+    }
+
+    public DetectionModes getDetectionMode() {
+        return detectionMode;
+    }
+
+    public void setDetectionMode(int detectionMode) {
+        DetectionModes[] possibleValues = DetectionModes.values();
+        if(detectionMode < possibleValues.length) {
+            this.detectionMode = possibleValues[detectionMode];
+        }
     }
 
 }
