@@ -112,6 +112,9 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedPenaltyForCollision;
         private final ForgeConfigSpec.DoubleValue particleAcceleratorSpeedRequiredToGenerateAntimatter;
 
+        private final ForgeConfigSpec.DoubleValue proximityDetectorRadiusMinimum;
+        private final ForgeConfigSpec.DoubleValue proximityDetectorRadiusMaximum;
+
         private final ForgeConfigSpec.IntValue oilRefineryEnergyUsagePerTick;
 
         private final ForgeConfigSpec.DoubleValue empTowerRangeMinimum;
@@ -415,6 +418,14 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the speed in blocks per tick that is required for a particle to be converted into antimatter in a particle accelerator.")
                     .defineInRange("particleAcceleratorSpeedRequiredToGenerateAntimatter", 0.885D, 0, Float.MAX_VALUE);
+            this.proximityDetectorRadiusMinimum = builder
+                    .comment("",
+                            "Defines the minimum detection radius that a user may specify for a Proximity Detector")
+                    .defineInRange("proximityDetectorRadiusMinimum", 0.0D, 0, Double.MAX_VALUE);
+            this.proximityDetectorRadiusMaximum = builder
+                    .comment("",
+                            "Defines the maximum detection radius that a user may specify for a Proximity Detector")
+                    .defineInRange("proximityDetectorRadiusMaximum", 30.0D, 0, Double.MAX_VALUE);
             this.oilRefineryEnergyUsagePerTick = builder
                     .comment("",
                             "Defines the amount of Forge Energy (FE) consumed per tick by an oil refinery while it is active.")
@@ -704,6 +715,13 @@ public class ICBMConfig {
 
         public double getParticleAcceleratorSpeedRequiredToGenerateAntimatter() {
             return particleAcceleratorSpeedRequiredToGenerateAntimatter.get();
+        }
+
+        public double getProximityDetectorRadiusMinimum() {
+            return proximityDetectorRadiusMinimum.get();
+        }
+        public double getProximityDetectorRadiusMaximum() {
+            return proximityDetectorRadiusMaximum.get();
         }
 
         public int getOilRefineryEnergyUsagePerTick() {

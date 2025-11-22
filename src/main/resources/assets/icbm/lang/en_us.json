@@ -537,7 +537,7 @@
   "gui.icbm.proximity_detector.all": "All",
   "gui.icbm.proximity_detector.players": "Players",
   "gui.icbm.proximity_detector.mobs": "Mobs",
-  "gui.icbm.proximity_detector.range": "Detection Range",
+  "gui.icbm.proximity_detector.radius": "Detection Radius",
   "gui.icbm.proximity_detector.min": "Min",
   "gui.icbm.proximity_detector.max": "Max",
   "gui.icbm.proximity_detector.exclude": "Exclude",
