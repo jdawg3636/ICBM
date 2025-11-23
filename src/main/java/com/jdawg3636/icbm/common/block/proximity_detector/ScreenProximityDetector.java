@@ -53,8 +53,8 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
 
         super.init();
 
-        int relX = (this.getWidth() - this.getImageWidth()) / 2;
-        int relY = (this.getHeight() - this.getImageHeight()) / 2;
+        final int relX = (this.getWidth() - this.getImageWidth()) / 2;
+        final int relY = (this.getHeight() - this.getImageHeight()) / 2;
 
         Vector3f forgeEnergyStorageBarColor = new Vector3f(29/255f, 194/255f, 68/255f);
         this.forgeEnergyStorageBar = new WidgetProgressBar(
@@ -74,7 +74,7 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
         for(int i = 0; i < numDetectionModes; ++i) {
             TileProximityDetector.DetectionModes detectionMode = TileProximityDetector.DetectionModes.values()[i];
             final int buttonX = relX + 7 + i * (detectionModeButtonPadding + buttonDetectionModeWidth);
-            this.buttonsDetectionMode[i] = new Button(buttonX, relY + 21, buttonDetectionModeWidth, 20, detectionMode.buttonLabel, button -> {
+            this.buttonsDetectionMode[i] = new Button(buttonX, relY + 20, buttonDetectionModeWidth, 20, detectionMode.buttonLabel, button -> {
                 for(Button otherButton : this.buttonsDetectionMode) {
                     otherButton.active = true;
                 }
@@ -87,7 +87,7 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
         }
 
         this.detectionRadiusSlider = new WidgetCustomizableSlider(
-                relX + 7, relY + 45, 137, 20,
+                relX + 7, relY + 58, 137, 20,
                 new TranslationTextComponent(TILE_ENTITY.getRadiusSliderText()),
                 rawRangeToSliderValue(TILE_ENTITY.getDetectionRadius()),
                 (slider) -> {
@@ -100,7 +100,7 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
         );
         addButton(this.detectionRadiusSlider);
 
-        this.textFieldExclusionFrequency = new TextFieldWidget(this.font, this.width / 2 + 7, relY + 100, (imageWidth / 2) - 14, 12, new TranslationTextComponent("gui." + ICBMReference.MODID + ".proximity_detector.exclusion_frequency"));
+        this.textFieldExclusionFrequency = new TextFieldWidget(this.font, relX + 69, relY + 97, (imageWidth / 2) - 14, 12, new TranslationTextComponent("gui." + ICBMReference.MODID + ".proximity_detector.exclusion_frequency"));
         this.textFieldExclusionFrequency.setFilter(ScreenLauncherControlPanel::stringIsPositiveInteger);
         this.textFieldExclusionFrequency.setMaxLength(32500);
         this.textFieldExclusionFrequency.setValue(String.valueOf(TILE_ENTITY.getExclusionFrequency()));
@@ -113,7 +113,8 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         final int relX = (this.getWidth() - this.getImageWidth()) / 2;
-        this.font.draw(matrixStack, "amongus", relX + (float)this.inventoryLabelX, (float)this.inventoryLabelY + 10, 0x404040);
+        final int relY = (this.getHeight() - this.getImageHeight()) / 2;
+        this.font.draw(matrixStack, "Frequency", relX + (float)this.inventoryLabelX, relY + 99, 0x353535);
     }
 
     @Override
