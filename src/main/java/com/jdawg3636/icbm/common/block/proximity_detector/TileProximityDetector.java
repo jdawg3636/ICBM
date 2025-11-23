@@ -51,30 +51,33 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
     @Override
     public void tick() {
         assert this.level != null;
+        final BlockPos blockPos = getBlockPos();
         // Ingest energy from battery
         this.getEnergyStorageOfItemInSlot(SlotIDs.BATTERY.ordinal()).ifPresent(batteryEnergyStorage -> {
             tryReceiveEnergy(batteryEnergyStorage, batteryEnergyStorage.getEnergyStored());
         });
-        // TODO Only output signal if sufficient power provided
-        // TODO implement signal disruptor support
-        // Calculate Redstone Signal
-        final BlockPos blockPos = getBlockPos();
-        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(blockPos).inflate(detectionRadius), entity -> {
-            return !entity.isSpectator() && (
-                this.detectionMode == DetectionModes.BOTH ||
-                (this.detectionMode == DetectionModes.PLAYERS && entity instanceof PlayerEntity) ||
-                (this.detectionMode == DetectionModes.MOBS && !(entity instanceof PlayerEntity))
-            );
-        });
-        int newSignal = targets.stream()
-                .map(target -> getBlockPos().distSqr(target.position(), true)) // Map target to square of distance
-                .min(Double::compare) // Find minimum distance (closest target). Returns Optional<Double> (no longer a Stream).
-                .map(Math::sqrt) // Take square root
-                .map(distance -> Math.max(0, distance - 0.86602540378)) // Reduce distance by sqrt(0.75) to account for the size of the block itself
-                .filter(distance -> distance <= detectionRadius) // Ensure target is within radius (spherical/Euclidean, as opposed to bounding box check).
-                .map(distance -> 15 * (1 - (distance / detectionRadius))) // Convert distance into a 0-15 signal
-                .map(floatSignal -> (int)Math.ceil(floatSignal)) // Round up and cast to int. Has the side effect of converting NaN to zero.
-                .orElse(0); // If no targets exist, signal strength is zero.
+        // Calculate redstone signal
+        int newSignal = 0;
+        if(this.tryConsumeEnergy(5)) { // TODO: Make power usage configurable
+            // Find potential targets based on detection mode and coarse radius
+            List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(blockPos).inflate(detectionRadius), entity -> {
+                return !entity.isSpectator() && (
+                        this.detectionMode == DetectionModes.BOTH ||
+                                (this.detectionMode == DetectionModes.PLAYERS && entity instanceof PlayerEntity) ||
+                                (this.detectionMode == DetectionModes.MOBS && !(entity instanceof PlayerEntity))
+                );
+            });
+            // TODO implement signal disruptor support
+            newSignal = targets.stream()
+                    .map(target -> getBlockPos().distSqr(target.position(), true)) // Map target to square of distance
+                    .min(Double::compare) // Find minimum distance (closest target). Returns Optional<Double> (no longer a Stream).
+                    .map(Math::sqrt) // Take square root
+                    .map(distance -> Math.max(0, distance - 0.86602540378)) // Reduce distance by sqrt(0.75) to account for the size of the block itself
+                    .filter(distance -> distance <= detectionRadius) // Ensure target is within radius (spherical/Euclidean, as opposed to bounding box check).
+                    .map(distance -> 15 * (1 - (distance / detectionRadius))) // Convert distance into a 0-15 signal
+                    .map(floatSignal -> (int)Math.ceil(floatSignal)) // Round up and cast to int. Has the side effect of converting NaN to zero.
+                    .orElse(0); // If no targets exist, signal strength is zero.
+        }
         // Update Redstone Signal (if necessary)
         if(newSignal != currentSignal) {
             this.currentSignal = newSignal;
