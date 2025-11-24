@@ -16,7 +16,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityLightningVisual extends LightningBoltEntity {
 
-    public long seed = this.random.nextLong();
     public int remainingTicks = 40;
 
     private static final DataParameter<Float> VISUAL_YAW = EntityDataManager.defineId(EntityLightningVisual.class, DataSerializers.FLOAT);
@@ -30,7 +29,12 @@ public class EntityLightningVisual extends LightningBoltEntity {
 
     @Override
     public void tick() {
-        super.tick();
+        // Copied from Entity::tick
+        if (!this.level.isClientSide) {
+            this.setSharedFlag(6, this.isGlowing());
+        }
+        this.baseTick();
+        // Adapted from LightningBoltEntity::tick
         if (this.level instanceof ServerWorld) {
             if(this.remainingTicks == 0) {
                 this.kill();
