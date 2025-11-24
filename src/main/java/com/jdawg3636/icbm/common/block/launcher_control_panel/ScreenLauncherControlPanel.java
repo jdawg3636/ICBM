@@ -246,6 +246,11 @@ public class ScreenLauncherControlPanel extends Screen implements IScreenMachine
         fontRenderer.draw(matrixStack, ireorderingprocessor, (float)(posX - fontRenderer.width(ireorderingprocessor)) + relX, (float)posY + relY, color);
     }
 
+    // Prevents the game from being paused when this GUI is opened is Singleplayer
+    public boolean isPauseScreen() {
+        return false;
+    }
+
     @Override
     public Minecraft deobf$getMinecraft() {
         return super.getMinecraft();
