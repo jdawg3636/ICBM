@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.block.proximity_detector;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
+import com.jdawg3636.icbm.common.item.ItemSignalDisruptor;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -61,13 +62,14 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
         if(this.tryConsumeEnergy(5)) { // TODO: Make power usage configurable
             // Find potential targets based on detection mode and coarse radius
             List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(blockPos).inflate(detectionRadius), entity -> {
-                return !entity.isSpectator() && (
+                boolean targetIsValidForMode = !entity.isSpectator() && (
                         this.detectionMode == DetectionModes.BOTH ||
-                                (this.detectionMode == DetectionModes.PLAYERS && entity instanceof PlayerEntity) ||
-                                (this.detectionMode == DetectionModes.MOBS && !(entity instanceof PlayerEntity))
+                        (this.detectionMode == DetectionModes.PLAYERS && entity instanceof PlayerEntity) ||
+                        (this.detectionMode == DetectionModes.MOBS && !(entity instanceof PlayerEntity))
                 );
+                boolean signalIsNotBlocked = (!(entity instanceof PlayerEntity)) || !ItemSignalDisruptor.getFrequenciesDisruptedByPlayer((PlayerEntity)entity).contains(this.exclusionFrequency);
+                return targetIsValidForMode && signalIsNotBlocked;
             });
-            // TODO implement signal disruptor support
             newSignal = targets.stream()
                     .map(target -> getBlockPos().distSqr(target.position(), true)) // Map target to square of distance
                     .min(Double::compare) // Find minimum distance (closest target). Returns Optional<Double> (no longer a Stream).

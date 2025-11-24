@@ -1,14 +1,17 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -20,11 +23,33 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemSignalDisruptor extends Item {
 
     public static final int ENERGY_CAPACITY = 50_000; // todo make configurable
+
+    public static List<Integer> getFrequenciesDisruptedByPlayer(PlayerEntity player) {
+        List<Integer> toReturn = new ArrayList<>();
+        for(NonNullList<ItemStack> nonnulllist : player.inventory.compartments) {
+            for(int i = 0; i < nonnulllist.size(); ++i) {
+                ItemStack itemStack = nonnulllist.get(i);
+                if (!(itemStack.getItem() instanceof ItemSignalDisruptor)) {
+                    continue;
+                }
+                if (itemStack.getCapability(CapabilityEnergy.ENERGY).map(es -> es.getEnergyStored() == 0).orElse(true)) {
+                    continue;
+                }
+                int frequencyBeingDisrupted = ((ItemSignalDisruptor)itemStack.getItem()).getFrequencyBeingDisrupted(itemStack);
+                if(frequencyBeingDisrupted != 0) {
+                    toReturn.add(frequencyBeingDisrupted);
+                }
+            }
+        }
+        return toReturn;
+    }
 
     public ItemSignalDisruptor() {
         this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB));
@@ -35,8 +60,22 @@ public class ItemSignalDisruptor extends Item {
     }
 
     @Override
+    public void inventoryTick(ItemStack itemStack, World levelCurrent, Entity entity, int slot, boolean isSelected) {
+        super.inventoryTick(itemStack, levelCurrent, entity, slot, isSelected);
+        itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
+            // TODO: make energy usage per tick configurable
+            energyStorage.extractEnergy(5, false);
+        });
+    }
+
+    @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
+        // TODO: need to be able to toggle on/off.
         return super.use(level, player, hand);
+    }
+
+    public int getFrequencyBeingDisrupted(ItemStack itemStack) {
+        return 69;
     }
 
     @Override
