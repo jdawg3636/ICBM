@@ -12,10 +12,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -73,10 +70,12 @@ public class ItemSignalDisruptor extends Item {
     @Override
     public void inventoryTick(ItemStack itemStack, World levelCurrent, Entity entity, int slot, boolean isSelected) {
         super.inventoryTick(itemStack, levelCurrent, entity, slot, isSelected);
-        itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
-            // TODO: make energy usage per tick configurable
-            energyStorage.extractEnergy(5, false);
-        });
+        if(getFrequencyBeingDisrupted(itemStack) != 0) {
+            itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
+                // TODO: make energy usage per tick configurable
+                energyStorage.extractEnergy(5, false);
+            });
+        }
     }
 
     @Override
@@ -133,6 +132,13 @@ public class ItemSignalDisruptor extends Item {
     public void appendHoverText(ItemStack stack, @Nullable World level, List<ITextComponent> tooltip, ITooltipFlag tooltipFlag) {
         super.appendHoverText(stack, level, tooltip, tooltipFlag);
         if(level == null) return;
+        int frequency = getFrequencyBeingDisrupted(stack);
+        if(frequency != 0) {
+            tooltip.add(new TranslationTextComponent("info." + ICBMReference.MODID + ".signal_disruptor.disrupting_frequency").append(" " + frequency).withStyle(TextFormatting.GREEN));
+        }
+        else {
+            tooltip.add(new TranslationTextComponent("info." + ICBMReference.MODID + ".signal_disruptor.not_disrupting_frequency").withStyle(TextFormatting.RED));
+        }
         tooltip.add(stack.getCapability(CapabilityEnergy.ENERGY).map((energyStorage) -> {
             IFormattableTextComponent stored = ((ICBMEnergyStorage) energyStorage).getEnergyStoredFormatted(2, true);
             IFormattableTextComponent slash = new StringTextComponent("/");

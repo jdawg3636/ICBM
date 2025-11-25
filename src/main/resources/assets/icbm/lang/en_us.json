@@ -628,7 +628,8 @@
   # Tooltips
   "info.icbm.radarGun.coordinates": "Scanned Coordinates:",
   "info.icbm.missile.fuel_level": "%s%% Fueled",
-  "info.misc.freq": "Frequency:",
+  "info.icbm.signal_disruptor.disrupting_frequency": "Disrupting Frequency:",
+  "info.icbm.signal_disruptor.not_disrupting_frequency": "Disabled. Right-Click to set a frequency.",
   "info.tracker.tracking": "Tracking:",
   "info.designator.noFreq": "Frequency: Not set",
   "info.radarGun.savedCoords": "Saved coordinates:",
