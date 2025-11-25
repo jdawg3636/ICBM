@@ -1,11 +1,11 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -25,11 +25,10 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ItemSignalDisruptor extends Item {
 
-    public static final int ENERGY_CAPACITY = 50_000; // todo make configurable
+    public static final int ENERGY_CAPACITY = 1_000_000; // todo make configurable
 
     public static List<Integer> getFrequenciesDisruptedByPlayer(PlayerEntity player) {
         List<Integer> toReturn = new ArrayList<>();
@@ -51,6 +50,18 @@ public class ItemSignalDisruptor extends Item {
         return toReturn;
     }
 
+    public static int getFrequencyBeingDisrupted(ItemStack itemStack) {
+        if(!(itemStack.getItem() instanceof ItemSignalDisruptor)) return 0;
+        // If this call fails, it does so silently and returns 0. That happens to be exactly what we want.
+        return itemStack.getOrCreateTag().getInt("frequency_being_disrupted");
+    }
+
+    public static void setFrequencyBeingDisrupted(ItemStack itemStack, int frequency) {
+        if(!(itemStack.getItem() instanceof ItemSignalDisruptor)) return;
+        if(frequency < 0) return;
+        itemStack.getOrCreateTag().putInt("frequency_being_disrupted", frequency);
+    }
+
     public ItemSignalDisruptor() {
         this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB));
     }
@@ -70,12 +81,35 @@ public class ItemSignalDisruptor extends Item {
 
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
-        // TODO: need to be able to toggle on/off.
-        return super.use(level, player, hand);
-    }
-
-    public int getFrequencyBeingDisrupted(ItemStack itemStack) {
-        return 69;
+        // If on server, do nothing.
+        if(!level.isClientSide) {
+            return super.use(level, player, hand);
+        }
+        // Identify the slot of the held signal disruptor
+        int slot = 0;
+        if (hand == Hand.MAIN_HAND) {
+            slot = player.inventory.selected;
+            if(!PlayerInventory.isHotbarSlot(slot)) {
+                // I don't know how/when this would be false, but vanilla code checks it so we will too.
+                return super.use(level, player, hand);
+            }
+        }
+        else if (hand == Hand.OFF_HAND) {
+            // We could hard-code the slot index of the offhand, but it's safer to calculate it at runtime
+            // in case another mod has modified the inventory in some way.
+            for(NonNullList<ItemStack> compartment : player.inventory.compartments) {
+                if(compartment != player.inventory.offhand) {
+                    slot += compartment.size();
+                } else {
+                    break;
+                }
+            }
+        }
+        // Open the Signal Disruptor GUI
+        ICBMReference.distProxy().setScreenSignalDisruptor(slot);
+        // Return success (consume the right-click event)
+        ItemStack itemStack = player.inventory.getItem(slot);
+        return ActionResult.sidedSuccess(itemStack, true);
     }
 
     @Override

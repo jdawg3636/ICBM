@@ -29,6 +29,7 @@ import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.common.item.ItemTracker;
+import com.jdawg3636.icbm.common.item.ScreenSignalDisruptor;
 import com.jdawg3636.icbm.common.particle.ColoredSmokeParticle;
 import com.jdawg3636.icbm.common.particle.EnderParticle;
 import com.jdawg3636.icbm.common.reg.*;
@@ -42,6 +43,7 @@ import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.entity.TNTMinecartRenderer;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -74,6 +76,7 @@ public class ClientProxy extends CommonProxy {
     // Other Models
     public static final ResourceLocation MODEL_CAMOUFLAGE_DEFAULT = new ResourceLocation(ICBMReference.MODID + ":block/camouflage_default");
 
+    @Override
     @SuppressWarnings("unchecked")
     public void onClientSetupEvent(FMLClientSetupEvent event) {
 
@@ -251,6 +254,7 @@ public class ClientProxy extends CommonProxy {
 
     }
 
+    @Override
     public void onModelRegistryEvent(final ModelRegistryEvent event) {
 
         // BlockEntity Models
@@ -274,6 +278,7 @@ public class ClientProxy extends CommonProxy {
 
     }
 
+    @Override
     public void onParticleFactoryRegisterEvent(ParticleFactoryRegisterEvent event) {
 
         Minecraft.getInstance().particleEngine.register(ParticleTypeReg.ENDER_EFFECT.get(), (IAnimatedSprite sprites) -> EnderParticle::new);
@@ -300,16 +305,26 @@ public class ClientProxy extends CommonProxy {
 
     }
 
+    @Override
     public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {
         Minecraft.getInstance().setScreen(new ScreenLauncherControlPanel(tileEntity));
     }
 
+    @Override
     public void updateScreenMachine(BlockPos posOfTileEntity) {
         if (Minecraft.getInstance().screen instanceof IScreenMachine) {
             ((IScreenMachine)Minecraft.getInstance().screen).updateGui(posOfTileEntity);
         }
     }
 
+    @Override
+    public void setScreenSignalDisruptor(int slot) {
+        assert Minecraft.getInstance().player != null;
+        ItemStack itemStack = Minecraft.getInstance().player.inventory.getItem(slot);
+        Minecraft.getInstance().setScreen(new ScreenSignalDisruptor(itemStack.getHoverName(), slot));
+    }
+
+    @Override
     public int getRenderDistance() {
         return Minecraft.getInstance().options.renderDistance;
     }

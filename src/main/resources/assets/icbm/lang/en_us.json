@@ -588,6 +588,8 @@
 
   "gui.icbm.particle_accelerator": "Particle Accelerator",
 
+  "gui.icbm.signal_disruptor.radio_frequency": "Frequency",
+
   # Chat warning if user tries to fire by hand, %s is status message from GUI
   "chat.launcher.status": "Status: %s",
   "chat.launcher.failedToFire": "Warning: Cannot fire missile due to status error!",
