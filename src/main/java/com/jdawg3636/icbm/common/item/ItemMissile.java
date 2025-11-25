@@ -10,10 +10,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.Color;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -98,13 +95,8 @@ public class ItemMissile extends Item {
                 new TranslationTextComponent(
                         "info." + ICBMReference.MODID + ".missile.fuel_level",
                         nf.format(100 * percentageFuelFilled)
-                ).setStyle(
-                        Style.EMPTY
-                        .withItalic(true)
-                        .withColor(percentageFuelFilled < 1.0 ? Color.fromRgb(0xff3624) : Color.fromRgb(0x27db27))
-                )
+                ).withStyle(percentageFuelFilled < 1.0 ? TextFormatting.RED : TextFormatting.GREEN)
         );
     }
-
 
 }

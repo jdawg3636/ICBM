@@ -80,9 +80,9 @@ public class ItemSignalDisruptor extends Item {
 
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
-        // If on server, do nothing.
+        // If on server, do nothing and consume the event.
         if(!level.isClientSide) {
-            return super.use(level, player, hand);
+            return ActionResult.sidedSuccess(player.getItemInHand(hand), false);
         }
         // Identify the slot of the held signal disruptor
         int slot = 0;
