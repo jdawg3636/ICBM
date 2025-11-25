@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -60,9 +61,9 @@ public class ItemRemoteDetonator extends Item {
     @Override
     public ActionResultType useOn(ItemUseContext context) {
         TileEntity targetTileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-        if(targetTileEntity instanceof ITileLaunchControlPanel) {
+        if(targetTileEntity instanceof ITileHasRadioFrequency) {
             if(!context.getLevel().isClientSide && context.getPlayer() != null) {
-                final int frequency = ((ITileLaunchControlPanel)targetTileEntity).getRadioFrequency();
+                final int frequency = ((ITileHasRadioFrequency)targetTileEntity).getRadioFrequency();
                 context.getPlayer().getItemInHand(context.getHand()).getOrCreateTag().putInt("frequency", frequency);
                 context.getPlayer().sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.frequency_set", frequency), Util.NIL_UUID);
             }

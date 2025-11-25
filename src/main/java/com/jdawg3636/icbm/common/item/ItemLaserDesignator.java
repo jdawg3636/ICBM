@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -35,8 +36,8 @@ public class ItemLaserDesignator extends Item {
                 final Vector3d target = rayTraceResult.getLocation();
                 final BlockPos targetBlockPos = ((BlockRayTraceResult)rayTraceResult).getBlockPos();
                 final TileEntity targetTileEntity = level.getBlockEntity(targetBlockPos);
-                if(targetTileEntity instanceof ITileLaunchControlPanel) {
-                    final int frequency = ((ITileLaunchControlPanel)targetTileEntity).getRadioFrequency();
+                if(targetTileEntity instanceof ITileHasRadioFrequency) {
+                    final int frequency = ((ITileHasRadioFrequency)targetTileEntity).getRadioFrequency();
                     player.getItemInHand(hand).getOrCreateTag().putInt("frequency", frequency);
                     player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.frequency_set", frequency), Util.NIL_UUID);
                 }

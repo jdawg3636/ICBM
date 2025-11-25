@@ -509,6 +509,8 @@
   "message.icbm.rocket_launcher.launch_failed": "Missile \"%s\" failed to launch!",
   "message.icbm.rocket_launcher.no_fuel": "Failed to Launch! \"%s\" is not Fully Fueled!",
 
+  "message.icbm.signal_disruptor.frequency_set": "Set Frequency to %s!",
+
   "message.radarGun.scanned": "Scanned coordinates: X:%s Y:%s Z:%s - Distance: %s",
   "message.radarGun.nopower": "Radar Gun out of electricity!",
   "message.radarGun.transfer": "Coordinate information transferred!",

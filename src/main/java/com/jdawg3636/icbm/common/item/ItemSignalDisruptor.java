@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -8,10 +9,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -82,7 +83,7 @@ public class ItemSignalDisruptor extends Item {
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         // If on server, do nothing and consume the event.
         if(!level.isClientSide) {
-            return ActionResult.sidedSuccess(player.getItemInHand(hand), false);
+            return super.use(level, player, hand);
         }
         // Identify the slot of the held signal disruptor
         int slot = 0;
@@ -109,6 +110,20 @@ public class ItemSignalDisruptor extends Item {
         // Return success (consume the right-click event)
         ItemStack itemStack = player.inventory.getItem(slot);
         return ActionResult.sidedSuccess(itemStack, true);
+    }
+
+    @Override
+    public ActionResultType useOn(ItemUseContext context) {
+        TileEntity targetTileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
+        if(targetTileEntity instanceof ITileHasRadioFrequency) {
+            if(!context.getLevel().isClientSide && context.getPlayer() != null) {
+                final int frequency = ((ITileHasRadioFrequency)targetTileEntity).getRadioFrequency();
+                setFrequencyBeingDisrupted(context.getPlayer().getItemInHand(context.getHand()), frequency);
+                context.getPlayer().sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".signal_disruptor.frequency_set", frequency), Util.NIL_UUID);
+            }
+            return ActionResultType.sidedSuccess(context.getLevel().isClientSide);
+        }
+        return super.useOn(context);
     }
 
     @Override

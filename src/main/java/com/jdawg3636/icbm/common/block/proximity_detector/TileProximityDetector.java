@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.block.proximity_detector;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.item.ItemSignalDisruptor;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
@@ -24,7 +25,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileProximityDetector extends TileMachine implements ITickableTileEntity {
+public class TileProximityDetector extends TileMachine implements ITickableTileEntity, ITileHasRadioFrequency {
 
     public static enum SlotIDs {
         BATTERY,
@@ -97,6 +98,18 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
 
     public int getSignal(BlockState blockState, IBlockReader level, BlockPos blockPos, Direction p_180656_4_) {
         return currentSignal;
+    }
+
+    @Override
+    public void setRadioFrequency(int radioFrequency) {
+        if(radioFrequency > 0) {
+            this.exclusionFrequency = radioFrequency;
+        }
+    }
+
+    @Override
+    public int getRadioFrequency() {
+        return this.exclusionFrequency;
     }
 
     public String getRadiusSliderText() {
