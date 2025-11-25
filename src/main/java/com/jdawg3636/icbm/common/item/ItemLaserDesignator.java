@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -45,16 +46,28 @@ public class ItemLaserDesignator extends Item {
                         player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.invalid_frequency", itemStackFrequency), Util.NIL_UUID);
                     }
                     else {
+                        final double distanceToTarget = target.distanceTo(player.position());
+                        player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.launched", itemStackFrequency, targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), (((int)(distanceToTarget*1000))/1000D)).withStyle(TextFormatting.GRAY).withStyle(TextFormatting.ITALIC), Util.NIL_UUID);
                         for (TileEntity blockEntityInLevel : level.blockEntityList) {
                             if(blockEntityInLevel instanceof ITileLaunchControlPanel && ((ITileLaunchControlPanel)blockEntityInLevel).getRadioFrequency() == itemStackFrequency) {
                                 ((ITileLaunchControlPanel)blockEntityInLevel).setTargetX(target.x);
                                 ((ITileLaunchControlPanel)blockEntityInLevel).setTargetY(target.y);
                                 ((ITileLaunchControlPanel)blockEntityInLevel).setTargetZ(target.z);
-                                ((ITileLaunchControlPanel)blockEntityInLevel).launchMissile();
+                                ITileLaunchControlPanel.MissileRemoteLaunchResult launchResult = ((ITileLaunchControlPanel)blockEntityInLevel).launchMissileUsingFrequency(itemStackFrequency);
+                                BlockPos blockPos = blockEntityInLevel.getBlockPos();
+                                switch (launchResult) {
+                                    case SUCCESSFUL:
+                                        player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_successful", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.GREEN), Util.NIL_UUID);
+                                        break;
+                                    case DISRUPTED:
+                                        player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_disrupted", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                                        break;
+                                    case FAILED_LAUNCH:
+                                        player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_failed", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                                        break;
+                                }
                             }
                         }
-                        final double distanceToTarget = target.distanceTo(player.position());
-                        player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.launched", itemStackFrequency, targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), (((int)(distanceToTarget*1000))/1000D)), Util.NIL_UUID);
                     }
                 }
             }

@@ -10,6 +10,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -19,33 +20,51 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
         super(tileEntityType);
     }
 
+    @Override
     public void setTargetX(double targetX) {}
 
+    @Override
     public void setTargetZ(double targetZ) {}
 
+    @Override
     public void setTargetY(double targetY) {}
 
+    @Override
     public void setRadioFrequency(int radioFrequency) {}
 
+    @Override
     public double getTargetX() {
         return 0D;
     }
 
+    @Override
     public double getTargetZ() {
         return 0D;
     }
 
+    @Override
     public double getTargetY() {
         return 63D;
     }
 
+    @Override
     public int getRadioFrequency() {
         return 0;
     }
 
+    @Override
+    public World deobf$getLevel() {
+        return this.getLevel();
+    }
+
+    @Override
+    public BlockPos deobf$getBlockPos() {
+        return this.getBlockPos();
+    }
+
     // TODO Implement Varying Accuracy Based on Support Frames
-    public void launchMissile() {
-        if(level == null) return;
+    public boolean launchMissile() {
+        if(level == null) return false;
         BlockPos platformPos = getBlockPos().offset(getBlockState().getValue(BlockLauncherControlPanel.FACING).getOpposite().getNormal());
         BlockState platformState = level.getBlockState(platformPos);
         if(platformState.getBlock() instanceof AbstractBlockMulti) {
@@ -55,8 +74,9 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
         TileEntity platformTile = level.getBlockEntity(platformPos);
         BlockPos targetPos = new BlockPos(getTargetX(), getTargetY(), getTargetZ());
         if(platformTile instanceof TileLauncherPlatform && ((TileLauncherPlatform) platformTile).usesControlPanel()) {
-            ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, Math.max(level.getHeight() * 1.5F, getBlockPos().getY() + 128F), (int)Math.sqrt((platformPos.getX() - getTargetX()) * (platformPos.getX() - getTargetX()) + (platformPos.getZ() - getTargetZ()) * (platformPos.getZ() - getTargetZ())));
+            return ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, Math.max(level.getHeight() * 1.5F, getBlockPos().getY() + 128F), (int)Math.sqrt((platformPos.getX() - getTargetX()) * (platformPos.getX() - getTargetX()) + (platformPos.getZ() - getTargetZ()) * (platformPos.getZ() - getTargetZ())));
         }
+        return false;
     }
 
     @Override

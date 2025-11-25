@@ -65,24 +65,27 @@ public class TileLauncherPlatform extends TileMachine {
         return 0D;
     }
 
-    public void removeMissileItemWithAction(BiFunction<ItemStack, EntityMissile, Boolean> action) {
-        itemHandlerLazyOptional.ifPresent((itemHandlerUncast) -> {
+    public boolean removeMissileItemWithAction(BiFunction<ItemStack, EntityMissile, Boolean> action) {
+        return itemHandlerLazyOptional.map((itemHandlerUncast) -> {
             ItemStackHandler itemHandler = (ItemStackHandler)itemHandlerUncast;
             if(missileEntityID != null && level != null && !level.isClientSide()) {
                 ItemStack itemStack = itemHandler.getStackInSlot(0);
                 EntityMissile entity = (EntityMissile)(((ServerWorld)level).getEntity(missileEntityID));
                 if(itemStack.getItem() instanceof ItemMissile) {
-                    if(action.apply(itemStack, entity)) {
+                    boolean innerResult = action.apply(itemStack, entity);
+                    if(innerResult) {
                         missileEntityID = null; // Necessary to disconnect, otherwise ItemStackHandler would kill the entity when the slot is cleared
                         itemHandler.setStackInSlot(0, ItemStack.EMPTY);
                     }
+                    return innerResult;
                 }
             }
-        });
+            return false;
+        }).orElse(false);
     }
 
-    public void launchMissile(BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
-        removeMissileItemWithAction((itemStack, entity) -> {
+    public boolean launchMissile(BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
+        return removeMissileItemWithAction((itemStack, entity) -> {
             assert level != null;
             if(entity == null) return false;
             boolean hasEnoughFuel = Optional.of(itemStack)

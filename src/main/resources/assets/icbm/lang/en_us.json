@@ -500,6 +500,9 @@
   "message.icbm.laser_designator.frequency_set": "Set Frequency to %s!",
 
   "message.icbm.remote_detonator.launched": "Ordered Launch on Frequency %s!",
+  "message.icbm.remote_detonator.launch_successful": "Launch Successful from (%s, %s, %s)!",
+  "message.icbm.remote_detonator.launch_disrupted": "Launch Disrupted from (%s, %s, %s)!",
+  "message.icbm.remote_detonator.launch_failed": "Launch Failed from (%s, %s, %s)!",
   "message.icbm.remote_detonator.invalid_frequency": "Error: Frequency %s is outside the allowed range!",
   "message.icbm.remote_detonator.frequency_set": "Set Frequency to %s!",
 

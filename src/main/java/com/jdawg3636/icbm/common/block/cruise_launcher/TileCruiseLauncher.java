@@ -3,13 +3,16 @@ package com.jdawg3636.icbm.common.block.cruise_launcher;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
+import com.jdawg3636.icbm.common.item.ItemSignalDisruptor;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -122,6 +125,16 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
     }
 
     @Override
+    public World deobf$getLevel() {
+        return this.getLevel();
+    }
+
+    @Override
+    public BlockPos deobf$getBlockPos() {
+        return this.getBlockPos();
+    }
+
+    @Override
     public boolean usesControlPanel() {
         return false;
     }
@@ -132,9 +145,9 @@ public class TileCruiseLauncher extends TileLauncherPlatform implements ITileLau
     }
 
     @Override
-    public void launchMissile() {
-        if(level == null) return;
-        launchMissile(getBlockPos(), new BlockPos(targetX, targetY, targetZ), level.getHeight(), (int)Math.sqrt((getBlockPos().getX() - getTargetX()) * (getBlockPos().getX() - getTargetX()) + (getBlockPos().getZ() - getTargetZ()) * (getBlockPos().getZ() - getTargetZ())));
+    public boolean launchMissile() {
+        if(level == null) return false;
+        return launchMissile(getBlockPos(), new BlockPos(targetX, targetY, targetZ), level.getHeight(), (int)Math.sqrt((getBlockPos().getX() - getTargetX()) * (getBlockPos().getX() - getTargetX()) + (getBlockPos().getZ() - getTargetZ()) * (getBlockPos().getZ() - getTargetZ())));
     }
 
     @Override
