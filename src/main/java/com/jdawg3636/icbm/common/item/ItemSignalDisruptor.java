@@ -2,7 +2,6 @@ package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
-import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,21 +9,21 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemSignalDisruptor extends Item {
+public class ItemSignalDisruptor extends ItemEnergy {
 
     public static final int ENERGY_CAPACITY = 1_000_000; // todo make configurable
 
@@ -127,25 +126,8 @@ public class ItemSignalDisruptor extends Item {
     }
 
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        if(stack.isEmpty()) return super.initCapabilities(stack, nbt);
-        return ICBMEnergyStorage.getNewCapabilityProvider(stack, (energyStorage) -> energyStorage.setCapacity(ENERGY_CAPACITY, true));
-    }
-
-    @Override
-    public boolean showDurabilityBar(ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY).map((energyStorage) -> 1.0 - ((ICBMEnergyStorage)energyStorage).getEnergyPercentage() != 0.0).orElse(false);
-    }
-
-    @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY).map((energyStorage) -> 1.0 - ((ICBMEnergyStorage)energyStorage).getEnergyPercentage()).orElse(0.0);
-    }
-
-    @Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable World level, List<ITextComponent> tooltip, ITooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, level, tooltip, tooltipFlag);
         if(level == null) return;
         int frequency = getFrequencyBeingDisrupted(stack);
         if(frequency != 0) {
@@ -154,22 +136,17 @@ public class ItemSignalDisruptor extends Item {
         else {
             tooltip.add(new TranslationTextComponent("info." + ICBMReference.MODID + ".signal_disruptor.not_disrupting_frequency").withStyle(TextFormatting.RED));
         }
-        tooltip.add(stack.getCapability(CapabilityEnergy.ENERGY).map((energyStorage) -> {
-            IFormattableTextComponent stored = ((ICBMEnergyStorage) energyStorage).getEnergyStoredFormatted(2, true);
-            IFormattableTextComponent slash = new StringTextComponent("/");
-            IFormattableTextComponent capacity = ICBMEnergyStorage.EnergyMeasurementUnit.formatEnergyValue(energyStorage.getMaxEnergyStored(), 0, true);
-            return stored.append(slash).append(capacity).withStyle(TextFormatting.GRAY);
-        }).orElse(new StringTextComponent("ERROR: MISSING CAPABILITY!")));
+        super.appendHoverText(stack, level, tooltip, tooltipFlag);
     }
 
     @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return slotChanged || !oldStack.getItem().equals(newStack.getItem());
+    public int getEnergyCapacity() {
+        return ENERGY_CAPACITY;
     }
 
     @Override
-    public boolean shouldCauseBlockBreakReset(ItemStack oldStack, ItemStack newStack) {
-        return oldStack.getItem() != newStack.getItem();
+    public boolean getIsInfinite() {
+        return false;
     }
 
 }
