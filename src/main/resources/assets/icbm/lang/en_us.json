@@ -496,8 +496,9 @@
   "message.designator.noFreq": "Laser designator frequency not set!",
 
   "message.icbm.laser_designator.launched": "Ordered Launch on Frequency %s! Target: X:%s Y:%s Z:%s - Distance: %s",
-  "message.icbm.laser_designator.invalid_frequency": "Error: Frequency %s is outside the allowed range!",
+  "message.icbm.laser_designator.invalid_frequency": "Frequency %s is outside the allowed range!",
   "message.icbm.laser_designator.frequency_set": "Set Frequency to %s!",
+  "message.icbm.laser_designator.out_of_energy": "Out of Energy!",
 
   "message.icbm.remote_detonator.launched": "Ordered Launch on Frequency %s!",
   "message.icbm.remote_detonator.launch_successful": "Launch Successful from (%s, %s, %s)!",
