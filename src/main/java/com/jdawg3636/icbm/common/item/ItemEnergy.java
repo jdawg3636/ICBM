@@ -3,10 +3,8 @@ package com.jdawg3636.icbm.common.item;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -58,22 +56,6 @@ public abstract class ItemEnergy extends Item {
                 IFormattableTextComponent capacity = ICBMEnergyStorage.EnergyMeasurementUnit.formatEnergyValue(energyStorage.getMaxEnergyStored(), 0, true);
                 return stored.append(slash).append(capacity).withStyle(TextFormatting.GRAY);
             }).orElse(new StringTextComponent("ERROR: MISSING CAPABILITY!")));
-        }
-    }
-
-    @Override
-    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
-        if(getIsInfinite()) {
-            super.fillItemCategory(group, items);
-        }
-        else {
-            if (this.allowdedIn(group)) {
-                ItemStack empty = this.getDefaultInstance();
-                ItemStack full = empty.copy();
-                full.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> energyStorage.receiveEnergy(energyStorage.getMaxEnergyStored(), false));
-                items.add(empty);
-                items.add(full);
-            }
         }
     }
 

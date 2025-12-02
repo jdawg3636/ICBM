@@ -9,9 +9,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-public class ItemDefuser extends Item {
+public class ItemDefuser extends ItemEnergy {
+
+    public static final int ENERGY_CONSUMED_PER_USAGE = 1_000;
 
     public ItemDefuser() {
         this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB));
@@ -21,21 +27,38 @@ public class ItemDefuser extends Item {
         super(properties);
     }
 
+    @Override
+    public int getEnergyCapacity() {
+        return 100_000; // todo make configurable
+    }
+
+    @Override
+    public boolean getIsInfinite() {
+        return false;
+    }
+
     public static void onInteractWithEntity(final PlayerInteractEvent.EntityInteractSpecific event) {
+        // Only run on server
         if(!event.getTarget().level.isClientSide()) {
+            // Validate defusable
             if(event.getTarget() instanceof TNTEntity || event.getTarget() instanceof TNTMinecartEntity || event.getTarget() instanceof EntityGrenade) {
-                ItemStack toDrop = event.getTarget().getPickedResult(null);
-                if(toDrop == null || toDrop.equals(ItemStack.EMPTY)) {
-                    if(event.getTarget().getType().equals(EntityType.TNT)) {
-                        toDrop = Items.TNT.getDefaultInstance();
+                // Validate energy
+                if(event.getPlayer().getItemInHand(event.getHand()).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) == ENERGY_CONSUMED_PER_USAGE) {
+                    ItemStack toDrop = event.getTarget().getPickedResult(null);
+                    if (toDrop == null || toDrop.equals(ItemStack.EMPTY)) {
+                        if (event.getTarget().getType().equals(EntityType.TNT)) {
+                            toDrop = Items.TNT.getDefaultInstance();
+                        } else {
+                            return;
+                        }
                     }
-                    else {
-                        return;
-                    }
+                    event.getTarget().spawnAtLocation(toDrop);
+                    event.getTarget().kill();
+                    event.setCancellationResult(ActionResultType.SUCCESS);
                 }
-                event.getTarget().spawnAtLocation(toDrop);
-                event.getTarget().kill();
-                event.setCancellationResult(ActionResultType.SUCCESS);
+                else {
+                    event.getPlayer().sendMessage(new TranslationTextComponent("message.icbm.defuser.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
+                }
             }
         }
     }

@@ -65,7 +65,7 @@ public class ItemLaserDesignator extends ItemEnergy {
                     }
                     // Validate energy
                     else if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
-                        player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.out_of_energy", itemStackFrequency).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                        player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
                     }
                     // Good to go - find all launch control panels in range and perform launch
                     else {

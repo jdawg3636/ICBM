@@ -485,7 +485,7 @@
   "message.tracker.nopower": "Tracker out of electricity!",
   "message.tracker.banned": "Tracker is banned in this area!",
 
-  "message.defuser.nopower": "Defuser out of electricity!",
+  "message.icbm.defuser.out_of_energy": "Out of Energy!",
 
   "message.designator.callTime": "Calling air strike in:",
   "message.designator.blast": "Incoming air strike!",
