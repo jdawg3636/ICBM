@@ -17,7 +17,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class ItemDefuser extends ItemEnergy {
 
-    public static final int ENERGY_CONSUMED_PER_USAGE = 1_000;
+    public static final int ENERGY_CONSUMED_PER_USAGE = 1_000; // todo make configurable
 
     public ItemDefuser() {
         this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB));

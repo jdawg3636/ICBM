@@ -17,15 +17,19 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemRadarGun extends Item {
+public class ItemRadarGun extends ItemEnergy {
+
+    public static final int ENERGY_CONSUMED_PER_USAGE = 500; // todo make configurable
 
     public ItemRadarGun() {
         this(new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB));
@@ -36,9 +40,27 @@ public class ItemRadarGun extends Item {
     }
 
     @Override
+    public int getEnergyCapacity() {
+        return 100_000; // todo make configurable
+    }
+
+    @Override
+    public boolean getIsInfinite() {
+        return false;
+    }
+
+    @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
+        // Only run on server
         if(!level.isClientSide()) {
-            RayTraceResult rayTraceResult = player.pick(1000, 0F, false);
+            // Validate Energy
+            if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
+                player.sendMessage(new TranslationTextComponent("message.icbm.radar_gun.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
+                return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+            }
+            // Perform ray trace - todo verify that this isn't loading chunks. noticing a significant server lag spike when looking horizontally above horizon.
+            RayTraceResult rayTraceResult = player.pick(1000, 1.0F, false);
+            // If we hit something, record the coordinates
             if(rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
                 final Vector3d target = rayTraceResult.getLocation();
                 final BlockPos targetBlockPos = ((BlockRayTraceResult)rayTraceResult).getBlockPos();
@@ -63,6 +85,7 @@ public class ItemRadarGun extends Item {
                     player.sendMessage(new TranslationTextComponent("message.radarGun.scanned", targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), (((int)(distanceToTarget*1000))/1000D)), Util.NIL_UUID);
                 }
             }
+            // If we didn't hit anything, clear the coordinates.
             else {
                 player.getItemInHand(hand).removeTagKey("target_x");
                 player.getItemInHand(hand).removeTagKey("target_y");
@@ -70,6 +93,7 @@ public class ItemRadarGun extends Item {
                 player.sendMessage(new TranslationTextComponent("message.radarGun.cleared"), Util.NIL_UUID);
             }
         }
+        // Always return success/consume
         return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
     }
 
@@ -82,6 +106,7 @@ public class ItemRadarGun extends Item {
         return true;
     }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack itemStack, @Nullable World level, List<ITextComponent> tooltip, ITooltipFlag flag) {
         if(hasCoordinates(itemStack)) {
@@ -91,6 +116,7 @@ public class ItemRadarGun extends Item {
             tooltip.add(new StringTextComponent(String.format("Y: %.3f", nbt.getDouble("target_y"))));
             tooltip.add(new StringTextComponent(String.format("Z: %.3f", nbt.getDouble("target_z"))));
         }
+        super.appendHoverText(itemStack, level, tooltip, flag);
     }
 
 }

@@ -504,7 +504,7 @@
   "message.icbm.remote_detonator.launch_successful": "Launch Successful from (%s, %s, %s)!",
   "message.icbm.remote_detonator.launch_disrupted": "Launch Disrupted from (%s, %s, %s)!",
   "message.icbm.remote_detonator.launch_failed": "Launch Failed from (%s, %s, %s)!",
-  "message.icbm.remote_detonator.invalid_frequency": "Error: Frequency %s is outside the allowed range!",
+  "message.icbm.remote_detonator.invalid_frequency": "Frequency %s is outside the allowed range!",
   "message.icbm.remote_detonator.frequency_set": "Set Frequency to %s!",
 
   "message.icbm.rocket_launcher.launch_failed": "Missile \"%s\" failed to launch!",
@@ -513,7 +513,7 @@
   "message.icbm.signal_disruptor.frequency_set": "Set Frequency to %s!",
 
   "message.radarGun.scanned": "Scanned coordinates: X:%s Y:%s Z:%s - Distance: %s",
-  "message.radarGun.nopower": "Radar Gun out of electricity!",
+  "message.icbm.radar_gun.out_of_energy": "Out of Energy!",
   "message.radarGun.transfer": "Coordinate information transferred!",
   "message.radarGun.noCoords": "You must scan a coordinate!",
   "message.radarGun.cleared": "No target in range; coordinates cleared!",

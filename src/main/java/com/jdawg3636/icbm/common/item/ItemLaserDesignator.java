@@ -45,6 +45,7 @@ public class ItemLaserDesignator extends ItemEnergy {
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         if(!level.isClientSide()) {
+            // Perform ray trace - todo verify that this isn't loading chunks. noticing a significant server lag spike when looking horizontally above horizon.
             RayTraceResult rayTraceResult = player.pick(1000, 0F, false);
             if(rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
                 final Vector3d target = rayTraceResult.getLocation();
