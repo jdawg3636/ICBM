@@ -500,6 +500,7 @@
   "message.icbm.laser_designator.frequency_set": "Set Frequency to %s!",
   "message.icbm.laser_designator.out_of_energy": "Out of Energy!",
 
+  "message.icbm.remote_detonator.out_of_energy": "Out of Energy!",
   "message.icbm.remote_detonator.launched": "Ordered Launch on Frequency %s!",
   "message.icbm.remote_detonator.launch_successful": "Launch Successful from (%s, %s, %s)!",
   "message.icbm.remote_detonator.launch_disrupted": "Launch Disrupted from (%s, %s, %s)!",

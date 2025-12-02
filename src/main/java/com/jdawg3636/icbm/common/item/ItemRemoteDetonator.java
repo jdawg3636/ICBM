@@ -16,8 +16,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.CapabilityEnergy;
 
-public class ItemRemoteDetonator extends Item {
+public class ItemRemoteDetonator extends ItemEnergy {
+
+    public static final int ENERGY_CAPACITY = 100_000; // todo make configurable
+    public static final int ENERGY_CONSUMED_PER_USAGE = 1_000; // todo make configurable
 
     public ItemRemoteDetonator() {
         this(new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB));
@@ -28,12 +32,28 @@ public class ItemRemoteDetonator extends Item {
     }
 
     @Override
+    public int getEnergyCapacity() {
+        return ENERGY_CAPACITY;
+    }
+
+    @Override
+    public boolean getIsInfinite() {
+        return false;
+    }
+
+    @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         if(!level.isClientSide()) {
+            // Validate frequency
             final int itemStackFrequency = player.getItemInHand(hand).getOrCreateTag().getInt("frequency");
             if(itemStackFrequency == 0) {
-                player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.invalid_frequency", itemStackFrequency), Util.NIL_UUID);
+                player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.invalid_frequency", itemStackFrequency).withStyle(TextFormatting.RED), Util.NIL_UUID);
             }
+            // Validate energy
+            else if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
+                player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
+            }
+            // Good to go - find all launch control panels in range and perform launch
             else {
                 player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launched", itemStackFrequency).withStyle(TextFormatting.GRAY).withStyle(TextFormatting.ITALIC), Util.NIL_UUID);
                 for (TileEntity blockEntityInLevel : level.blockEntityList) {
@@ -49,6 +69,9 @@ public class ItemRemoteDetonator extends Item {
                                 break;
                             case FAILED_LAUNCH:
                                 player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_failed", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                                break;
+                            default:
+                                // If wrong frequency or unsupported operation, silently move on and don't inform the player.
                                 break;
                         }
                     }

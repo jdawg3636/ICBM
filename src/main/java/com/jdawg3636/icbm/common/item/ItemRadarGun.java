@@ -53,18 +53,14 @@ public class ItemRadarGun extends ItemEnergy {
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         // Only run on server
         if(!level.isClientSide()) {
-            // Validate Energy
-            if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
-                player.sendMessage(new TranslationTextComponent("message.icbm.radar_gun.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
-                return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
-            }
             // Perform ray trace - todo verify that this isn't loading chunks. noticing a significant server lag spike when looking horizontally above horizon.
             RayTraceResult rayTraceResult = player.pick(1000, 1.0F, false);
-            // If we hit something, record the coordinates
+            // If we hit something...
             if(rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
                 final Vector3d target = rayTraceResult.getLocation();
                 final BlockPos targetBlockPos = ((BlockRayTraceResult)rayTraceResult).getBlockPos();
                 final TileEntity targetTileEntity = level.getBlockEntity(targetBlockPos);
+                // If targeting a control panel, transfer coordinates.
                 if(targetTileEntity instanceof ITileLaunchControlPanel) {
                     final ItemStack itemStackInHand = player.getItemInHand(hand);
                     if(hasCoordinates(itemStackInHand)) {
@@ -77,12 +73,18 @@ public class ItemRadarGun extends ItemEnergy {
                         player.sendMessage(new TranslationTextComponent("message.radarGun.noCoords"), Util.NIL_UUID);
                     }
                 }
-                else {
+                // Otherwise, validate energy
+                else if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
+                    // If we have energy, record the trace coordinates into the item.
                     player.getItemInHand(hand).getOrCreateTag().putDouble("target_x", target.x);
                     player.getItemInHand(hand).getOrCreateTag().putDouble("target_y", target.y);
                     player.getItemInHand(hand).getOrCreateTag().putDouble("target_z", target.z);
                     final double distanceToTarget = target.distanceTo(player.position());
                     player.sendMessage(new TranslationTextComponent("message.radarGun.scanned", targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), (((int)(distanceToTarget*1000))/1000D)), Util.NIL_UUID);
+                }
+                // If no energy, tell the player.
+                else {
+                    player.sendMessage(new TranslationTextComponent("message.icbm.radar_gun.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
                 }
             }
             // If we didn't hit anything, clear the coordinates.
