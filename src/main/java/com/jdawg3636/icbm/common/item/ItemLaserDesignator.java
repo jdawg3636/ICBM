@@ -34,7 +34,7 @@ public class ItemLaserDesignator extends ItemFrequency {
 
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
-        // (Client OR Server) If sneaking, defer to super
+        // (Client OR Server) If sneaking, defer to super to open the frequency GUI.
         if(player.isSecondaryUseActive()) {
             return super.use(level, player, hand);
         }
@@ -45,7 +45,7 @@ public class ItemLaserDesignator extends ItemFrequency {
 
         // Validate energy (do not consume)
         if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, true)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
-            player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
+            player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".laser_designator.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
             return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
         }
 
@@ -62,7 +62,7 @@ public class ItemLaserDesignator extends ItemFrequency {
         // Validate frequency
         final int itemStackFrequency = player.getItemInHand(hand).getOrCreateTag().getInt("frequency");
         if(itemStackFrequency == 0) {
-            player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.invalid_frequency", itemStackFrequency).withStyle(TextFormatting.RED), Util.NIL_UUID);
+            player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".laser_designator.invalid_frequency", itemStackFrequency).withStyle(TextFormatting.RED), Util.NIL_UUID);
             return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
         }
 
@@ -73,7 +73,7 @@ public class ItemLaserDesignator extends ItemFrequency {
 
         // Good to go! Find all launch control panels in range and perform launch
         final double distanceToTarget = target.distanceTo(player.position());
-        player.sendMessage(new TranslationTextComponent("message.icbm.laser_designator.launched", itemStackFrequency, targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), (((int)(distanceToTarget*1000))/1000D)).withStyle(TextFormatting.GRAY).withStyle(TextFormatting.ITALIC), Util.NIL_UUID);
+        player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".laser_designator.launched", itemStackFrequency, targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), (((int)(distanceToTarget*1000))/1000D)).withStyle(TextFormatting.GRAY).withStyle(TextFormatting.ITALIC), Util.NIL_UUID);
         for (TileEntity blockEntityInLevel : level.blockEntityList) {
             if(blockEntityInLevel instanceof ITileLaunchControlPanel && ((ITileLaunchControlPanel)blockEntityInLevel).getRadioFrequency() == itemStackFrequency) {
                 ((ITileLaunchControlPanel)blockEntityInLevel).setTargetX(target.x);
@@ -83,13 +83,13 @@ public class ItemLaserDesignator extends ItemFrequency {
                 BlockPos blockPos = blockEntityInLevel.getBlockPos();
                 switch (launchResult) {
                     case SUCCESSFUL:
-                        player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_successful", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.GREEN), Util.NIL_UUID);
+                        player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".laser_designator.launch_successful", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.GREEN), Util.NIL_UUID);
                         break;
                     case DISRUPTED:
-                        player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_disrupted", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                        player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".laser_designator.launch_disrupted", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
                         break;
                     case FAILED_LAUNCH:
-                        player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_failed", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                        player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".laser_designator.launch_failed", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
                         break;
                     default:
                         // If wrong frequency or unsupported operation, silently move on and don't inform the player.

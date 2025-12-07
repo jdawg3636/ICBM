@@ -1,24 +1,22 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ITileLaunchControlPanel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-public class ItemRemoteDetonator extends ItemEnergy {
+public class ItemRemoteDetonator extends ItemFrequency {
 
     public static final int ENERGY_CAPACITY = 100_000; // todo make configurable
     public static final int ENERGY_CONSUMED_PER_USAGE = 1_000; // todo make configurable
@@ -43,56 +41,73 @@ public class ItemRemoteDetonator extends ItemEnergy {
 
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
-        if(!level.isClientSide()) {
-            // Validate frequency
-            final int itemStackFrequency = player.getItemInHand(hand).getOrCreateTag().getInt("frequency");
-            if(itemStackFrequency == 0) {
-                player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.invalid_frequency", itemStackFrequency).withStyle(TextFormatting.RED), Util.NIL_UUID);
-            }
-            // Validate energy
-            else if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
-                player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
-            }
-            // Good to go - find all launch control panels in range and perform launch
-            else {
-                player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launched", itemStackFrequency).withStyle(TextFormatting.GRAY).withStyle(TextFormatting.ITALIC), Util.NIL_UUID);
-                for (TileEntity blockEntityInLevel : level.blockEntityList) {
-                    if(blockEntityInLevel instanceof ITileLaunchControlPanel && ((ITileLaunchControlPanel)blockEntityInLevel).getRadioFrequency() == itemStackFrequency) {
-                        ITileLaunchControlPanel.MissileRemoteLaunchResult launchResult = ((ITileLaunchControlPanel)blockEntityInLevel).launchMissileUsingFrequency(itemStackFrequency);
-                        BlockPos blockPos = blockEntityInLevel.getBlockPos();
-                        switch (launchResult) {
-                            case SUCCESSFUL:
-                                player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_successful", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.GREEN), Util.NIL_UUID);
-                                break;
-                            case DISRUPTED:
-                                player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_disrupted", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
-                                break;
-                            case FAILED_LAUNCH:
-                                player.sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.launch_failed", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
-                                break;
-                            default:
-                                // If wrong frequency or unsupported operation, silently move on and don't inform the player.
-                                break;
-                        }
-                    }
+        // (Client OR Server) If sneaking, defer to super to open the frequency GUI.
+        if(player.isSecondaryUseActive()) {
+            return super.use(level, player, hand);
+        }
+        // Remaining logic is server-only. If on client, consume and return.
+        if(level.isClientSide) {
+            return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+        }
+
+        // Validate energy (do not consume)
+        if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, true)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
+            player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".laser_designator.out_of_energy").withStyle(TextFormatting.RED), Util.NIL_UUID);
+            return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+        }
+
+        // Validate frequency
+        final int itemStackFrequency = player.getItemInHand(hand).getOrCreateTag().getInt("frequency");
+        if(itemStackFrequency == 0) {
+            player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".laser_designator.invalid_frequency", itemStackFrequency).withStyle(TextFormatting.RED), Util.NIL_UUID);
+            return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+        }
+
+        // Validate and Consume energy
+        if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
+            return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+        }
+
+        // Good to go! Find all launch control panels in range and perform launch
+        player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".remote_detonator.launched", itemStackFrequency).withStyle(TextFormatting.GRAY).withStyle(TextFormatting.ITALIC), Util.NIL_UUID);
+        for (TileEntity blockEntityInLevel : level.blockEntityList) {
+            if(blockEntityInLevel instanceof ITileLaunchControlPanel && ((ITileLaunchControlPanel)blockEntityInLevel).getRadioFrequency() == itemStackFrequency) {
+                ITileLaunchControlPanel.MissileRemoteLaunchResult launchResult = ((ITileLaunchControlPanel)blockEntityInLevel).launchMissileUsingFrequency(itemStackFrequency);
+                BlockPos blockPos = blockEntityInLevel.getBlockPos();
+                switch (launchResult) {
+                    case SUCCESSFUL:
+                        player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".remote_detonator.launch_successful", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.GREEN), Util.NIL_UUID);
+                        break;
+                    case DISRUPTED:
+                        player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".remote_detonator.launch_disrupted", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                        break;
+                    case FAILED_LAUNCH:
+                        player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".remote_detonator.launch_failed", blockPos.getX(), blockPos.getY(), blockPos.getZ()).withStyle(TextFormatting.RED), Util.NIL_UUID);
+                        break;
+                    default:
+                        // If wrong frequency or unsupported operation, silently move on and don't inform the player.
+                        break;
                 }
             }
         }
+
+        // Consume and return
         return ActionResult.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
-        TileEntity targetTileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-        if(targetTileEntity instanceof ITileHasRadioFrequency) {
-            if(!context.getLevel().isClientSide && context.getPlayer() != null) {
-                final int frequency = ((ITileHasRadioFrequency)targetTileEntity).getRadioFrequency();
-                context.getPlayer().getItemInHand(context.getHand()).getOrCreateTag().putInt("frequency", frequency);
-                context.getPlayer().sendMessage(new TranslationTextComponent("message.icbm.remote_detonator.frequency_set", frequency), Util.NIL_UUID);
-            }
-            return ActionResultType.sidedSuccess(context.getLevel().isClientSide);
-        }
-        return super.useOn(context);
+    public IFormattableTextComponent getFrequencySetMessage(int frequency) {
+        return new TranslationTextComponent("message." + ICBMReference.MODID + ".remote_detonator.frequency_set", frequency);
+    }
+
+    @Override
+    public IFormattableTextComponent getFrequencyTooltip(int frequency) {
+        return new TranslationTextComponent("info." + ICBMReference.MODID + ".remote_detonator.frequency", frequency);
+    }
+
+    @Override
+    public IFormattableTextComponent getFrequencyMissingTooltip() {
+        return new TranslationTextComponent("info." + ICBMReference.MODID + ".remote_detonator.frequency_not_set");
     }
 
 }
