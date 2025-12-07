@@ -1,62 +1,47 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemSignalDisruptor extends ItemEnergy {
+public class ItemSignalDisruptor extends ItemFrequency {
 
     public static final int ENERGY_CAPACITY = 1_000_000; // todo make configurable
 
     public static List<Integer> getFrequenciesDisruptedByPlayer(PlayerEntity player) {
         List<Integer> toReturn = new ArrayList<>();
+        // Iterate through inventory
         for(NonNullList<ItemStack> nonnulllist : player.inventory.compartments) {
             for(int i = 0; i < nonnulllist.size(); ++i) {
                 ItemStack itemStack = nonnulllist.get(i);
+                // Validate Item
                 if (!(itemStack.getItem() instanceof ItemSignalDisruptor)) {
                     continue;
                 }
+                // Validate Energy
                 if (itemStack.getCapability(CapabilityEnergy.ENERGY).map(es -> es.getEnergyStored() == 0).orElse(true)) {
                     continue;
                 }
-                int frequencyBeingDisrupted = ((ItemSignalDisruptor)itemStack.getItem()).getFrequencyBeingDisrupted(itemStack);
+                // Validate Frequency
+                int frequencyBeingDisrupted = ItemFrequency.getFrequency(itemStack);
                 if(frequencyBeingDisrupted != 0) {
+                    // If all validations passed, add frequency to the list to be returned.
                     toReturn.add(frequencyBeingDisrupted);
                 }
             }
         }
+        // Return
         return toReturn;
-    }
-
-    public static int getFrequencyBeingDisrupted(ItemStack itemStack) {
-        if(!(itemStack.getItem() instanceof ItemSignalDisruptor)) return 0;
-        // If this call fails, it does so silently and returns 0. That happens to be exactly what we want.
-        return itemStack.getOrCreateTag().getInt("frequency_being_disrupted");
-    }
-
-    public static void setFrequencyBeingDisrupted(ItemStack itemStack, int frequency) {
-        if(!(itemStack.getItem() instanceof ItemSignalDisruptor)) return;
-        if(frequency < 0) return;
-        itemStack.getOrCreateTag().putInt("frequency_being_disrupted", frequency);
     }
 
     public ItemSignalDisruptor() {
@@ -70,7 +55,7 @@ public class ItemSignalDisruptor extends ItemEnergy {
     @Override
     public void inventoryTick(ItemStack itemStack, World levelCurrent, Entity entity, int slot, boolean isSelected) {
         super.inventoryTick(itemStack, levelCurrent, entity, slot, isSelected);
-        if(getFrequencyBeingDisrupted(itemStack) != 0) {
+        if(ItemFrequency.getFrequency(itemStack) != 0) {
             itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
                 // TODO: make energy usage per tick configurable
                 energyStorage.extractEnergy(5, false);
@@ -79,64 +64,18 @@ public class ItemSignalDisruptor extends ItemEnergy {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
-        // If on server, do nothing and consume the event.
-        if(!level.isClientSide) {
-            return super.use(level, player, hand);
-        }
-        // Identify the slot of the held signal disruptor
-        int slot = 0;
-        if (hand == Hand.MAIN_HAND) {
-            slot = player.inventory.selected;
-            if(!PlayerInventory.isHotbarSlot(slot)) {
-                // I don't know how/when this would be false, but vanilla code checks it so we will too.
-                return super.use(level, player, hand);
-            }
-        }
-        else if (hand == Hand.OFF_HAND) {
-            // We could hard-code the slot index of the offhand, but it's safer to calculate it at runtime
-            // in case another mod has modified the inventory in some way.
-            for(NonNullList<ItemStack> compartment : player.inventory.compartments) {
-                if(compartment != player.inventory.offhand) {
-                    slot += compartment.size();
-                } else {
-                    break;
-                }
-            }
-        }
-        // Open the Signal Disruptor GUI
-        ICBMReference.distProxy().setScreenSignalDisruptor(slot);
-        // Return success (consume the right-click event)
-        ItemStack itemStack = player.inventory.getItem(slot);
-        return ActionResult.sidedSuccess(itemStack, true);
+    public IFormattableTextComponent getFrequencySetMessage(int frequency) {
+        return new TranslationTextComponent("message." + ICBMReference.MODID + ".signal_disruptor.frequency_set", frequency);
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
-        TileEntity targetTileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-        if(targetTileEntity instanceof ITileHasRadioFrequency) {
-            if(!context.getLevel().isClientSide && context.getPlayer() != null) {
-                final int frequency = ((ITileHasRadioFrequency)targetTileEntity).getRadioFrequency();
-                setFrequencyBeingDisrupted(context.getPlayer().getItemInHand(context.getHand()), frequency);
-                context.getPlayer().sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".signal_disruptor.frequency_set", frequency), Util.NIL_UUID);
-            }
-            return ActionResultType.sidedSuccess(context.getLevel().isClientSide);
-        }
-        return super.useOn(context);
+    public IFormattableTextComponent getFrequencyTooltip(int frequency) {
+        return new TranslationTextComponent("info." + ICBMReference.MODID + ".signal_disruptor.disrupting_frequency", frequency);
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, @Nullable World level, List<ITextComponent> tooltip, ITooltipFlag tooltipFlag) {
-        if(level == null) return;
-        int frequency = getFrequencyBeingDisrupted(stack);
-        if(frequency != 0) {
-            tooltip.add(new TranslationTextComponent("info." + ICBMReference.MODID + ".signal_disruptor.disrupting_frequency").append(" " + frequency).withStyle(TextFormatting.GREEN));
-        }
-        else {
-            tooltip.add(new TranslationTextComponent("info." + ICBMReference.MODID + ".signal_disruptor.not_disrupting_frequency").withStyle(TextFormatting.RED));
-        }
-        super.appendHoverText(stack, level, tooltip, tooltipFlag);
+    public IFormattableTextComponent getFrequencyMissingTooltip() {
+        return new TranslationTextComponent("info." + ICBMReference.MODID + ".signal_disruptor.not_disrupting_frequency");
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
-import com.jdawg3636.icbm.common.network.CPacketUpdateSignalDisruptor;
+import com.jdawg3636.icbm.common.network.CPacketUpdateItemFrequency;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -18,9 +18,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenSignalDisruptor extends Screen {
+public class ScreenFrequencyItem extends Screen {
 
-    public static final ITextComponent LABEL_RADIO_FREQUENCY = new TranslationTextComponent("gui." + ICBMReference.MODID + ".signal_disruptor.radio_frequency");
+    public static final ITextComponent LABEL_RADIO_FREQUENCY = new TranslationTextComponent("gui." + ICBMReference.MODID + ".frequency_item.radio_frequency");
     public static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/mc_base_empty.png");
     public static final int IMAGE_WIDTH = 176;
     public static final int IMAGE_HEIGHT = 166;
@@ -29,7 +29,7 @@ public class ScreenSignalDisruptor extends Screen {
 
     public TextFieldWidget textFieldRadioFrequency;
 
-    public ScreenSignalDisruptor(ITextComponent name, int slot) {
+    public ScreenFrequencyItem(ITextComponent name, int slot) {
         super(name);
         this.slot = slot;
     }
@@ -40,7 +40,7 @@ public class ScreenSignalDisruptor extends Screen {
         assert this.minecraft != null;
         assert this.minecraft.player != null;
         ItemStack itemStack = this.minecraft.player.inventory.getItem(this.slot);
-        int frequency = ItemSignalDisruptor.getFrequencyBeingDisrupted(itemStack);
+        int frequency = ItemFrequency.getFrequency(itemStack);
 
         this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
         this.textFieldRadioFrequency = new TextFieldWidget(this.font, this.width / 2 - 37, ((height - IMAGE_HEIGHT) / 2) + 76, 74, 12, new TranslationTextComponent("gui." + ICBMReference.MODID + ".signal_disruptor.radio_frequency"));
@@ -106,7 +106,7 @@ public class ScreenSignalDisruptor extends Screen {
     public void sendUpdatePacketToServer() {
         try {
             int frequency = Integer.parseInt(textFieldRadioFrequency.getValue());
-            ICBMNetworking.INSTANCE.sendToServer(new CPacketUpdateSignalDisruptor(this.slot, frequency));
+            ICBMNetworking.INSTANCE.sendToServer(new CPacketUpdateItemFrequency(this.slot, frequency));
         } catch (NumberFormatException ignored) {}
     }
 

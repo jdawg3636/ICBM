@@ -29,7 +29,7 @@ import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.common.item.ItemTracker;
-import com.jdawg3636.icbm.common.item.ScreenSignalDisruptor;
+import com.jdawg3636.icbm.common.item.ScreenFrequencyItem;
 import com.jdawg3636.icbm.common.particle.ColoredSmokeParticle;
 import com.jdawg3636.icbm.common.particle.EnderParticle;
 import com.jdawg3636.icbm.common.reg.*;
@@ -318,10 +318,10 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void setScreenSignalDisruptor(int slot) {
+    public void setScreenFrequencyItem(int slot) {
         assert Minecraft.getInstance().player != null;
         ItemStack itemStack = Minecraft.getInstance().player.inventory.getItem(slot);
-        Minecraft.getInstance().setScreen(new ScreenSignalDisruptor(itemStack.getHoverName(), slot));
+        Minecraft.getInstance().setScreen(new ScreenFrequencyItem(itemStack.getHoverName(), slot));
     }
 
     @Override

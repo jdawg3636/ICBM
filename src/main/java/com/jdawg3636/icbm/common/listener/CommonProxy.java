@@ -52,7 +52,7 @@ public class CommonProxy {
     // Client Misc
     public void setScreenLauncherControlPanel(TileLauncherControlPanel tileEntity) {}
     public void updateScreenMachine(BlockPos posOfTileEntity) {}
-    public void setScreenSignalDisruptor(int slot) {}
+    public void setScreenFrequencyItem(int slot) {}
 
     // Common Events
     public void onCommonSetupEvent(final FMLCommonSetupEvent event) {

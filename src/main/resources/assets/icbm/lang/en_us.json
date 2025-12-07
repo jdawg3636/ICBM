@@ -595,7 +595,7 @@
 
   "gui.icbm.particle_accelerator": "Particle Accelerator",
 
-  "gui.icbm.signal_disruptor.radio_frequency": "Frequency",
+  "gui.icbm.frequency_item.radio_frequency": "Frequency",
 
   # Chat warning if user tries to fire by hand, %s is status message from GUI
   "chat.launcher.status": "Status: %s",
@@ -635,8 +635,10 @@
   # Tooltips
   "info.icbm.radarGun.coordinates": "Scanned Coordinates:",
   "info.icbm.missile.fuel_level": "%s%% Fueled",
-  "info.icbm.signal_disruptor.disrupting_frequency": "Disrupting Frequency:",
-  "info.icbm.signal_disruptor.not_disrupting_frequency": "Disabled. Right-Click to set a frequency.",
+  "info.icbm.signal_disruptor.disrupting_frequency": "Disrupting Frequency: %s",
+  "info.icbm.signal_disruptor.not_disrupting_frequency": "Disabled. Right-click to set a frequency.",
+  "info.icbm.laser_designator.frequency": "Frequency: %s",
+  "info.icbm.laser_designator.frequency_not_set": "Right-click while sneaking to set a frequency.",
   "info.tracker.tracking": "Tracking:",
   "info.designator.noFreq": "Frequency: Not set",
   "info.radarGun.savedCoords": "Saved coordinates:",

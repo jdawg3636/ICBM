@@ -31,7 +31,7 @@ public class ICBMNetworking {
         registerPacket(INSTANCE, CPacketUpdateEMPTower.class, packetID++);
         registerPacket(INSTANCE, CPacketUpdateProximityDetector.class, packetID++);
         //noinspection UnusedAssignment
-        registerPacket(INSTANCE, CPacketUpdateSignalDisruptor.class, packetID++);
+        registerPacket(INSTANCE, CPacketUpdateItemFrequency.class, packetID++);
 
     }
 
