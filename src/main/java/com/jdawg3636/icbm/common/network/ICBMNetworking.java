@@ -15,7 +15,9 @@ import java.util.function.Supplier;
 public class ICBMNetworking {
 
     public static final String PROTOCOL_VERSION = "1";
+
     public static SimpleChannel INSTANCE;
+    public static int nextAvailablePacketID;
 
     public static void init() {
 
@@ -26,17 +28,16 @@ public class ICBMNetworking {
                 PROTOCOL_VERSION::equals
         );
 
-        int packetID = 0;
-        registerPacket(INSTANCE, CPacketUpdateLauncherControlPanel.class, packetID++);
-        registerPacket(INSTANCE, CPacketUpdateEMPTower.class, packetID++);
-        registerPacket(INSTANCE, CPacketUpdateProximityDetector.class, packetID++);
-        //noinspection UnusedAssignment
-        registerPacket(INSTANCE, CPacketUpdateItemFrequency.class, packetID++);
+        nextAvailablePacketID = 0;
+        registerPacket(INSTANCE, CPacketUpdateLauncherControlPanel.class);
+        registerPacket(INSTANCE, CPacketUpdateEMPTower.class);
+        registerPacket(INSTANCE, CPacketUpdateProximityDetector.class);
+        registerPacket(INSTANCE, CPacketUpdateItemFrequency.class);
 
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> void registerPacket(SimpleChannel channel, Class<T> packetClass, int packetID) {
+    private static <T> void registerPacket(SimpleChannel channel, Class<T> packetClass) {
         try {
             final Method writeMethod = packetClass.getDeclaredMethod("write", packetClass, PacketBuffer.class);
             final Method readMethod = packetClass.getDeclaredMethod("read", PacketBuffer.class);
@@ -44,7 +45,7 @@ public class ICBMNetworking {
             final BiConsumer<T, PacketBuffer> writeInvoker = (packet, buffer) -> { try { writeMethod.invoke(null, packet, buffer); } catch (Throwable t) { throw new RuntimeException(t); } };
             final Function<PacketBuffer, T> readInvoker = (packet) -> { try { return (T)readMethod.invoke(null, packet); } catch (Throwable t) { throw new RuntimeException(t); } };
             final BiConsumer<T, Supplier<NetworkEvent.Context>> handleInvoker = (packet, contextSupplier) -> { try { handleMethod.invoke(null, packet, contextSupplier); } catch (Throwable t) { throw new RuntimeException(t); } };
-            channel.messageBuilder(packetClass, packetID).encoder(writeInvoker).decoder(readInvoker).consumer(handleInvoker).add();
+            channel.messageBuilder(packetClass, nextAvailablePacketID++).encoder(writeInvoker).decoder(readInvoker).consumer(handleInvoker).add();
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
