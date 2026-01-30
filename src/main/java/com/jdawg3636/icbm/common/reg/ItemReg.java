@@ -161,12 +161,15 @@ public class ItemReg {
     public static final RegistryObject<Item> LAUNCHER_SUPPORT_FRAME_T3      = ITEMS.register("launcher_support_frame_t3",       () -> new BlockItem(BlockReg.LAUNCHER_SUPPORT_FRAME_T3.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Other Machinery
+    public static final RegistryObject<Item> CENTRIFUGAL_DEPOSITION_UNIT    = ITEMS.register("centrifugal_deposition_unit",     () -> new BlockItem(BlockReg.CENTRIFUGAL_DEPOSITION_UNIT.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> COAL_GENERATOR                 = ITEMS.register("coal_generator",                  () -> new BlockItem(BlockReg.COAL_GENERATOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CRUISE_LAUNCHER                = ITEMS.register("cruise_launcher",                 () -> new BlockItem(BlockReg.CRUISE_LAUNCHER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> EMP_TOWER                      = ITEMS.register("emp_tower",                       () -> new BlockItem(BlockReg.EMP_TOWER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> METALLURGIC_LEACHING_CHAMBER   = ITEMS.register("metallurgic_leaching_chamber",    () -> new BlockItem(BlockReg.METALLURGIC_LEACHING_CHAMBER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> OIL_REFINERY                   = ITEMS.register("oil_refinery",                    () -> new BlockItem(BlockReg.OIL_REFINERY.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> PROXIMITY_DETECTOR             = ITEMS.register("proximity_detector",              () -> new BlockItem(BlockReg.PROXIMITY_DETECTOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> RADAR_STATION                  = ITEMS.register("radar_station",                   () -> new BlockItem(BlockReg.RADAR_STATION.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> THERMOCHEMICAL_MIXER           = ITEMS.register("thermochemical_mixer",            () -> new BlockItem(BlockReg.THERMOCHEMICAL_MIXER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Particle Accelerator Components (Deliberately Non-Alphabetized so that the Particle Accelerator itself will appear first in the Creative Inventory)
     public static final RegistryObject<Item> PARTICLE_ACCELERATOR           = ITEMS.register("particle_accelerator",            () -> new BlockItem(BlockReg.PARTICLE_ACCELERATOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
@@ -217,6 +220,7 @@ public class ItemReg {
     public static final RegistryObject<Item> CAMOUFLAGE                     = ITEMS.register("camouflage",                      () -> new BlockItem(BlockReg.CAMOUFLAGE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> GLASS_BUTTON                   = ITEMS.register("glass_button",                    () -> new BlockItem(BlockReg.GLASS_BUTTON.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> GLASS_PRESSURE_PLATE           = ITEMS.register("glass_pressure_plate",            () -> new BlockItem(BlockReg.GLASS_PRESSURE_PLATE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> REINFORCED_RAIL                = ITEMS.register("reinforced_rail",                 () -> new BlockItem(BlockReg.REINFORCED_RAIL.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> SIREN                          = ITEMS.register("siren",                           () -> new BlockItem(BlockReg.SIREN.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Armor

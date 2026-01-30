@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_corner",
+  "textures": {
+    "rail": "icbm:block/reinforced_rail_corner"
+  }
+}

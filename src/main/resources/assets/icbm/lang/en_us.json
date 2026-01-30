@@ -175,9 +175,13 @@
   "block.icbm.coal_generator": "Coal Generator",
   "block.icbm.oil_refinery": "Oil Refinery",
 
+  "block.icbm.centrifugal_deposition_unit": "Centrifugal Deposition Unit",
+  "block.icbm.metallurgic_leaching_chamber": "Metallurgic Leaching Chamber",
+  "block.icbm.thermochemical_mixer": "Thermochemical Mixer",
+
   # Blocks
-  "block.icbm.reinforcedRail": "Reinforced Rail",
-  "block.icbm.reinforcedRail.info": "Hardened against explosives",
+  "block.icbm.reinforced_rail": "Reinforced Rail",
+  "block.icbm.reinforced_rail.info": "Hardened against explosives",
 
   "block.icbm.redmatter.ore": "Redmatter Ore",
   "block.icbm.redmatter.ore.info": "Oh shiz, how did you get that? Put it down, it could explode!",
