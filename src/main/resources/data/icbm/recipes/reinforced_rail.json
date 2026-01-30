@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A A",
+    "ABA",
+    "A A"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/iron"
+    },
+    "B": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "result": {
+    "item": "icbm:reinforced_rail",
+    "count": 16
+  }
+}
