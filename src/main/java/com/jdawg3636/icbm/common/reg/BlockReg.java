@@ -35,9 +35,9 @@ public class BlockReg {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ICBMReference.MODID);
 
     // Basic Blocks
-    public static final RegistryObject<Block> CONCRETE                      = BLOCKS.register("concrete",                       () -> new Block(Block.Properties.of(Material.STONE).strength(3.8F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteBasic())));
-    public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.of(Material.STONE).strength(3.8F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteCompact())));
-    public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.of(Material.STONE).strength(3.8F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteReinforced())));
+    public static final RegistryObject<Block> CONCRETE                      = BLOCKS.register("concrete",                       () -> new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.8F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteBasic())));
+    public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.8F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteCompact())));
+    public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.8F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteReinforced())));
     public static final RegistryObject<Block> RADIOACTIVE_MATERIAL          = BLOCKS.register("radioactive_material",           () -> new BlockRadioactiveMaterial(AbstractBlock.Properties.of(Material.GRASS).randomTicks().harvestTool(ToolType.SHOVEL).strength(0.6F, 6F).sound(SoundType.GRASS)));
     public static final RegistryObject<Block> REINFORCED_GLASS              = BLOCKS.register("reinforced_glass",               () -> new BlockModdedGlass(2F, 48F, false));
 
@@ -142,7 +142,7 @@ public class BlockReg {
     public static final RegistryObject<Block> CAMOUFLAGE                    = BLOCKS.register("camouflage",                     BlockCamouflage::new);
     public static final RegistryObject<Block> GLASS_BUTTON                  = BLOCKS.register("glass_button",                   BlockGlassButton::new);
     public static final RegistryObject<Block> GLASS_PRESSURE_PLATE          = BLOCKS.register("glass_pressure_plate",           BlockGlassPressurePlate::new);
-    public static final RegistryObject<Block> REINFORCED_RAIL               = BLOCKS.register("reinforced_rail",                () -> new RailBlock(AbstractBlock.Properties.of(Material.DECORATION).noCollission().strength(3.8F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteReinforced()).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> REINFORCED_RAIL               = BLOCKS.register("reinforced_rail",                () -> new RailBlock(AbstractBlock.Properties.of(Material.DECORATION).noCollission().strength(0.7F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteReinforced()).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE)));
     public static final RegistryObject<Block> SIREN                         = BLOCKS.register("siren",                          () -> new BlockSiren(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(0.8F)));
 
 }
