@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
+import com.jdawg3636.icbm.mixin.accessors.IAbstractBlockAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -33,7 +34,7 @@ public class EventBlastAntimatter extends AbstractBlastEvent {
         // Block Effects
         for(BlockPos pos : ICBMBlastEventUtil.getBlockPositionsWithinFuzzySphere(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5, radius, level.random, fuzzinessPercentage)) {
             BlockState blockState = level.getBlockState(pos);
-            if(!blockState.isAir(level, pos) && (canDestroyIndestructible || blockState.getBlock().explosionResistance < 3_600_000F)) {
+            if(!blockState.isAir(level, pos) && (canDestroyIndestructible || ((IAbstractBlockAccessor)blockState.getBlock()).getExplosionResistance() < 3_600_000F)) {
                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
             }
         }

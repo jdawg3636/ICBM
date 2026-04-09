@@ -7,6 +7,7 @@ import com.jdawg3636.icbm.common.block.machine.WidgetProgressBar;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import com.jdawg3636.icbm.common.network.CPacketUpdateEMPTower;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
+import com.jdawg3636.icbm.mixin.accessors.IAbstractSliderAccessor;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
@@ -59,7 +60,7 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
             new TranslationTextComponent(TILE_ENTITY.getRadiusSliderText()),
             rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()),
             (slider) -> {
-                slider.setValue(rawRangeToSliderValue((int)sliderValueToRawRange(slider.getValue())));
+                ((IAbstractSliderAccessor)slider).invokeSetValue(rawRangeToSliderValue((int)sliderValueToRawRange(slider.getValue())));
             },
             (slider) -> {
                 ITextComponent sliderValueAsText = new StringTextComponent(String.format("%.0f", sliderValueToRawRange(slider.getValue())));
@@ -89,7 +90,7 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
     public void updateGui() {
         if(!this.hasBeenUpdated) {
             this.hasBeenUpdated = true;
-            this.rangeSlider.setValue(this.rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()));
+            ((IAbstractSliderAccessor)this.rangeSlider).invokeSetValue(this.rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()));
         }
     }
 

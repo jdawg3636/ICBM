@@ -1,7 +1,7 @@
 package com.jdawg3636.icbm.common.item.armormaterial;
 
+import com.jdawg3636.icbm.mixin.accessors.IArmorMaterialAccessor;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -37,7 +37,7 @@ public class HazmatArmorMaterial implements IArmorMaterial {
 
     @Override
     public int getDurabilityForSlot(EquipmentSlotType pSlot) {
-        return ArmorMaterial.HEALTH_PER_SLOT[pSlot.getIndex()] * 15;
+        return IArmorMaterialAccessor.getHealthPerSlotLUT()[pSlot.getIndex()] * 15;
     }
 
     @Override

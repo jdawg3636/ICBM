@@ -4,7 +4,23 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "icbm.refmap.json",
   "mixins": [
-    "MixinCommonCustomizableFluidFlowDirections"
+    "accessors.IAbstractBlockAccessor",
+    "accessors.IAbstractSliderAccessor",
+    "accessors.IArmorMaterialAccessor",
+    "accessors.IContainerScreenAccessor",
+    "accessors.IEnergyStorageAccessor",
+    "accessors.IEntityAccessor",
+    "accessors.IFallingBlockEntityAccessor",
+    "accessors.ILivingEntityAccessor",
+    "accessors.IPlayerInventoryAccessor",
+    "accessors.IRecipeManagerAccessor",
+    "accessors.IRisingParticleAccessor",
+    "accessors.ISlabBlockAccessor",
+    "accessors.ITNTEntityAccessor",
+    "accessors.ITNTMinecartEntityAccessor",
+    "MixinCommonCustomizableFluidFlowDirections",
+    "MixinCommonEntityAcceleratingParticleCollisionHook",
+    "MixinCommonEntityMissileCollisionHook"
   ],
   "client": [
     "MixinClientForceOfflineSocialInteractions",

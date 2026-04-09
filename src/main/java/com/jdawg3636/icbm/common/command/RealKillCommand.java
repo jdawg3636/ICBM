@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.command;
 
 import com.google.common.collect.ImmutableList;
+import com.jdawg3636.icbm.mixin.accessors.ILivingEntityAccessor;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -35,9 +36,9 @@ public class RealKillCommand {
             if(entity instanceof LivingEntity) {
                 LivingEntity livingEntity = ((LivingEntity)entity);
                 livingEntity.setHealth(0);
-                SoundEvent soundevent = livingEntity.getDeathSound();
+                SoundEvent soundevent = ((ILivingEntityAccessor)livingEntity).invokeGetDeathSound();
                 if (soundevent != null) {
-                    livingEntity.playSound(soundevent, livingEntity.getSoundVolume(), livingEntity.getVoicePitch());
+                    livingEntity.playSound(soundevent, ((ILivingEntityAccessor)livingEntity).invokeGetSoundVolume(), ((ILivingEntityAccessor)livingEntity).invokeGetVoicePitch());
                 }
                 livingEntity.die(DamageSource.OUT_OF_WORLD);
             }

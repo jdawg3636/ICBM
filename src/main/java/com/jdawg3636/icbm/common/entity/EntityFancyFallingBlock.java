@@ -1,5 +1,7 @@
 package com.jdawg3636.icbm.common.entity;
 
+import com.jdawg3636.icbm.mixin.accessors.IEntityAccessor;
+import com.jdawg3636.icbm.mixin.accessors.IFallingBlockEntityAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
@@ -48,7 +50,7 @@ public class EntityFancyFallingBlock extends FallingBlockEntity implements IEnti
     public void addEntityToLevel(BlockPos initialPosition, BlockState blockState, float perTickGravity, int maxTicksAlive) {
         getEntityData().set(PER_TICK_GRAVITY, perTickGravity);
         this.time = -maxTicksAlive;
-        this.blockState = blockState;
+        ((IFallingBlockEntityAccessor)this).setBlockState(blockState);
         double x = initialPosition.getX() + 0.5;
         double y = initialPosition.getY();
         double z = initialPosition.getZ() + 0.5;
@@ -87,7 +89,7 @@ public class EntityFancyFallingBlock extends FallingBlockEntity implements IEnti
             getEntityData().set(PER_TICK_GRAVITY, -0.04f);
         }
         // Apply Gravity
-        if(!this.entityData.get(DATA_NO_GRAVITY)) {
+        if(!this.entityData.get(IEntityAccessor.getDATA_NO_GRAVITY())) {
             final float perTickGravity = getEntityData().get(PER_TICK_GRAVITY);
             // If positive, rise at a fixed rate
             if(perTickGravity > 0) {
@@ -132,7 +134,7 @@ public class EntityFancyFallingBlock extends FallingBlockEntity implements IEnti
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        this.blockState = Block.stateById(additionalData.readInt());
+        ((IFallingBlockEntityAccessor)this).setBlockState(Block.stateById(additionalData.readInt()));
     }
 
 }

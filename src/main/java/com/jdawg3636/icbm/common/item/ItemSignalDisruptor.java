@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.mixin.accessors.IPlayerInventoryAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -21,7 +22,7 @@ public class ItemSignalDisruptor extends ItemFrequency {
     public static List<Integer> getFrequenciesDisruptedByPlayer(PlayerEntity player) {
         List<Integer> toReturn = new ArrayList<>();
         // Iterate through inventory
-        for(NonNullList<ItemStack> nonnulllist : player.inventory.compartments) {
+        for(NonNullList<ItemStack> nonnulllist : ((IPlayerInventoryAccessor)player.inventory).getCompartments()) {
             for(int i = 0; i < nonnulllist.size(); ++i) {
                 ItemStack itemStack = nonnulllist.get(i);
                 // Validate Item

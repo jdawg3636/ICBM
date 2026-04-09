@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.mixin.accessors.IFallingBlockEntityAccessor;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.util.Direction;
@@ -36,8 +37,8 @@ public class EventBlastAnvil extends AbstractBlastEvent {
                 }
                 FallingBlockEntity fallingblockentity = new FallingBlockEntity(getBlastWorld(), (double)getBlastPosition().getX() + 0.5D, (double)getBlastPosition().getY() + 1, (double)getBlastPosition().getZ() + 0.5D, Blocks.DAMAGED_ANVIL.defaultBlockState());
                 fallingblockentity.time = 1;
-                fallingblockentity.cancelDrop = true;
-                fallingblockentity.fallDamageAmount = 6.0F;
+                ((IFallingBlockEntityAccessor)fallingblockentity).setCancelDrop(true);
+                ((IFallingBlockEntityAccessor)fallingblockentity).setFallDamageAmount(6.0F);
                 fallingblockentity.setDeltaMovement(i, 1, j);
                 fallingblockentity.setHurtsEntities(true);
                 getBlastWorld().addFreshEntity(fallingblockentity);

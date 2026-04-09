@@ -16,6 +16,7 @@ import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import com.jdawg3636.icbm.common.worldgen.ICBMWorldGenFeatures;
+import com.jdawg3636.icbm.mixin.accessors.IAbstractBlockAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
@@ -63,7 +64,7 @@ public class CommonProxy {
 
         // Override blast resistance of vanilla obsidian
         if(ICBMReference.COMMON_CONFIG.getBlastResistanceObsidian() >= 0) {
-            Blocks.OBSIDIAN.explosionResistance = ICBMReference.COMMON_CONFIG.getBlastResistanceObsidian();
+            ((IAbstractBlockAccessor)Blocks.OBSIDIAN).setExplosionResistance(ICBMReference.COMMON_CONFIG.getBlastResistanceObsidian());
         }
 
     }

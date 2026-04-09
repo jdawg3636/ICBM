@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.block.BlockExplosives;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
+import com.jdawg3636.icbm.mixin.accessors.ITNTMinecartEntityAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
@@ -66,9 +67,9 @@ public class EntityMinecartExplosives extends TNTMinecartEntity {
                 this.spawnAtLocation(itemForm.get());
             }
         } else {
-            if (this.fuse < 0) {
+            if (((ITNTMinecartEntityAccessor)this).getFuse() < 0) {
                 this.primeFuse();
-                this.fuse = this.random.nextInt(20) + this.random.nextInt(20);
+                ((ITNTMinecartEntityAccessor)this).setFuse(this.random.nextInt(20) + this.random.nextInt(20));
             }
         }
     }

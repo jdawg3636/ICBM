@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.event.ICBMBlastEventUtil;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
+import com.jdawg3636.icbm.mixin.accessors.IAbstractBlockAccessor;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -88,7 +89,7 @@ public class EntityBlastRedmatter extends EntityBlastLingering {
                             // Use antimatter algorithm to calculate a sphere of blocks
                             candidates = ICBMBlastEventUtil.getBlockPositionsWithinFuzzySphere(getX(), getY(), getZ(), currentRadius, currentRandom, fuzzinessPercentage).stream()
                                     .filter(pos -> !level.getBlockState(pos).isAir(level, pos))
-                                    .filter(pos -> canDestroyIndestructible || level.getBlockState(pos).getBlock().explosionResistance < 3_600_000F)
+                                    .filter(pos -> canDestroyIndestructible || ((IAbstractBlockAccessor)level.getBlockState(pos).getBlock()).getExplosionResistance() < 3_600_000F)
                                     .filter(pos -> level.getFluidState(pos).getType() == Fluids.EMPTY || level.getFluidState(pos).isSource())
                                     .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
                                         // Scramble first

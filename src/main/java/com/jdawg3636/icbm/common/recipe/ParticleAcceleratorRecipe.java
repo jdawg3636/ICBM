@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.jdawg3636.icbm.common.event.EventBlastAcceleratingParticle;
 import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import com.jdawg3636.icbm.common.reg.RecipeSerializerReg;
+import com.jdawg3636.icbm.mixin.accessors.IRecipeManagerAccessor;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -37,7 +38,7 @@ public class ParticleAcceleratorRecipe implements IRecipe<IInventory> {
     }
 
     public static Optional<ParticleAcceleratorRecipe> getRecipeFor(IRecipeType<ParticleAcceleratorRecipe> recipeType, EventBlastAcceleratingParticle.ExplosionCause explosionCause, World level) {
-        return level.getRecipeManager().byType(recipeType).values().stream().flatMap((recipe) -> {
+        return ((IRecipeManagerAccessor)level.getRecipeManager()).invokeByType(recipeType).values().stream().flatMap((recipe) -> {
             return Util.toStream(recipe instanceof ParticleAcceleratorRecipe && ((ParticleAcceleratorRecipe) recipe).matchesCustom(explosionCause) ? Optional.of((ParticleAcceleratorRecipe)recipe) : Optional.empty());
         }).findFirst();
     }

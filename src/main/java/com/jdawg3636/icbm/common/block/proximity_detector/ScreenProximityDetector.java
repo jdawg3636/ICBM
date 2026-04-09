@@ -8,6 +8,7 @@ import com.jdawg3636.icbm.common.block.machine.WidgetProgressBar;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import com.jdawg3636.icbm.common.network.CPacketUpdateProximityDetector;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
+import com.jdawg3636.icbm.mixin.accessors.IAbstractSliderAccessor;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
@@ -91,7 +92,7 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
                 new TranslationTextComponent(TILE_ENTITY.getRadiusSliderText()),
                 rawRangeToSliderValue(TILE_ENTITY.getDetectionRadius()),
                 (slider) -> {
-                    slider.setValue(rawRangeToSliderValue((int)sliderValueToRawRange(slider.getValue())));
+                    ((IAbstractSliderAccessor)slider).invokeSetValue(rawRangeToSliderValue((int)sliderValueToRawRange(slider.getValue())));
                 },
                 (slider) -> {
                     ITextComponent sliderValueAsText = new StringTextComponent(String.format("%.0f", sliderValueToRawRange(slider.getValue())));
@@ -125,7 +126,7 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
                 button.active = true;
             }
             this.buttonsDetectionMode[TILE_ENTITY.getDetectionMode().ordinal()].active = false;
-            this.detectionRadiusSlider.setValue(this.rawRangeToSliderValue(TILE_ENTITY.getDetectionRadius()));
+            ((IAbstractSliderAccessor)this.detectionRadiusSlider).invokeSetValue(this.rawRangeToSliderValue(TILE_ENTITY.getDetectionRadius()));
             this.textFieldExclusionFrequency.setValue(String.valueOf(TILE_ENTITY.getExclusionFrequency()));
         }
     }

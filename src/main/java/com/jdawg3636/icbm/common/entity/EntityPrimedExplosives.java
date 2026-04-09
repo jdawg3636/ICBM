@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
+import com.jdawg3636.icbm.mixin.accessors.ITNTEntityAccessor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
@@ -35,7 +36,7 @@ public class EntityPrimedExplosives extends TNTEntity {
         this.xo = x;
         this.yo = y;
         this.zo = z;
-        this.owner = igniter;
+        ((ITNTEntityAccessor)this).setOwner(igniter);
         this.blastDirection = (igniter != null) ? igniter.getDirection() : Direction.getRandom(worldIn.random);
     }
 

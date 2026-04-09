@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.entity.EntityLightningVisual;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
+import com.jdawg3636.icbm.mixin.accessors.IEnergyStorageAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -72,8 +73,8 @@ public class EventBlastEmp extends AbstractBlastEvent {
                     // API isn't good enough - loop back through, bypass API using an access transformer (only works for built-in Forge implementation), and drain any remaining energy that's not supposed to be extractable
                     for (Direction direction : Direction.values()) {
                         EnergyStorage rawEnergyStorage = tileEntity.getCapability(ICBMReference.FORGE_ENERGY_CAPABILITY, direction).filter(EnergyStorage.class::isInstance).map(EnergyStorage.class::cast).orElse(null);
-                        if(rawEnergyStorage != null && rawEnergyStorage.energy > 0) {
-                            rawEnergyStorage.energy = 0;
+                        if(rawEnergyStorage != null && ((IEnergyStorageAccessor)rawEnergyStorage).getEnergy() > 0) {
+                            ((IEnergyStorageAccessor)rawEnergyStorage).setEnergy(0);
                             // If we changed anything, send an update packet to the client.
                             SUpdateTileEntityPacket updatePacket = tileEntity.getUpdatePacket();
                             if (updatePacket != null && getBlastWorld().getServer() != null) {

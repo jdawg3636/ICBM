@@ -1,7 +1,11 @@
 package com.jdawg3636.icbm.common.block.multiblock;
 
 import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
-import net.minecraft.block.*;
+import com.jdawg3636.icbm.mixin.accessors.ISlabBlockAccessor;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -314,7 +318,7 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         if(!waterloggable)
             return VoxelShapes.block();
         if(isRootOfMultiblock(blockState))
-            return SlabBlock.BOTTOM_AABB;
+            return ISlabBlockAccessor.getBOTTOM_AABB();
         return VoxelShapes.empty();
     }
 

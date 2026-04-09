@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.particle;
 
+import com.jdawg3636.icbm.mixin.accessors.IRisingParticleAccessor;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
@@ -58,7 +59,7 @@ public class ColoredSmokeParticle extends RisingParticle {
         @Override
         public Particle createParticle(BasicParticleType basicParticleType, ClientWorld level, double posX, double posY, double posZ, double speedXOffset, double speedYOffset, double speedZOffset) {
             Particle particle = super.createParticle(basicParticleType, level, posX, posY, posZ, speedXOffset, speedYOffset, speedZOffset);
-            ((ColoredSmokeParticle)particle).fallSpeed = 0;
+            ((IRisingParticleAccessor)particle).setFallSpeed(0);
             ((ColoredSmokeParticle)particle).fullbright = true;
             particle.scale(0.1F);
             return particle;

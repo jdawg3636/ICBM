@@ -166,8 +166,8 @@ public class EntityMissile extends Entity {
         }
     }
 
-    @Override
-    public Vector3d collide(Vector3d destination) {
+    // Can't override (private), so using Mixin to do it.
+    public Vector3d collideOverride(Vector3d destination) {
         Vector3d result = collideFiltered(destination);
         if(!MathHelper.equal(destination.x, result.x) || !MathHelper.equal(destination.z, result.z) || !MathHelper.equal(destination.y, result.y)) {
             this.getLogicalMissile().ifPresent(lm -> lm.shouldExplode = true);

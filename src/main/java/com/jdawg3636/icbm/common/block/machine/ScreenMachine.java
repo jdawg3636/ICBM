@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.block.machine;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.mixin.accessors.IContainerScreenAccessor;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -151,7 +152,7 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
         // Call the superclass (AbstractContainerScreen) code
         super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
         // Return value for superclass call isn't helpful (always returns true) - manually checking if it should have done anything
-        if(this.clickedSlot == null && this.minecraft.player.inventory.getCarried().isEmpty()) {
+        if(((IContainerScreenAccessor)this).getClickedSlot() == null && this.minecraft.player.inventory.getCarried().isEmpty()) {
             // If not then try to use normal behavior from grandparent class (should make other draggable widgets such as sliders function properly)
             return this.getFocused() != null && this.isDragging() && button == 0 && this.getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY);
         }

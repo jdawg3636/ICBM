@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.item;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
+import com.jdawg3636.icbm.mixin.accessors.IPlayerInventoryAccessor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -89,7 +90,7 @@ public abstract class ItemFrequency extends ItemEnergy {
         else if (hand == Hand.OFF_HAND) {
             // We could hard-code the slot index of the offhand, but it's safer to calculate it at runtime
             // in case another mod has modified the inventory in some way.
-            for(NonNullList<ItemStack> compartment : player.inventory.compartments) {
+            for(NonNullList<ItemStack> compartment : ((IPlayerInventoryAccessor)player.inventory).getCompartments()) {
                 if(compartment != player.inventory.offhand) {
                     slot += compartment.size();
                 } else {

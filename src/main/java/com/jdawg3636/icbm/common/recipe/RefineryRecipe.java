@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.recipe;
 import com.google.gson.JsonObject;
 import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import com.jdawg3636.icbm.common.reg.RecipeSerializerReg;
+import com.jdawg3636.icbm.mixin.accessors.IRecipeManagerAccessor;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -34,7 +35,7 @@ public class RefineryRecipe implements IRecipe<IInventory> {
     }
 
     public static Optional<RefineryRecipe> getRecipeFor(IRecipeType<RefineryRecipe> recipeType, FluidStack fluidStack, World level) {
-        return level.getRecipeManager().byType(recipeType).values().stream()
+        return ((IRecipeManagerAccessor)level.getRecipeManager()).invokeByType(recipeType).values().stream()
                 .filter(RefineryRecipe.class::isInstance).map(RefineryRecipe.class::cast)
                 .filter(recipe -> recipe.matchesCustom(fluidStack))
                 .findFirst();
