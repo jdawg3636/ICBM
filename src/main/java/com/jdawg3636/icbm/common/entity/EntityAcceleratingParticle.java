@@ -152,6 +152,7 @@ public class EntityAcceleratingParticle extends Entity {
             getEntityData().set(PARTICLE_SPEED, getEntityData().get(PARTICLE_SPEED) + (float)ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedIncreasePerTick());
             Vector3i particleDirectionAsVecI = getEntityData().get(PARTICLE_DIRECTION).getNormal();
             Vector3d particleDirectionAsVecD = new Vector3d(particleDirectionAsVecI.getX(), particleDirectionAsVecI.getY(), particleDirectionAsVecI.getZ());
+            setDeltaMovement(0,0,0);
             moveRelative(getEntityData().get(PARTICLE_SPEED), particleDirectionAsVecD);
             this.move(MoverType.SELF, this.getDeltaMovement());
         }
