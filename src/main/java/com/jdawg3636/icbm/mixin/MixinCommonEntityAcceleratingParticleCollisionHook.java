@@ -14,8 +14,7 @@ public abstract class MixinCommonEntityAcceleratingParticleCollisionHook {
     @Inject(method = "collide", at = @At("RETURN"))
     private void icbm$mixin$onCollide(Vector3d motionVector, CallbackInfoReturnable<Vector3d> cir) {
         if ((Object) this instanceof EntityAcceleratingParticle) {
-            Vector3d result = ((EntityAcceleratingParticle) (Object) this).postCollideHook(motionVector, cir.getReturnValue());
-            cir.setReturnValue(result);
+            ((EntityAcceleratingParticle) (Object) this).postCollideHook(motionVector, cir.getReturnValue());
         }
     }
 

@@ -173,12 +173,11 @@ public class EntityAcceleratingParticle extends Entity {
         return ProjectileHelper.getEntityHitResult(this.level, this, position(), position().add(getDeltaMovement()), this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (otherEntity) -> !otherEntity.isSpectator());
     }
 
-    public Vector3d postCollideHook(Vector3d motionVector, Vector3d result) {
+    public void postCollideHook(Vector3d motionVector, Vector3d result) {
         if(!result.equals(motionVector)) {
 //            ICBMReference.broadcastToChat(level, "Experienced Collision! Result = %s, Target = %s", result, motionVector);
             hasCollided = true;
         }
-        return result;
     }
 
     @Override
