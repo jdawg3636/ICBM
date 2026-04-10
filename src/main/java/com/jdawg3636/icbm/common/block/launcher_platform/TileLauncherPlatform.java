@@ -40,9 +40,11 @@ public class TileLauncherPlatform extends TileMachine {
 
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.launcher_platform");
     public UUID missileEntityID = null;
+    public final int tier;
 
-    public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor) {
+    public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor, int tier) {
         super(tileEntityTypeIn, containerType, containerConstructor, 1, 0, 0, 0, new ArrayList<>(), DEFAULT_NAME);
+        this.tier = tier;
     }
 
     public double getMissileEntityYOffset() {
@@ -140,7 +142,7 @@ public class TileLauncherPlatform extends TileMachine {
 
     @Override
     public boolean isInventoryItemValid(int slot, ItemStack stack) {
-        return super.isInventoryItemValid(slot, stack) && (stack.getItem() instanceof ItemMissile);
+        return super.isInventoryItemValid(slot, stack) && (stack.getItem() instanceof ItemMissile) && (((ItemMissile)stack.getItem()).tier <= this.tier);
     }
 
     @Nonnull

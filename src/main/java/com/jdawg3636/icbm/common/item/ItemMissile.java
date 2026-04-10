@@ -31,14 +31,16 @@ import java.util.List;
 public class ItemMissile extends Item {
 
     private final RegistryObject<EntityType<EntityMissile>> missileEntity;
+    public final int tier;
 
-    public ItemMissile(RegistryObject<EntityType<EntityMissile>> missileEntity) {
-        this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB).stacksTo(1), missileEntity);
+    public ItemMissile(RegistryObject<EntityType<EntityMissile>> missileEntity, int tier) {
+        this(new Item.Properties().tab(ICBMReference.CREATIVE_TAB).stacksTo(1), missileEntity, tier);
     }
 
-    public ItemMissile(Item.Properties properties, RegistryObject<EntityType<EntityMissile>> missileEntity) {
+    public ItemMissile(Item.Properties properties, RegistryObject<EntityType<EntityMissile>> missileEntity, int tier) {
         super(properties);
         this.missileEntity = missileEntity;
+        this.tier = tier;
     }
 
     public RegistryObject<EntityType<EntityMissile>> getMissileEntity() {
