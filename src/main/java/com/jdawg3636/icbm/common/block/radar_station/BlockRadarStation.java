@@ -1,6 +1,6 @@
 package com.jdawg3636.icbm.common.block.radar_station;
 
-import com.jdawg3636.icbm.common.block.emp_tower.BlockEMPTower;
+import com.jdawg3636.icbm.common.block.multiblock_spinning.BlockMultiblockSpinning;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.RegistryObject;
 
 import java.util.Optional;
 
-public class BlockRadarStation extends BlockEMPTower {
+public class BlockRadarStation extends BlockMultiblockSpinning {
 
     public BlockRadarStation(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
         super(tileEntityType);

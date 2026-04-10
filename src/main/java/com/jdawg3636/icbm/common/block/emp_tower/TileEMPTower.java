@@ -1,19 +1,15 @@
 package com.jdawg3636.icbm.common.block.emp_tower;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.machine.TileMachine;
+import com.jdawg3636.icbm.common.block.multiblock_spinning.TileMultiblockSpinning;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
-import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import com.jdawg3636.icbm.common.capability.missiledirector.LogicalMissile;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileLaunchPhase;
 import com.jdawg3636.icbm.common.entity.EntityLightningVisual;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -23,49 +19,16 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.energy.CapabilityEnergy;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TileEMPTower extends TileMachine implements ITickableTileEntity {
+public class TileEMPTower extends TileMultiblockSpinning {
 
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.emp_tower");
 
-    double animationPercent;
-    double empRadius;
-
     public TileEMPTower(TileEntityType<?> tileEntityType) {
-        this(tileEntityType, DEFAULT_NAME);
-    }
-
-    public TileEMPTower(TileEntityType<?> tileEntityType, ITextComponent name) {
-        super(tileEntityType, ContainerReg.EMP_TOWER::get, ContainerEMPTower::new, 1, 1_000_000, 5_000, 0, new ArrayList<>(), name);
-    }
-
-    public void addAnimationPercent(double increment) {
-        animationPercent += increment;
-        while(animationPercent > 100) animationPercent -= 100D;
-    }
-
-    public float getAnimationRadians(float partialTicks) {
-        double effectiveAnimationPercent = this.animationPercent;
-        effectiveAnimationPercent += partialTicks * getAnimationSpeed();
-        return (float)(effectiveAnimationPercent * 0.01 * 2 * Math.PI);
-    }
-
-    public double getAnimationSpeed() {
-        return 6D * this.energyStorageLazyOptional.map((energyStorage) -> ((ICBMEnergyStorage)energyStorage).getEnergyPercentage()).orElse(0d);
-    }
-
-    public void setEMPRadius(double empRadius) {
-        empRadius = Math.min(Math.max(empRadius, ICBMReference.COMMON_CONFIG.getEMPTowerRangeMinimum()), ICBMReference.COMMON_CONFIG.getEMPTowerRangeMaximum());
-        this.empRadius = empRadius;
-    }
-
-    public double getEMPRadius() {
-        return empRadius;
+        super(tileEntityType, ContainerReg.EMP_TOWER::get, DEFAULT_NAME);
     }
 
     public void triggerEMPBlast() {
@@ -76,7 +39,7 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
             // Find all launched missiles in the radius
             List<LogicalMissile> missilesToZap = missileDirector.getLogicalMissiles().values().stream()
                     .filter(logicalMissile -> logicalMissile.missileLaunchPhase == MissileLaunchPhase.LAUNCHED)
-                    .filter(logicalMissile -> getBlockPos().distSqr(logicalMissile.x, logicalMissile.y, logicalMissile.z, true) < empRadius * empRadius)
+                    .filter(logicalMissile -> getBlockPos().distSqr(logicalMissile.x, logicalMissile.y, logicalMissile.z, true) < getMachineAffectedRadius() * getMachineAffectedRadius())
                     .collect(Collectors.toList()); // must collect into list instead of using original stream - otherwise causes ConcurrentModificationException
             // Destroy targeted missiles in radius
             missilesToZap.forEach(logicalMissile -> {
@@ -99,23 +62,10 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
         });
     }
 
-    public void tickSpinnyThing() {
-        assert level != null;
-        if(level.isClientSide()) {
-            addAnimationPercent(getAnimationSpeed());
-        } else {
-            itemHandlerLazyOptional.ifPresent(itemHandler -> {
-                itemHandler.getStackInSlot(0).getCapability(CapabilityEnergy.ENERGY).ifPresent(itemEnergyStorage -> {
-                    tryReceiveEnergy(itemEnergyStorage, 10_000);
-                });
-            });
-        }
-    }
-
     @Override
     public void tick() {
         if(level == null) return;
-        tickSpinnyThing();
+        super.tick();
         // If redstone active and we successfully consumed energy for a blast
         if(!level.isClientSide() && redstoneSignalPresent() && tryConsumeEnergy(ICBMReference.COMMON_CONFIG.empTowerEnergyUsePerBlast())) {
             // Then trigger the blast
@@ -124,17 +74,6 @@ public class TileEMPTower extends TileMachine implements ITickableTileEntity {
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT tag) {
-        this.setEMPRadius(tag.getDouble("radius"));
-        super.load(state, tag);
-    }
-
-    @Override
-    public CompoundNBT save(CompoundNBT tag) {
-        tag.putDouble("radius", empRadius);
-        return super.save(tag);
-    }
-
     public String getRadiusSliderText() {
         return "gui.icbm.emp_tower.radius";
     }

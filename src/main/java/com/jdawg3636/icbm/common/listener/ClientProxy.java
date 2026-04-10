@@ -10,14 +10,14 @@ import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ScreenCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TERCruiseLauncher;
 import com.jdawg3636.icbm.common.block.cruise_launcher.TileCruiseLauncher;
-import com.jdawg3636.icbm.common.block.emp_tower.ContainerEMPTower;
-import com.jdawg3636.icbm.common.block.emp_tower.ScreenEMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TEREMPTower;
 import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
 import com.jdawg3636.icbm.common.block.machine.IScreenMachine;
+import com.jdawg3636.icbm.common.block.multiblock_spinning.ContainerMultiblockSpinning;
+import com.jdawg3636.icbm.common.block.multiblock_spinning.ScreenMultiblockSpinning;
 import com.jdawg3636.icbm.common.block.oil_refinery.ContainerOilRefinery;
 import com.jdawg3636.icbm.common.block.oil_refinery.ScreenOilRefinery;
 import com.jdawg3636.icbm.common.block.oil_refinery.TEROilRefinery;
@@ -104,13 +104,14 @@ public class ClientProxy extends CommonProxy {
         //noinspection RedundantTypeArguments
         ScreenManager.<ContainerCoalGenerator, ScreenCoalGenerator>register(ContainerReg.COAL_GENERATOR.get(), ScreenCoalGenerator::new);
         ScreenManager.<ContainerCruiseLauncher, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
-        ScreenManager.<ContainerEMPTower, ScreenEMPTower>register(ContainerReg.EMP_TOWER.get(), ScreenEMPTower::new);
+        ScreenManager.<ContainerMultiblockSpinning, ScreenMultiblockSpinning>register(ContainerReg.EMP_TOWER.get(), (container, inventory, name) -> new ScreenMultiblockSpinning(container, inventory, name, ICBMReference.COMMON_CONFIG.getEMPTowerRangeMinimum(), ICBMReference.COMMON_CONFIG.getEMPTowerRangeMaximum()));
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
         ScreenManager.<ContainerOilRefinery, ScreenOilRefinery>register(ContainerReg.OIL_REFINERY.get(), ScreenOilRefinery::new);
         ScreenManager.<ContainerProximityDetector, ScreenProximityDetector>register(ContainerReg.PROXIMITY_DETECTOR.get(), ScreenProximityDetector::new);
         ScreenManager.register(ContainerReg.PARTICLE_ACCELERATOR.get(), ScreenParticleAccelerator::new);
+        ScreenManager.<ContainerMultiblockSpinning, ScreenMultiblockSpinning>register(ContainerReg.RADAR_STATION.get(), (container, inventory, name) -> new ScreenMultiblockSpinning(container, inventory, name, ICBMReference.COMMON_CONFIG.getRadarStationRangeMinimum(), ICBMReference.COMMON_CONFIG.getRadarStationRangeMaximum()));
 
         // Register Explosives Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONDENSED.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONDENSED.get().defaultBlockState()));

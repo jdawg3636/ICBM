@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.block.emp_tower;
+package com.jdawg3636.icbm.common.block.multiblock_spinning;
 
 import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
 import net.minecraft.entity.player.PlayerInventory;
@@ -8,9 +8,9 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class ContainerEMPTower extends AbstractContainerMachine {
+public class ContainerMultiblockSpinning extends AbstractContainerMachine {
 
-    public ContainerEMPTower(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
+    public ContainerMultiblockSpinning(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
         super(containerType, windowId, level, blockPos, playerInventory);
         addSlot(152, 22, SlotTag.BATTERY);
         addPlayerInventorySlots(8, 135);

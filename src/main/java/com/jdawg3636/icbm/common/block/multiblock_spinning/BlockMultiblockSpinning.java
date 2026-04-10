@@ -1,4 +1,4 @@
-package com.jdawg3636.icbm.common.block.emp_tower;
+package com.jdawg3636.icbm.common.block.multiblock_spinning;
 
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
 import net.minecraft.block.AbstractBlock;
@@ -9,21 +9,21 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraftforge.fml.RegistryObject;
 
-public class BlockEMPTower extends AbstractBlockMultiTile {
+public class BlockMultiblockSpinning extends AbstractBlockMultiTile {
 
     private static final Vector3i[] MULTIBLOCK_POSITIONS = {
             new Vector3i(0,1,0)
     };
 
-    public BlockEMPTower(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
+    public BlockMultiblockSpinning(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
         super(tileEntityType);
     }
 
-    public BlockEMPTower(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+    public BlockMultiblockSpinning(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
         super(tileEntityType, waterloggable);
     }
 
-    public BlockEMPTower(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+    public BlockMultiblockSpinning(AbstractBlock.Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
         super(properties, tileEntityType, waterloggable);
     }
 

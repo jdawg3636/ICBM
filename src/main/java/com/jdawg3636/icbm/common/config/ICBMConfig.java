@@ -121,6 +121,9 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue empTowerRangeMaximum;
         private final ForgeConfigSpec.IntValue empTowerEnergyUsePerBlast;
 
+        private final ForgeConfigSpec.DoubleValue radarStationRangeMinimum;
+        private final ForgeConfigSpec.DoubleValue radarStationRangeMaximum;
+
         private final ForgeConfigSpec.IntValue coalGeneratorEnergyGenerationPerTick;
 
         private final ForgeConfigSpec.BooleanValue camouflageFlammable;
@@ -442,6 +445,14 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the amount of Forge Energy (FE) consumed per blast by an EMP Tower.")
                     .defineInRange("empTowerEnergyUsePerBlast", 1_000_000, 0, Integer.MAX_VALUE);
+            this.radarStationRangeMinimum = builder
+                    .comment("",
+                            "Defines the minimum effective radius that a user may specify for an Radar Station")
+                    .defineInRange("radarStationRangeMinimum", 10.0D, 0, Double.MAX_VALUE);
+            this.radarStationRangeMaximum = builder
+                    .comment("",
+                            "Defines the maximum effective radius that a user may specify for an Radar Station")
+                    .defineInRange("radarStationRangeMaximum", 150.0D, 0, Double.MAX_VALUE);
             this.coalGeneratorEnergyGenerationPerTick = builder
                     .comment("",
                             "Defines the amount of Forge Energy (FE) generated per tick by a coal generator while it is active.")
@@ -738,6 +749,14 @@ public class ICBMConfig {
 
         public int empTowerEnergyUsePerBlast() {
             return empTowerEnergyUsePerBlast.get();
+        }
+
+        public double getRadarStationRangeMinimum() {
+            return radarStationRangeMinimum.get();
+        }
+
+        public double getRadarStationRangeMaximum() {
+            return radarStationRangeMaximum.get();
         }
 
         public int getCoalGeneratorEnergyGenerationPerTick() {

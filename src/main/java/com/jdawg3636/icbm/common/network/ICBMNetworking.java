@@ -30,7 +30,7 @@ public class ICBMNetworking {
 
         nextAvailablePacketID = 0;
         registerPacket(INSTANCE, CPacketUpdateLauncherControlPanel.class);
-        registerPacket(INSTANCE, CPacketUpdateEMPTower.class);
+        registerPacket(INSTANCE, CPacketUpdateMachineSpinning.class);
         registerPacket(INSTANCE, CPacketUpdateProximityDetector.class);
         registerPacket(INSTANCE, CPacketUpdateItemFrequency.class);
 

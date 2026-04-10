@@ -1,11 +1,10 @@
-package com.jdawg3636.icbm.common.block.emp_tower;
+package com.jdawg3636.icbm.common.block.multiblock_spinning;
 
-import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
 import com.jdawg3636.icbm.common.block.machine.WidgetCustomizableSlider;
 import com.jdawg3636.icbm.common.block.machine.WidgetProgressBar;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
-import com.jdawg3636.icbm.common.network.CPacketUpdateEMPTower;
+import com.jdawg3636.icbm.common.network.CPacketUpdateMachineSpinning;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
 import com.jdawg3636.icbm.mixin.accessors.IAbstractSliderAccessor;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -20,22 +19,22 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
+public class ScreenMultiblockSpinning extends ScreenMachine<ContainerMultiblockSpinning> {
 
     public final double MIN_RANGE;
     public final double MAX_RANGE;
 
-    public final TileEMPTower TILE_ENTITY;
+    public final TileMultiblockSpinning TILE_ENTITY;
     public WidgetCustomizableSlider rangeSlider;
     public WidgetProgressBar forgeEnergyStorageBar;
 
     private boolean hasBeenUpdated;
 
-    public ScreenEMPTower(ContainerEMPTower container, PlayerInventory inventory, ITextComponent name) {
+    public ScreenMultiblockSpinning(ContainerMultiblockSpinning container, PlayerInventory inventory, ITextComponent name, double minimumRange, double maximumRange) {
         super(container, inventory, name);
-        this.TILE_ENTITY = (TileEMPTower)super.TILE_ENTITY;
-        this.MIN_RANGE = ICBMReference.COMMON_CONFIG.getEMPTowerRangeMinimum();
-        this.MAX_RANGE = ICBMReference.COMMON_CONFIG.getEMPTowerRangeMaximum();
+        this.TILE_ENTITY = (TileMultiblockSpinning)super.TILE_ENTITY;
+        this.MIN_RANGE = minimumRange;
+        this.MAX_RANGE = maximumRange;
         this.hasBeenUpdated = false;
     }
 
@@ -58,7 +57,7 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
         this.rangeSlider = new WidgetCustomizableSlider(
             (this.width / 2) - 75, relY + 61, 130, 20,
             new TranslationTextComponent(TILE_ENTITY.getRadiusSliderText()),
-            rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()),
+            rawRangeToSliderValue(TILE_ENTITY.getMachineAffectedRadius()),
             (slider) -> {
                 ((IAbstractSliderAccessor)slider).invokeSetValue(rawRangeToSliderValue((int)sliderValueToRawRange(slider.getValue())));
             },
@@ -90,7 +89,7 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
     public void updateGui() {
         if(!this.hasBeenUpdated) {
             this.hasBeenUpdated = true;
-            ((IAbstractSliderAccessor)this.rangeSlider).invokeSetValue(this.rawRangeToSliderValue(TILE_ENTITY.getEMPRadius()));
+            ((IAbstractSliderAccessor)this.rangeSlider).invokeSetValue(this.rawRangeToSliderValue(TILE_ENTITY.getMachineAffectedRadius()));
         }
     }
 
@@ -98,8 +97,8 @@ public class ScreenEMPTower extends ScreenMachine<ContainerEMPTower> {
     public void sendUpdatePacketToServer() {
         if(TILE_ENTITY == null) return;
         BlockPos pos = TILE_ENTITY.getBlockPos();
-        double empRadius = sliderValueToRawRange(this.rangeSlider.getValue());
-        ICBMNetworking.INSTANCE.sendToServer(new CPacketUpdateEMPTower(pos, empRadius));
+        double machineAffectedRadius = sliderValueToRawRange(this.rangeSlider.getValue());
+        ICBMNetworking.INSTANCE.sendToServer(new CPacketUpdateMachineSpinning(pos, machineAffectedRadius));
     }
 
 }
