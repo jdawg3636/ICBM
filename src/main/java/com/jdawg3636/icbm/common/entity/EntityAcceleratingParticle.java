@@ -170,6 +170,15 @@ public class EntityAcceleratingParticle extends Entity {
         }
     }
 
+    @Override
+    public void remove(boolean keepData) {
+        if(!keepData) {
+            // This will trigger onSyncedDataUpdated which will update the displayed speed in the Accelerator GUI
+            getEntityData().set(PARTICLE_SPEED, 0F);
+        }
+        super.remove(keepData);
+    }
+
     protected EntityRayTraceResult findHitEntity() {
         return ProjectileHelper.getEntityHitResult(this.level, this, position(), position().add(getDeltaMovement()), this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (otherEntity) -> !otherEntity.isSpectator());
     }
@@ -190,9 +199,13 @@ public class EntityAcceleratingParticle extends Entity {
 
     @Override
     public void onSyncedDataUpdated(DataParameter<?> dataParameter) {
-//        if(PARTICLE_ACCELERATOR_POSITION.equals(dataParameter)) this.particleAcceleratorPosition = (BlockPos) this.getEntityData().get(dataParameter);
-//        if(PARTICLE_DIRECTION.equals(dataParameter)) this.particleDirection = (Direction) this.getEntityData().get(dataParameter);
-//        if(PARTICLE_SPEED.equals(dataParameter)) this.particleSpeed = (float) this.getEntityData().get(dataParameter);
+        getEntityData().get(PARTICLE_ACCELERATOR_POSITION).ifPresent(acceleratorPos -> {
+            TileEntity tile = this.level.getBlockEntity(acceleratorPos);
+            if(tile instanceof TileParticleAccelerator) {
+                ((TileParticleAccelerator)tile).displayedSpeedPercentage = getEntityData().get(PARTICLE_SPEED) / ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedRequiredToGenerateAntimatter();
+                ((TileParticleAccelerator)tile).updateNearbyClients();
+            }
+        });
         super.onSyncedDataUpdated(dataParameter);
     }
 

@@ -601,6 +601,7 @@
   "gui.icbm.oil_refinery": "Oil Refinery",
 
   "gui.icbm.particle_accelerator": "Particle Accelerator",
+  "gui.icbm.particle_accelerator.current_speed": "Particle Speed: %s%%",
 
   "gui.icbm.frequency_item.radio_frequency": "Frequency",
 

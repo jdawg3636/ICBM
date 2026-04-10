@@ -15,7 +15,7 @@ public class ContainerParticleAccelerator extends AbstractContainerMachine {
         addSlot(132, 24); // Input Matter
         addSlot(132, 51); // Empty Cells
         addSlot(152, 51); // Output Cells
-        addPlayerInventorySlots(8, 84);
+        addPlayerInventorySlots(8, 84+51);
     }
 
 }

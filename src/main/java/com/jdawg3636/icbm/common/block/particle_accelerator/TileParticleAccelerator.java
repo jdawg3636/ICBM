@@ -25,6 +25,7 @@ public class TileParticleAccelerator extends TileMachine implements ITickableTil
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.particle_accelerator");
     public UUID particleEntityID = null;
     public boolean acceleratorIsActive = false;
+    public double displayedSpeedPercentage = 0D;
 
     public TileParticleAccelerator(TileEntityType<?> tileEntityType) {
         super(tileEntityType, ContainerReg.PARTICLE_ACCELERATOR::get, ContainerParticleAccelerator::new, 3, 1_000_000_000, 1_000_000_000, 0, new ArrayList<>(), DEFAULT_NAME);
@@ -89,16 +90,28 @@ public class TileParticleAccelerator extends TileMachine implements ITickableTil
 
     @Override
     public void load(BlockState state, CompoundNBT tag) {
-        if(tag.contains("particle_id")) particleEntityID = tag.getUUID("particle_id");
-        if(tag.contains("active"))      acceleratorIsActive = tag.getBoolean("active");
+        CompoundNBT innerTag = tag.getCompound("accelerator_data");
+        if(innerTag.contains("particle_id")) {
+            particleEntityID = innerTag.getUUID("particle_id");
+        }
+        if(innerTag.contains("active")) {
+            acceleratorIsActive = innerTag.getBoolean("active");
+        }
+        if(innerTag.contains("displayed_speed_percentage")) {
+            displayedSpeedPercentage = innerTag.getDouble("displayed_speed_percentage");
+        }
         super.load(state, tag);
     }
 
     @Override
     public CompoundNBT save(CompoundNBT tag) {
-        if(particleEntityID != null) tag.putUUID("particle_id", particleEntityID);
-        tag.putBoolean("active", acceleratorIsActive);
-        return super.save(tag);
+        super.save(tag);
+        CompoundNBT innerTag = new CompoundNBT();
+        if(particleEntityID != null) innerTag.putUUID("particle_id", particleEntityID);
+        innerTag.putBoolean("active", acceleratorIsActive);
+        innerTag.putDouble("displayed_speed_percentage", displayedSpeedPercentage);
+        tag.put("accelerator_data", innerTag);
+        return tag;
     }
 
 }
