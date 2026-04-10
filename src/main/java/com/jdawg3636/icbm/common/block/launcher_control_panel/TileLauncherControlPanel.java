@@ -67,7 +67,6 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
         return this.getBlockPos();
     }
 
-    // TODO Implement Varying Accuracy Based on Support Frames
     public boolean launchMissile() {
         if(level == null) return false;
         // Find Launcher Platform pos/state/tile
@@ -104,7 +103,15 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
                 getTargetZ() - inaccuracyPotential + level.getRandom().nextInt((2 * inaccuracyPotential) + 1)
         );
         // Perform launch
-        return ((TileLauncherPlatform)platformTile).launchMissile(platformPos, targetPos, Math.max(level.getHeight() * 1.5F, getBlockPos().getY() + 128F), (int)Math.sqrt((platformPos.getX() - getTargetX()) * (platformPos.getX() - getTargetX()) + (platformPos.getZ() - getTargetZ()) * (platformPos.getZ() - getTargetZ())));
+        return ((TileLauncherPlatform)platformTile).launchMissile(
+                platformPos,
+                targetPos,
+                Math.max(level.getHeight() * 1.5F, getBlockPos().getY() + 128F),
+                (int)Math.sqrt(
+                        (platformPos.getX() - targetPos.getX()) * (platformPos.getX() - targetPos.getX()) +
+                        (platformPos.getZ() - targetPos.getZ()) * (platformPos.getZ() - targetPos.getZ())
+                )
+        );
     }
 
     @Override
