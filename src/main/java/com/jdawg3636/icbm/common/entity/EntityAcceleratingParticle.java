@@ -6,6 +6,7 @@ import com.jdawg3636.icbm.common.block.particle_accelerator.TileParticleAccelera
 import com.jdawg3636.icbm.common.event.EventBlastAcceleratingParticle;
 import com.jdawg3636.icbm.common.reg.EntityReg;
 import com.jdawg3636.icbm.common.reg.ICBMTags;
+import com.jdawg3636.icbm.mixin.accessors.IChunkManagerAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -19,12 +20,16 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.AbstractChunkProvider;
+import net.minecraft.world.server.ChunkHolder;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -200,10 +205,18 @@ public class EntityAcceleratingParticle extends Entity {
     @Override
     public void onSyncedDataUpdated(DataParameter<?> dataParameter) {
         getEntityData().get(PARTICLE_ACCELERATOR_POSITION).ifPresent(acceleratorPos -> {
-            TileEntity tile = this.level.getBlockEntity(acceleratorPos);
-            if(tile instanceof TileParticleAccelerator) {
-                ((TileParticleAccelerator)tile).displayedSpeedPercentage = getEntityData().get(PARTICLE_SPEED) / ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedRequiredToGenerateAntimatter();
-                ((TileParticleAccelerator)tile).updateNearbyClients();
+            AbstractChunkProvider acp = level.getChunkSource();
+            if(acp instanceof ServerChunkProvider) {
+                ServerChunkProvider scp = (ServerChunkProvider)acp;
+                ChunkHolder particleAcceleratorTileChunkHolder = ((IChunkManagerAccessor)scp.chunkMap).invokeGetVisibleChunkIfPresent(new ChunkPos(acceleratorPos).toLong());
+                // Hacky check to prevent server deadlock - calling level::getBlockEntity causes deadlock when trying to access unloaded chunk. level::hasChunk had the same issue, so using Mixin to bypass.
+                if(particleAcceleratorTileChunkHolder.getFullStatus().isOrAfter(ChunkHolder.LocationType.BORDER)) {
+                    TileEntity tile = this.level.getBlockEntity(acceleratorPos);
+                    if (tile instanceof TileParticleAccelerator) {
+                        ((TileParticleAccelerator) tile).displayedSpeedPercentage = getEntityData().get(PARTICLE_SPEED) / ICBMReference.COMMON_CONFIG.getParticleAcceleratorSpeedRequiredToGenerateAntimatter();
+                        ((TileParticleAccelerator) tile).updateNearbyClients();
+                    }
+                }
             }
         });
         super.onSyncedDataUpdated(dataParameter);
