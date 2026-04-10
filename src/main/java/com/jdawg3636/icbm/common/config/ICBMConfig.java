@@ -40,6 +40,11 @@ public class ICBMConfig {
 
         private final ForgeConfigSpec.IntValue maxNumTicksAliveForLinearMissiles;
 
+        private final ForgeConfigSpec.IntValue launcherSupportFrameInaccuracyT0;
+        private final ForgeConfigSpec.IntValue launcherSupportFrameInaccuracyT1;
+        private final ForgeConfigSpec.IntValue launcherSupportFrameInaccuracyT2;
+        private final ForgeConfigSpec.IntValue launcherSupportFrameInaccuracyT3;
+
         private final ForgeConfigSpec.BooleanValue doLogMissilePathsHandheld;
 
         private final ForgeConfigSpec.BooleanValue enableEasterEggForRedcoats;
@@ -148,6 +153,22 @@ public class ICBMConfig {
                             "a handheld launcher or a cruise launcher (rather than from a launcher platform) can be in flight",
                             "before automatically detonating.")
                     .defineInRange("maxNumTicksAliveForLinearMissiles", 200, 0, Integer.MAX_VALUE);
+            this.launcherSupportFrameInaccuracyT0 = builder
+                    .comment("",
+                            "Defines the potential inaccuracy, in blocks, of a missile launched without using a Support Frame.")
+                    .defineInRange("launcherSupportFrameInaccuracyT0", 30, 0, Integer.MAX_VALUE);
+            this.launcherSupportFrameInaccuracyT1 = builder
+                    .comment("",
+                            "Defines the potential inaccuracy, in blocks, of a missile launched using a T1 Support Frame.")
+                    .defineInRange("launcherSupportFrameInaccuracyT1", 15, 0, Integer.MAX_VALUE);
+            this.launcherSupportFrameInaccuracyT2 = builder
+                    .comment("",
+                            "Defines the potential inaccuracy, in blocks, of a missile launched using a T2 Support Frame.")
+                    .defineInRange("launcherSupportFrameInaccuracyT2", 7, 0, Integer.MAX_VALUE);
+            this.launcherSupportFrameInaccuracyT3 = builder
+                    .comment("",
+                            "Defines the potential inaccuracy, in blocks, of a missile launched using a T3 Support Frame.")
+                    .defineInRange("launcherSupportFrameInaccuracyT3", 0, 0, Integer.MAX_VALUE);
             this.doLogMissilePathsHandheld = builder
                     .comment("",
                             "Enables logging to console of missile launches from handheld Rocket Launchers.")
@@ -474,6 +495,19 @@ public class ICBMConfig {
 
         public int getMaxNumTicksAliveForLinearMissiles() {
             return maxNumTicksAliveForLinearMissiles.get();
+        }
+
+        public int getMissileInaccuracyGivenSupportFrameTier(int tier) {
+            switch(tier) {
+                case 3:
+                    return launcherSupportFrameInaccuracyT3.get();
+                case 2:
+                    return launcherSupportFrameInaccuracyT2.get();
+                case 1:
+                    return launcherSupportFrameInaccuracyT1.get();
+                default:
+                    return launcherSupportFrameInaccuracyT0.get();
+            }
         }
 
         public boolean getDoLogMissilePathsHandheld() {
