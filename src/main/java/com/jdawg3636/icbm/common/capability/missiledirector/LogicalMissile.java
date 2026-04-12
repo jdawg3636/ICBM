@@ -146,8 +146,8 @@ public class LogicalMissile {
 
         // Precalculating a Multiple for Rotation About the X axis, since only the position (and not the direction of travel) is known at runtime
         // Need to calculate for both X and Z, as the choice of which to use for calculating Y is made at runtime
-        final int rotXMultipleFromX = destPos.getX() >= sourcePos.getX() ? -1 : 1;
-        final int rotXMultipleFromZ = destPos.getZ() >= sourcePos.getZ() ? -1 : 1;
+        final int pitchMultipleFromX = destPos.getX() >= sourcePos.getX() ? -1 : 1;
+        final int pitchMultipleFromZ = destPos.getZ() >= sourcePos.getZ() ? -1 : 1;
 
         return new Tuple<>(
                 // Takes Ticks, Returns Position
@@ -165,9 +165,37 @@ public class LogicalMissile {
                 },
                 // Takes Position, Returns Euler Rotations
                 position -> {
-                    double rotXFromX = rotXMultipleFromX * Math.toDegrees(Math.atan(2d * parabolaXCoefficients[0] * position.x + parabolaXCoefficients[1]));
-                    double rotXFromZ = rotXMultipleFromZ * Math.toDegrees(Math.atan(2d * parabolaZCoefficients[0] * position.z + parabolaZCoefficients[1]));
-                    Vector3d toReturn = new Vector3d((!Double.isNaN(parabolaXCoefficients[0]) ? rotXFromX : rotXFromZ), finalRotY, 0D);
+                    // Get slopes of the missile's tangent planes
+                    double dydx = 2d * parabolaXCoefficients[0] * position.x + parabolaXCoefficients[1];
+                    double dydz = 2d * parabolaZCoefficients[0] * position.z + parabolaZCoefficients[1];
+
+                    // Special cases where the flight path is directly along an axis (NaN slope)
+                    if(Double.isNaN(dydx)) {
+                        // Normal logic fundamentally breaks, but Z-Axis parabola IS the 3D trajectory in this case, so just using that.
+                        final double polarityCorrectedPitch = pitchMultipleFromZ * Math.toDegrees(Math.atan(dydz));
+                        final Vector3d toReturn = new Vector3d(polarityCorrectedPitch, finalRotY, 0D);
+                        return toReturn;
+                    }
+                    if(Double.isNaN(dydz)) {
+                        // This is enough to correct the normal logic
+                        dydz = Double.POSITIVE_INFINITY;
+                    }
+
+                    // "position" is on the line where the tangent planes interset. Pick Q, another arbitrary point on this line
+                    final Vector3d Q = new Vector3d(position.x + 1, position.y + dydx, (dydx / dydz) + position.z);
+                    // Calculate a third point such that the 3 points form a right triangle that is in-plane with the missile's yaw
+                    final Vector3d R = new Vector3d(Q.x, Q.y - dydx, Q.z);
+                    // Use basic trigonometry to find the pitch angle given the in-plane triangle
+                    final double lenQR = dydx;
+                    final double lenPR = position.distanceTo(R);
+                    final double localPitch = Math.toDegrees(Math.atan(lenQR / lenPR));
+                    // Depending on the missile's flight direction, flip the pitch. This is because the parabolas only encode positions (y given x or z), not time.
+                    final double polarityCorrectedPitch = pitchMultipleFromX * localPitch;
+
+                    // Format is (pitch about x, yaw about y, roll). Roll is unused. Yaw is applied first in global space, then pitch is applied in the new local space.
+                    // 0 yaw = +z, -90 yaw = +x
+                    // 0 pitch = forward, 90 pitch = down
+                    final Vector3d toReturn = new Vector3d(polarityCorrectedPitch, finalRotY, 0D);
                     return toReturn;
                 }
         );
@@ -428,11 +456,9 @@ public class LogicalMissile {
             entity.setDeltaMovement(x - this.x, y - this.y, z - this.z);
             entity.move(MoverType.SELF, entity.getDeltaMovement());
         });
-        if(!this.getPuppetEntity().isPresent()) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public void setRot(float yRot, float xRot) {
