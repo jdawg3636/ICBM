@@ -5,6 +5,7 @@ import com.jdawg3636.icbm.common.block.coal_generator.ContainerCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
+import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.ContainerMetallurgicLeachingChamber;
 import com.jdawg3636.icbm.common.block.multiblock_spinning.ContainerMultiblockSpinning;
 import com.jdawg3636.icbm.common.block.oil_refinery.ContainerOilRefinery;
 import com.jdawg3636.icbm.common.block.particle_accelerator.ContainerParticleAccelerator;
@@ -34,6 +35,7 @@ public class ContainerReg {
     public static final RegistryObject<ContainerType<ContainerCoalGenerator>> COAL_GENERATOR = registerContainer(BlockReg.COAL_GENERATOR, ContainerCoalGenerator::new, () -> ContainerReg.COAL_GENERATOR);
     public static final RegistryObject<ContainerType<ContainerCruiseLauncher>> CRUISE_LAUNCHER = registerContainer(BlockReg.CRUISE_LAUNCHER, ContainerCruiseLauncher::new, () -> ContainerReg.CRUISE_LAUNCHER);
     public static final RegistryObject<ContainerType<ContainerMultiblockSpinning>> EMP_TOWER = registerContainer(BlockReg.EMP_TOWER, ContainerMultiblockSpinning::new, () -> ContainerReg.EMP_TOWER);
+    public static final RegistryObject<ContainerType<ContainerMetallurgicLeachingChamber>> METALLURGIC_LEACHING_CHAMBER = registerContainer(BlockReg.METALLURGIC_LEACHING_CHAMBER, ContainerMetallurgicLeachingChamber::new, () -> ContainerReg.METALLURGIC_LEACHING_CHAMBER);
     public static final RegistryObject<ContainerType<ContainerOilRefinery>> OIL_REFINERY = registerContainer(BlockReg.OIL_REFINERY, ContainerOilRefinery::new, () -> ContainerReg.OIL_REFINERY);
     public static final RegistryObject<ContainerType<ContainerProximityDetector>> PROXIMITY_DETECTOR = registerContainer(BlockReg.PROXIMITY_DETECTOR, ContainerProximityDetector::new, () -> ContainerReg.PROXIMITY_DETECTOR);
     public static final RegistryObject<ContainerType<ContainerMultiblockSpinning>> RADAR_STATION = registerContainer(BlockReg.RADAR_STATION, ContainerMultiblockSpinning::new, () -> ContainerReg.RADAR_STATION);

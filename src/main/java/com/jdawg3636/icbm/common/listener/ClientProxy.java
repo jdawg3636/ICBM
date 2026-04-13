@@ -16,6 +16,10 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherCont
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.ScreenLauncherPlatform;
 import com.jdawg3636.icbm.common.block.machine.IScreenMachine;
+import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.ContainerMetallurgicLeachingChamber;
+import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.ScreenMetallurgicLeachingChamber;
+import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.TERMetallurgicLeachingChamber;
+import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.TileMetallurgicLeachingChamber;
 import com.jdawg3636.icbm.common.block.multiblock_spinning.ContainerMultiblockSpinning;
 import com.jdawg3636.icbm.common.block.multiblock_spinning.ScreenMultiblockSpinning;
 import com.jdawg3636.icbm.common.block.oil_refinery.ContainerOilRefinery;
@@ -59,14 +63,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientProxy extends CommonProxy {
 
     // BlockEntity Models
-    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_DYNAMIC    = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_dynamic");
-    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_STATIC     = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_static");
-    public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE        = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
-    public static final ResourceLocation MODEL_EMP_TOWER_COUNTERCLOCKWISE = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_counterclockwise");
-    public static final ResourceLocation MODEL_EMP_TOWER_STATIC           = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_static");
-    public static final ResourceLocation MODEL_OIL_REFINERY               = new ResourceLocation(ICBMReference.MODID + ":block/oil_refinery");
-    public static final ResourceLocation MODEL_RADAR_STATION_DYNAMIC      = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_dynamic");
-    public static final ResourceLocation MODEL_RADAR_STATION_STATIC       = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_static");
+    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_DYNAMIC      = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_dynamic");
+    public static final ResourceLocation MODEL_CRUISE_LAUNCHER_STATIC       = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_static");
+    public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE          = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
+    public static final ResourceLocation MODEL_EMP_TOWER_COUNTERCLOCKWISE   = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_counterclockwise");
+    public static final ResourceLocation MODEL_EMP_TOWER_STATIC             = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_static");
+    public static final ResourceLocation MODEL_METALLURGIC_LEACHING_CHAMBER = new ResourceLocation(ICBMReference.MODID + ":block/metallurgic_leaching_chamber");
+    public static final ResourceLocation MODEL_OIL_REFINERY                 = new ResourceLocation(ICBMReference.MODID + ":block/oil_refinery");
+    public static final ResourceLocation MODEL_RADAR_STATION_DYNAMIC        = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_dynamic");
+    public static final ResourceLocation MODEL_RADAR_STATION_STATIC         = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_static");
 
     // Entity Models
     public static final ResourceLocation MODEL_ENDER_BLAST_SPHERE             = new ResourceLocation(ICBMReference.MODID + ":entity/ender_blast_sphere");
@@ -91,6 +96,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_SUPPORT_FRAME_T1.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_SUPPORT_FRAME_T2.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_SUPPORT_FRAME_T3.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.METALLURGIC_LEACHING_CHAMBER.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.OIL_REFINERY.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_GLASS.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_RAIL.get(), RenderType.cutout());
@@ -108,6 +114,7 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T1.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T2.get(), ScreenLauncherPlatform::new);
         ScreenManager.register(ContainerReg.LAUNCHER_PLATFORM_T3.get(), ScreenLauncherPlatform::new);
+        ScreenManager.<ContainerMetallurgicLeachingChamber, ScreenMetallurgicLeachingChamber>register(ContainerReg.METALLURGIC_LEACHING_CHAMBER.get(), ScreenMetallurgicLeachingChamber::new);
         ScreenManager.<ContainerOilRefinery, ScreenOilRefinery>register(ContainerReg.OIL_REFINERY.get(), ScreenOilRefinery::new);
         ScreenManager.<ContainerProximityDetector, ScreenProximityDetector>register(ContainerReg.PROXIMITY_DETECTOR.get(), ScreenProximityDetector::new);
         ScreenManager.register(ContainerReg.PARTICLE_ACCELERATOR.get(), ScreenParticleAccelerator::new);
@@ -227,6 +234,7 @@ public class ClientProxy extends CommonProxy {
         // Register Tile Entity Renderers
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileEMPTower>) TileReg.EMP_TOWER.get(), TEREMPTower::new);
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileMetallurgicLeachingChamber>) TileReg.METALLURGIC_LEACHING_CHAMBER.get(), TERMetallurgicLeachingChamber::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileOilRefinery>) TileReg.OIL_REFINERY.get(), TEROilRefinery::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileRadarStation>) TileReg.RADAR_STATION.get(), TERRadarStation::new);
 
@@ -265,6 +273,7 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_CLOCKWISE);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_COUNTERCLOCKWISE);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_STATIC);
+        ModelLoader.addSpecialModel(MODEL_METALLURGIC_LEACHING_CHAMBER);
         ModelLoader.addSpecialModel(MODEL_OIL_REFINERY);
         ModelLoader.addSpecialModel(MODEL_RADAR_STATION_DYNAMIC);
         ModelLoader.addSpecialModel(MODEL_RADAR_STATION_STATIC);

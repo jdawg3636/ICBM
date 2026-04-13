@@ -10,6 +10,7 @@ import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherContro
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT3;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
+import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.TileMetallurgicLeachingChamber;
 import com.jdawg3636.icbm.common.block.multiblock.TileMultiblockPassthrough;
 import com.jdawg3636.icbm.common.block.oil_refinery.TileOilRefinery;
 import com.jdawg3636.icbm.common.block.particle_accelerator.TileParticleAccelerator;
@@ -62,12 +63,13 @@ public class TileReg {
     );
 
     // Other Machinery
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> COAL_GENERATOR     = TILES.register(BlockReg.COAL_GENERATOR.getId().getPath(),     () -> TileEntityType.Builder.of(() -> new TileCoalGenerator(TileReg.COAL_GENERATOR.get()),          BlockReg.COAL_GENERATOR.get()      ).build(null));
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> CRUISE_LAUNCHER    = TILES.register(BlockReg.CRUISE_LAUNCHER.getId().getPath(),    () -> TileEntityType.Builder.of(() -> new TileCruiseLauncher(TileReg.CRUISE_LAUNCHER.get()),        BlockReg.CRUISE_LAUNCHER.get()     ).build(null));
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> EMP_TOWER          = TILES.register(BlockReg.EMP_TOWER.getId().getPath(),          () -> TileEntityType.Builder.of(() -> new TileEMPTower(TileReg.EMP_TOWER.get()),                    BlockReg.EMP_TOWER.get()           ).build(null));
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> OIL_REFINERY       = TILES.register(BlockReg.OIL_REFINERY.getId().getPath(),       () -> TileEntityType.Builder.of(() -> new TileOilRefinery(TileReg.OIL_REFINERY.get()),              BlockReg.OIL_REFINERY.get()        ).build(null));
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> PROXIMITY_DETECTOR = TILES.register(BlockReg.PROXIMITY_DETECTOR.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileProximityDetector(TileReg.PROXIMITY_DETECTOR.get()),  BlockReg.PROXIMITY_DETECTOR.get()  ).build(null));
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> RADAR_STATION      = TILES.register(BlockReg.RADAR_STATION.getId().getPath(),      () -> TileEntityType.Builder.of(() -> new TileRadarStation(TileReg.RADAR_STATION.get()),            BlockReg.RADAR_STATION.get()       ).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> COAL_GENERATOR                 = TILES.register(BlockReg.COAL_GENERATOR.getId().getPath(),               () -> TileEntityType.Builder.of(() -> new TileCoalGenerator(TileReg.COAL_GENERATOR.get()),                            BlockReg.COAL_GENERATOR.get()               ).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> CRUISE_LAUNCHER                = TILES.register(BlockReg.CRUISE_LAUNCHER.getId().getPath(),              () -> TileEntityType.Builder.of(() -> new TileCruiseLauncher(TileReg.CRUISE_LAUNCHER.get()),                          BlockReg.CRUISE_LAUNCHER.get()              ).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> EMP_TOWER                      = TILES.register(BlockReg.EMP_TOWER.getId().getPath(),                    () -> TileEntityType.Builder.of(() -> new TileEMPTower(TileReg.EMP_TOWER.get()),                                      BlockReg.EMP_TOWER.get()                    ).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> METALLURGIC_LEACHING_CHAMBER   = TILES.register(BlockReg.METALLURGIC_LEACHING_CHAMBER.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileMetallurgicLeachingChamber(TileReg.METALLURGIC_LEACHING_CHAMBER.get()), BlockReg.METALLURGIC_LEACHING_CHAMBER.get() ).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> OIL_REFINERY                   = TILES.register(BlockReg.OIL_REFINERY.getId().getPath(),                 () -> TileEntityType.Builder.of(() -> new TileOilRefinery(TileReg.OIL_REFINERY.get()),                                BlockReg.OIL_REFINERY.get()                 ).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> PROXIMITY_DETECTOR             = TILES.register(BlockReg.PROXIMITY_DETECTOR.getId().getPath(),           () -> TileEntityType.Builder.of(() -> new TileProximityDetector(TileReg.PROXIMITY_DETECTOR.get()),                    BlockReg.PROXIMITY_DETECTOR.get()           ).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> RADAR_STATION                  = TILES.register(BlockReg.RADAR_STATION.getId().getPath(),                () -> TileEntityType.Builder.of(() -> new TileRadarStation(TileReg.RADAR_STATION.get()),                              BlockReg.RADAR_STATION.get()                ).build(null));
 
     // Extras
     public static final RegistryObject<TileEntityType<? extends TileEntity>> CAMOUFLAGE      = TILES.register(BlockReg.CAMOUFLAGE.getId().getPath(),      () -> TileEntityType.Builder.of(() -> new TileCamouflage(TileReg.CAMOUFLAGE.get()),          BlockReg.CAMOUFLAGE.get()     ).build(null));

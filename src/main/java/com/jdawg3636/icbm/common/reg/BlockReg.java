@@ -128,7 +128,7 @@ public class BlockReg {
     public static final RegistryObject<Block> COAL_GENERATOR                = BLOCKS.register("coal_generator",                 () -> new BlockCoalGenerator(TileReg.COAL_GENERATOR));
     public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new BlockCruiseLauncher(TileReg.CRUISE_LAUNCHER));
     public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      () -> new BlockMultiblockSpinning(TileReg.EMP_TOWER));
-    public static final RegistryObject<Block> METALLURGIC_LEACHING_CHAMBER  = BLOCKS.register("metallurgic_leaching_chamber",   () -> new BlockMetallurgicLeachingChamber());
+    public static final RegistryObject<Block> METALLURGIC_LEACHING_CHAMBER  = BLOCKS.register("metallurgic_leaching_chamber",   () -> new BlockMetallurgicLeachingChamber(TileReg.METALLURGIC_LEACHING_CHAMBER));
     public static final RegistryObject<Block> OIL_REFINERY                  = BLOCKS.register("oil_refinery",                   () -> new BlockOilRefinery(TileReg.OIL_REFINERY));
     public static final RegistryObject<Block> PROXIMITY_DETECTOR            = BLOCKS.register("proximity_detector",             () -> new BlockProximityDetector(TileReg.PROXIMITY_DETECTOR));
     public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new BlockRadarStation(TileReg.RADAR_STATION));
