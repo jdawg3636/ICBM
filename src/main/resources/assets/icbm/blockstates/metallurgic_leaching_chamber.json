@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "icbm:block/metallurgic_leaching_chamber",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "icbm:block/metallurgic_leaching_chamber",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "icbm:block/metallurgic_leaching_chamber",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "icbm:block/metallurgic_leaching_chamber",
+      "y": 270
+    }
+  }
+}

@@ -7,6 +7,7 @@ import com.jdawg3636.icbm.common.block.coal_generator.BlockCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.BlockCruiseLauncher;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherControlPanel;
 import com.jdawg3636.icbm.common.block.launcher_platform.BlockLauncherPlatform;
+import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.BlockMetallurgicLeachingChamber;
 import com.jdawg3636.icbm.common.block.multiblock_spinning.BlockMultiblockSpinning;
 import com.jdawg3636.icbm.common.block.oil_refinery.BlockOilRefinery;
 import com.jdawg3636.icbm.common.block.particle_accelerator.BlockParticleAccelerator;
@@ -127,7 +128,7 @@ public class BlockReg {
     public static final RegistryObject<Block> COAL_GENERATOR                = BLOCKS.register("coal_generator",                 () -> new BlockCoalGenerator(TileReg.COAL_GENERATOR));
     public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new BlockCruiseLauncher(TileReg.CRUISE_LAUNCHER));
     public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      () -> new BlockMultiblockSpinning(TileReg.EMP_TOWER));
-    public static final RegistryObject<Block> METALLURGIC_LEACHING_CHAMBER  = BLOCKS.register("metallurgic_leaching_chamber",   () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> METALLURGIC_LEACHING_CHAMBER  = BLOCKS.register("metallurgic_leaching_chamber",   () -> new BlockMetallurgicLeachingChamber());
     public static final RegistryObject<Block> OIL_REFINERY                  = BLOCKS.register("oil_refinery",                   () -> new BlockOilRefinery(TileReg.OIL_REFINERY));
     public static final RegistryObject<Block> PROXIMITY_DETECTOR            = BLOCKS.register("proximity_detector",             () -> new BlockProximityDetector(TileReg.PROXIMITY_DETECTOR));
     public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new BlockRadarStation(TileReg.RADAR_STATION));
