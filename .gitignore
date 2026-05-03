@@ -28,3 +28,4 @@ forge*changelog.txt
 # custom
 logs
 *.blend1
+*.DS_Store
