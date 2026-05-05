@@ -38,6 +38,10 @@ public class ItemReg {
     public static final RegistryObject<Item> ORE_TIN                        = ITEMS.register("ore_tin",                         () -> new BlockItem(BlockReg.ORE_TIN.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> ORE_URANIUM                    = ITEMS.register("ore_uranium",                     () -> new BlockItem(BlockReg.ORE_URANIUM.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
+    // Uranium-Based Crafting Items
+    public static final RegistryObject<Item> YELLOWCAKE                     = ITEMS.register("yellowcake",                      () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> URANIUM_235                    = ITEMS.register("uranium_235",                     () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+
     // Fluids
     public static final RegistryObject<Item> FUEL_BUCKET                    = ITEMS.register("fuel_bucket",                     () -> new BucketItem(FluidReg.FUEL.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> OIL_BUCKET                     = ITEMS.register("oil_bucket",                      () -> new BucketItem(FluidReg.OIL.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));

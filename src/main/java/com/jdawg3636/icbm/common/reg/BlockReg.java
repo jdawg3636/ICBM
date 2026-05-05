@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.reg;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.*;
 import com.jdawg3636.icbm.common.block.camouflage.BlockCamouflage;
+import com.jdawg3636.icbm.common.block.centrifugal_deposition_unit.BlockCentrifugalDepositionUnit;
 import com.jdawg3636.icbm.common.block.coal_generator.BlockCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.BlockCruiseLauncher;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.BlockLauncherControlPanel;
@@ -14,6 +15,7 @@ import com.jdawg3636.icbm.common.block.particle_accelerator.BlockParticleAcceler
 import com.jdawg3636.icbm.common.block.proximity_detector.BlockProximityDetector;
 import com.jdawg3636.icbm.common.block.radar_station.BlockRadarStation;
 import com.jdawg3636.icbm.common.block.siren.BlockSiren;
+import com.jdawg3636.icbm.common.block.thermochemical_mixer.BlockThermochemicalMixer;
 import com.jdawg3636.icbm.common.worldgen.RubberTree;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -124,7 +126,7 @@ public class BlockReg {
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      () -> new BlockLauncherSupportFrame(3));
 
     // Other Machinery
-    public static final RegistryObject<Block> CENTRIFUGAL_DEPOSITION_UNIT   = BLOCKS.register("centrifugal_deposition_unit",    () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> CENTRIFUGAL_DEPOSITION_UNIT   = BLOCKS.register("centrifugal_deposition_unit",    () -> new BlockCentrifugalDepositionUnit(TileReg.CENTRIFUGAL_DEPOSITION_UNIT));
     public static final RegistryObject<Block> COAL_GENERATOR                = BLOCKS.register("coal_generator",                 () -> new BlockCoalGenerator(TileReg.COAL_GENERATOR));
     public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new BlockCruiseLauncher(TileReg.CRUISE_LAUNCHER));
     public static final RegistryObject<Block> EMP_TOWER                     = BLOCKS.register("emp_tower",                      () -> new BlockMultiblockSpinning(TileReg.EMP_TOWER));
@@ -132,7 +134,7 @@ public class BlockReg {
     public static final RegistryObject<Block> OIL_REFINERY                  = BLOCKS.register("oil_refinery",                   () -> new BlockOilRefinery(TileReg.OIL_REFINERY));
     public static final RegistryObject<Block> PROXIMITY_DETECTOR            = BLOCKS.register("proximity_detector",             () -> new BlockProximityDetector(TileReg.PROXIMITY_DETECTOR));
     public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new BlockRadarStation(TileReg.RADAR_STATION));
-    public static final RegistryObject<Block> THERMOCHEMICAL_MIXER          = BLOCKS.register("thermochemical_mixer",           () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> THERMOCHEMICAL_MIXER          = BLOCKS.register("thermochemical_mixer",           () -> new BlockThermochemicalMixer());
 
     // Particle Accelerator Components (Deliberately Non-Alphabetized so that the Particle Accelerator itself will appear first in the Creative Inventory)
     public static final RegistryObject<Block> PARTICLE_ACCELERATOR          = BLOCKS.register("particle_accelerator",           () -> new BlockParticleAccelerator(TileReg.PARTICLE_ACCELERATOR));

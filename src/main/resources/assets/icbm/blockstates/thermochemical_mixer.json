@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "icbm:block/thermochemical_mixer",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "icbm:block/thermochemical_mixer",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "icbm:block/thermochemical_mixer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "icbm:block/thermochemical_mixer",
+      "y": 270
+    }
+  }
+}

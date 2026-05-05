@@ -4,6 +4,10 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.camouflage.BlockCamouflage;
 import com.jdawg3636.icbm.common.block.camouflage.DynamicBakedModelCamouflage;
 import com.jdawg3636.icbm.common.block.camouflage.TileCamouflage;
+import com.jdawg3636.icbm.common.block.centrifugal_deposition_unit.ContainerCentrifugalDepositionUnit;
+import com.jdawg3636.icbm.common.block.centrifugal_deposition_unit.ScreenCentrifugalDepositionUnit;
+import com.jdawg3636.icbm.common.block.centrifugal_deposition_unit.TERCentrifugalDepositionUnit;
+import com.jdawg3636.icbm.common.block.centrifugal_deposition_unit.TileCentrifugalDepositionUnit;
 import com.jdawg3636.icbm.common.block.coal_generator.ContainerCoalGenerator;
 import com.jdawg3636.icbm.common.block.coal_generator.ScreenCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
@@ -48,6 +52,7 @@ import net.minecraft.client.renderer.entity.TNTMinecartRenderer;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -63,6 +68,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientProxy extends CommonProxy {
 
     // BlockEntity Models
+    public static final ResourceLocation MODEL_CENTRIFUGAL_DEPOSITION_UNIT  = new ResourceLocation(ICBMReference.MODID + ":block/centrifugal_deposition_unit");
     public static final ResourceLocation MODEL_CRUISE_LAUNCHER_DYNAMIC      = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_dynamic");
     public static final ResourceLocation MODEL_CRUISE_LAUNCHER_STATIC       = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_static");
     public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE          = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
@@ -72,6 +78,7 @@ public class ClientProxy extends CommonProxy {
     public static final ResourceLocation MODEL_OIL_REFINERY                 = new ResourceLocation(ICBMReference.MODID + ":block/oil_refinery");
     public static final ResourceLocation MODEL_RADAR_STATION_DYNAMIC        = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_dynamic");
     public static final ResourceLocation MODEL_RADAR_STATION_STATIC         = new ResourceLocation(ICBMReference.MODID + ":block/radar_station_static");
+    public static final ResourceLocation MODEL_THERMOCHEMICAL_MIXER         = new ResourceLocation(ICBMReference.MODID + ":block/thermochemical_mixer");
 
     // Entity Models
     public static final ResourceLocation MODEL_ENDER_BLAST_SPHERE             = new ResourceLocation(ICBMReference.MODID + ":entity/ender_blast_sphere");
@@ -87,6 +94,7 @@ public class ClientProxy extends CommonProxy {
 
         // Set Render Layers
         RenderTypeLookup.setRenderLayer(BlockReg.CAMOUFLAGE.get(), renderType -> true);
+        RenderTypeLookup.setRenderLayer(BlockReg.CENTRIFUGAL_DEPOSITION_UNIT.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.ELECTROMAGNETIC_GLASS.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(FluidReg.FUEL.source.get(), RenderType.translucent());
         RenderTypeLookup.setRenderLayer(FluidReg.FUEL.flowing.get(), RenderType.translucent());
@@ -105,9 +113,11 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_POISON.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.THERMOCHEMICAL_MIXER.get(), RenderType.cutout());
 
         // Register Container Screens
         //noinspection RedundantTypeArguments
+        ScreenManager.<ContainerCentrifugalDepositionUnit, ScreenCentrifugalDepositionUnit>register(ContainerReg.CENTRIFUGAL_DEPOSITION_UNIT.get(), ScreenCentrifugalDepositionUnit::new);
         ScreenManager.<ContainerCoalGenerator, ScreenCoalGenerator>register(ContainerReg.COAL_GENERATOR.get(), ScreenCoalGenerator::new);
         ScreenManager.<ContainerCruiseLauncher, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
         ScreenManager.<ContainerMultiblockSpinning, ScreenMultiblockSpinning>register(ContainerReg.EMP_TOWER.get(), (container, inventory, name) -> new ScreenMultiblockSpinning(container, inventory, name, ICBMReference.COMMON_CONFIG.getEMPTowerRangeMinimum(), ICBMReference.COMMON_CONFIG.getEMPTowerRangeMaximum()));
@@ -232,6 +242,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 
         // Register Tile Entity Renderers
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCentrifugalDepositionUnit>) TileReg.CENTRIFUGAL_DEPOSITION_UNIT.get(), TERCentrifugalDepositionUnit::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileEMPTower>) TileReg.EMP_TOWER.get(), TEREMPTower::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileMetallurgicLeachingChamber>) TileReg.METALLURGIC_LEACHING_CHAMBER.get(), TERMetallurgicLeachingChamber::new);
@@ -268,6 +279,7 @@ public class ClientProxy extends CommonProxy {
     public void onModelRegistryEvent(final ModelRegistryEvent event) {
 
         // BlockEntity Models
+        ModelLoader.addSpecialModel(MODEL_CENTRIFUGAL_DEPOSITION_UNIT);
         ModelLoader.addSpecialModel(MODEL_CRUISE_LAUNCHER_DYNAMIC);
         ModelLoader.addSpecialModel(MODEL_CRUISE_LAUNCHER_STATIC);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_CLOCKWISE);
@@ -277,6 +289,7 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.addSpecialModel(MODEL_OIL_REFINERY);
         ModelLoader.addSpecialModel(MODEL_RADAR_STATION_DYNAMIC);
         ModelLoader.addSpecialModel(MODEL_RADAR_STATION_STATIC);
+        ModelLoader.addSpecialModel(MODEL_THERMOCHEMICAL_MIXER);
 
         // Entity Models
         ModelLoader.addSpecialModel(MODEL_ENDER_BLAST_SPHERE);

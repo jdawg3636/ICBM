@@ -255,15 +255,6 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
      */
     public abstract Vector3i[] getMultiblockOffsets();
 
-    /**
-     * @return Array of Vector3i, each vector represents the horiz/height/depth offsets for multiblock components which
-     * should be given a {@link TileMultiblockPassthrough} to allow that position to implement capabilities on behalf
-     * of the root TileEntity.
-     */
-    public Vector3i[] getMutiblockOffsetsWhichHavePassthroughTileEntity() {
-        return new Vector3i[]{};
-    }
-
     public BlockPos getBlockPosFromOffset(Vector3i offset, BlockPos rootPos, Direction facing) {
 
         // Calculate Rotation based on "facing" property

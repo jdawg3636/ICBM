@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.centrifugal_deposition_unit.ContainerCentrifugalDepositionUnit;
 import com.jdawg3636.icbm.common.block.coal_generator.ContainerCoalGenerator;
 import com.jdawg3636.icbm.common.block.cruise_launcher.ContainerCruiseLauncher;
 import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
@@ -32,6 +33,7 @@ public class ContainerReg {
     public static final RegistryObject<ContainerType<ContainerLauncherPlatform>> LAUNCHER_PLATFORM_T3 = registerContainer(BlockReg.LAUNCHER_PLATFORM_T3, ContainerLauncherPlatform::new, () -> ContainerReg.LAUNCHER_PLATFORM_T3);
 
     // Other Machinery
+    public static final RegistryObject<ContainerType<ContainerCentrifugalDepositionUnit>> CENTRIFUGAL_DEPOSITION_UNIT = registerContainer(BlockReg.CENTRIFUGAL_DEPOSITION_UNIT, ContainerCentrifugalDepositionUnit::new, () -> ContainerReg.CENTRIFUGAL_DEPOSITION_UNIT);
     public static final RegistryObject<ContainerType<ContainerCoalGenerator>> COAL_GENERATOR = registerContainer(BlockReg.COAL_GENERATOR, ContainerCoalGenerator::new, () -> ContainerReg.COAL_GENERATOR);
     public static final RegistryObject<ContainerType<ContainerCruiseLauncher>> CRUISE_LAUNCHER = registerContainer(BlockReg.CRUISE_LAUNCHER, ContainerCruiseLauncher::new, () -> ContainerReg.CRUISE_LAUNCHER);
     public static final RegistryObject<ContainerType<ContainerMultiblockSpinning>> EMP_TOWER = registerContainer(BlockReg.EMP_TOWER, ContainerMultiblockSpinning::new, () -> ContainerReg.EMP_TOWER);

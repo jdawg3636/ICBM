@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "icbm:block/centrifugal_deposition_unit",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "icbm:block/centrifugal_deposition_unit",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "icbm:block/centrifugal_deposition_unit",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "icbm:block/centrifugal_deposition_unit",
+      "y": 270
+    }
+  }
+}
