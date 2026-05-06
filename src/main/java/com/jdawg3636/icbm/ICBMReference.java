@@ -16,6 +16,8 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -135,6 +137,15 @@ public final class ICBMReference {
 
     public static int getMaxYLevelForLevel(World level) {
         return 255;
+    }
+
+    public static VoxelShape combineVoxelShapes(VoxelShape... shapes) {
+        if(shapes.length == 0) return null;
+        VoxelShape combined = shapes[0];
+        for(int i = 1; i < shapes.length; ++i) {
+            combined = VoxelShapes.or(combined, shapes[i]);
+        }
+        return combined;
     }
 
 }

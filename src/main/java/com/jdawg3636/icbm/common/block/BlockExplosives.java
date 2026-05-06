@@ -23,7 +23,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
@@ -40,7 +39,7 @@ public class BlockExplosives extends Block {
     public final RegistryObject<BlastEventRegistryEntry> blastEventProvider;
     public final RegistryObject<Item> itemForm;
 
-    public static VoxelShape EXPLOSIVES_SHAPE = combine(
+    public static VoxelShape EXPLOSIVES_SHAPE = ICBMReference.combineVoxelShapes(
             // Wrapping
             Block.box(0D, 4D, 0D, 16D, 12D, 16D),
             // Tubes
@@ -300,15 +299,6 @@ public class BlockExplosives extends Block {
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(UNSTABLE);
-    }
-
-    public static VoxelShape combine(VoxelShape... shapes) {
-        if(shapes.length == 0) return null;
-        VoxelShape combined = shapes[0];
-        for(int i = 1; i < shapes.length; ++i) {
-            combined = VoxelShapes.or(combined, shapes[i]);
-        }
-        return combined;
     }
 
 }

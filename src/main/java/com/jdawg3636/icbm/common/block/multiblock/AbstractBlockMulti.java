@@ -194,13 +194,19 @@ public abstract class AbstractBlockMulti extends AbstractBlockMachine {
         }
     }
 
-    public static boolean doesStateMatchPosition(BlockState state, Vector3i multiblockPosition) {
-        return state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL) * (state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE) ? -1 : 1) == multiblockPosition.getX() &&
-               state.getValue(MULTIBLOCK_OFFSET_HEIGHT) * (state.getValue(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE) ? -1 : 1) == multiblockPosition.getY() &&
-               state.getValue(MULTIBLOCK_OFFSET_DEPTH) * (state.getValue(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE) ? -1 : 1) == multiblockPosition.getZ();
+    public static Vector3i getMultiblockOffsetsFromBlockState(BlockState state) {
+        return new Vector3i(
+            state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL) * (state.getValue(MULTIBLOCK_OFFSET_HORIZONTAL_NEGATIVE) ? -1 : 1),
+            state.getValue(MULTIBLOCK_OFFSET_HEIGHT) * (state.getValue(MULTIBLOCK_OFFSET_HEIGHT_NEGATIVE) ? -1 : 1),
+            state.getValue(MULTIBLOCK_OFFSET_DEPTH) * (state.getValue(MULTIBLOCK_OFFSET_DEPTH_NEGATIVE) ? -1 : 1)
+        );
     }
 
-    public boolean isRootOfMultiblock(BlockState state) {
+    public static boolean doesStateMatchPosition(BlockState state, Vector3i multiblockPosition) {
+        return getMultiblockOffsetsFromBlockState(state).equals(multiblockPosition);
+    }
+
+    public static boolean isRootOfMultiblock(BlockState state) {
         return doesStateMatchPosition(state, new Vector3i(0,0,0));
     }
 
