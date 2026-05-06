@@ -82,6 +82,10 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
 
     }
 
+    public Direction relDirectionToAbsDirection(Direction relDirection) {
+        return AbstractBlockMachine.relDirectionToAbsDirection(getBlockState().getValue(AbstractBlockMachine.FACING), relDirection);
+    }
+
     /*
     * Note! This must be called by the block. This is done by default in AbstractBlockMachineTile and AbstractBlockMultiTile.
     * */

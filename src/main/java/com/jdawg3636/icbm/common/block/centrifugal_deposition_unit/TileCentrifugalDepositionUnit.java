@@ -1,7 +1,6 @@
 package com.jdawg3636.icbm.common.block.centrifugal_deposition_unit;
 
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
-import com.jdawg3636.icbm.common.block.oil_refinery.ContainerOilRefinery;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;

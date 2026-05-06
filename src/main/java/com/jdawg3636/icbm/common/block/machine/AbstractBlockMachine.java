@@ -72,6 +72,13 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
     }
 
     /**
+     * Given a relative direction in the coordinate space of facing = SOUTH, convert to an absolute direction relative to the given facing direction.
+     * */
+    public static Direction relDirectionToAbsDirection(Direction facingDirection, Direction relativeDirection) {
+        return Direction.fromYRot(facingDirection.toYRot() + relativeDirection.toYRot());
+    }
+
+    /**
      * Declare our custom {@link net.minecraft.state.Property properties} ({@link AbstractBlockMachine#FACING} and {@link AbstractBlockMachine#WATERLOGGED})
      * so that the game will create unique {@link BlockState BlockStates} for each permutation of their possible values.
      * Note that, since every permutation takes up a numerical ID for storage on disk, this system is not suitable for complex properties
