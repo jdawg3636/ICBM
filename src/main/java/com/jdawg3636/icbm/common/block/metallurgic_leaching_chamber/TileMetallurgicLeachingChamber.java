@@ -29,14 +29,14 @@ public class TileMetallurgicLeachingChamber extends TileMachine implements ITick
 
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.metallurgic_leaching_chamber");
 
-    private ICBMFluidTank inputTank = new ICBMFluidTank(64_000, fluidStack -> true, tank -> this.onInputTankContentsChanged(tank), true);
+    private ICBMFluidTank inputTank = new ICBMFluidTank(64_000, fluidStack -> true, this::onInputTankContentsChanged, true);
 
     public TileMetallurgicLeachingChamber(TileEntityType<?> tileEntityType) {
         this(tileEntityType, DEFAULT_NAME);
     }
 
     public TileMetallurgicLeachingChamber(TileEntityType<?> tileEntityType, ITextComponent name) {
-        super(tileEntityType, ContainerReg.OIL_REFINERY::get, ContainerOilRefinery::new, 3, 9_000, 9_000, 0, new ArrayList<>(2), name);
+        super(tileEntityType, ContainerReg.METALLURGIC_LEACHING_CHAMBER::get, ContainerMetallurgicLeachingChamber::new, 3, 9_000, 9_000, 0, new ArrayList<>(1), name);
         this.fluidTanks.add(LazyOptional.of(() -> inputTank));
     }
 

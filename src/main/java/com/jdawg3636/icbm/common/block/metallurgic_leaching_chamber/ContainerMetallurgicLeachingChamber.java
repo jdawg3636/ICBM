@@ -13,7 +13,6 @@ public class ContainerMetallurgicLeachingChamber extends AbstractContainerMachin
     public ContainerMetallurgicLeachingChamber(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
         super(containerType, windowId, level, blockPos, playerInventory);
         addSlot(152 - (7 * 18) - 9, 22, SlotTag.FLUID_ITEM);
-        addSlot(152 - (int)(4.5 * 18) - 9, 22, SlotTag.INVENTORY_MACHINE);
         addSlot(152 - (2 * 18) - 9, 22, SlotTag.INVENTORY_MACHINE);
         addSlot(152, 22, SlotTag.BATTERY);
         addPlayerInventorySlots(8, 135);
