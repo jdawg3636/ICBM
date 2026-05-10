@@ -26,7 +26,7 @@ public class ContainerReg {
     // Other Machinery
     public static final RegistryObject<ContainerType<ContainerMachine>> CENTRIFUGAL_DEPOSITION_UNIT = registerContainer(() -> ContainerReg.CENTRIFUGAL_DEPOSITION_UNIT, BlockReg.CENTRIFUGAL_DEPOSITION_UNIT, ContainerMachine::new);
     public static final RegistryObject<ContainerType<ContainerMachine>> COAL_GENERATOR = registerContainer(() -> ContainerReg.COAL_GENERATOR, BlockReg.COAL_GENERATOR, ContainerMachine::new, 8, 84);
-    public static final RegistryObject<ContainerType<ContainerMachine>> CRUISE_LAUNCHER = registerContainer(() -> ContainerReg.CRUISE_LAUNCHER, BlockReg.CRUISE_LAUNCHER, ContainerMachine::new);
+    public static final RegistryObject<ContainerType<ContainerMachine>> CRUISE_LAUNCHER = registerContainer(() -> ContainerReg.CRUISE_LAUNCHER, BlockReg.CRUISE_LAUNCHER, ContainerMachine::new, 8, 84);
     public static final RegistryObject<ContainerType<ContainerMachine>> EMP_TOWER = registerContainer(() -> ContainerReg.EMP_TOWER, BlockReg.EMP_TOWER, ContainerMachine::new);
     public static final RegistryObject<ContainerType<ContainerMachine>> METALLURGIC_LEACHING_CHAMBER = registerContainer(() -> ContainerReg.METALLURGIC_LEACHING_CHAMBER, BlockReg.METALLURGIC_LEACHING_CHAMBER, ContainerMachine::new);
     public static final RegistryObject<ContainerType<ContainerMachine>> OIL_REFINERY = registerContainer(() -> ContainerReg.OIL_REFINERY, BlockReg.OIL_REFINERY, ContainerMachine::new);
