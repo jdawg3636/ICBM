@@ -37,10 +37,10 @@ public class TileMetallurgicLeachingChamber extends TileMachine implements ITick
 
     public TileMetallurgicLeachingChamber(TileEntityType<?> tileEntityType, ITextComponent name) {
         super(tileEntityType, ContainerReg.METALLURGIC_LEACHING_CHAMBER::get, true, 9_000, 9_000, 0, new ArrayList<>(1), name);
-        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM);
-        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (5 * 18) - 9, 40, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE); // machine input
-        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (2 * 18) - 9, 40, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE); // machine output
         this.itemHandlerLazyOptional.orElse(null).addSlot(152, 22, ICBMItemStackHandler.SlotTag.BATTERY);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (5 * 18) - 10, 69, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE); // machine input
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (2 * 18) - 8, 69, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE); // machine output
         this.fluidTanks.add(LazyOptional.of(() -> inputTank));
     }
 

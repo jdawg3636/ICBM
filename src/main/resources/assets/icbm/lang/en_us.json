@@ -609,6 +609,10 @@
 
   "gui.icbm.frequency_item.radio_frequency": "Frequency",
 
+  "gui.icbm.metallurgic_leaching_chamber": "Metallurgic Leaching Chamber",
+  "gui.icbm.thermochemical_mixer": "Thermochemical Mixer",
+  "gui.icbm.centrifugal_deposition_unit": "Centrifugal Deposition Unit",
+
   # Chat warning if user tries to fire by hand, %s is status message from GUI
   "chat.launcher.status": "Status: %s",
   "chat.launcher.failedToFire": "Warning: Cannot fire missile due to status error!",
