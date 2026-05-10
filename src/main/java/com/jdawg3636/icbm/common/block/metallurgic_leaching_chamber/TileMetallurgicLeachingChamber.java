@@ -1,8 +1,8 @@
 package com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber;
 
+import com.jdawg3636.icbm.common.block.machine.ICBMItemStackHandler;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
-import com.jdawg3636.icbm.common.block.oil_refinery.ContainerOilRefinery;
 import com.jdawg3636.icbm.common.capability.fluidhandler.ICBMFluidTank;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.block.BlockState;
@@ -29,14 +29,18 @@ public class TileMetallurgicLeachingChamber extends TileMachine implements ITick
 
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.metallurgic_leaching_chamber");
 
-    private ICBMFluidTank inputTank = new ICBMFluidTank(64_000, fluidStack -> true, this::onInputTankContentsChanged, true);
+    private ICBMFluidTank inputTank = new ICBMFluidTank(32_000, fluidStack -> true, this::onInputTankContentsChanged, true);
 
     public TileMetallurgicLeachingChamber(TileEntityType<?> tileEntityType) {
         this(tileEntityType, DEFAULT_NAME);
     }
 
     public TileMetallurgicLeachingChamber(TileEntityType<?> tileEntityType, ITextComponent name) {
-        super(tileEntityType, ContainerReg.METALLURGIC_LEACHING_CHAMBER::get, ContainerMetallurgicLeachingChamber::new, 3, 9_000, 9_000, 0, new ArrayList<>(1), name);
+        super(tileEntityType, ContainerReg.METALLURGIC_LEACHING_CHAMBER::get, true, 9_000, 9_000, 0, new ArrayList<>(1), name);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (5 * 18) - 9, 40, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE); // machine input
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (2 * 18) - 9, 40, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE); // machine output
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152, 22, ICBMItemStackHandler.SlotTag.BATTERY);
         this.fluidTanks.add(LazyOptional.of(() -> inputTank));
     }
 
@@ -46,6 +50,8 @@ public class TileMetallurgicLeachingChamber extends TileMachine implements ITick
         // Connect left and right faces of root to item handler
         if(itemHandlerLazyOptional.isPresent() && side == relDirectionToAbsDirection(Direction.WEST) && cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) return itemHandlerLazyOptional.cast();
         if(itemHandlerLazyOptional.isPresent() && side == relDirectionToAbsDirection(Direction.EAST) && cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) return itemHandlerLazyOptional.cast();
+        // Also expose item handler for side=null
+        if(itemHandlerLazyOptional.isPresent() && side == null && cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) return itemHandlerLazyOptional.cast();
         // Connect all faces of root to energy
         if(energyStorageLazyOptional.isPresent() && cap.equals(CapabilityEnergy.ENERGY)) return energyStorageLazyOptional.cast();
         return LazyOptional.empty();
@@ -77,6 +83,10 @@ public class TileMetallurgicLeachingChamber extends TileMachine implements ITick
 
     @Override
     public void tick() {}
+
+    public double getProcessingPercentage() {
+        return 0.5D;
+    }
 
     @Override
     @OnlyIn(Dist.CLIENT)

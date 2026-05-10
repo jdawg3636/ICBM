@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.block.cruise_launcher;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
+import com.jdawg3636.icbm.common.block.machine.ContainerMachine;
 import com.jdawg3636.icbm.common.block.machine.IScreenMachine;
 import com.jdawg3636.icbm.common.network.CPacketUpdateLauncherControlPanel;
 import com.jdawg3636.icbm.common.network.ICBMNetworking;
@@ -18,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLauncher> implements IScreenMachine {
+public class ScreenCruiseLauncher extends ContainerScreen<ContainerMachine> implements IScreenMachine {
 
     // TileEntity
     private final TileCruiseLauncher tileEntity;
@@ -40,11 +41,11 @@ public class ScreenCruiseLauncher extends ContainerScreen<ContainerCruiseLaunche
     public TextFieldWidget textFieldTargetY;
     public TextFieldWidget textFieldRadioFrequency;
 
-    public ScreenCruiseLauncher(ContainerCruiseLauncher container, PlayerInventory inventory, ITextComponent name) {
+    public ScreenCruiseLauncher(ContainerMachine container, PlayerInventory inventory, ITextComponent name) {
         this(container, inventory, name, (TileCruiseLauncher)container.getBlockEntity());
     }
 
-    public ScreenCruiseLauncher(ContainerCruiseLauncher container, PlayerInventory inventory, ITextComponent name, TileCruiseLauncher tileEntity) {
+    public ScreenCruiseLauncher(ContainerMachine container, PlayerInventory inventory, ITextComponent name, TileCruiseLauncher tileEntity) {
         super(container, inventory, name);
         this.tileEntity = tileEntity;
     }

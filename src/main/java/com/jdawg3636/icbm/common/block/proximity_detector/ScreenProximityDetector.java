@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.block.proximity_detector;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.ScreenLauncherControlPanel;
+import com.jdawg3636.icbm.common.block.machine.ContainerMachine;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
 import com.jdawg3636.icbm.common.block.machine.WidgetCustomizableSlider;
 import com.jdawg3636.icbm.common.block.machine.WidgetProgressBar;
@@ -20,7 +21,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDetector> {
+public class ScreenProximityDetector extends ScreenMachine<ContainerMachine> {
 
     public final double MIN_RADIUS;
     public final double MAX_RADIUS;
@@ -33,7 +34,7 @@ public class ScreenProximityDetector extends ScreenMachine<ContainerProximityDet
 
     private boolean hasBeenUpdated;
 
-    public ScreenProximityDetector(ContainerProximityDetector container, PlayerInventory inventory, ITextComponent name) {
+    public ScreenProximityDetector(ContainerMachine container, PlayerInventory inventory, ITextComponent name) {
         super(container, inventory, name);
         TILE_ENTITY = (TileProximityDetector)super.TILE_ENTITY;
         this.MIN_RADIUS = ICBMReference.COMMON_CONFIG.getProximityDetectorRadiusMinimum();

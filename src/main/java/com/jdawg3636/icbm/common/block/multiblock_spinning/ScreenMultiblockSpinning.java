@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.multiblock_spinning;
 
+import com.jdawg3636.icbm.common.block.machine.ContainerMachine;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
 import com.jdawg3636.icbm.common.block.machine.WidgetCustomizableSlider;
 import com.jdawg3636.icbm.common.block.machine.WidgetProgressBar;
@@ -19,7 +20,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenMultiblockSpinning extends ScreenMachine<ContainerMultiblockSpinning> {
+public class ScreenMultiblockSpinning extends ScreenMachine<ContainerMachine> {
 
     public final double MIN_RANGE;
     public final double MAX_RANGE;
@@ -30,7 +31,7 @@ public class ScreenMultiblockSpinning extends ScreenMachine<ContainerMultiblockS
 
     private boolean hasBeenUpdated;
 
-    public ScreenMultiblockSpinning(ContainerMultiblockSpinning container, PlayerInventory inventory, ITextComponent name, double minimumRange, double maximumRange) {
+    public ScreenMultiblockSpinning(ContainerMachine container, PlayerInventory inventory, ITextComponent name, double minimumRange, double maximumRange) {
         super(container, inventory, name);
         this.TILE_ENTITY = (TileMultiblockSpinning)super.TILE_ENTITY;
         this.MIN_RANGE = minimumRange;

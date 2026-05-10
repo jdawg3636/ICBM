@@ -28,7 +28,10 @@ public class TileParticleAccelerator extends TileMachine implements ITickableTil
     public double displayedSpeedPercentage = 0D;
 
     public TileParticleAccelerator(TileEntityType<?> tileEntityType) {
-        super(tileEntityType, ContainerReg.PARTICLE_ACCELERATOR::get, ContainerParticleAccelerator::new, 3, 1_000_000_000, 1_000_000_000, 0, new ArrayList<>(), DEFAULT_NAME);
+        super(tileEntityType, ContainerReg.PARTICLE_ACCELERATOR::get, true, 1_000_000_000, 1_000_000_000, 0, new ArrayList<>(), DEFAULT_NAME);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(132, 24, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE); // Input Matter
+        this.itemHandlerLazyOptional.orElse(null).addSlot(132, 51, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE); // Empty Cells
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152, 51, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE); // Output Cells
     }
 
     public static enum SlotIDs {

@@ -1,7 +1,8 @@
 package com.jdawg3636.icbm.common.block.launcher_platform;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
+import com.jdawg3636.icbm.common.block.machine.ContainerMachine;
+import com.jdawg3636.icbm.common.block.machine.ICBMItemStackHandler;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.jdawg3636.icbm.common.entity.EntityMissile;
@@ -42,9 +43,19 @@ public class TileLauncherPlatform extends TileMachine {
     public UUID missileEntityID = null;
     public final int tier;
 
-    public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor, int tier) {
-        super(tileEntityTypeIn, containerType, containerConstructor, 1, 0, 0, 0, new ArrayList<>(), DEFAULT_NAME);
+    public TileLauncherPlatform(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends ContainerMachine>> containerType, int tier) {
+        super(tileEntityTypeIn, containerType, true, 0, 0, 0, new ArrayList<>(), DEFAULT_NAME);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(getMissileSlotX(), getMissileSlotY(), ICBMItemStackHandler.SlotTag.MISSILE);
         this.tier = tier;
+    }
+
+    public int getMissileSlotX() {
+        // TODO Fix horizontal alignment of center slot, both here and in texture file
+        return 84;
+    }
+
+    public int getMissileSlotY() {
+        return 47;
     }
 
     public double getMissileEntityYOffset() {

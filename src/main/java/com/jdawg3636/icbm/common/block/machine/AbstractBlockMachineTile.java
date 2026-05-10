@@ -61,7 +61,7 @@ public class AbstractBlockMachineTile extends AbstractBlockMachine {
             SUpdateTileEntityPacket supdatetileentitypacket = tileEntity.getUpdatePacket();
             if (supdatetileentitypacket != null) ((ServerPlayerEntity)player).connection.send(supdatetileentitypacket);
         }
-        return ActionResultType.SUCCESS;
+        return ActionResultType.sidedSuccess(world.isClientSide());
     }
 
 }

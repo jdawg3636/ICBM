@@ -10,11 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -25,11 +22,8 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMissileLaunchApparatus {
@@ -72,20 +66,7 @@ public class BlockCruiseLauncher extends AbstractBlockMachineTile implements IMi
                 ItemStack itemStack = player.getItemInHand(hand);
                 if(!player.isCreative()) player.inventory.removeItem(itemStack);
                 ((ItemStackHandler)((TileCruiseLauncher)tileEntity).itemHandlerLazyOptional.orElse(null)).setStackInSlot(0, itemStack);
-            }
-            else {
-                INamedContainerProvider containerProvider = new INamedContainerProvider() {
-                    @Override
-                    public ITextComponent getDisplayName() {
-                        return new TranslationTextComponent("gui.icbm.cruise_launcher");
-                    }
-
-                    @Override
-                    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new ContainerCruiseLauncher(getContainerType(), i, world, pos, playerInventory);
-                    }
-                };
-                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());
+                return ActionResultType.CONSUME;
             }
         }
         super.use(state, world, pos, player, hand, trace);

@@ -59,7 +59,10 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
     }
 
     public TileOilRefinery(TileEntityType<?> tileEntityType, ITextComponent name) {
-        super(tileEntityType, ContainerReg.OIL_REFINERY::get, ContainerOilRefinery::new, 3, 9_000, 9_000, 0, new ArrayList<>(2), name);
+        super(tileEntityType, ContainerReg.OIL_REFINERY::get, true, 9_000, 9_000, 0, new ArrayList<>(2), name);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (2 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152, 22, ICBMItemStackHandler.SlotTag.BATTERY);
         this.fluidTanks.add(LazyOptional.of(() -> inputTank));
         this.fluidTanks.add(LazyOptional.of(() -> outputTank));
     }

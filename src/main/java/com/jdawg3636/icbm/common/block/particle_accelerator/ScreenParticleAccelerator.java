@@ -1,14 +1,15 @@
 package com.jdawg3636.icbm.common.block.particle_accelerator;
 
+import com.jdawg3636.icbm.common.block.machine.ContainerMachine;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ScreenParticleAccelerator extends ScreenMachine<ContainerParticleAccelerator> {
+public class ScreenParticleAccelerator extends ScreenMachine<ContainerMachine> {
 
-    public ScreenParticleAccelerator(ContainerParticleAccelerator container, PlayerInventory inventory, ITextComponent name) {
+    public ScreenParticleAccelerator(ContainerMachine container, PlayerInventory inventory, ITextComponent name) {
         super(container, inventory, name);
     }
 

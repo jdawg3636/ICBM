@@ -76,7 +76,7 @@ public abstract class AbstractBlockMultiTile extends AbstractBlockMulti {
                 throw new IllegalStateException("Our named container provider is missing!");
             }
         }
-        return ActionResultType.SUCCESS;
+        return ActionResultType.sidedSuccess(world.isClientSide());
     }
 
     public void onUseMultiblock(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {

@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.centrifugal_deposition_unit;
 
+import com.jdawg3636.icbm.common.block.machine.ICBMItemStackHandler;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -21,7 +22,11 @@ public class TileCentrifugalDepositionUnit extends TileMachine implements ITicka
     }
 
     public TileCentrifugalDepositionUnit(TileEntityType<?> tileEntityType, ITextComponent name) {
-        super(tileEntityType, ContainerReg.OIL_REFINERY::get, ContainerCentrifugalDepositionUnit::new, 3, 9_000, 9_000, 0, new ArrayList<>(2), name);
+        super(tileEntityType, ContainerReg.CENTRIFUGAL_DEPOSITION_UNIT::get, true, 9_000, 9_000, 0, new ArrayList<>(2), name);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (int)(4.5 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152 - (2 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152, 22, ICBMItemStackHandler.SlotTag.BATTERY);
     }
 
     @Override

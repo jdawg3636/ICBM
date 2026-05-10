@@ -1,7 +1,8 @@
 package com.jdawg3636.icbm.common.block.multiblock_spinning;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.block.machine.AbstractContainerMachine;
+import com.jdawg3636.icbm.common.block.machine.ContainerMachine;
+import com.jdawg3636.icbm.common.block.machine.ICBMItemStackHandler;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
@@ -32,8 +33,9 @@ public class TileMultiblockSpinning extends TileMachine implements ITickableTile
     double animationPercent;
     double machineAffectedRadius;
 
-    public TileMultiblockSpinning(TileEntityType<?> tileEntityType, Supplier<ContainerType<? extends AbstractContainerMachine>> containerSupplier, ITextComponent name) {
-        super(tileEntityType, containerSupplier, ContainerMultiblockSpinning::new, 1, 1_000_000, 5_000, 0, new ArrayList<>(), name);
+    public TileMultiblockSpinning(TileEntityType<?> tileEntityType, Supplier<ContainerType<? extends ContainerMachine>> containerSupplier, ITextComponent name) {
+        super(tileEntityType, containerSupplier, true, 1_000_000, 5_000, 0, new ArrayList<>(), name);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152, 22, ICBMItemStackHandler.SlotTag.BATTERY);
     }
 
     public void addAnimationPercent(double increment) {

@@ -9,94 +9,60 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
-public class AbstractContainerMachine extends Container {
+public class ContainerMachine extends Container {
 
-    public static enum SlotTag {
-        BATTERY(true, 18*1, 18*6),
-        FLUID_ITEM(true, 18*1, 18*7),
-        INVENTORY_MACHINE,
-        MISSILE(false),
-        UNDECLARED;
-
-        public final int overlayU;
-        public final int overlayV;
-        public final boolean shouldRenderBorder;
-
-        SlotTag(boolean shouldRenderBorder, int overlayU, int overlayV) {
-            this.shouldRenderBorder = shouldRenderBorder;
-            this.overlayU = overlayU;
-            this.overlayV = overlayV;
-        }
-
-        SlotTag(boolean shouldRenderBorder) {
-            this(shouldRenderBorder, 0, 0);
-        }
-
-        SlotTag() {
-            this(true);
-        }
-
-    }
-
-    public final Map<Integer, SlotTag> slotTags = new HashMap<>();
-
-    private final TileMachine tileEntity;
+    private final Optional<TileMachine> tileMachineOptional;
     private final IItemHandler playerInventoryWrapper;
     private int nextSlotIndex = 0;
     boolean playerInventoryShown = false;
 
     @FunctionalInterface
     public static interface IConstructor {
-        AbstractContainerMachine construct(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory);
+        ContainerMachine construct(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory);
     }
 
-    public AbstractContainerMachine(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory) {
+    public ContainerMachine(@Nullable ContainerType<?> containerType, int windowId, World level, BlockPos blockPos, PlayerInventory playerInventory, int playerInventorySlotsLeftCol, int playerInventorySlotsTopRow) {
         super(containerType, windowId);
-        this.tileEntity = (TileMachine) level.getBlockEntity(blockPos);
+        this.tileMachineOptional = Optional.ofNullable(level.getBlockEntity(blockPos)).filter(TileMachine.class::isInstance).map(TileMachine.class::cast);
         this.playerInventoryWrapper = new InvWrapper(playerInventory);
-    }
-
-    public void addSlot(int xPos, int yPos) {
-        addSlot(xPos, yPos, SlotTag.UNDECLARED);
-    }
-
-    public void addSlot(int xPos, int yPos, SlotTag slotTag) {
-        if(tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
-                (IItemHandler itemHandler) -> {
-                    slotTags.put(nextSlotIndex, slotTag);
-                    addSlot(new SlotItemHandler(itemHandler, nextSlotIndex++, xPos, yPos));
-                }
-            );
-        }
+        this.tileMachineOptional.flatMap(TileMachine::getItemHandler).ifPresent(itemHandler -> {
+            for (ICBMItemStackHandler.SlotMeta slotMeta : itemHandler.getSlotMetas()) {
+                addSlot(new SlotItemHandler(itemHandler, nextSlotIndex++, slotMeta.xPos, slotMeta.yPos));
+            }
+        });
+        this.addPlayerInventorySlots(playerInventorySlotsLeftCol, playerInventorySlotsTopRow);
     }
 
     public int getSlotCount() {
-        return tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(IItemHandler::getSlots).orElse(-1);
+        return tileMachineOptional.flatMap(TileMachine::getItemHandler).map(itemHandler -> itemHandler.getSlotMetas().size()).orElse(0);
     }
 
-    public SlotTag getSlotTag(int i) {
-        return slotTags.getOrDefault(i, SlotTag.UNDECLARED);
+    public ICBMItemStackHandler.SlotTag getSlotTag(int i) {
+        return tileMachineOptional
+                .flatMap(TileMachine::getItemHandler)
+                .map(ICBMItemStackHandler::getSlotMetas)
+                .filter(list -> list.size() > i)
+                .map(list -> list.get(i).slotTag)
+                .orElse(ICBMItemStackHandler.SlotTag.INVENTORY_PLAYER);
     }
 
     public TileMachine getBlockEntity() {
-        return tileEntity;
+        return tileMachineOptional.orElse(null);
     }
 
     @Override
     public boolean stillValid(PlayerEntity playerEntity) {
-        if(tileEntity == null) return false;
-        if(tileEntity.getLevel() == null) return false;
-        return stillValid(IWorldPosCallable.create(tileEntity.getLevel(), tileEntity.getBlockPos()), playerEntity, tileEntity.getBlockState().getBlock());
+        return tileMachineOptional.map(tileMachine -> {
+            if(tileMachine.getLevel() == null) return false;
+            return stillValid(IWorldPosCallable.create(tileMachine.getLevel(), tileMachine.getBlockPos()), playerEntity, tileMachine.getBlockState().getBlock());
+        }).orElse(false);
     }
 
     @Override

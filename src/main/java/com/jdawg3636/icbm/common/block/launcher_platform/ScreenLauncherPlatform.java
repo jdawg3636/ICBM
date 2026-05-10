@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.block.launcher_platform;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.machine.ContainerMachine;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,11 +12,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenLauncherPlatform extends ScreenMachine<ContainerLauncherPlatform> {
+public class ScreenLauncherPlatform extends ScreenMachine<ContainerMachine> {
 
     public static final ResourceLocation LAUNCHER_PLATFORM_BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_launcher.png");
 
-    public ScreenLauncherPlatform(ContainerLauncherPlatform container, PlayerInventory inventory, ITextComponent name) {
+    public ScreenLauncherPlatform(ContainerMachine container, PlayerInventory inventory, ITextComponent name) {
         super(container, inventory, name, LAUNCHER_PLATFORM_BACKGROUND_TEXTURE, 176, 166);
     }
 

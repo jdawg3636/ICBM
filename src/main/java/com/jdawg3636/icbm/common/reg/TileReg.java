@@ -9,7 +9,6 @@ import com.jdawg3636.icbm.common.block.emp_tower.TileEMPTower;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT1;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT2;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanelT3;
-import com.jdawg3636.icbm.common.block.launcher_platform.ContainerLauncherPlatform;
 import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.TileMetallurgicLeachingChamber;
 import com.jdawg3636.icbm.common.block.multiblock.TileMultiblockPassthrough;
@@ -31,9 +30,9 @@ public class TileReg {
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, ICBMReference.MODID);
 
     // Launcher Platforms
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T1 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T1.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1.get(), ContainerReg.LAUNCHER_PLATFORM_T1::get, ContainerLauncherPlatform::new, 1), BlockReg.LAUNCHER_PLATFORM_T1.get()).build(null));
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T2 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T2.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2.get(), ContainerReg.LAUNCHER_PLATFORM_T2::get, ContainerLauncherPlatform::new, 2), BlockReg.LAUNCHER_PLATFORM_T2.get()).build(null));
-    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T3 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T3.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3.get(), ContainerReg.LAUNCHER_PLATFORM_T3::get, ContainerLauncherPlatform::new, 3) {
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T1 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T1.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1.get(), ContainerReg.LAUNCHER_PLATFORM_T1::get, 1), BlockReg.LAUNCHER_PLATFORM_T1.get()).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T2 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T2.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T2.get(), ContainerReg.LAUNCHER_PLATFORM_T2::get, 2), BlockReg.LAUNCHER_PLATFORM_T2.get()).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T3 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T3.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T3.get(), ContainerReg.LAUNCHER_PLATFORM_T3::get, 3) {
         @Override
         public double getMissileEntityYOffset() {
             return 6D/16D;

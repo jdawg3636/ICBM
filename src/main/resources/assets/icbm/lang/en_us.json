@@ -130,6 +130,10 @@
   "item.icbm.circuit_advanced": "Advanced Circuit",
   "item.icbm.circuit_elite": "Elite Circuit",
 
+  "item.icbm.yellowcake": "Yellowcake",
+  "item.icbm.uranium_235": "Uranium-235",
+  "item.icbm.uranium_238": "Uranium-238",
+
   # ICBM Armor
   "item.icbm.hazmat_mask": "Hazmat Mask",
   "item.icbm.hazmat_jacket": "Hazmat Jacket",

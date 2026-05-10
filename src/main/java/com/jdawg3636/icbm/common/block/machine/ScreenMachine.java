@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenMachine <T extends AbstractContainerMachine> extends ContainerScreen<T> implements IScreenMachine {
+public class ScreenMachine <T extends ContainerMachine> extends ContainerScreen<T> implements IScreenMachine {
 
     public static final ResourceLocation DEFAULT_COMPONENTS_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_components.png");
     public static final ResourceLocation DEFAULT_CONTAINER_BACKGROUND_TEXTURE = new ResourceLocation(ICBMReference.MODID, "textures/gui/gui_container.png");
@@ -37,7 +37,7 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
 
     /**
      * Note that slot positions are set by the container, not the screen.
-     * @see AbstractContainerMachine#addPlayerInventorySlots
+     * @see ContainerMachine#addPlayerInventorySlots
      * */
     public ScreenMachine(T container, PlayerInventory inventory, ITextComponent name, ResourceLocation backgroundTexture, int imageWidth, int imageHeight) {
         super(container, inventory, name);
@@ -78,17 +78,17 @@ public class ScreenMachine <T extends AbstractContainerMachine> extends Containe
     public void renderSlotBackgrounds(MatrixStack matrixStack, int relX, int relY) {
         assert this.minecraft != null;
         this.minecraft.getTextureManager().bind(DEFAULT_COMPONENTS_TEXTURE);
-        AbstractContainerMachine container = this.menu;
+        ContainerMachine container = this.menu;
         for(int i = 0; i < container.slots.size(); ++i) {
             Slot slot = container.slots.get(i);
-            AbstractContainerMachine.SlotTag slotTag = container.getSlotTag(i);
+            ICBMItemStackHandler.SlotTag slotTag = container.getSlotTag(i);
             if (slot.isActive() && slotTag.shouldRenderBorder) {
                 renderSlotBackground(matrixStack, slot, slotTag, relX, relY);
             }
         }
     }
 
-    public void renderSlotBackground(MatrixStack matrixStack, Slot slot, AbstractContainerMachine.SlotTag slotTag, int relX, int relY) {
+    public void renderSlotBackground(MatrixStack matrixStack, Slot slot, ICBMItemStackHandler.SlotTag slotTag, int relX, int relY) {
         blit(matrixStack, relX + slot.x - 1, relY + slot.y - 1, 100, 0, 0, 18, 18, 256, 256);
         blit(matrixStack, relX + slot.x - 1, relY + slot.y - 1, 100, slotTag.overlayU, slotTag.overlayV, 18, 18, 256, 256);
     }

@@ -3,6 +3,7 @@ package com.jdawg3636.icbm.common.block.machine;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
 import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
+import io.netty.buffer.Unpooled;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,6 +15,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -29,7 +31,6 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,25 +42,19 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
 
     private ITextComponent name;
     private final ITextComponent defaultName;
-    private final Supplier<ContainerType<? extends AbstractContainerMachine>> containerType;
-    private final AbstractContainerMachine.IConstructor containerConstructor;
+    private final Supplier<ContainerType<? extends ContainerMachine>> containerType;
     private final ICBMItemStackHandler itemHandler;
-    public final LazyOptional<IItemHandler> itemHandlerLazyOptional;
+    public final LazyOptional<ICBMItemStackHandler> itemHandlerLazyOptional;
     private final ICBMEnergyStorage energyStorage;
     public final LazyOptional<IEnergyStorage> energyStorageLazyOptional;
     public final ArrayList<LazyOptional<FluidTank>> fluidTanks;
 
-    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor) {
-        this(tileEntityTypeIn, containerType, containerConstructor, 0, 0, 0, 0, new ArrayList<>(), new TranslationTextComponent("gui." + ICBMReference.MODID + ".unspecialized_machine"));
-    }
-
-    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends AbstractContainerMachine>> containerType, AbstractContainerMachine.IConstructor containerConstructor, int inventorySize, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut, ArrayList<LazyOptional<FluidTank>> fluidTanks, ITextComponent defaultName) {
+    public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends ContainerMachine>> containerType, boolean hasItemStackHandler, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut, ArrayList<LazyOptional<FluidTank>> fluidTanks, ITextComponent defaultName) {
         super(tileEntityTypeIn);
         this.containerType = containerType;
-        this.containerConstructor = containerConstructor;
 
-        if(inventorySize > 0) {
-            itemHandler = createItemStackHandler(inventorySize);
+        if(hasItemStackHandler) {
+            itemHandler = new ICBMItemStackHandler(this::onInventorySlotChanged, this::isInventoryItemValid);
             itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
         }
         else {
@@ -110,10 +105,6 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         return true;
     }
 
-    private ICBMItemStackHandler createItemStackHandler(int inventorySize) {
-        return new ICBMItemStackHandler(inventorySize, this::onInventorySlotChanged, this::isInventoryItemValid);
-    }
-
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -140,7 +131,11 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     @Override
     public void load(BlockState state, CompoundNBT tag) {
         if(tag.contains("CustomName", 8)) this.name = ITextComponent.Serializer.fromJson(tag.getString("CustomName"));
-        if(tag.contains("inv") && itemHandlerLazyOptional.isPresent()) itemHandler.deserializeNBT(tag.getCompound("inv"));
+        if(tag.contains("inv") && itemHandlerLazyOptional.isPresent()) {
+            CompoundNBT invNBT = tag.getCompound("inv");
+            invNBT.remove("Size"); // by removing this key, we default to the safe (correct) value specified in code instead of the (potentially outdated/incorrect) value loaded from disk.
+            itemHandler.deserializeNBT(invNBT);
+        }
         if(tag.contains("energy") && energyStorageLazyOptional.isPresent()) energyStorage.deserializeNBT(tag.getCompound("energy"));
         if(tag.contains("fluids") && !fluidTanks.isEmpty()) {
             CompoundNBT fluidsNBT = tag.getCompound("fluids");
@@ -205,7 +200,7 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         return ICBMReference.getTileEntityUpdateDistance();
     }
 
-    public ContainerType<? extends AbstractContainerMachine> getContainerType() {
+    public ContainerType<? extends ContainerMachine> getContainerType() {
         return this.containerType.get();
     }
 
@@ -243,9 +238,18 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         }
     }
 
+    public Optional<ICBMItemStackHandler> getItemHandler() {
+        return this.itemHandlerLazyOptional.resolve();
+    }
+
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return containerConstructor.construct(getContainerType(), i, this.getLevel(), getPosOfTileEntity(), playerInventory);
+        // Boilerplate adapted from net.minecraftforge.fml.network.NetworkHooks::openGui (MC 1.16.5, MCP Class Names + Official/Parchment methods/params)
+        // to allow us to use the client-side infrastructure for constructing server-side container. Vanilla just bypasses registry with hard-coded constructor calls.
+        PacketBuffer extraData = new PacketBuffer(Unpooled.buffer());
+        extraData.writeBlockPos(this.getBlockPos());
+        extraData.readerIndex(0);
+        return containerType.get().create(i, playerInventory, extraData);
     }
 
     public boolean redstoneSignalPresent() {

@@ -1,13 +1,11 @@
 package com.jdawg3636.icbm.common.block.launcher_platform;
 
-import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
 import com.jdawg3636.icbm.common.block.multiblock.IMissileLaunchApparatus;
 import com.jdawg3636.icbm.common.item.ItemMissile;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -17,7 +15,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class BlockLauncherPlatform extends AbstractBlockMultiTile implements IMissileLaunchApparatus {
@@ -49,22 +46,21 @@ public class BlockLauncherPlatform extends AbstractBlockMultiTile implements IMi
     }
 
     @Override
-    public void onUseMultiblock(TileEntity tileEntity, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-        if(!world.isClientSide() && tileEntity instanceof TileLauncherPlatform) {
+    public void onUseMultiblock(TileEntity tileEntity, BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+        if(!level.isClientSide() && tileEntity instanceof TileLauncherPlatform) {
             final ItemStackHandler itemHandler = (ItemStackHandler)((TileLauncherPlatform)tileEntity).itemHandlerLazyOptional.orElse(null);
             assert itemHandler != null;
-            ItemStack heldItemStack = player.getItemInHand(hand);
+            final ItemStack heldItemStack = player.getItemInHand(hand);
             // Course check to determine whether to attempt insertion or to open GUI
             if(heldItemStack.getItem() instanceof ItemMissile) {
-                // Fine check to ensure this specific missile allowed
+                // Fine check to ensure that this specific missile is allowed
                 if (itemHandler.isItemValid(0, heldItemStack)) {
-                    ItemStack itemStack = heldItemStack;
-                    if (!player.isCreative()) player.inventory.removeItem(itemStack);
-                    itemHandler.setStackInSlot(0, itemStack.copy());
+                    if (!player.isCreative()) player.inventory.removeItem(heldItemStack);
+                    itemHandler.setStackInSlot(0, heldItemStack.copy());
                 }
             }
             else {
-                NetworkHooks.openGui((ServerPlayerEntity) player, (TileMachine)tileEntity, tileEntity.getBlockPos());
+                super.onUseMultiblock(tileEntity, state, level, pos, player, hand, rayTraceResult);
             }
         }
     }

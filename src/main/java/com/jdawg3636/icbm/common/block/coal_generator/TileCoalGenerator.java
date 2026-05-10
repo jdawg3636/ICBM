@@ -38,7 +38,9 @@ public class TileCoalGenerator extends TileMachine implements ITickableTileEntit
     }
 
     public TileCoalGenerator(TileEntityType<?> tileEntityType, ITextComponent name) {
-        super(tileEntityType, ContainerReg.COAL_GENERATOR::get, ContainerCoalGenerator::new, 2, 0, 0, ICBMReference.COMMON_CONFIG.getCoalGeneratorEnergyGenerationPerTick(), new ArrayList<>(), name);
+        super(tileEntityType, ContainerReg.COAL_GENERATOR::get, true, 0, 0, ICBMReference.COMMON_CONFIG.getCoalGeneratorEnergyGenerationPerTick(), new ArrayList<>(), name);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(80 - (2 * 18), 43 - 9, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE);
+        this.itemHandlerLazyOptional.orElse(null).addSlot(80 + (2 * 18), 43 - 9, ICBMItemStackHandler.SlotTag.BATTERY);
     }
 
     public Optional<IEnergyStorage> getBatteryEnergyStorage() {

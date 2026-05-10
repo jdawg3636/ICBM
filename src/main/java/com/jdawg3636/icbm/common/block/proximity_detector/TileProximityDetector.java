@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.block.proximity_detector;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
+import com.jdawg3636.icbm.common.block.machine.ICBMItemStackHandler;
 import com.jdawg3636.icbm.common.block.machine.TileMachine;
 import com.jdawg3636.icbm.common.item.ItemSignalDisruptor;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
@@ -47,7 +48,8 @@ public class TileProximityDetector extends TileMachine implements ITickableTileE
     public int currentSignal = 0;
 
     public TileProximityDetector(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn, ContainerReg.PROXIMITY_DETECTOR::get, ContainerProximityDetector::new, 1, 10_000, 50, 0, new ArrayList<>(), new TranslationTextComponent("gui." + ICBMReference.MODID + ".proximity_detector"));
+        super(tileEntityTypeIn, ContainerReg.PROXIMITY_DETECTOR::get, true, 10_000, 50, 0, new ArrayList<>(), new TranslationTextComponent("gui." + ICBMReference.MODID + ".proximity_detector"));
+        this.itemHandlerLazyOptional.orElse(null).addSlot(152, 22, ICBMItemStackHandler.SlotTag.BATTERY);
     }
 
     @Override

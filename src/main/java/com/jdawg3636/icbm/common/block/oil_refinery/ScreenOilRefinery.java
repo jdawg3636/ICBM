@@ -1,5 +1,6 @@
 package com.jdawg3636.icbm.common.block.oil_refinery;
 
+import com.jdawg3636.icbm.common.block.machine.ContainerMachine;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
 import com.jdawg3636.icbm.common.block.machine.WidgetFluidTank;
 import com.jdawg3636.icbm.common.block.machine.WidgetProgressBar;
@@ -11,7 +12,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ScreenOilRefinery extends ScreenMachine<ContainerOilRefinery> {
+public class ScreenOilRefinery extends ScreenMachine<ContainerMachine> {
 
     public final TileOilRefinery TILE_ENTITY;
     public WidgetProgressBar forgeEnergyStorageBar;
@@ -19,12 +20,12 @@ public class ScreenOilRefinery extends ScreenMachine<ContainerOilRefinery> {
     public WidgetFluidTank outputTankView;
     public WidgetProgressBar progressBar;
 
-    public ScreenOilRefinery(ContainerOilRefinery container, PlayerInventory inventory, ITextComponent name) {
+    public ScreenOilRefinery(ContainerMachine container, PlayerInventory inventory, ITextComponent name) {
         super(container, inventory, name);
         TILE_ENTITY = (TileOilRefinery)super.TILE_ENTITY;
     }
 
-    public ScreenOilRefinery(ContainerOilRefinery container, PlayerInventory inventory, ITextComponent name, ResourceLocation backgroundTexture, int imageWidth, int imageHeight) {
+    public ScreenOilRefinery(ContainerMachine container, PlayerInventory inventory, ITextComponent name, ResourceLocation backgroundTexture, int imageWidth, int imageHeight) {
         super(container, inventory, name, backgroundTexture, imageWidth, imageHeight);
         TILE_ENTITY = (TileOilRefinery)super.TILE_ENTITY;
     }
