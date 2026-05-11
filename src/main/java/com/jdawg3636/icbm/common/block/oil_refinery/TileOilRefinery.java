@@ -3,7 +3,7 @@ package com.jdawg3636.icbm.common.block.oil_refinery;
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
 import com.jdawg3636.icbm.common.block.machine.ICBMItemStackHandler;
-import com.jdawg3636.icbm.common.block.machine.TileMachine;
+import com.jdawg3636.icbm.common.block.machine.TileMachineProcessing;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
 import com.jdawg3636.icbm.common.capability.fluidhandler.ICBMFluidTank;
 import com.jdawg3636.icbm.common.recipe.RefineryRecipe;
@@ -11,15 +11,12 @@ import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
@@ -37,7 +34,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class TileOilRefinery extends TileMachine implements ITickableTileEntity {
+public class TileOilRefinery extends TileMachineProcessing<RefineryRecipe> {
 
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.oil_refinery");
 
@@ -47,12 +44,8 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
         BATTERY,
     }
 
-    private ICBMFluidTank inputTank = new ICBMFluidTank(64_000, fluidStack -> true, tank -> this.onInputTankContentsChanged(tank), true);
+    private ICBMFluidTank inputTank = new ICBMFluidTank(64_000, fluidStack -> true, this::onInputTankContentsChanged, true);
     private ICBMFluidTank outputTank = new ICBMFluidTank(64_000, fluidStack -> false, tank -> this.updateNearbyClients(), true);
-
-    public int ticksProcessing = 0;
-    public Optional<RefineryRecipe> activeRecipe = Optional.empty();
-    public int clientProcessingTime = 1;
 
     public TileOilRefinery(TileEntityType<?> tileEntityType) {
         this(tileEntityType, DEFAULT_NAME);
@@ -65,6 +58,38 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
         this.itemHandlerLazyOptional.orElse(null).addSlot(152, 22, ICBMItemStackHandler.SlotTag.BATTERY);
         this.fluidTanks.add(LazyOptional.of(() -> inputTank));
         this.fluidTanks.add(LazyOptional.of(() -> outputTank));
+    }
+
+    @Override
+    public int getEnergyUsagePerProcessingTick() {
+        return ICBMReference.COMMON_CONFIG.getOilRefineryEnergyUsagePerTick();
+    }
+
+    @Override
+    public Optional<RefineryRecipe> getRecipeForCurrentInputs() {
+        assert this.level != null;
+        return RefineryRecipe.getRecipeFor(ICBMRecipeTypes.REFINERY, this.inputTank.getFluid(), this.level);
+    }
+
+    @Override
+    public boolean getOutputHasRoomForRecipeResult() {
+        return this.activeRecipe.map(ar -> outputTank.getSpace() >= ar.getResult().getAmount()).orElse(true);
+    }
+
+    @Override
+    public boolean tryConsumeInputsForRecipe() {
+        assert this.activeRecipe.isPresent();
+        int amountToDrain = this.activeRecipe.get().getIngredient().getAmount();
+        // This next line may have the side effect of changing the activeRecipe due to triggering the onContentsChanged callback
+        boolean recipeFulfilled = this.fluidTanks.get(0).map(ft -> ft.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE).getAmount() >= amountToDrain).orElse(false);
+        return recipeFulfilled;
+    }
+
+    @Override
+    public void onRecipeFulfilled() {
+        this.activeRecipe.ifPresent(ar -> {
+            outputTank.fillBypass(ar.getResult(), IFluidHandler.FluidAction.EXECUTE);
+        });
     }
 
     @Nonnull
@@ -106,6 +131,7 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
 
     public void onInputTankContentsChanged(FluidTank tank) {
         if(activeRecipe.map(rr -> !rr.getIngredient().test(tank.getFluid())).orElse(true)) {
+            assert this.level != null;
             this.activeRecipe = RefineryRecipe.getRecipeFor(ICBMRecipeTypes.REFINERY, tank.getFluid(), this.level);
             this.ticksProcessing = 0;
         }
@@ -116,29 +142,11 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
     public void tick() {
         assert this.level != null;
         // Handle processing for active recipes
-        if(!this.level.isClientSide && this.activeRecipe.isPresent()) {
-            // Perform processing if requirements are met
-            boolean haveRoomForOutput = outputTank.getSpace() >= this.activeRecipe.get().getResult().getAmount();
-            if(haveRoomForOutput && tryConsumeEnergy(ICBMReference.COMMON_CONFIG.getOilRefineryEnergyUsagePerTick())) {
-                this.ticksProcessing += 1;
-                updateNearbyClients();
-            }
-            // If processing is complete, produce result.
-            if(this.ticksProcessing >= this.activeRecipe.get().getProcessingTime()) {
-                int amountToDrain = this.activeRecipe.get().getIngredient().getAmount();
-                FluidStack outputIfSuccessful = this.activeRecipe.get().getResult();
-                // This next line may have the side effect of changing the activeRecipe due to triggering the onContentsChanged callback
-                boolean recipeFulfilled = this.fluidTanks.get(0).map(ft -> ft.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE).getAmount() >= amountToDrain).orElse(false);
-                if(recipeFulfilled) {
-                    outputTank.fillBypass(outputIfSuccessful, IFluidHandler.FluidAction.EXECUTE);
-                }
-                this.ticksProcessing = 0;
-            }
-        }
+        super.tick();
         // Ingest energy from battery
         getEnergyStorageOfItemInSlot(SlotIDs.BATTERY.ordinal()).ifPresent(bes -> tryReceiveEnergy(bes, bes.getEnergyStored()));
         // Ingest fluid from input item
-        itemHandlerLazyOptional.filter(ICBMItemStackHandler.class::isInstance).map(ICBMItemStackHandler.class::cast).ifPresent(itemHandler -> {
+        itemHandlerLazyOptional.ifPresent(itemHandler -> {
             ItemStack itemStackInInputSlot = itemHandler.getStackInSlot(SlotIDs.OIL_INPUT.ordinal());
             itemStackInInputSlot.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(itemFluidHandler -> {
                 FluidStack canExtract = itemFluidHandler.drain(inputTank.getSpace(), IFluidHandler.FluidAction.SIMULATE);
@@ -176,31 +184,6 @@ public class TileOilRefinery extends TileMachine implements ITickableTileEntity 
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
         }
         return false;
-    }
-
-    public double getProcessingPercentage() {
-        return this.ticksProcessing / (double)clientProcessingTime;
-    }
-
-    @Override
-    public void setLevelAndPosition(World level, BlockPos worldPosition) {
-        super.setLevelAndPosition(level, worldPosition);
-        this.activeRecipe = RefineryRecipe.getRecipeFor(ICBMRecipeTypes.REFINERY, this.inputTank.getFluid(), this.level);
-    }
-
-    @Override
-    public void load(BlockState state, CompoundNBT tag) {
-        super.load(state, tag);
-        this.ticksProcessing = tag.getInt("ticks_processing");
-        this.clientProcessingTime = tag.getInt("processing_time");
-    }
-
-    @Override
-    public CompoundNBT save(CompoundNBT tag) {
-        super.save(tag);
-        tag.putInt("ticks_processing", ticksProcessing);
-        tag.putInt("processing_time", activeRecipe.map(RefineryRecipe::getProcessingTime).orElse(1));
-        return tag;
     }
 
     @Override

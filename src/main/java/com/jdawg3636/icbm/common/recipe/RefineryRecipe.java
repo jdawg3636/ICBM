@@ -8,7 +8,6 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.network.PacketBuffer;
@@ -20,7 +19,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.Optional;
 
-public class RefineryRecipe implements IRecipe<IInventory> {
+public class RefineryRecipe implements IProcessingRecipe {
 
     private final ResourceLocation recipeId;
     private FluidIngredient ingredient;
@@ -60,6 +59,7 @@ public class RefineryRecipe implements IRecipe<IInventory> {
         return this.result.copy();
     }
 
+    @Override
     public int getProcessingTime() {
         return this.processingTime;
     }

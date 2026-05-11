@@ -1,0 +1,15 @@
+{
+  "type": "icbm:metallurgic_leaching",
+  "input_fluid": {
+    "fluid": "minecraft:water",
+    "amount": 1000
+  },
+  "input_item": {
+    "tag": "forge:ores/uranium"
+  },
+  "result": {
+    "item": "icbm:yellowcake",
+    "count": 2
+  },
+  "processing_time": 100
+}

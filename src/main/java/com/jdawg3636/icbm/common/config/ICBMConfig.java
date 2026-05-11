@@ -120,6 +120,7 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue proximityDetectorRadiusMinimum;
         private final ForgeConfigSpec.DoubleValue proximityDetectorRadiusMaximum;
 
+        private final ForgeConfigSpec.IntValue metallurgicLeachingChamberEnergyUsagePerTick;
         private final ForgeConfigSpec.IntValue oilRefineryEnergyUsagePerTick;
 
         private final ForgeConfigSpec.DoubleValue empTowerRangeMinimum;
@@ -450,6 +451,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the maximum detection radius that a user may specify for a Proximity Detector")
                     .defineInRange("proximityDetectorRadiusMaximum", 30.0D, 0, Double.MAX_VALUE);
+            this.metallurgicLeachingChamberEnergyUsagePerTick = builder
+                    .comment("",
+                            "Defines the amount of Forge Energy (FE) consumed per tick by a metallurgic leaching chamber while it is active.")
+                    .defineInRange("metallurgicLeachingChamberEnergyUsagePerTick", 30, 0, Integer.MAX_VALUE);
             this.oilRefineryEnergyUsagePerTick = builder
                     .comment("",
                             "Defines the amount of Forge Energy (FE) consumed per tick by an oil refinery while it is active.")
@@ -767,6 +772,10 @@ public class ICBMConfig {
         }
         public double getProximityDetectorRadiusMaximum() {
             return proximityDetectorRadiusMaximum.get();
+        }
+
+        public int getMetallurgicLeachingChamberEnergyUsagePerTick() {
+            return metallurgicLeachingChamberEnergyUsagePerTick.get();
         }
 
         public int getOilRefineryEnergyUsagePerTick() {
