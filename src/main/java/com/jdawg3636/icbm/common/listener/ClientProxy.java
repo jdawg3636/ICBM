@@ -93,6 +93,8 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(FluidReg.FUEL.flowing.get(), RenderType.translucent());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_BUTTON.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.GLASS_PRESSURE_PLATE.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(FluidReg.HYDROFLUORIC_ACID.source.get(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(FluidReg.HYDROFLUORIC_ACID.flowing.get(), RenderType.translucent());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_PLATFORM_T3.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_SUPPORT_FRAME_T1.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_SUPPORT_FRAME_T2.get(), RenderType.cutout());
@@ -107,6 +109,8 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_POISON.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.THERMOCHEMICAL_MIXER.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(FluidReg.URANIUM_HEXAFLUORIDE.source.get(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(FluidReg.URANIUM_HEXAFLUORIDE.flowing.get(), RenderType.translucent());
 
         // Register Container Screens
         //noinspection RedundantTypeArguments

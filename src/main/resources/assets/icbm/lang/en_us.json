@@ -100,11 +100,17 @@
   "item.icbm.rocket_launcher.info.creative": "Creative: Bypasses tier restriction",
 
   "item.icbm.fuel_bucket": "Fuel Bucket",
+  "item.icbm.hydrofluoric_acid_bucket": "Hydrofluoric Acid Bucket",
   "item.icbm.oil_bucket": "Oil Bucket",
+  "item.icbm.uranium_hexafluoride_bucket": "Uranium Hexafluoride Bucket",
   "block.icbm.fuel": "Fuel",
+  "block.icbm.hydrofluoric_acid": "Hydrofluoric Acid",
   "block.icbm.oil": "Oil",
+  "block.icbm.uranium_hexafluoride": "Uranium Hexafluoride",
   "fluid.icbm.fuel": "Fuel",
+  "fluid.icbm.hydrofluoric_acid": "Hydrofluoric Acid",
   "fluid.icbm.oil": "Oil",
+  "fluid.icbm.uranium_hexafluoride": "Uranium Hexafluoride",
 
   # Crafting items
   "item.icbm.ingot_bronze": "Bronze Ingot",

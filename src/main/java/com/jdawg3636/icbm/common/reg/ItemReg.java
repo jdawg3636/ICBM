@@ -44,7 +44,9 @@ public class ItemReg {
 
     // Fluids
     public static final RegistryObject<Item> FUEL_BUCKET                    = ITEMS.register("fuel_bucket",                     () -> new BucketItem(FluidReg.FUEL.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> HYDROFLUORIC_ACID_BUCKET       = ITEMS.register("hydrofluoric_acid_bucket",        () -> new BucketItem(FluidReg.HYDROFLUORIC_ACID.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> OIL_BUCKET                     = ITEMS.register("oil_bucket",                      () -> new BucketItem(FluidReg.OIL.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> URANIUM_HEXAFLUORIDE_BUCKET    = ITEMS.register("uranium_hexafluoride_bucket",     () -> new BucketItem(FluidReg.URANIUM_HEXAFLUORIDE.source, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
 
     // Vegetation
     public static final RegistryObject<Item> RUBBER_LEAVES                  = ITEMS.register("rubber_leaves",                   () -> new BlockItem(BlockReg.RUBBER_LEAVES.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

@@ -19,8 +19,10 @@ public class FluidReg {
 
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, ICBMReference.MODID);
 
-    public static final RegistryObjectFluidPair FUEL = registerICBMFluid("fuel", ItemReg.FUEL_BUCKET, BlockReg.FUEL, builder -> builder.color(0xff_b38614).density(1024).viscosity(1024));
-    public static final RegistryObjectFluidPair OIL  = registerICBMFluid("oil",  ItemReg.OIL_BUCKET,  BlockReg.OIL,  builder -> builder.color(0xff_282828).density(1024).viscosity(1024), new ResourceLocation(ICBMReference.MODID, "block/opaque_fluid_still"), new ResourceLocation(ICBMReference.MODID, "block/opaque_fluid_flow"));
+    public static final RegistryObjectFluidPair FUEL                    = registerICBMFluid("fuel",                 ItemReg.FUEL_BUCKET,                    BlockReg.FUEL,                  builder -> builder.color(0xff_b38614).density(1024).viscosity(1024));
+    public static final RegistryObjectFluidPair HYDROFLUORIC_ACID       = registerICBMFluid("hydrofluoric_acid",    ItemReg.HYDROFLUORIC_ACID_BUCKET,       BlockReg.HYDROFLUORIC_ACID,     builder -> builder.color(0xff_c6c7bd).density(1024).viscosity(1024));
+    public static final RegistryObjectFluidPair OIL                     = registerICBMFluid("oil",                  ItemReg.OIL_BUCKET,                     BlockReg.OIL,                   builder -> builder.color(0xff_282828).density(1024).viscosity(1024), new ResourceLocation(ICBMReference.MODID, "block/opaque_fluid_still"), new ResourceLocation(ICBMReference.MODID, "block/opaque_fluid_flow"));
+    public static final RegistryObjectFluidPair URANIUM_HEXAFLUORIDE    = registerICBMFluid("uranium_hexafluoride", ItemReg.URANIUM_HEXAFLUORIDE_BUCKET,    BlockReg.URANIUM_HEXAFLUORIDE,  builder -> builder.color(0xff_474a1e).density(1024).viscosity(1024), new ResourceLocation(ICBMReference.MODID, "block/opaque_fluid_still"), new ResourceLocation(ICBMReference.MODID, "block/opaque_fluid_flow"));
 
     public static RegistryObjectFluidPair registerICBMFluid(String name, Supplier<Item> bucketForm, Supplier<FlowingFluidBlock> blockForm, Consumer<FluidAttributes.Builder> fluidAttributesCallback) {
         return  registerICBMFluid(name, bucketForm, blockForm, fluidAttributesCallback, Fluids.WATER.getAttributes().getStillTexture(), Fluids.WATER.getAttributes().getFlowingTexture());

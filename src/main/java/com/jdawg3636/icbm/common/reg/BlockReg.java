@@ -52,8 +52,10 @@ public class BlockReg {
     public static final RegistryObject<Block> ORE_URANIUM                   = BLOCKS.register("ore_uranium",                    () -> new BlockUraniumOre(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F).lightLevel(blockState -> 3)));
 
     // Fluids
-    public static final RegistryObject<FlowingFluidBlock> FUEL              = BLOCKS.register("fuel",                           () -> new FlowingFluidBlock(FluidReg.FUEL.source, AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
-    public static final RegistryObject<FlowingFluidBlock> OIL               = BLOCKS.register("oil",                            () -> new FlowingFluidBlock(FluidReg.OIL.source, AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
+    public static final RegistryObject<FlowingFluidBlock> FUEL                  = BLOCKS.register("fuel",                       () -> new FlowingFluidBlock(FluidReg.FUEL.source,                   AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
+    public static final RegistryObject<FlowingFluidBlock> HYDROFLUORIC_ACID     = BLOCKS.register("hydrofluoric_acid",          () -> new FlowingFluidBlock(FluidReg.HYDROFLUORIC_ACID.source,      AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
+    public static final RegistryObject<FlowingFluidBlock> OIL                   = BLOCKS.register("oil",                        () -> new FlowingFluidBlock(FluidReg.OIL.source,                    AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
+    public static final RegistryObject<FlowingFluidBlock> URANIUM_HEXAFLUORIDE  = BLOCKS.register("uranium_hexafluoride",       () -> new FlowingFluidBlock(FluidReg.URANIUM_HEXAFLUORIDE.source,   AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
 
     // Vegetation
     public static final RegistryObject<Block> RUBBER_LEAVES                 = BLOCKS.register("rubber_leaves",                  BlockModdedLeaves::new);

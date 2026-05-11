@@ -3,7 +3,11 @@
   "values": [
     "icbm:fuel",
     "icbm:flowing_fuel",
+    "icbm:hydrofluoric_acid",
+    "icbm:flowing_hydrofluoric_acid",
     "icbm:oil",
-    "icbm:flowing_oil"
+    "icbm:flowing_oil",
+    "icbm:uranium_hexafluoride",
+    "icbm:flowing_uranium_hexafluoride"
   ]
 }

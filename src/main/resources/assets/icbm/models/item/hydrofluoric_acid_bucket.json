@@ -1,0 +1,5 @@
+{
+  "loader": "forge:bucket",
+  "parent": "forge:item/bucket",
+  "fluid": "icbm:hydrofluoric_acid"
+}
