@@ -109,8 +109,8 @@ public class TileMetallurgicLeachingChamber extends TileMachineProcessing<Metall
         }).orElse(false);
     }
 
-    public void onRecipeFulfilled() {
-        this.activeRecipe.ifPresent(ar -> {
+    public void onRecipeFulfilled(Optional<MetallurgicLeachingRecipe> fulfilledRecipe) {
+        fulfilledRecipe.ifPresent(ar -> {
             this.itemHandlerLazyOptional.ifPresent(ish -> {
                 ItemStack stackInOutputSlot = ish.getStackInSlot(MachineSlots.ITEM_OUTPUT.ordinal());
                 if(stackInOutputSlot.sameItem(ar.getResultItem())) {

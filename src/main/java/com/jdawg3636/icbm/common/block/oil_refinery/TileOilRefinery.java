@@ -86,8 +86,8 @@ public class TileOilRefinery extends TileMachineProcessing<RefineryRecipe> {
     }
 
     @Override
-    public void onRecipeFulfilled() {
-        this.activeRecipe.ifPresent(ar -> {
+    public void onRecipeFulfilled(Optional<RefineryRecipe> fulfilledRecipe) {
+        fulfilledRecipe.ifPresent(ar -> {
             outputTank.fillBypass(ar.getResult(), IFluidHandler.FluidAction.EXECUTE);
         });
     }

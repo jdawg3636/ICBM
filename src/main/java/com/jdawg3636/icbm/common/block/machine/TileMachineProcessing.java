@@ -40,9 +40,10 @@ public abstract class TileMachineProcessing<T extends IProcessingRecipe> extends
             // If processing is complete, produce result.
             if(this.ticksProcessing >= this.activeRecipe.get().getProcessingTime()) {
                 // This next line may have the side effect of changing the activeRecipe due to triggering the onContentsChanged callback on a FluidTank
+                Optional<T> fulfilledRecipe = activeRecipe;
                 boolean recipeFulfilled = tryConsumeInputsForRecipe();
                 if(recipeFulfilled) {
-                    onRecipeFulfilled();
+                    onRecipeFulfilled(fulfilledRecipe);
                 }
                 this.ticksProcessing = 0;
             }
@@ -82,6 +83,6 @@ public abstract class TileMachineProcessing<T extends IProcessingRecipe> extends
 
     public abstract boolean tryConsumeInputsForRecipe();
 
-    public abstract void onRecipeFulfilled();
+    public abstract void onRecipeFulfilled(Optional<T> fulfilledRecipe);
 
 }
