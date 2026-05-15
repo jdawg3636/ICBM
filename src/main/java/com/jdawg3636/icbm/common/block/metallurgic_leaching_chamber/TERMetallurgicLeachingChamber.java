@@ -9,12 +9,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraftforge.common.util.LazyOptional;
+
+import java.util.Random;
 
 public class TERMetallurgicLeachingChamber extends AbstractTERMachine<TileMetallurgicLeachingChamber> {
 
@@ -58,9 +63,32 @@ public class TERMetallurgicLeachingChamber extends AbstractTERMachine<TileMetall
         MODEL_STATIC.ifPresent(model -> Minecraft.getInstance().getItemRenderer().render(Blocks.STONE.asItem().getDefaultInstance(), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, model));
         matrixStack.popPose();
 
+        // Render liquid in chamber
         renderFluidTank(tileEntity.fluidTanks.get(0), UNADJUSTED_FLUID_AABB, matrixStack, renderBuffer, combinedLight, combinedOverlay);
 
-        // TODO Render items in chamber
+        // Render items in chamber
+        ItemStack itemStack = tileEntity.itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(TileMetallurgicLeachingChamber.MachineSlots.ITEM_INPUT.ordinal())).orElse(ItemStack.EMPTY);
+        Random seededRandom = new Random(321);
+        Random seededRandomForYAxis = new Random(248);
+        for(int i = 0; i < Math.ceil(itemStack.getCount() / 8.0); ++i) {
+            matrixStack.pushPose();
+            // Translate to center
+            matrixStack.translate(0.5, 1.5 - (6.0 / 16.0), 0.5);
+            // Rotate for Facing Direction
+            matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - facingDir.toYRot()));
+            // Scale
+            matrixStack.scale(0.25F, 0.25F, 0.25F);
+            // Random Translation
+            double offsetToBack = ((64 * seededRandom.nextDouble() - 40.0) / 16.0);
+            double offsetToLeft = ((32 * seededRandom.nextDouble() - 15.0) / 16.0);
+            double offsetUp = 2.5 * seededRandomForYAxis.nextDouble() * tileEntity.fluidTanks.get(0).map(ft -> Math.min(1.0, ft.getFluidAmount() / (double)ft.getCapacity())).orElse(0.0);
+            matrixStack.translate(offsetToLeft, offsetUp, offsetToBack);
+            // Random Rotation +/- 30 degrees
+            matrixStack.mulPose(new Quaternion(60 * seededRandom.nextFloat() - 30, 60 * seededRandom.nextFloat() - 30, 60 * seededRandom.nextFloat() - 30, true));
+            // Render
+            Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemCameraTransforms.TransformType.FIXED, combinedLight, OverlayTexture.NO_OVERLAY, matrixStack, renderBuffer);
+            matrixStack.popPose();
+        }
 
         // Outer Pop
         matrixStack.popPose();
