@@ -74,7 +74,7 @@ public class ItemRadarGun extends ItemEnergy {
                     }
                 }
                 // Otherwise, validate energy
-                else if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) != ENERGY_CONSUMED_PER_USAGE) {
+                else if(player.getItemInHand(hand).getCapability(CapabilityEnergy.ENERGY).map(es -> es.extractEnergy(ENERGY_CONSUMED_PER_USAGE, false)).orElse(0) == ENERGY_CONSUMED_PER_USAGE) {
                     // If we have energy, record the trace coordinates into the item.
                     player.getItemInHand(hand).getOrCreateTag().putDouble("target_x", target.x);
                     player.getItemInHand(hand).getOrCreateTag().putDouble("target_y", target.y);
