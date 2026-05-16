@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -63,6 +64,7 @@ public class TileMetallurgicLeachingChamber extends TileMachineProcessing<Metall
     }
 
     private ICBMFluidTank inputTank = new ICBMFluidTank(32_000, fluidStack -> true, this::onInputTankContentsChanged, true);
+    public int inputTankAmountClientLerped = 0;
 
     public TileMetallurgicLeachingChamber(TileEntityType<?> tileEntityType) {
         this(tileEntityType, DEFAULT_NAME);
@@ -177,8 +179,12 @@ public class TileMetallurgicLeachingChamber extends TileMachineProcessing<Metall
     @Override
     public void tick() {
         super.tick();
+        assert level != null;
+        if(level.isClientSide()) {
+            this.inputTankAmountClientLerped = (int)Math.ceil(MathHelper.lerp(1.0/40.0, this.inputTankAmountClientLerped, this.inputTank.getFluid().getAmount()));
+            return;
+        }
         itemHandlerLazyOptional.ifPresent(itemHandler -> {
-            assert level != null;
             // Ingest energy from battery
             getEnergyStorageOfItemInSlot(MachineSlots.BATTERY.ordinal()).ifPresent(bes -> tryReceiveEnergy(bes, bes.getEnergyStored()));
             // Ingest fluid from input item

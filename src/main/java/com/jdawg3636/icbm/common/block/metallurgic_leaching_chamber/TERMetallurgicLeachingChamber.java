@@ -81,7 +81,7 @@ public class TERMetallurgicLeachingChamber extends AbstractTERMachine<TileMetall
             // Random Translation
             double offsetToBack = ((64 * seededRandom.nextDouble() - 40.0) / 16.0);
             double offsetToLeft = ((32 * seededRandom.nextDouble() - 15.0) / 16.0);
-            double offsetUp = 2.5 * seededRandomForYAxis.nextDouble() * tileEntity.fluidTanks.get(0).map(ft -> Math.min(1.0, ft.getFluidAmount() / (double)ft.getCapacity())).orElse(0.0);
+            double offsetUp = 2.5 * seededRandomForYAxis.nextDouble() * tileEntity.fluidTanks.get(0).map(ft -> Math.min(1.0, tileEntity.inputTankAmountClientLerped / (double)ft.getCapacity())).orElse(0.0);
             matrixStack.translate(offsetToLeft, offsetUp, offsetToBack);
             // Random Rotation +/- 30 degrees
             matrixStack.mulPose(new Quaternion(60 * seededRandom.nextFloat() - 30, 60 * seededRandom.nextFloat() - 30, 60 * seededRandom.nextFloat() - 30, true));
