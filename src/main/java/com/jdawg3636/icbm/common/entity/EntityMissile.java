@@ -236,6 +236,7 @@ public class EntityMissile extends Entity {
     protected void readAdditionalSaveData(CompoundNBT compound) {
         if(compound.contains("SimulatedMissileUUID")) {
             simulatedMissileUUID = compound.getUUID("SimulatedMissileUUID");
+            this.updatePuppetToMatchLogical();
         }
     }
 
