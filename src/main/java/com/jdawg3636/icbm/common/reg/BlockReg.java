@@ -136,7 +136,7 @@ public class BlockReg {
     public static final RegistryObject<Block> OIL_REFINERY                  = BLOCKS.register("oil_refinery",                   () -> new BlockOilRefinery(TileReg.OIL_REFINERY));
     public static final RegistryObject<Block> PROXIMITY_DETECTOR            = BLOCKS.register("proximity_detector",             () -> new BlockProximityDetector(TileReg.PROXIMITY_DETECTOR));
     public static final RegistryObject<Block> RADAR_STATION                 = BLOCKS.register("radar_station",                  () -> new BlockRadarStation(TileReg.RADAR_STATION));
-    public static final RegistryObject<Block> THERMOCHEMICAL_MIXER          = BLOCKS.register("thermochemical_mixer",           () -> new BlockThermochemicalMixer());
+    public static final RegistryObject<Block> THERMOCHEMICAL_MIXER          = BLOCKS.register("thermochemical_mixer",           () -> new BlockThermochemicalMixer(TileReg.THERMOCHEMICAL_MIXER));
 
     // Particle Accelerator Components (Deliberately Non-Alphabetized so that the Particle Accelerator itself will appear first in the Creative Inventory)
     public static final RegistryObject<Block> PARTICLE_ACCELERATOR          = BLOCKS.register("particle_accelerator",           () -> new BlockParticleAccelerator(TileReg.PARTICLE_ACCELERATOR));

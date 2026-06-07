@@ -32,6 +32,7 @@ public class ContainerReg {
     public static final RegistryObject<ContainerType<ContainerMachine>> OIL_REFINERY = registerContainer(() -> ContainerReg.OIL_REFINERY, BlockReg.OIL_REFINERY, ContainerMachine::new);
     public static final RegistryObject<ContainerType<ContainerMachine>> PROXIMITY_DETECTOR = registerContainer(() -> ContainerReg.PROXIMITY_DETECTOR, BlockReg.PROXIMITY_DETECTOR, ContainerMachine::new);
     public static final RegistryObject<ContainerType<ContainerMachine>> RADAR_STATION = registerContainer(() -> ContainerReg.RADAR_STATION, BlockReg.RADAR_STATION, ContainerMachine::new);
+    public static final RegistryObject<ContainerType<ContainerMachine>> THERMOCHEMICAL_MIXER = registerContainer(() -> ContainerReg.THERMOCHEMICAL_MIXER, BlockReg.THERMOCHEMICAL_MIXER, ContainerMachine::new);
 
     // Particle Accelerator Components
     public static final RegistryObject<ContainerType<ContainerMachine>> PARTICLE_ACCELERATOR = registerContainer(() -> ContainerReg.PARTICLE_ACCELERATOR, BlockReg.PARTICLE_ACCELERATOR, ContainerMachine::new);

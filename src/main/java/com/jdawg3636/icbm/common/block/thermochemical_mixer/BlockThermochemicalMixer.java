@@ -1,9 +1,14 @@
 package com.jdawg3636.icbm.common.block.thermochemical_mixer;
 
-import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
+import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMultiTile;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.vector.Vector3i;
+import net.minecraftforge.fml.RegistryObject;
 
-public class BlockThermochemicalMixer extends AbstractBlockMulti {
+public class BlockThermochemicalMixer extends AbstractBlockMultiTile {
 
     public static final Vector3i LIQUID_INLET_POSITION = new Vector3i(0,1,0);
 
@@ -15,31 +20,31 @@ public class BlockThermochemicalMixer extends AbstractBlockMulti {
             LIQUID_INLET_POSITION
     };
 
-//    public BlockThermochemicalMixer(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-//        this(tileEntityType, false);
-//    }
-//
-//    public BlockThermochemicalMixer(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
-//        super(tileEntityType, waterloggable);
-//    }
-//
-//    public BlockThermochemicalMixer(Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
-//        super(properties, tileEntityType, false);
-//    }
+    public BlockThermochemicalMixer(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
+        this(tileEntityType, false);
+    }
+
+    public BlockThermochemicalMixer(RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType, boolean waterloggable) {
+        super(tileEntityType, waterloggable);
+    }
+
+    public BlockThermochemicalMixer(Properties properties, RegistryObject<TileEntityType<? extends TileEntity>> tileEntityType) {
+        super(properties, tileEntityType, false);
+    }
 
     @Override
     public Vector3i[] getMultiblockOffsets() {
         return MULTIBLOCK_POSITIONS;
     }
 
-//    @Override
-//    public Vector3i[] getMutiblockOffsetsWhichHavePassthroughTileEntity() {
-//        return MULTIBLOCK_PASSTHROUGH_TILE_POSITIONS;
-//    }
+    @Override
+    public Vector3i[] getMutiblockOffsetsWhichHavePassthroughTileEntity() {
+        return MULTIBLOCK_PASSTHROUGH_TILE_POSITIONS;
+    }
 
-//    @Override
-//    public BlockRenderType getRenderShape(BlockState state) {
-//        return BlockRenderType.INVISIBLE;
-//    }
+    @Override
+    public BlockRenderType getRenderShape(BlockState state) {
+        return BlockRenderType.INVISIBLE;
+    }
 
 }

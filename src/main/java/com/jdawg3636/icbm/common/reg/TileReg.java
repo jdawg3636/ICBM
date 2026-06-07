@@ -17,6 +17,7 @@ import com.jdawg3636.icbm.common.block.particle_accelerator.TileParticleAccelera
 import com.jdawg3636.icbm.common.block.proximity_detector.TileProximityDetector;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
 import com.jdawg3636.icbm.common.block.siren.TileSiren;
+import com.jdawg3636.icbm.common.block.thermochemical_mixer.TileThermochemicalMixer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
@@ -71,6 +72,7 @@ public class TileReg {
     public static final RegistryObject<TileEntityType<? extends TileEntity>> OIL_REFINERY                   = TILES.register(BlockReg.OIL_REFINERY.getId().getPath(),                 () -> TileEntityType.Builder.of(() -> new TileOilRefinery(TileReg.OIL_REFINERY.get()),                                BlockReg.OIL_REFINERY.get()                 ).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> PROXIMITY_DETECTOR             = TILES.register(BlockReg.PROXIMITY_DETECTOR.getId().getPath(),           () -> TileEntityType.Builder.of(() -> new TileProximityDetector(TileReg.PROXIMITY_DETECTOR.get()),                    BlockReg.PROXIMITY_DETECTOR.get()           ).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> RADAR_STATION                  = TILES.register(BlockReg.RADAR_STATION.getId().getPath(),                () -> TileEntityType.Builder.of(() -> new TileRadarStation(TileReg.RADAR_STATION.get()),                              BlockReg.RADAR_STATION.get()                ).build(null));
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> THERMOCHEMICAL_MIXER           = TILES.register(BlockReg.THERMOCHEMICAL_MIXER.getId().getPath(),         () -> TileEntityType.Builder.of(() -> new TileThermochemicalMixer(TileReg.THERMOCHEMICAL_MIXER.get()),                BlockReg.THERMOCHEMICAL_MIXER.get()         ).build(null));
 
     // Extras
     public static final RegistryObject<TileEntityType<? extends TileEntity>> CAMOUFLAGE      = TILES.register(BlockReg.CAMOUFLAGE.getId().getPath(),      () -> TileEntityType.Builder.of(() -> new TileCamouflage(TileReg.CAMOUFLAGE.get()),          BlockReg.CAMOUFLAGE.get()     ).build(null));

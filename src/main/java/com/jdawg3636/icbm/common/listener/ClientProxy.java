@@ -29,6 +29,9 @@ import com.jdawg3636.icbm.common.block.particle_accelerator.ScreenParticleAccele
 import com.jdawg3636.icbm.common.block.proximity_detector.ScreenProximityDetector;
 import com.jdawg3636.icbm.common.block.radar_station.TERRadarStation;
 import com.jdawg3636.icbm.common.block.radar_station.TileRadarStation;
+import com.jdawg3636.icbm.common.block.thermochemical_mixer.ScreenThermochemicalMixer;
+import com.jdawg3636.icbm.common.block.thermochemical_mixer.TERThermochemicalMixer;
+import com.jdawg3636.icbm.common.block.thermochemical_mixer.TileThermochemicalMixer;
 import com.jdawg3636.icbm.common.entity.*;
 import com.jdawg3636.icbm.common.item.ItemTracker;
 import com.jdawg3636.icbm.common.item.ScreenFrequencyItem;
@@ -126,6 +129,7 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.<ContainerMachine, ScreenProximityDetector>register(ContainerReg.PROXIMITY_DETECTOR.get(), ScreenProximityDetector::new);
         ScreenManager.<ContainerMachine, ScreenParticleAccelerator>register(ContainerReg.PARTICLE_ACCELERATOR.get(), ScreenParticleAccelerator::new);
         ScreenManager.<ContainerMachine, ScreenMultiblockSpinning>register(ContainerReg.RADAR_STATION.get(), (container, inventory, name) -> new ScreenMultiblockSpinning(container, inventory, name, ICBMReference.COMMON_CONFIG.getRadarStationRangeMinimum(), ICBMReference.COMMON_CONFIG.getRadarStationRangeMaximum()));
+        ScreenManager.<ContainerMachine, ScreenThermochemicalMixer>register(ContainerReg.THERMOCHEMICAL_MIXER.get(), ScreenThermochemicalMixer::new);
 
         // Register Explosives Entity Rendering Handlers
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONDENSED.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONDENSED.get().defaultBlockState()));
@@ -245,6 +249,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileMetallurgicLeachingChamber>) TileReg.METALLURGIC_LEACHING_CHAMBER.get(), TERMetallurgicLeachingChamber::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileOilRefinery>) TileReg.OIL_REFINERY.get(), TEROilRefinery::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileRadarStation>) TileReg.RADAR_STATION.get(), TERRadarStation::new);
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileThermochemicalMixer>) TileReg.THERMOCHEMICAL_MIXER.get(), TERThermochemicalMixer::new);
 
         // Register Item Model Properties
         ItemModelsProperties.register(ItemReg.TRACKER.get(), new ResourceLocation("angle"),          ItemTracker::getAngleFromItemStack);

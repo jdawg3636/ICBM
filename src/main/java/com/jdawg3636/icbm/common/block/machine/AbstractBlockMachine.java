@@ -75,6 +75,12 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
      * Given a relative direction in the coordinate space of facing = SOUTH, convert to an absolute direction relative to the given facing direction.
      * */
     public static Direction relDirectionToAbsDirection(Direction facingDirection, Direction relativeDirection) {
+        if(facingDirection == null || relativeDirection == null) {
+            return null;
+        }
+        if(relativeDirection == Direction.UP || relativeDirection == Direction.DOWN) {
+            return relativeDirection;
+        }
         return Direction.fromYRot(facingDirection.toYRot() + relativeDirection.toYRot());
     }
 
