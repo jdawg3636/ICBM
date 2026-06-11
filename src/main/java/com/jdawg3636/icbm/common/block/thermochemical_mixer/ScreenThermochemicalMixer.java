@@ -58,7 +58,7 @@ public class ScreenThermochemicalMixer extends ScreenMachine<ContainerMachine> {
         addButton(this.inputTankView);
 
         this.outputTankView = new WidgetFluidTank(
-                relX + 7 + 36, relY + 45, 36, 65, this,
+                relX + 7 + 36 + 65, relY + 45, 36, 65, this,
                 () -> TILE_ENTITY.fluidTanks.get(1).map(fluidTank -> {
                     return new TranslationTextComponent(fluidTank.getFluid().getTranslationKey()).append(": " + fluidTank.getFluidAmount() + " / " + fluidTank.getCapacity());
                 }).orElse(new StringTextComponent("Error!")),

@@ -39,9 +39,9 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
         FLUID_INPUT(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, stack -> {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
         }),
-        ITEM_INPUT_A(152 - (5 * 18) - 10, 69, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, stack -> true),
-        ITEM_INPUT_B(152 - (5 * 18) - 10, 69 + 18, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, stack -> true),
-        FLUID_OUTPUT(152 - (2 * 18) - 8, 69, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, stack -> {
+        ITEM_INPUT_A(152 - (5 * 18) - 10, 22 + 24 + 10, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, stack -> true),
+        ITEM_INPUT_B(152 - (5 * 18) - 10, 22 + 24 + 37, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, stack -> true),
+        FLUID_OUTPUT(152 - 34, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, stack -> {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
         });
 
