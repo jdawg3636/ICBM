@@ -1,0 +1,18 @@
+{
+  "type": "icbm:thermochemical_mixing",
+  "input_fluid": {
+    "fluid": "minecraft:water",
+    "amount": 1000
+  },
+  "input_item_a": {
+    "tag": "forge:dusts/sulfur"
+  },
+  "input_item_b": {
+    "tag": "forge:gems/fluorite"
+  },
+  "result": {
+    "fluid": "icbm:hydrofluoric_acid",
+    "amount": 1000
+  },
+  "processing_time": 100
+}

@@ -24,22 +24,24 @@ import java.util.function.Supplier;
 public class ThermochemicalMixerRecipe implements IProcessingRecipe {
     private final ResourceLocation recipeId;
     private final FluidIngredient inputFluid;
-    private final Ingredient inputItem;
-    private Supplier<ItemStack> result;
+    private final Ingredient inputItemA;
+    private final Ingredient inputItemB;
+    private FluidIngredient result;
     private int processingTime;
 
-    public ThermochemicalMixerRecipe(ResourceLocation recipeId, FluidIngredient inputFluid, Ingredient inputItem, Supplier<ItemStack> result, int processingTime) {
+    public ThermochemicalMixerRecipe(ResourceLocation recipeId, FluidIngredient inputFluid, Ingredient inputItemA, Ingredient inputItemB, FluidIngredient result, int processingTime) {
         this.recipeId = recipeId;
         this.inputFluid = inputFluid;
-        this.inputItem = inputItem;
+        this.inputItemA = inputItemA;
+        this.inputItemB = inputItemB;
         this.result = result;
         this.processingTime = processingTime;
     }
 
-    public static Optional<ThermochemicalMixerRecipe> getRecipeFor(IRecipeType<ThermochemicalMixerRecipe> recipeType, FluidStack inputFluid, ItemStack inputItem, World level) {
+    public static Optional<ThermochemicalMixerRecipe> getRecipeFor(IRecipeType<ThermochemicalMixerRecipe> recipeType, FluidStack inputFluid, ItemStack inputItemA, ItemStack inputItemB, World level) {
         return ((IRecipeManagerAccessor)level.getRecipeManager()).invokeByType(recipeType).values().stream()
                 .filter(ThermochemicalMixerRecipe.class::isInstance).map(ThermochemicalMixerRecipe.class::cast)
-                .filter(recipe -> recipe.matchesCustom(inputFluid, inputItem))
+                .filter(recipe -> recipe.matchesCustom(inputFluid, inputItemA, inputItemB))
                 .findFirst();
     }
 
@@ -51,13 +53,13 @@ public class ThermochemicalMixerRecipe implements IProcessingRecipe {
         return false;
     }
 
-    public boolean matchesCustom(FluidStack inputFluid, ItemStack inputItem) {
-        return this.inputFluid.test(inputFluid) && this.inputItem.test(inputItem);
+    public boolean matchesCustom(FluidStack inputFluid, ItemStack inputItemA, ItemStack inputItemB) {
+        return this.inputFluid.test(inputFluid) && this.inputItemA.test(inputItemA) && this.inputItemB.test(inputItemB);
     }
 
     @Override
     public ItemStack assemble(IInventory inventory) {
-        return result.get();
+        return result.getAsFluidStack().map(fs -> fs.getFluid().getBucket().getDefaultInstance()).orElse(ItemStack.EMPTY);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class ThermochemicalMixerRecipe implements IProcessingRecipe {
 
     @Override
     public ItemStack getResultItem() {
-        return result.get();
+        return result.getAsFluidStack().orElse(FluidStack.EMPTY).getFluid().getBucket().getDefaultInstance();
     }
 
     @Override
@@ -89,8 +91,16 @@ public class ThermochemicalMixerRecipe implements IProcessingRecipe {
         return this.inputFluid;
     }
 
-    public Ingredient getInputItem() {
-        return this.inputItem;
+    public Ingredient getInputItemA() {
+        return this.inputItemA;
+    }
+
+    public Ingredient getInputItemB() {
+        return this.inputItemB;
+    }
+
+    public FluidStack getOutputFluid() {
+        return this.result.getAsFluidStack().orElse(FluidStack.EMPTY);
     }
 
     @Override
@@ -103,27 +113,30 @@ public class ThermochemicalMixerRecipe implements IProcessingRecipe {
         @Override
         public ThermochemicalMixerRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             FluidIngredient inputFluid = FluidIngredient.parseFromJson(json.get("input_fluid").getAsJsonObject());
-            Ingredient inputItem = Ingredient.fromJson(json.get("input_item").getAsJsonObject());
-            ItemStack result = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+            Ingredient inputItemA = Ingredient.fromJson(json.get("input_item_a").getAsJsonObject());
+            Ingredient inputItemB = Ingredient.fromJson(json.get("input_item_b").getAsJsonObject());
+            FluidIngredient result = FluidIngredient.parseFromJson(json.get("result").getAsJsonObject());
             int processingTime = json.get("processing_time").getAsInt();
-            return new ThermochemicalMixerRecipe(recipeId, inputFluid, inputItem, result::copy, processingTime);
+            return new ThermochemicalMixerRecipe(recipeId, inputFluid, inputItemA, inputItemB, result, processingTime);
         }
 
         @Nullable
         @Override
         public ThermochemicalMixerRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
             FluidIngredient inputFluid = FluidIngredient.fromNetwork(buffer);
-            Ingredient inputItem = Ingredient.fromNetwork(buffer);
-            ItemStack result = buffer.readItem();
+            Ingredient inputItemA = Ingredient.fromNetwork(buffer);
+            Ingredient inputItemB = Ingredient.fromNetwork(buffer);
+            FluidIngredient result = FluidIngredient.fromNetwork(buffer);
             int processingTime = buffer.readInt();
-            return new ThermochemicalMixerRecipe(recipeId, inputFluid, inputItem, result::copy, processingTime);
+            return new ThermochemicalMixerRecipe(recipeId, inputFluid, inputItemA, inputItemB, result, processingTime);
         }
 
         @Override
         public void toNetwork(PacketBuffer buffer, ThermochemicalMixerRecipe recipe) {
             recipe.inputFluid.toNetwork(buffer);
-            recipe.inputItem.toNetwork(buffer);
-            buffer.writeItem(recipe.result.get());
+            recipe.inputItemA.toNetwork(buffer);
+            recipe.inputItemB.toNetwork(buffer);
+            recipe.result.toNetwork(buffer);
             buffer.writeInt(recipe.processingTime);
         }
 

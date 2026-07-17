@@ -122,6 +122,7 @@ public class ICBMConfig {
 
         private final ForgeConfigSpec.IntValue metallurgicLeachingChamberEnergyUsagePerTick;
         private final ForgeConfigSpec.IntValue oilRefineryEnergyUsagePerTick;
+        private final ForgeConfigSpec.IntValue thermochemicalMixerEnergyUsagePerTick;
 
         private final ForgeConfigSpec.DoubleValue empTowerRangeMinimum;
         private final ForgeConfigSpec.DoubleValue empTowerRangeMaximum;
@@ -459,6 +460,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the amount of Forge Energy (FE) consumed per tick by an oil refinery while it is active.")
                     .defineInRange("oilRefineryEnergyUsagePerTick", 30, 0, Integer.MAX_VALUE);
+            this.thermochemicalMixerEnergyUsagePerTick = builder
+                    .comment("",
+                            "Defines the amount of Forge Energy (FE) consumed per tick by a thermochemical mixer while it is active.")
+                    .defineInRange("thermochemicalMixerEnergyUsagePerTick", 30, 0, Integer.MAX_VALUE);
             this.empTowerRangeMinimum = builder
                     .comment("",
                             "Defines the minimum effective radius that a user may specify for an EMP Tower")
@@ -780,6 +785,10 @@ public class ICBMConfig {
 
         public int getOilRefineryEnergyUsagePerTick() {
             return oilRefineryEnergyUsagePerTick.get();
+        }
+
+        public int getThermochemicalMixerEnergyUsagePerTick() {
+            return thermochemicalMixerEnergyUsagePerTick.get();
         }
 
         public double getEMPTowerRangeMinimum() {

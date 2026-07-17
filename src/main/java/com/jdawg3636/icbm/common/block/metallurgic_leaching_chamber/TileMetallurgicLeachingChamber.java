@@ -98,7 +98,7 @@ public class TileMetallurgicLeachingChamber extends TileMachineProcessing<Metall
         return this.activeRecipe.map(ar -> {
             int amountToDrain = ar.getInputFluid().getAmount();
             int amountDrained = this.inputTank.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE).getAmount();
-            boolean drainedEnoughFluid = amountToDrain >= amountDrained;
+            boolean drainedEnoughFluid = amountToDrain == amountDrained;
             boolean consumedItem = this.itemHandlerLazyOptional.map(ish -> {
                 ItemStack stackInInputSlot = ish.getStackInSlot(MachineSlots.ITEM_INPUT.ordinal());
                 boolean isCorrectItem = ar.getInputItem().test(stackInInputSlot);
@@ -112,14 +112,14 @@ public class TileMetallurgicLeachingChamber extends TileMachineProcessing<Metall
     }
 
     public void onRecipeFulfilled(Optional<MetallurgicLeachingRecipe> fulfilledRecipe) {
-        fulfilledRecipe.ifPresent(ar -> {
+        fulfilledRecipe.ifPresent(fr -> {
             this.itemHandlerLazyOptional.ifPresent(ish -> {
                 ItemStack stackInOutputSlot = ish.getStackInSlot(MachineSlots.ITEM_OUTPUT.ordinal());
-                if(stackInOutputSlot.sameItem(ar.getResultItem())) {
-                    stackInOutputSlot.grow(ar.getResultItem().getCount());
+                if(stackInOutputSlot.sameItem(fr.getResultItem())) {
+                    stackInOutputSlot.grow(fr.getResultItem().getCount());
                 }
                 else {
-                    ish.setStackInSlot(MachineSlots.ITEM_OUTPUT.ordinal(), ar.getResultItem().copy());
+                    ish.setStackInSlot(MachineSlots.ITEM_OUTPUT.ordinal(), fr.getResultItem().copy());
                 }
             });
         });

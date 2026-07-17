@@ -21,7 +21,7 @@ public class ICBMRecipeTypes {
         METALLURGIC_LEACHING = register("metallurgic_leaching");
         PARTICLE_ACCELERATOR = register("particle_accelerator");
         REFINERY = register("refinery");
-        THERMOCHEMICAL_MIXER = register("thermochemical_mixer");
+        THERMOCHEMICAL_MIXER = register("thermochemical_mixing");
     }
 
     private static <T extends IRecipe<?>> IRecipeType<T> register(final String identifier) {

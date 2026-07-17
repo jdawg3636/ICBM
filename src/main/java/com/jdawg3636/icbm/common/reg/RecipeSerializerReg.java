@@ -17,6 +17,6 @@ public class RecipeSerializerReg {
     public static final RegistryObject<IRecipeSerializer<?>> METALLURGIC_LEACHING = RECIPE_SERIALIZERS.register("metallurgic_leaching", MetallurgicLeachingRecipe.Serializer::new);
     public static final RegistryObject<IRecipeSerializer<?>> PARTICLE_ACCELERATOR = RECIPE_SERIALIZERS.register("particle_accelerator", ParticleAcceleratorRecipe.Serializer::new);
     public static final RegistryObject<IRecipeSerializer<?>> REFINERY = RECIPE_SERIALIZERS.register("refinery", RefineryRecipe.Serializer::new);
-    public static final RegistryObject<IRecipeSerializer<?>> THERMOCHEMICAL_MIXER = RECIPE_SERIALIZERS.register("thermochemical_mixer", ThermochemicalMixerRecipe.Serializer::new);
+    public static final RegistryObject<IRecipeSerializer<?>> THERMOCHEMICAL_MIXER = RECIPE_SERIALIZERS.register("thermochemical_mixing", ThermochemicalMixerRecipe.Serializer::new);
 
 }

@@ -1,10 +1,14 @@
 package com.jdawg3636.icbm.common.block.thermochemical_mixer;
 
+import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.machine.ICBMItemStackHandler;
 import com.jdawg3636.icbm.common.block.machine.TileMachineProcessing;
+import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.TileMetallurgicLeachingChamber;
 import com.jdawg3636.icbm.common.capability.fluidhandler.ICBMFluidTank;
+import com.jdawg3636.icbm.common.recipe.MetallurgicLeachingRecipe;
 import com.jdawg3636.icbm.common.recipe.ThermochemicalMixerRecipe;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
+import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -17,7 +21,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -73,37 +79,105 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
         this.fluidTanks.add(LazyOptional.of(() -> outputTank));
     }
 
+    public void updateActiveRecipe() {
+        ItemStack itemStackInInputSlotA = itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(MachineSlots.ITEM_INPUT_A.ordinal())).orElse(ItemStack.EMPTY);
+        ItemStack itemStackInInputSlotB = itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(MachineSlots.ITEM_INPUT_B.ordinal())).orElse(ItemStack.EMPTY);
+        // If active recipe doesn't match current state of inputs (or if there is no active recipe)
+        if(activeRecipe.map(rr -> !rr.matchesCustom(inputTank.getFluid(), itemStackInInputSlotA, itemStackInInputSlotB)).orElse(true)) {
+            // Then set the active recipe to match current inputs and reset ticksProcessing
+            assert this.level != null;
+            this.activeRecipe = ThermochemicalMixerRecipe.getRecipeFor(ICBMRecipeTypes.THERMOCHEMICAL_MIXER, inputTank.getFluid(), itemStackInInputSlotA, itemStackInInputSlotB, this.level);
+            this.ticksProcessing = 0;
+        }
+    }
+
     public void onInputTankContentsChanged(FluidTank tank) {
-        // todo implement
+        this.updateActiveRecipe();
+        this.updateNearbyClients();
     }
 
     @Override
     public int getEnergyUsagePerProcessingTick() {
-        // todo implement
-        return 0;
+        return ICBMReference.COMMON_CONFIG.getThermochemicalMixerEnergyUsagePerTick();
     }
 
     @Override
     public Optional<ThermochemicalMixerRecipe> getRecipeForCurrentInputs() {
-        // todo implement
-        return Optional.empty();
+        ItemStack itemStackInInputSlotA = itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(MachineSlots.ITEM_INPUT_A.ordinal())).orElse(ItemStack.EMPTY);
+        ItemStack itemStackInInputSlotB = itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(MachineSlots.ITEM_INPUT_B.ordinal())).orElse(ItemStack.EMPTY);
+        assert this.level != null;
+        return ThermochemicalMixerRecipe.getRecipeFor(ICBMRecipeTypes.THERMOCHEMICAL_MIXER, this.inputTank.getFluid(), itemStackInInputSlotA, itemStackInInputSlotB, this.level);
     }
 
     @Override
     public boolean getOutputHasRoomForRecipeResult() {
-        // todo implement
-        return false;
+        return this.activeRecipe.map(ar -> {
+            FluidStack result = ar.getOutputFluid();
+            return result.getAmount() == this.outputTank.fillBypass(result, IFluidHandler.FluidAction.SIMULATE);
+        }).orElse(true);
     }
 
     @Override
     public boolean tryConsumeInputsForRecipe() {
-        // todo implement
-        return false;
+        return this.activeRecipe.map(ar -> {
+            // Fluid
+            int amountToDrain = ar.getInputFluid().getAmount();
+            int amountDrained = this.inputTank.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE).getAmount();
+            boolean drainedEnoughFluid = amountToDrain == amountDrained;
+            // Items
+            boolean consumedAllItems = this.itemHandlerLazyOptional.map(ish -> {
+                // Item A
+                ItemStack stackInInputSlotA = ish.getStackInSlot(MachineSlots.ITEM_INPUT_A.ordinal());
+                boolean isCorrectItemA = ar.getInputItemA().test(stackInInputSlotA);
+                if(isCorrectItemA) {
+                    stackInInputSlotA.shrink(1);
+                }
+                // Item B
+                ItemStack stackInInputSlotB = ish.getStackInSlot(MachineSlots.ITEM_INPUT_B.ordinal());
+                boolean isCorrectItemB = ar.getInputItemB().test(stackInInputSlotB);
+                if(isCorrectItemB) {
+                    stackInInputSlotB.shrink(1);
+                }
+                // Merge Items
+                return isCorrectItemA && isCorrectItemB;
+            }).orElse(false);
+            // Merge Fluid + Items
+            return drainedEnoughFluid && consumedAllItems;
+        }).orElse(false);
     }
 
     @Override
     public void onRecipeFulfilled(Optional<ThermochemicalMixerRecipe> fulfilledRecipe) {
-        // todo implement
+        fulfilledRecipe.ifPresent(fr -> this.outputTank.fillBypass(fr.getOutputFluid(), IFluidHandler.FluidAction.EXECUTE));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        assert level != null;
+        if(!level.isClientSide()) {
+            itemHandlerLazyOptional.ifPresent(itemHandler -> {
+                // Ingest energy from battery
+                getEnergyStorageOfItemInSlot(TileMetallurgicLeachingChamber.MachineSlots.BATTERY.ordinal()).ifPresent(bes -> tryReceiveEnergy(bes, bes.getEnergyStored()));
+                // Ingest fluid from input item
+                ItemStack itemStackInInputSlot = itemHandler.getStackInSlot(MachineSlots.FLUID_INPUT.ordinal());
+                itemStackInInputSlot.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(itemFluidHandler -> {
+                    FluidStack canExtract = itemFluidHandler.drain(inputTank.getSpace(), IFluidHandler.FluidAction.SIMULATE);
+                    int amountFilled = inputTank.fill(canExtract, IFluidHandler.FluidAction.EXECUTE);
+                    itemFluidHandler.drain(amountFilled, IFluidHandler.FluidAction.EXECUTE);
+                    itemHandler.extractItem(MachineSlots.FLUID_INPUT.ordinal(), itemStackInInputSlot.getCount(), false);
+                    itemHandler.insertItem(MachineSlots.FLUID_INPUT.ordinal(), itemFluidHandler.getContainer(), false);
+                });
+                // Eject fluid into output item
+                ItemStack itemStackInOutputSlot = itemHandler.getStackInSlot(MachineSlots.FLUID_OUTPUT.ordinal());
+                itemStackInOutputSlot.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(itemFluidHandler -> {
+                    int amountFilled = itemFluidHandler.fill(outputTank.getFluid(), IFluidHandler.FluidAction.EXECUTE);
+                    itemHandler.extractItem(MachineSlots.FLUID_OUTPUT.ordinal(), itemStackInOutputSlot.getCount(), false);
+                    itemHandler.insertItem(MachineSlots.FLUID_OUTPUT.ordinal(), itemFluidHandler.getContainer(), false);
+                    outputTank.drain(amountFilled, IFluidHandler.FluidAction.EXECUTE);
+                });
+            });
+        }
     }
 
     @Nonnull

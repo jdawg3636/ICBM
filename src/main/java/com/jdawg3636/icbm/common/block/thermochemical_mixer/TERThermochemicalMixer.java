@@ -49,7 +49,9 @@ public class TERThermochemicalMixer extends AbstractTERMachine<TileThermochemica
         if (facingDir == Direction.WEST)   matrixStack.mulPose(new Quaternion(0, 270, 0, true));
         else if (facingDir == Direction.NORTH)  matrixStack.mulPose(new Quaternion(0, 180, 0, true));
         else if (facingDir == Direction.EAST)   matrixStack.mulPose(new Quaternion(0,  90, 0, true));
-        MODEL_STATIC.ifPresent(model -> Minecraft.getInstance().getItemRenderer().render(Blocks.STONE.asItem().getDefaultInstance(), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, model));
+        MODEL_STATIC.ifPresent(model -> {
+            Minecraft.getInstance().getItemRenderer().render(Blocks.STONE.asItem().getDefaultInstance(), ItemCameraTransforms.TransformType.NONE, false, matrixStack, renderBuffer, combinedLight, combinedOverlay, model);
+        });
         matrixStack.popPose();
 
 //        // Render liquid in chamber
