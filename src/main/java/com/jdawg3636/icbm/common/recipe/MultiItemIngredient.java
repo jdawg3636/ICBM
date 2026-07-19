@@ -20,6 +20,10 @@ public class MultiItemIngredient implements Predicate<ItemStack> {
         this.count = count;
     }
 
+    public Ingredient getSingleIngredient() {
+        return ingredient;
+    }
+
     public int getCount() {
         return count;
     }

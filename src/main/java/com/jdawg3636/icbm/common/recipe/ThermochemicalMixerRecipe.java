@@ -16,6 +16,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class ThermochemicalMixerRecipe implements IProcessingRecipe {
     private final ResourceLocation recipeId;
@@ -34,9 +35,13 @@ public class ThermochemicalMixerRecipe implements IProcessingRecipe {
         this.processingTime = processingTime;
     }
 
-    public static Optional<ThermochemicalMixerRecipe> getRecipeFor(IRecipeType<ThermochemicalMixerRecipe> recipeType, FluidStack inputFluid, ItemStack inputItemA, ItemStack inputItemB, World level) {
+    public static Stream<ThermochemicalMixerRecipe> getAllRecipes(IRecipeType<ThermochemicalMixerRecipe> recipeType, World level) {
         return ((IRecipeManagerAccessor)level.getRecipeManager()).invokeByType(recipeType).values().stream()
-                .filter(ThermochemicalMixerRecipe.class::isInstance).map(ThermochemicalMixerRecipe.class::cast)
+                .filter(ThermochemicalMixerRecipe.class::isInstance).map(ThermochemicalMixerRecipe.class::cast);
+    }
+
+    public static Optional<ThermochemicalMixerRecipe> getRecipeFor(IRecipeType<ThermochemicalMixerRecipe> recipeType, FluidStack inputFluid, ItemStack inputItemA, ItemStack inputItemB, World level) {
+        return getAllRecipes(recipeType, level)
                 .filter(recipe -> recipe.matchesCustom(inputFluid, inputItemA, inputItemB))
                 .findFirst();
     }

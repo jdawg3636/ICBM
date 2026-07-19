@@ -14,6 +14,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
@@ -31,31 +32,35 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 public class TileThermochemicalMixer extends TileMachineProcessing<ThermochemicalMixerRecipe> {
 
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.thermochemical_mixer");
 
     public static enum MachineSlots {
-        BATTERY(152, 22, ICBMItemStackHandler.SlotTag.BATTERY, stack -> {
+        BATTERY(152, 22, ICBMItemStackHandler.SlotTag.BATTERY, (stack, level) -> {
             return stack.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::canExtract).orElse(false);
         }),
-        FLUID_INPUT(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, stack -> {
+        FLUID_INPUT(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, (stack, level) -> {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
         }),
-        ITEM_INPUT_A(152 - (5 * 18) - 10, 22 + 24 + 10, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, stack -> true),
-        ITEM_INPUT_B(152 - (5 * 18) - 10, 22 + 24 + 37, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, stack -> true),
-        FLUID_OUTPUT(152 - 34, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, stack -> {
+        ITEM_INPUT_A(152 - (5 * 18) - 10, 22 + 24 + 10, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, level) -> {
+            return ThermochemicalMixerRecipe.getAllRecipes(ICBMRecipeTypes.THERMOCHEMICAL_MIXER, level).anyMatch(recipe -> recipe.getInputItemA().getSingleIngredient().test(stack));
+        }),
+        ITEM_INPUT_B(152 - (5 * 18) - 10, 22 + 24 + 37, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, level) -> {
+            return ThermochemicalMixerRecipe.getAllRecipes(ICBMRecipeTypes.THERMOCHEMICAL_MIXER, level).anyMatch(recipe -> recipe.getInputItemB().getSingleIngredient().test(stack));
+        }),
+        FLUID_OUTPUT(152 - 34, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, (stack, level) -> {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
         });
 
         final int xPos;
         final int yPos;
         final ICBMItemStackHandler.SlotTag tag;
-        final Predicate<ItemStack> itemStackValidityPredicate;
+        final BiPredicate<ItemStack, World> itemStackValidityPredicate;
 
-        MachineSlots(int xPos, int yPos, ICBMItemStackHandler.SlotTag tag, Predicate<ItemStack> itemStackValidityPredicate) {
+        MachineSlots(int xPos, int yPos, ICBMItemStackHandler.SlotTag tag, BiPredicate<ItemStack, World> itemStackValidityPredicate) {
             this.xPos = xPos;
             this.yPos = yPos;
             this.tag = tag;
@@ -216,8 +221,8 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
 
     @Override
     public boolean isInventoryItemValid(int slot, @Nonnull ItemStack stack) {
-        if(slot < MachineSlots.values().length) {
-            return MachineSlots.values()[slot].itemStackValidityPredicate.test(stack);
+        if(level != null && slot < MachineSlots.values().length) {
+            return MachineSlots.values()[slot].itemStackValidityPredicate.test(stack, this.level);
         }
         return false;
     }
