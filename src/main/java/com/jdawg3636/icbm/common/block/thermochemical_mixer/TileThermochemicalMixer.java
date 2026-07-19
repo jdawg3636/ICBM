@@ -5,7 +5,6 @@ import com.jdawg3636.icbm.common.block.machine.ICBMItemStackHandler;
 import com.jdawg3636.icbm.common.block.machine.TileMachineProcessing;
 import com.jdawg3636.icbm.common.block.metallurgic_leaching_chamber.TileMetallurgicLeachingChamber;
 import com.jdawg3636.icbm.common.capability.fluidhandler.ICBMFluidTank;
-import com.jdawg3636.icbm.common.recipe.MetallurgicLeachingRecipe;
 import com.jdawg3636.icbm.common.recipe.ThermochemicalMixerRecipe;
 import com.jdawg3636.icbm.common.reg.ContainerReg;
 import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
@@ -97,6 +96,14 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
     }
 
     @Override
+    protected void onInventorySlotChanged(int slot, boolean isBeingDestroyed) {
+        super.onInventorySlotChanged(slot, isBeingDestroyed);
+        if(!isBeingDestroyed) {
+            this.updateActiveRecipe();
+        }
+    }
+
+    @Override
     public int getEnergyUsagePerProcessingTick() {
         return ICBMReference.COMMON_CONFIG.getThermochemicalMixerEnergyUsagePerTick();
     }
@@ -130,13 +137,13 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
                 ItemStack stackInInputSlotA = ish.getStackInSlot(MachineSlots.ITEM_INPUT_A.ordinal());
                 boolean isCorrectItemA = ar.getInputItemA().test(stackInInputSlotA);
                 if(isCorrectItemA) {
-                    stackInInputSlotA.shrink(1);
+                    stackInInputSlotA.shrink(ar.getInputItemA().getCount());
                 }
                 // Item B
                 ItemStack stackInInputSlotB = ish.getStackInSlot(MachineSlots.ITEM_INPUT_B.ordinal());
                 boolean isCorrectItemB = ar.getInputItemB().test(stackInInputSlotB);
                 if(isCorrectItemB) {
-                    stackInInputSlotB.shrink(1);
+                    stackInInputSlotB.shrink(ar.getInputItemB().getCount());
                 }
                 // Merge Items
                 return isCorrectItemA && isCorrectItemB;

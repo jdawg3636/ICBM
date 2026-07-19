@@ -1,0 +1,20 @@
+{
+  "type": "icbm:thermochemical_mixing",
+  "input_fluid": {
+    "fluid": "icbm:hydrofluoric_acid",
+    "amount": 1000
+  },
+  "input_item_a": {
+    "tag": "forge:yellow_cake_uranium",
+    "count": 2
+  },
+  "input_item_b": {
+    "item": "air",
+    "count": 0
+  },
+  "result": {
+    "fluid": "icbm:uranium_hexafluoride",
+    "amount": 1000
+  },
+  "processing_time": 100
+}

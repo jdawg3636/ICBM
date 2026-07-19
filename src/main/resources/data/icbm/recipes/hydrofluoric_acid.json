@@ -5,10 +5,12 @@
     "amount": 1000
   },
   "input_item_a": {
-    "tag": "forge:dusts/sulfur"
+    "tag": "forge:dusts/sulfur",
+    "count": 50
   },
   "input_item_b": {
-    "tag": "forge:gems/fluorite"
+    "tag": "forge:gems/fluorite",
+    "count": 1
   },
   "result": {
     "fluid": "icbm:hydrofluoric_acid",

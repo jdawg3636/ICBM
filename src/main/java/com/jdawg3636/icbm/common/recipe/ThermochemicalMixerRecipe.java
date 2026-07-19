@@ -8,10 +8,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,17 +16,16 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public class ThermochemicalMixerRecipe implements IProcessingRecipe {
     private final ResourceLocation recipeId;
     private final FluidIngredient inputFluid;
-    private final Ingredient inputItemA;
-    private final Ingredient inputItemB;
+    private final MultiItemIngredient inputItemA;
+    private final MultiItemIngredient inputItemB;
     private FluidIngredient result;
     private int processingTime;
 
-    public ThermochemicalMixerRecipe(ResourceLocation recipeId, FluidIngredient inputFluid, Ingredient inputItemA, Ingredient inputItemB, FluidIngredient result, int processingTime) {
+    public ThermochemicalMixerRecipe(ResourceLocation recipeId, FluidIngredient inputFluid, MultiItemIngredient inputItemA, MultiItemIngredient inputItemB, FluidIngredient result, int processingTime) {
         this.recipeId = recipeId;
         this.inputFluid = inputFluid;
         this.inputItemA = inputItemA;
@@ -91,11 +87,11 @@ public class ThermochemicalMixerRecipe implements IProcessingRecipe {
         return this.inputFluid;
     }
 
-    public Ingredient getInputItemA() {
+    public MultiItemIngredient getInputItemA() {
         return this.inputItemA;
     }
 
-    public Ingredient getInputItemB() {
+    public MultiItemIngredient getInputItemB() {
         return this.inputItemB;
     }
 
@@ -113,8 +109,8 @@ public class ThermochemicalMixerRecipe implements IProcessingRecipe {
         @Override
         public ThermochemicalMixerRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             FluidIngredient inputFluid = FluidIngredient.parseFromJson(json.get("input_fluid").getAsJsonObject());
-            Ingredient inputItemA = Ingredient.fromJson(json.get("input_item_a").getAsJsonObject());
-            Ingredient inputItemB = Ingredient.fromJson(json.get("input_item_b").getAsJsonObject());
+            MultiItemIngredient inputItemA = MultiItemIngredient.fromJson(json.get("input_item_a").getAsJsonObject());
+            MultiItemIngredient inputItemB = MultiItemIngredient.fromJson(json.get("input_item_b").getAsJsonObject());
             FluidIngredient result = FluidIngredient.parseFromJson(json.get("result").getAsJsonObject());
             int processingTime = json.get("processing_time").getAsInt();
             return new ThermochemicalMixerRecipe(recipeId, inputFluid, inputItemA, inputItemB, result, processingTime);
@@ -124,8 +120,8 @@ public class ThermochemicalMixerRecipe implements IProcessingRecipe {
         @Override
         public ThermochemicalMixerRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
             FluidIngredient inputFluid = FluidIngredient.fromNetwork(buffer);
-            Ingredient inputItemA = Ingredient.fromNetwork(buffer);
-            Ingredient inputItemB = Ingredient.fromNetwork(buffer);
+            MultiItemIngredient inputItemA = MultiItemIngredient.fromNetwork(buffer);
+            MultiItemIngredient inputItemB = MultiItemIngredient.fromNetwork(buffer);
             FluidIngredient result = FluidIngredient.fromNetwork(buffer);
             int processingTime = buffer.readInt();
             return new ThermochemicalMixerRecipe(recipeId, inputFluid, inputItemA, inputItemB, result, processingTime);
