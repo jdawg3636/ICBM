@@ -83,7 +83,11 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
         this.fluidTanks.add(LazyOptional.of(() -> outputTank));
     }
 
+    @Override
     public void updateActiveRecipe() {
+        if(level == null || level.isClientSide()) {
+            return;
+        }
         ItemStack itemStackInInputSlotA = itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(MachineSlots.ITEM_INPUT_A.ordinal())).orElse(ItemStack.EMPTY);
         ItemStack itemStackInInputSlotB = itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(MachineSlots.ITEM_INPUT_B.ordinal())).orElse(ItemStack.EMPTY);
         // If active recipe doesn't match current state of inputs (or if there is no active recipe)
@@ -176,17 +180,21 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
                 itemStackInInputSlot.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(itemFluidHandler -> {
                     FluidStack canExtract = itemFluidHandler.drain(inputTank.getSpace(), IFluidHandler.FluidAction.SIMULATE);
                     int amountFilled = inputTank.fill(canExtract, IFluidHandler.FluidAction.EXECUTE);
-                    itemFluidHandler.drain(amountFilled, IFluidHandler.FluidAction.EXECUTE);
-                    itemHandler.extractItem(MachineSlots.FLUID_INPUT.ordinal(), itemStackInInputSlot.getCount(), false);
-                    itemHandler.insertItem(MachineSlots.FLUID_INPUT.ordinal(), itemFluidHandler.getContainer(), false);
+                    if(amountFilled != 0) {
+                        itemFluidHandler.drain(amountFilled, IFluidHandler.FluidAction.EXECUTE);
+                        itemHandler.extractItem(MachineSlots.FLUID_INPUT.ordinal(), itemStackInInputSlot.getCount(), false);
+                        itemHandler.insertItem(MachineSlots.FLUID_INPUT.ordinal(), itemFluidHandler.getContainer(), false);
+                    }
                 });
                 // Eject fluid into output item
                 ItemStack itemStackInOutputSlot = itemHandler.getStackInSlot(MachineSlots.FLUID_OUTPUT.ordinal());
                 itemStackInOutputSlot.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(itemFluidHandler -> {
                     int amountFilled = itemFluidHandler.fill(outputTank.getFluid(), IFluidHandler.FluidAction.EXECUTE);
-                    itemHandler.extractItem(MachineSlots.FLUID_OUTPUT.ordinal(), itemStackInOutputSlot.getCount(), false);
-                    itemHandler.insertItem(MachineSlots.FLUID_OUTPUT.ordinal(), itemFluidHandler.getContainer(), false);
-                    outputTank.drain(amountFilled, IFluidHandler.FluidAction.EXECUTE);
+                    if(amountFilled != 0) {
+                        itemHandler.extractItem(MachineSlots.FLUID_OUTPUT.ordinal(), itemStackInOutputSlot.getCount(), false);
+                        itemHandler.insertItem(MachineSlots.FLUID_OUTPUT.ordinal(), itemFluidHandler.getContainer(), false);
+                        outputTank.drain(amountFilled, IFluidHandler.FluidAction.EXECUTE);
+                    }
                 });
             });
         }

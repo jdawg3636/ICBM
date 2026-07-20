@@ -153,6 +153,7 @@ public class TileMetallurgicLeachingChamber extends TileMachineProcessing<Metall
         return LazyOptional.empty();
     }
 
+    @Override
     public void updateActiveRecipe() {
         ItemStack itemStackInInputSlot = itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(2)).orElse(ItemStack.EMPTY);
         if(activeRecipe.map(rr -> !rr.matchesCustom(inputTank.getFluid(), itemStackInInputSlot)).orElse(true)) {

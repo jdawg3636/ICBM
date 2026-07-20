@@ -46,8 +46,14 @@ public abstract class TileMachineProcessing<T extends IProcessingRecipe> extends
                     onRecipeFulfilled(fulfilledRecipe);
                 }
                 this.ticksProcessing = 0;
+                updateNearbyClients();
             }
         }
+    }
+
+    public void setChanged() {
+        super.setChanged();
+        this.updateActiveRecipe();
     }
 
     public double getProcessingPercentage() {
@@ -74,6 +80,8 @@ public abstract class TileMachineProcessing<T extends IProcessingRecipe> extends
         tag.putInt("processing_time", activeRecipe.map(IProcessingRecipe::getProcessingTime).orElse(1));
         return tag;
     }
+
+    public abstract void updateActiveRecipe();
 
     public abstract int getEnergyUsagePerProcessingTick();
 

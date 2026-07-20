@@ -74,7 +74,7 @@ public class ContainerMachine extends Container {
             itemstack = stack.copy();
             // Moving Items From Inside
             if (index < getSlotCount()) {
-                if (!this.moveItemStackTo(stack, 1, 36 + nextSlotIndex, true)) {
+                if (!this.moveItemStackTo(stack, nextSlotIndex, 36 + nextSlotIndex, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(stack, itemstack);
