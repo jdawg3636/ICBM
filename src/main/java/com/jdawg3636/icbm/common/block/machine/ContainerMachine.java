@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.block.machine;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
@@ -111,6 +112,20 @@ public class ContainerMachine extends Container {
         }
 
         return itemstack;
+    }
+
+    @Override
+    public ItemStack clicked(int slotIndex, int dragType, ClickType clickType, PlayerEntity playerEntity) {
+        ItemStack result = super.clicked(slotIndex, dragType, clickType, playerEntity);
+
+        // Shift+Clicking to update the count of an ItemStack doesn't trigger net.minecraftforge.items.ItemStackHandler::onContentsChanged
+        // This is a problem for detecting that the active recipe may need updated in the Thermochemical Mixer, which is sensitive to stack counts.
+        // Here we trigger an artificial update any time a shift+click is performed.
+        if (clickType == ClickType.QUICK_MOVE) {
+            this.tileMachineOptional.ifPresent(TileMachine::setChanged);
+        }
+
+        return result;
     }
 
     public int addSlotRange(IItemHandler handler, int index, int x, int y, int count, int dx) {
