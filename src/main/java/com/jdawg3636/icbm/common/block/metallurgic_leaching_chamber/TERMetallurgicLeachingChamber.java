@@ -64,7 +64,7 @@ public class TERMetallurgicLeachingChamber extends AbstractTERMachine<TileMetall
         matrixStack.popPose();
 
         // Render liquid in chamber
-        renderFluidTank(tileEntity.fluidTanks.get(0), UNADJUSTED_FLUID_AABB, matrixStack, renderBuffer, combinedLight, combinedOverlay);
+        renderFluidTank(tileEntity.fluidTanks.get(0), UNADJUSTED_FLUID_AABB, true, matrixStack, renderBuffer, combinedLight, combinedOverlay);
 
         // Render items in chamber
         ItemStack itemStack = tileEntity.itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(TileMetallurgicLeachingChamber.MachineSlots.ITEM_INPUT.ordinal())).orElse(ItemStack.EMPTY);

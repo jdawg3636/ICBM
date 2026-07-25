@@ -78,7 +78,7 @@ public class TEROilRefinery extends AbstractTERMachine<TileOilRefinery> {
             if(i == 0) matrixStack.translate(-tangent.getX(), 0, -tangent.getZ());
             else matrixStack.translate(tangent.getX(), 0, tangent.getZ());
 
-            renderFluidTank(fluidTank, UNADJUSTED_FLUID_AABB, matrixStack, renderBuffer, combinedLight, combinedOverlay);
+            renderFluidTank(fluidTank, UNADJUSTED_FLUID_AABB, true, matrixStack, renderBuffer, combinedLight, combinedOverlay);
 
             // Pop for tank
             matrixStack.popPose();

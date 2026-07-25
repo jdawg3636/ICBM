@@ -153,7 +153,7 @@ public abstract class AbstractTERMachine<T extends TileMachine> extends TileEnti
         }
     }
 
-    public static void renderFluidTank(LazyOptional<FluidTank> fluidTank, AxisAlignedBB unadjustedFluidAABB, MatrixStack matrixStack, IRenderTypeBuffer renderBuffer, int combinedLight, int combinedOverlay) {
+    public static void renderFluidTank(LazyOptional<FluidTank> fluidTank, AxisAlignedBB unadjustedFluidAABB, boolean verticalFaceDeconfliction, MatrixStack matrixStack, IRenderTypeBuffer renderBuffer, int combinedLight, int combinedOverlay) {
 
         // Extract fluid amount and tank capacity
         final FluidStack fluidStack = fluidTank.map(FluidTank::getFluid).orElse(FluidStack.EMPTY);
@@ -177,10 +177,10 @@ public abstract class AbstractTERMachine<T extends TileMachine> extends TileEnti
         // Generate AABB of fluid given current fraction of tank filled
         AxisAlignedBB fluidAABBForTank = new AxisAlignedBB(
                 (unadjustedFluidAABB.minX / 16.0D) + 0.01D,
-                (unadjustedFluidAABB.minY / 16.0D) + 0.01D,
+                (unadjustedFluidAABB.minY / 16.0D) + (verticalFaceDeconfliction ? 0.01D : 0D),
                 (unadjustedFluidAABB.minZ / 16.0D) + 0.01D,
                 (unadjustedFluidAABB.maxX / 16.0D) - 0.01D,
-                ((unadjustedFluidAABB.minY + (fractionFilled * (unadjustedFluidAABB.maxY - unadjustedFluidAABB.minY))) / 16.0D) - 0.01D,
+                ((unadjustedFluidAABB.minY + (fractionFilled * (unadjustedFluidAABB.maxY - unadjustedFluidAABB.minY))) / 16.0D) - (verticalFaceDeconfliction ? 0.01D : 0D),
                 (unadjustedFluidAABB.maxZ / 16.0D) - 0.01D
         );
 
