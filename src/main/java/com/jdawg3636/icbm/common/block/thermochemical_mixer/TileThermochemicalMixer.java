@@ -69,8 +69,8 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
 
     }
 
-    private ICBMFluidTank inputTank = new ICBMFluidTank(32_000, fluidStack -> true, this::onInputTankContentsChanged, true);
-    private ICBMFluidTank outputTank = new ICBMFluidTank(32_000, fluidStack -> false, tank -> this.updateNearbyClients(), true);
+    private ICBMFluidTank inputTank = new ICBMFluidTank(32_000, fluidStack -> true, this::onTankContentsChanged, true);
+    private ICBMFluidTank outputTank = new ICBMFluidTank(32_000, fluidStack -> false, this::onTankContentsChanged, true);
 
     public TileThermochemicalMixer(TileEntityType<?> tileEntityType) {
         this(tileEntityType, DEFAULT_NAME);
@@ -99,7 +99,7 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
         }
     }
 
-    public void onInputTankContentsChanged(FluidTank tank) {
+    public void onTankContentsChanged(FluidTank tank) {
         this.updateActiveRecipe();
         this.updateNearbyClients();
     }
