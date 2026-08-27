@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bark",
+  "pattern": ["##", "##"],
+  "key": {"#": {"item": "icbm:dried_rubber_log"}},
+  "result": {"item": "icbm:dried_rubber_wood", "count": 3}
+}
+

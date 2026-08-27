@@ -20,6 +20,7 @@ import com.jdawg3636.icbm.common.block.siren.TileSiren;
 import com.jdawg3636.icbm.common.block.thermochemical_mixer.TileThermochemicalMixer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import com.jdawg3636.icbm.common.block.TileRubberSign;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -29,6 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class TileReg {
 
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, ICBMReference.MODID);
+    public static final RegistryObject<TileEntityType<TileRubberSign>> RUBBER_WOOD_SIGN = TILES.register("rubber_wood_sign", () -> TileEntityType.Builder.of(TileRubberSign::new, BlockReg.RUBBER_WOOD_SIGN.get(), BlockReg.RUBBER_WOOD_WALL_SIGN.get()).build(null));
 
     // Launcher Platforms
     public static final RegistryObject<TileEntityType<? extends TileEntity>> LAUNCHER_PLATFORM_T1 = TILES.register(BlockReg.LAUNCHER_PLATFORM_T1.getId().getPath(), () -> TileEntityType.Builder.of(() -> new TileLauncherPlatform(TileReg.LAUNCHER_PLATFORM_T1.get(), ContainerReg.LAUNCHER_PLATFORM_T1::get, 1), BlockReg.LAUNCHER_PLATFORM_T1.get()).build(null));

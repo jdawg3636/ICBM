@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "boat",
+  "pattern": [
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "icbm:rubber_wood_planks"
+    }
+  },
+  "result": {
+    "item": "icbm:rubber_wood_boat"
+  }
+}

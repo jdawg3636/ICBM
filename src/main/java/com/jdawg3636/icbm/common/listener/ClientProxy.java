@@ -44,8 +44,11 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.entity.TNTMinecartRenderer;
+import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
@@ -87,6 +90,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     @SuppressWarnings("unchecked")
     public void onClientSetupEvent(FMLClientSetupEvent event) {
+        Atlases.addWoodType(BlockReg.RUBBER_WOOD_TYPE);
+        ClientRegistry.bindTileEntityRenderer(TileReg.RUBBER_WOOD_SIGN.get(), SignTileEntityRenderer::new);
 
         // Set Render Layers
         RenderTypeLookup.setRenderLayer(BlockReg.CAMOUFLAGE.get(), renderType -> true);
@@ -108,6 +113,8 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_RAIL.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.RUBBER_LEAVES.get(), RenderType.cutoutMipped());
         RenderTypeLookup.setRenderLayer(BlockReg.RUBBER_SAPLING.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.RUBBER_WOOD_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.RUBBER_WOOD_TRAPDOOR.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_POISON.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.SPIKES_FIRE.get(), RenderType.cutout());
@@ -132,6 +139,7 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.<ContainerMachine, ScreenThermochemicalMixer>register(ContainerReg.THERMOCHEMICAL_MIXER.get(), ScreenThermochemicalMixer::new);
 
         // Register Explosives Entity Rendering Handlers
+        RenderingRegistry.registerEntityRenderingHandler(EntityReg.RUBBER_WOOD_BOAT.get(), EntityRubberBoatRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_CONDENSED.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_CONDENSED.get().defaultBlockState()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_SHRAPNEL.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_SHRAPNEL.get().defaultBlockState()));
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.EXPLOSIVES_INCENDIARY.get(), (manager) -> new EntityPrimedExplosivesRenderer(manager, BlockReg.EXPLOSIVES_INCENDIARY.get().defaultBlockState()));

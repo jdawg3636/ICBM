@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "icbm:block/rubber_wood_slab"
+    },
+    "type=double": {
+      "model": "icbm:block/rubber_wood_planks"
+    },
+    "type=top": {
+      "model": "icbm:block/rubber_wood_slab_top"
+    }
+  }
+}

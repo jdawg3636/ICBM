@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "icbm:block/dried_rubber_log",
+    "side": "icbm:block/dried_rubber_log"
+  }
+}
+

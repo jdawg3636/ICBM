@@ -7,6 +7,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.item.SignItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -57,7 +58,22 @@ public class ItemReg {
     public static final RegistryObject<Item> RUBBER_LEAVES                  = ITEMS.register("rubber_leaves",                   () -> new BlockItem(BlockReg.RUBBER_LEAVES.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> RUBBER_LOG                     = ITEMS.register("rubber_log",                      () -> new BlockItem(BlockReg.RUBBER_LOG.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> DRIED_RUBBER_LOG               = ITEMS.register("dried_rubber_log",                () -> new BlockItem(BlockReg.DRIED_RUBBER_LOG.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> DRIED_RUBBER_WOOD              = ITEMS.register("dried_rubber_wood",               () -> new BlockItem(BlockReg.DRIED_RUBBER_WOOD.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> RUBBER_SAPLING                 = ITEMS.register("rubber_sapling",                  () -> new BlockItem(BlockReg.RUBBER_SAPLING.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD                    = ITEMS.register("rubber_wood",                     () -> new BlockItem(BlockReg.RUBBER_WOOD.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> STRIPPED_RUBBER_LOG            = ITEMS.register("stripped_rubber_log",             () -> new BlockItem(BlockReg.STRIPPED_RUBBER_LOG.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> STRIPPED_RUBBER_WOOD           = ITEMS.register("stripped_rubber_wood",            () -> new BlockItem(BlockReg.STRIPPED_RUBBER_WOOD.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_PLANKS                  = ITEMS.register("rubber_wood_planks",                   () -> new BlockItem(BlockReg.RUBBER_WOOD_PLANKS.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_STAIRS                  = ITEMS.register("rubber_wood_stairs",                   () -> new BlockItem(BlockReg.RUBBER_WOOD_STAIRS.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_SLAB                    = ITEMS.register("rubber_wood_slab",                     () -> new BlockItem(BlockReg.RUBBER_WOOD_SLAB.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_PRESSURE_PLATE          = ITEMS.register("rubber_wood_pressure_plate",           () -> new BlockItem(BlockReg.RUBBER_WOOD_PRESSURE_PLATE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_BUTTON                  = ITEMS.register("rubber_wood_button",                   () -> new BlockItem(BlockReg.RUBBER_WOOD_BUTTON.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_FENCE                   = ITEMS.register("rubber_wood_fence",                    () -> new BlockItem(BlockReg.RUBBER_WOOD_FENCE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_FENCE_GATE              = ITEMS.register("rubber_wood_fence_gate",               () -> new BlockItem(BlockReg.RUBBER_WOOD_FENCE_GATE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_SIGN                    = ITEMS.register("rubber_wood_sign",                     () -> new SignItem(new Item.Properties().stacksTo(16).tab(ICBMReference.CREATIVE_TAB), BlockReg.RUBBER_WOOD_SIGN.get(), BlockReg.RUBBER_WOOD_WALL_SIGN.get()));
+    public static final RegistryObject<Item> RUBBER_WOOD_TRAPDOOR                = ITEMS.register("rubber_wood_trapdoor",                 () -> new BlockItem(BlockReg.RUBBER_WOOD_TRAPDOOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_DOOR                    = ITEMS.register("rubber_wood_door",                     () -> new BlockItem(BlockReg.RUBBER_WOOD_DOOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_BOAT                    = ITEMS.register("rubber_wood_boat",                     () -> new com.jdawg3636.icbm.common.item.ItemRubberBoat(new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
 
     // Explosives
     public static final RegistryObject<Item> EXPLOSIVES_CONDENSED           = ITEMS.register("explosives_condensed",            () -> new BlockItem(BlockReg.EXPLOSIVES_CONDENSED.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

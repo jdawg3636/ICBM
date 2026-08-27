@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "icbm:rubber_log",
+    "icbm:rubber_wood",
+    "icbm:stripped_rubber_log",
+    "icbm:stripped_rubber_wood",
+    "icbm:dried_rubber_log",
+    "icbm:dried_rubber_wood"
+  ]
+}

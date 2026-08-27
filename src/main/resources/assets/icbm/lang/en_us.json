@@ -202,8 +202,24 @@
 
   "block.icbm.rubber_leaves": "Rubber Leaves",
   "block.icbm.dried_rubber_log": "Dried Rubber Log",
+  "block.icbm.dried_rubber_wood": "Dried Rubber Wood",
   "block.icbm.rubber_log": "Rubber Log",
   "block.icbm.rubber_sapling": "Rubber Sapling",
+  "block.icbm.rubber_wood": "Rubber Wood",
+  "block.icbm.stripped_rubber_log": "Stripped Rubber Log",
+  "block.icbm.stripped_rubber_wood": "Stripped Rubber Wood",
+  "block.icbm.rubber_wood_planks": "Rubber Wood Planks",
+  "block.icbm.rubber_wood_stairs": "Rubber Wood Stairs",
+  "block.icbm.rubber_wood_slab": "Rubber Wood Slab",
+  "block.icbm.rubber_wood_pressure_plate": "Rubber Wood Pressure Plate",
+  "block.icbm.rubber_wood_button": "Rubber Wood Button",
+  "block.icbm.rubber_wood_fence": "Rubber Wood Fence",
+  "block.icbm.rubber_wood_fence_gate": "Rubber Wood Fence Gate",
+  "block.icbm.rubber_wood_sign": "Rubber Wood Sign",
+  "block.icbm.rubber_wood_wall_sign": "Rubber Wood Wall Sign",
+  "block.icbm.rubber_wood_trapdoor": "Rubber Wood Trapdoor",
+  "block.icbm.rubber_wood_door": "Rubber Wood Door",
+  "item.icbm.rubber_wood_boat": "Rubber Wood Boat",
 
   # ICBM Explosives
 

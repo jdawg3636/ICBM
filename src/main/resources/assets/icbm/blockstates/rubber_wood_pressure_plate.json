@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "icbm:block/rubber_wood_pressure_plate"
+    },
+    "powered=true": {
+      "model": "icbm:block/rubber_wood_pressure_plate_down"
+    }
+  }
+}

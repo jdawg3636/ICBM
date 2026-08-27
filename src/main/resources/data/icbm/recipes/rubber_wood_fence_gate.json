@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_fence_gate",
+  "pattern": [
+    "#W#",
+    "#W#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "W": {
+      "item": "icbm:rubber_wood_planks"
+    }
+  },
+  "result": {
+    "item": "icbm:rubber_wood_fence_gate"
+  }
+}

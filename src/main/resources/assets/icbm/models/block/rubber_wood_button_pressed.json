@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button_pressed",
+  "textures": {
+    "texture": "icbm:block/rubber_wood_planks"
+  }
+}

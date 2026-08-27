@@ -36,6 +36,11 @@ public class ICBMForgeEventListener {
     }
 
     @SubscribeEvent
+    public static void onRightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
+        ICBMReference.distProxy().onRightClickBlock(event);
+    }
+
+    @SubscribeEvent
     public static void onRegisterCommandsEvent(final RegisterCommandsEvent event) {
         ICBMReference.distProxy().onRegisterCommandsEvent(event);
     }

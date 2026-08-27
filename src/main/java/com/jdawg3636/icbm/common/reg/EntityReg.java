@@ -21,6 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public final class EntityReg {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMReference.MODID);
+    public static final RegistryObject<EntityType<EntityRubberBoat>> RUBBER_WOOD_BOAT = ENTITIES.register("rubber_wood_boat", () -> EntityType.Builder.<EntityRubberBoat>of(EntityRubberBoat::new, EntityClassification.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10).build("rubber_wood_boat"));
 
     // Primed Explosives Registration
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CONDENSED         = registerPrimedExplosives(BlastEventReg.CONDENSED,           ItemReg.EXPLOSIVES_CONDENSED);

@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "icbm.refmap.json",
   "mixins": [
+    "accessors.ITileEntityAccessor",
     "accessors.IAbstractBlockAccessor",
     "accessors.IAbstractSliderAccessor",
     "accessors.IArmorMaterialAccessor",
