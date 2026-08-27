@@ -1,0 +1,8 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "icbm:block/concrete_compact",
+    "side": "icbm:block/concrete_compact",
+    "top": "icbm:block/concrete_compact"
+  }
+}

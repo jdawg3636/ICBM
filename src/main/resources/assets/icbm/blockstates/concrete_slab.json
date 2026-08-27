@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "icbm:block/concrete_slab" },
+    "type=double": { "model": "icbm:block/concrete" },
+    "type=top": { "model": "icbm:block/concrete_slab_top" }
+  }
+}

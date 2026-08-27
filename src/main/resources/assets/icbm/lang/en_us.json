@@ -472,6 +472,9 @@
   "block.icbm.concrete": "Concrete",
   "block.icbm.concrete_compact": "Compact Concrete",
   "block.icbm.concrete_reinforced": "Reinforced Concrete",
+  "block.icbm.concrete_slab": "Concrete Slab",
+  "block.icbm.concrete_compact_slab": "Compact Concrete Slab",
+  "block.icbm.concrete_reinforced_slab": "Reinforced Concrete Slab",
   "block.icbm.reinforced_glass": "Reinforced Glass",
   "block.icbm.radioactive_material": "Radioactive Material",
 

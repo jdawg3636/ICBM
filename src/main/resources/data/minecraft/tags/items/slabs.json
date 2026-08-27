@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "icbm:concrete_slab",
+    "icbm:concrete_compact_slab",
+    "icbm:concrete_reinforced_slab"
+  ]
+}
