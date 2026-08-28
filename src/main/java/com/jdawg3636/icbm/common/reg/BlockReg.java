@@ -34,6 +34,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Optional;
+
 public class BlockReg {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ICBMReference.MODID);
@@ -63,25 +65,25 @@ public class BlockReg {
     public static final RegistryObject<FlowingFluidBlock> URANIUM_HEXAFLUORIDE  = BLOCKS.register("uranium_hexafluoride",       () -> new FlowingFluidBlock(FluidReg.URANIUM_HEXAFLUORIDE.source,   AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100F).noDrops()));
 
     // Vegetation
-    public static final RegistryObject<Block> RUBBER_LEAVES                 = BLOCKS.register("rubber_leaves",                  BlockModdedLeaves::new);
-    public static final RegistryObject<Block> RUBBER_LOG                    = BLOCKS.register("rubber_log",                     BlockModdedLog::new);
-    public static final RegistryObject<Block> DRIED_RUBBER_LOG              = BLOCKS.register("dried_rubber_log",               BlockModdedLog::new);
-    public static final RegistryObject<Block> DRIED_RUBBER_WOOD             = BLOCKS.register("dried_rubber_wood",              BlockModdedLog::new);
     public static final RegistryObject<Block> RUBBER_SAPLING                = BLOCKS.register("rubber_sapling",                 () -> new SaplingBlock(new RubberTree(), AbstractBlock.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
-    public static final RegistryObject<Block> RUBBER_WOOD                   = BLOCKS.register("rubber_wood",                    BlockModdedLog::new);
-    public static final RegistryObject<Block> STRIPPED_RUBBER_LOG           = BLOCKS.register("stripped_rubber_log",            BlockModdedLog::new);
-    public static final RegistryObject<Block> STRIPPED_RUBBER_WOOD          = BLOCKS.register("stripped_rubber_wood",           BlockModdedLog::new);
+    public static final RegistryObject<Block> RUBBER_LEAVES                 = BLOCKS.register("rubber_leaves",                  BlockModdedLeaves::new);
+    public static final RegistryObject<Block> STRIPPED_RUBBER_LOG           = BLOCKS.register("stripped_rubber_log",            () -> new BlockModdedLog(Optional.empty()));
+    public static final RegistryObject<Block> RUBBER_LOG                    = BLOCKS.register("rubber_log",                     () -> new BlockModdedLog(Optional.of(STRIPPED_RUBBER_LOG)));
+    public static final RegistryObject<Block> DRIED_RUBBER_LOG              = BLOCKS.register("dried_rubber_log",               () -> new BlockModdedLog(Optional.of(STRIPPED_RUBBER_LOG)));
+    public static final RegistryObject<Block> STRIPPED_RUBBER_WOOD          = BLOCKS.register("stripped_rubber_wood",           () -> new BlockModdedLog(Optional.empty()));
+    public static final RegistryObject<Block> RUBBER_WOOD                   = BLOCKS.register("rubber_wood",                    () -> new BlockModdedLog(Optional.of(STRIPPED_RUBBER_WOOD)));
+    public static final RegistryObject<Block> DRIED_RUBBER_WOOD             = BLOCKS.register("dried_rubber_wood",              () -> new BlockModdedLog(Optional.of(STRIPPED_RUBBER_WOOD)));
     public static final RegistryObject<Block> RUBBER_WOOD_PLANKS                 = BLOCKS.register("rubber_wood_planks",                  () -> new Block(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.SAND).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> RUBBER_WOOD_STAIRS                 = BLOCKS.register("rubber_wood_stairs",                  () -> new StairsBlock(() -> RUBBER_WOOD_PLANKS.get().defaultBlockState(), AbstractBlock.Properties.copy(RUBBER_WOOD_PLANKS.get())));
     public static final RegistryObject<Block> RUBBER_WOOD_SLAB                   = BLOCKS.register("rubber_wood_slab",                    () -> new SlabBlock(AbstractBlock.Properties.copy(RUBBER_WOOD_PLANKS.get())));
-    public static final RegistryObject<Block> RUBBER_WOOD_PRESSURE_PLATE         = BLOCKS.register("rubber_wood_pressure_plate",          () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, AbstractBlock.Properties.copy(RUBBER_WOOD_PLANKS.get()).noCollission().strength(0.5F)));
-    public static final RegistryObject<Block> RUBBER_WOOD_BUTTON                 = BLOCKS.register("rubber_wood_button",                  () -> new WoodButtonBlock(AbstractBlock.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> RUBBER_WOOD_STAIRS                 = BLOCKS.register("rubber_wood_stairs",                  () -> new StairsBlock(() -> RUBBER_WOOD_PLANKS.get().defaultBlockState(), AbstractBlock.Properties.copy(RUBBER_WOOD_PLANKS.get())));
     public static final RegistryObject<Block> RUBBER_WOOD_FENCE                  = BLOCKS.register("rubber_wood_fence",                   () -> new FenceBlock(AbstractBlock.Properties.copy(RUBBER_WOOD_PLANKS.get())));
     public static final RegistryObject<Block> RUBBER_WOOD_FENCE_GATE             = BLOCKS.register("rubber_wood_fence_gate",              () -> new FenceGateBlock(AbstractBlock.Properties.copy(RUBBER_WOOD_PLANKS.get())));
-    public static final RegistryObject<Block> RUBBER_WOOD_SIGN                   = BLOCKS.register("rubber_wood_sign",                    () -> new StandingSignBlock(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD), RUBBER_WOOD_TYPE));
-    public static final RegistryObject<Block> RUBBER_WOOD_WALL_SIGN              = BLOCKS.register("rubber_wood_wall_sign",               () -> new WallSignBlock(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD).dropsLike(RUBBER_WOOD_SIGN.get()), RUBBER_WOOD_TYPE));
     public static final RegistryObject<Block> RUBBER_WOOD_TRAPDOOR               = BLOCKS.register("rubber_wood_trapdoor",                () -> new TrapDoorBlock(AbstractBlock.Properties.copy(RUBBER_WOOD_PLANKS.get()).noOcclusion()));
     public static final RegistryObject<Block> RUBBER_WOOD_DOOR                   = BLOCKS.register("rubber_wood_door",                    () -> new DoorBlock(AbstractBlock.Properties.copy(RUBBER_WOOD_PLANKS.get()).noOcclusion()));
+    public static final RegistryObject<Block> RUBBER_WOOD_PRESSURE_PLATE         = BLOCKS.register("rubber_wood_pressure_plate",          () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, AbstractBlock.Properties.copy(RUBBER_WOOD_PLANKS.get()).noCollission().strength(0.5F)));
+    public static final RegistryObject<Block> RUBBER_WOOD_BUTTON                 = BLOCKS.register("rubber_wood_button",                  () -> new WoodButtonBlock(AbstractBlock.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> RUBBER_WOOD_SIGN                   = BLOCKS.register("rubber_wood_sign",                    () -> new StandingSignBlock(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD), RUBBER_WOOD_TYPE));
+    public static final RegistryObject<Block> RUBBER_WOOD_WALL_SIGN              = BLOCKS.register("rubber_wood_wall_sign",               () -> new WallSignBlock(AbstractBlock.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD).dropsLike(RUBBER_WOOD_SIGN.get()), RUBBER_WOOD_TYPE));
 
     // Explosives
     public static final RegistryObject<Block> EXPLOSIVES_CONDENSED          = BLOCKS.register("explosives_condensed",           () -> new BlockExplosives(EntityReg.EXPLOSIVES_CONDENSED,           BlastEventReg.CONDENSED,          ItemReg.EXPLOSIVES_CONDENSED));

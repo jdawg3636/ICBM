@@ -22,11 +22,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.AxeItem;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.tileentity.TileEntityType;
@@ -133,24 +128,6 @@ public class CommonProxy {
         else if(heldItem instanceof ItemDefuser) {
             ItemDefuser.onInteractWithEntity(event);
         }
-    }
-
-    // TODO: figure out the proper way to implement log stripping, replace this with that, and add support for dried rubber logs/wood (still produce same stripped block as non-dried variant)
-    public void onRightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
-        if (!(event.getItemStack().getItem() instanceof AxeItem)) return;
-        BlockState state = event.getWorld().getBlockState(event.getPos());
-        BlockState stripped = null;
-        if (state.is(BlockReg.RUBBER_LOG.get())) stripped = BlockReg.STRIPPED_RUBBER_LOG.get().defaultBlockState();
-        else if (state.is(BlockReg.RUBBER_WOOD.get())) stripped = BlockReg.STRIPPED_RUBBER_WOOD.get().defaultBlockState();
-        if (stripped == null) return;
-        stripped = stripped.setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS));
-        if (!event.getWorld().isClientSide) {
-            event.getWorld().playSound(null, event.getPos(), SoundEvents.AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            event.getWorld().setBlockAndUpdate(event.getPos(), stripped);
-            event.getItemStack().hurtAndBreak(1, event.getPlayer(), player -> player.broadcastBreakEvent(event.getHand()));
-        }
-        event.setCancellationResult(ActionResultType.sidedSuccess(event.getWorld().isClientSide));
-        event.setCanceled(true);
     }
 
     public void onLivingDeathEvent(final LivingDeathEvent event) {
