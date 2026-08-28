@@ -356,7 +356,6 @@
   "entity.icbm.missile_homing": "Homing Missile",
 
   # Blast Utility Entities
-  "entity.icbm.shrapnel": "Shrapnel",
   "entity.icbm.blast_chemical": "Chemical Blast",
   "entity.icbm.blast_contagion": "Contagion Blast",
   "entity.icbm.blast_debilitation": "Debilitation Blast",
@@ -367,6 +366,8 @@
   "entity.icbm.accelerating_particle": "Accelerating Particle",
   "entity.icbm.fancy_falling_block": "Fancy Falling Block",
   "entity.icbm.lightning_visual": "Lightning",
+  "entity.icbm.rubber_wood_boat": "Rubber Wood Boat",
+  "entity.icbm.shrapnel": "Shrapnel",
 
   # Explosive Minecarts
   "item.icbm.minecart_explosive": "Explosive Cart",

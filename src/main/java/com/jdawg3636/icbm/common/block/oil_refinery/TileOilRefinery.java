@@ -131,9 +131,9 @@ public class TileOilRefinery extends TileMachineProcessing<RefineryRecipe> {
 
     @Override
     public void updateActiveRecipe() {
-        fluidTanks.get(1).ifPresent(tank -> {
+        if(level == null || level.isClientSide()) return;
+        fluidTanks.get(0).ifPresent(tank -> {
             if(activeRecipe.map(rr -> !rr.getIngredient().test(tank.getFluid())).orElse(true)) {
-                assert this.level != null;
                 this.activeRecipe = RefineryRecipe.getRecipeFor(ICBMRecipeTypes.REFINERY, tank.getFluid(), this.level);
                 this.ticksProcessing = 0;
             }

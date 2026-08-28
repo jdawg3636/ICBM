@@ -155,9 +155,11 @@ public class TileMetallurgicLeachingChamber extends TileMachineProcessing<Metall
 
     @Override
     public void updateActiveRecipe() {
-        ItemStack itemStackInInputSlot = itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(2)).orElse(ItemStack.EMPTY);
+        // Deserialization callbacks can sometimes cause this to be called before the world is loaded (and thus before recipe data exists) - need to guard
+        if(level == null || level.isClientSide()) return;
+        // Ensure current inputs match current recipe (if present), otherwise look for different matching recipe and reset processing time.
+        ItemStack itemStackInInputSlot = itemHandlerLazyOptional.map(ish -> ish.getStackInSlot(MachineSlots.ITEM_INPUT.ordinal())).orElse(ItemStack.EMPTY);
         if(activeRecipe.map(rr -> !rr.matchesCustom(inputTank.getFluid(), itemStackInInputSlot)).orElse(true)) {
-            assert this.level != null;
             this.activeRecipe = MetallurgicLeachingRecipe.getRecipeFor(ICBMRecipeTypes.METALLURGIC_LEACHING, inputTank.getFluid(), itemStackInInputSlot, this.level);
             this.ticksProcessing = 0;
         }
