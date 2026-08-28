@@ -4,6 +4,8 @@ import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.item.*;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BoatItem;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -73,7 +75,7 @@ public class ItemReg {
     public static final RegistryObject<Item> RUBBER_WOOD_SIGN                    = ITEMS.register("rubber_wood_sign",                     () -> new SignItem(new Item.Properties().stacksTo(16).tab(ICBMReference.CREATIVE_TAB), BlockReg.RUBBER_WOOD_SIGN.get(), BlockReg.RUBBER_WOOD_WALL_SIGN.get()));
     public static final RegistryObject<Item> RUBBER_WOOD_TRAPDOOR                = ITEMS.register("rubber_wood_trapdoor",                 () -> new BlockItem(BlockReg.RUBBER_WOOD_TRAPDOOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> RUBBER_WOOD_DOOR                    = ITEMS.register("rubber_wood_door",                     () -> new BlockItem(BlockReg.RUBBER_WOOD_DOOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
-    public static final RegistryObject<Item> RUBBER_WOOD_BOAT                    = ITEMS.register("rubber_wood_boat",                     () -> new com.jdawg3636.icbm.common.item.ItemRubberBoat(new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_BOAT                    = ITEMS.register("rubber_wood_boat",                     () -> new BoatItem(BoatEntity.Type.OAK, new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
 
     // Explosives
     public static final RegistryObject<Item> EXPLOSIVES_CONDENSED           = ITEMS.register("explosives_condensed",            () -> new BlockItem(BlockReg.EXPLOSIVES_CONDENSED.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

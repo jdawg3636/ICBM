@@ -21,7 +21,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public final class EntityReg {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ICBMReference.MODID);
-    public static final RegistryObject<EntityType<EntityRubberBoat>> RUBBER_WOOD_BOAT = ENTITIES.register("rubber_wood_boat", () -> EntityType.Builder.<EntityRubberBoat>of(EntityRubberBoat::new, EntityClassification.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10).build("rubber_wood_boat"));
 
     // Primed Explosives Registration
     public static final RegistryObject<EntityType<EntityPrimedExplosives>> EXPLOSIVES_CONDENSED         = registerPrimedExplosives(BlastEventReg.CONDENSED,           ItemReg.EXPLOSIVES_CONDENSED);
@@ -133,6 +132,18 @@ public final class EntityReg {
     public static final RegistryObject<EntityType<EntityAcceleratingParticle>> ACCELERATING_PARTICLE = registerBlastUtilityEntity("accelerating_particle", EntityAcceleratingParticle::new, 1F, 1F);
     public static final RegistryObject<EntityType<EntityFancyFallingBlock>>    FANCY_FALLING_BLOCK   = registerBlastUtilityEntity("fancy_falling_block",   EntityFancyFallingBlock::new,    1F, 1F);
     public static final RegistryObject<EntityType<EntityLightningVisual>>      LIGHTNING_VISUAL      = registerBlastUtilityEntity("lightning_visual",      EntityLightningVisual::new,      1F, 1F);
+    public static final RegistryObject<EntityType<EntityRubberWoodBoat>>       RUBBER_WOOD_BOAT      = ENTITIES.register(
+        "rubber_wood_boat",
+        () -> {
+            return EntityType.Builder.<EntityRubberWoodBoat>of(
+                    EntityRubberWoodBoat::new,
+                    EntityClassification.MISC
+            )
+            .sized(1.375F, 0.5625F)
+            .clientTrackingRange(10)
+            .build("rubber_wood_boat");
+        }
+    );
     public static final RegistryObject<EntityType<EntityShrapnel>>             SHRAPNEL              = ENTITIES.register(
         "shrapnel",
         () -> {

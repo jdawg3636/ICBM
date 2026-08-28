@@ -17,6 +17,8 @@ import com.jdawg3636.icbm.common.reg.BlockReg;
 import com.jdawg3636.icbm.common.reg.ICBMRecipeTypes;
 import com.jdawg3636.icbm.common.worldgen.ICBMWorldGenFeatures;
 import com.jdawg3636.icbm.mixin.accessors.IAbstractBlockAccessor;
+import com.jdawg3636.icbm.mixin.accessors.ITileEntityTypeAccessor;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
@@ -27,6 +29,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -49,6 +52,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
+import java.util.HashSet;
+
 public class CommonProxy {
 
     // Client Events
@@ -63,9 +68,19 @@ public class CommonProxy {
     // Common Events
     public void onCommonSetupEvent(final FMLCommonSetupEvent event) {
 
+        // Register packets, capabilities, and recipes
         ICBMNetworking.init();
         ICBMCapabilities.register();
         event.enqueueWork(ICBMRecipeTypes::registerAll);
+
+        // Add mod's sign blocks to the list of valid blocks for the vanilla sign's tileentity so we don't need our own
+        event.enqueueWork(() -> {
+            ITileEntityTypeAccessor signTypeAccessor = (ITileEntityTypeAccessor) TileEntityType.SIGN;
+            HashSet<Block> validSignBlocks = new HashSet<>(signTypeAccessor.mixin$ballisticRedux$getValidBlocks());
+            validSignBlocks.add(BlockReg.RUBBER_WOOD_SIGN.get());
+            validSignBlocks.add(BlockReg.RUBBER_WOOD_WALL_SIGN.get());
+            signTypeAccessor.mixin$ballisticRedux$setValidBlocks(validSignBlocks);
+        });
 
         // Override blast resistance of vanilla obsidian
         if(ICBMReference.COMMON_CONFIG.getBlastResistanceObsidian() >= 0) {
@@ -120,6 +135,7 @@ public class CommonProxy {
         }
     }
 
+    // TODO: figure out the proper way to implement log stripping, replace this with that, and add support for dried rubber logs/wood (still produce same stripped block as non-dried variant)
     public void onRightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
         if (!(event.getItemStack().getItem() instanceof AxeItem)) return;
         BlockState state = event.getWorld().getBlockState(event.getPos());

@@ -3,8 +3,8 @@
   "package": "com.jdawg3636.icbm.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "icbm.refmap.json",
+  "plugin": "com.jdawg3636.icbm.mixin.ICBMMixinConfigPlugin",
   "mixins": [
-    "accessors.ITileEntityAccessor",
     "accessors.IAbstractBlockAccessor",
     "accessors.IAbstractSliderAccessor",
     "accessors.IArmorMaterialAccessor",
@@ -20,6 +20,8 @@
     "accessors.ISlabBlockAccessor",
     "accessors.ITNTEntityAccessor",
     "accessors.ITNTMinecartEntityAccessor",
+    "accessors.ITileEntityTypeAccessor",
+    "MixinCommonBoatItem",
     "MixinCommonCustomizableFluidFlowDirections",
     "MixinCommonEntityAcceleratingParticleCollisionHook",
     "MixinCommonEntityMissileCollisionHook"
