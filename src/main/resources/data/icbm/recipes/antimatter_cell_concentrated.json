@@ -2,28 +2,28 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "tag": "forge:cells/antimattersmall"
+      "tag": "forge:cells/anti_matter_small"
     },
     {
-      "tag": "forge:cells/antimattersmall"
+      "tag": "forge:cells/anti_matter_small"
     },
     {
-      "tag": "forge:cells/antimattersmall"
+      "tag": "forge:cells/anti_matter_small"
     },
     {
-      "tag": "forge:cells/antimattersmall"
+      "tag": "forge:cells/anti_matter_small"
     },
     {
-      "tag": "forge:cells/antimattersmall"
+      "tag": "forge:cells/anti_matter_small"
     },
     {
-      "tag": "forge:cells/antimattersmall"
+      "tag": "forge:cells/anti_matter_small"
     },
     {
-      "tag": "forge:cells/antimattersmall"
+      "tag": "forge:cells/anti_matter_small"
     },
     {
-      "tag": "forge:cells/antimattersmall"
+      "tag": "forge:cells/anti_matter_small"
     }
   ],
   "result":

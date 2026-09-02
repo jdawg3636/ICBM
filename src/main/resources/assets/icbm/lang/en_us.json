@@ -149,9 +149,9 @@
   # ICBM Material Cells
   "item.icbm.empty_cell": "Empty Cell",
   "item.icbm.antimatter_cell": "Antimatter Cell",
-  "item.icbm.antimatter_cell.tooltip": "125 Milligrams",
+  "item.icbm.antimatter_cell.tooltip": "500 Milligrams",
   "item.icbm.antimatter_cell_concentrated": "Antimatter Cell",
-  "item.icbm.antimatter_cell_concentrated.tooltip": "1 Gram",
+  "item.icbm.antimatter_cell_concentrated.tooltip": "4 Grams",
   "item.icbm.redmatter_cell": "Red Matter Cell",
 
   # ICBM Machines

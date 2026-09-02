@@ -1,6 +1,14 @@
 {
   "replace": false,
   "values": [
-    "icbm:rubber_bar"
+    "icbm:raw_rubber",
+    {
+      "id": "industrialforegoing:dryrubber",
+      "required": false
+    },
+    {
+      "id": "thermal:rubber",
+      "required": false
+    }
   ]
 }

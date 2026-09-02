@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "icbm:rubber_bar",
+    {
+      "id": "thermal:cured_rubber",
+      "required": false
+    }
+  ]
+}

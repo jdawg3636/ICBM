@@ -7,7 +7,7 @@
     ],
     "key": {
       "A": {
-        "tag": "forge:cells/antimatterlarge"
+        "tag": "forge:cells/anti_matter_large"
       },
       "B": {
         "item": "icbm:explosives_nuclear"
