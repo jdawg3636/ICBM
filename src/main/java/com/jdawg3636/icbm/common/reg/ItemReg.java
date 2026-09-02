@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.entity.EntityRubberWoodBoat;
 import com.jdawg3636.icbm.common.item.*;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -8,6 +9,7 @@ import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -70,7 +72,11 @@ public class ItemReg {
     public static final RegistryObject<Item> RUBBER_WOOD_PRESSURE_PLATE          = ITEMS.register("rubber_wood_pressure_plate",           () -> new BlockItem(BlockReg.RUBBER_WOOD_PRESSURE_PLATE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> RUBBER_WOOD_BUTTON                  = ITEMS.register("rubber_wood_button",                   () -> new BlockItem(BlockReg.RUBBER_WOOD_BUTTON.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> RUBBER_WOOD_SIGN                    = ITEMS.register("rubber_wood_sign",                     () -> new SignItem(new Item.Properties().stacksTo(16).tab(ICBMReference.CREATIVE_TAB), BlockReg.RUBBER_WOOD_SIGN.get(), BlockReg.RUBBER_WOOD_WALL_SIGN.get()));
-    public static final RegistryObject<Item> RUBBER_WOOD_BOAT                    = ITEMS.register("rubber_wood_boat",                     () -> new BoatItem(BoatEntity.Type.OAK, new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> RUBBER_WOOD_BOAT                    = ITEMS.register("rubber_wood_boat",                     () -> new BoatItem(BoatEntity.Type.OAK, new Item.Properties().stacksTo(1).tab(ICBMReference.CREATIVE_TAB)) {
+        public BoatEntity mixin$ballisticRedux$creatBoat(BoatEntity original, World world) {
+            return new EntityRubberWoodBoat(world, original.getX(), original.getY(), original.getZ());
+        }
+    });
 
     // Explosives
     public static final RegistryObject<Item> EXPLOSIVES_CONDENSED           = ITEMS.register("explosives_condensed",            () -> new BlockItem(BlockReg.EXPLOSIVES_CONDENSED.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

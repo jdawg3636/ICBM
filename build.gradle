@@ -164,7 +164,60 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 configurations {
     shade
+    beyondEarthPatchInput
     implementation.extendsFrom shade
+}
+
+def patchedBeyondEarthJar = layout.buildDirectory.file("patched-mods/beyond-earth-patched-1.0.jar")
+def patchBeyondEarthMixin = tasks.register("patchBeyondEarthMixin") {
+    inputs.files(configurations.beyondEarthPatchInput)
+    outputs.file(patchedBeyondEarthJar)
+
+    doLast {
+        def inputJar = configurations.beyondEarthPatchInput.singleFile
+        def outputJar = patchedBeyondEarthJar.get().asFile
+        outputJar.parentFile.mkdirs()
+
+        def jarInput = new java.util.jar.JarFile(inputJar)
+        def jarOutput = new java.util.jar.JarOutputStream(new FileOutputStream(outputJar))
+        try {
+            jarInput.entries().each { entry ->
+                def bytes = entry.directory ? new byte[0] : jarInput.getInputStream(entry).bytes
+                if (entry.name == "net/mrscauthd/boss_tools/mixin/ArmorTranslucent.class") {
+                    def reader = new org.objectweb.asm.ClassReader(bytes)
+                    def classNode = new org.objectweb.asm.tree.ClassNode()
+                    reader.accept(classNode, 0)
+                    classNode.methods.each { methodNode ->
+                        methodNode.visibleAnnotations?.findAll {
+                            it.desc == "Lorg/spongepowered/asm/mixin/injection/Inject;"
+                        }?.each { annotation ->
+                            for (int i = 0; i < annotation.values.size(); i += 2) {
+                                if (annotation.values[i] == "method") {
+                                    annotation.values[i + 1].replaceAll { value ->
+                                        value == "renderModel"
+                                            ? "renderModel(Lcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/IRenderTypeBuffer;IZLnet/minecraft/client/renderer/entity/model/BipedModel;FFFLnet/minecraft/util/ResourceLocation;)V"
+                                            : value
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    def writer = new org.objectweb.asm.ClassWriter(reader, 0)
+                    classNode.accept(writer)
+                    bytes = writer.toByteArray()
+                }
+
+                jarOutput.putNextEntry(new java.util.jar.JarEntry(entry.name))
+                if (!entry.directory) {
+                    jarOutput.write(bytes)
+                }
+                jarOutput.closeEntry()
+            }
+        } finally {
+            jarOutput.close()
+            jarInput.close()
+        }
+    }
 }
 
 dependencies {
@@ -194,10 +247,20 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+    runtimeOnly fg.deobf("curse.maven:ballistix-443915:6791703")
+    runtimeOnly fg.deobf("curse.maven:cofh-core-69162:4022663")
+    runtimeOnly fg.deobf("curse.maven:electrodynamics-316867:6792220")
+    runtimeOnly fg.deobf("curse.maven:industrial-foregoing-266515:5334823")
     runtimeOnly fg.deobf("curse.maven:mekanism-268560:3659389")
     runtimeOnly fg.deobf("curse.maven:mekanism-generators-268566:3659391")
     runtimeOnly fg.deobf("curse.maven:mekanism-tools-268567:3659392")
+    runtimeOnly fg.deobf("curse.maven:nuclear-science-318646:6792295")
+    beyondEarthPatchInput(fg.deobf("curse.maven:beyond-earth-377448:3581611")) { transitive = false }
+    runtimeOnly files(patchedBeyondEarthJar).builtBy(patchBeyondEarthMixin)
+    runtimeOnly fg.deobf("curse.maven:thermal-expansion-69163:4063134")
+    runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:4022666")
+    runtimeOnly fg.deobf("curse.maven:titanium-287342:5174863") // library for industrial foregoing
+    runtimeOnly fg.deobf("curse.maven:voltaic-api-1237904:6791629")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:3283693")
 
     // (Optional) Client-Only Shader Support
@@ -209,6 +272,10 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:hwyla-253449:3033593")
     runtimeOnly fg.deobf("curse.maven:jei-238222:3681294")
 
+}
+
+tasks.matching { it.name == "runClient" }.configureEach {
+    dependsOn patchBeyondEarthMixin
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

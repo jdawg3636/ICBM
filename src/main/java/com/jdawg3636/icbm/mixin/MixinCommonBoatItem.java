@@ -1,7 +1,5 @@
 package com.jdawg3636.icbm.mixin;
 
-import com.jdawg3636.icbm.common.entity.EntityRubberWoodBoat;
-import com.jdawg3636.icbm.common.reg.ItemReg;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.item.BoatItem;
@@ -14,9 +12,10 @@ public abstract class MixinCommonBoatItem {
 
     @ModifyExpressionValue(method = "use", at = @At(value = "NEW", target = "net/minecraft/entity/item/BoatEntity"))
     private BoatEntity mixin$ballisticRedux$createBoat(BoatEntity original, World world) {
-        if ((Object) this == ItemReg.RUBBER_WOOD_BOAT.get()) {
-            return new EntityRubberWoodBoat(world, original.getX(), original.getY(), original.getZ());
-        }
+        return this.mixin$ballisticRedux$creatBoat(original, world);
+    }
+
+    public BoatEntity mixin$ballisticRedux$creatBoat(BoatEntity original, World world) {
         return original;
     }
 
