@@ -46,7 +46,8 @@ public class LogicalMissile {
     public boolean shouldExplode = false;
 
     public ServerWorld level;
-    public Optional<UUID> puppetEntityUUID;
+    public Optional<UUID> puppetEntityUUID = Optional.empty();
+    public Optional<EntityMissile> cachedPuppetEntity = Optional.empty();
     public double x;
     public double y;
     public double z;
@@ -54,7 +55,8 @@ public class LogicalMissile {
     public float xRot;
     public boolean removed = false;
 
-    public LogicalMissile(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase, BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks, Optional<UUID> puppetEntityUUID, ServerWorld level) {
+    public LogicalMissile(RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem, MissileSourceType missileSourceType, MissileLaunchPhase missileLaunchPhase, BlockPos sourcePos, BlockPos destPos, double peakHeight, int totalFlightTicks, Optional<UUID> puppetEntityUUID, Optional<EntityMissile> cachedPuppetEntity, ServerWorld level, Optional<UUID> logicalMissileUUID) {
+        // Initialize
         this.blastEventProvider = blastEventProvider;
         this.missileItem = missileItem;
         this.missileSourceType = missileSourceType;
@@ -64,16 +66,27 @@ public class LogicalMissile {
         this.peakHeight = peakHeight;
         this.totalFlightTicks = totalFlightTicks;
         this.puppetEntityUUID = puppetEntityUUID;
+        this.cachedPuppetEntity = cachedPuppetEntity;
         this.level = level;
+        // Register with Missile Director
+        this.getMissileDirector().orElseThrow(RuntimeException::new).registerMissile(this, logicalMissileUUID);
     }
 
-    public LogicalMissile(ServerWorld level, CompoundNBT compoundNBT) {
+    public LogicalMissile(ServerWorld level, CompoundNBT compoundNBT, UUID uuid) {
         this.level = level;
+        this.getMissileDirector().orElseThrow(RuntimeException::new).registerMissile(this, Optional.of(uuid));
         this.load(compoundNBT);
     }
 
     public Optional<EntityMissile> getPuppetEntity() {
-        return this.puppetEntityUUID.flatMap(uuid -> Optional.ofNullable(level.getEntity(uuid))).filter(EntityMissile.class::isInstance).map(EntityMissile.class::cast);
+        boolean cachedPuppetEntityIsValid = this.cachedPuppetEntity
+                .filter(entity -> !entity.removed)
+                .filter(entity -> puppetEntityUUID.map(entity.getUUID()::equals).orElse(false))
+                .isPresent();
+        if(!cachedPuppetEntityIsValid) {
+            this.cachedPuppetEntity = this.puppetEntityUUID.flatMap(uuid -> Optional.ofNullable(level.getEntity(uuid))).filter(EntityMissile.class::isInstance).map(EntityMissile.class::cast);
+        }
+        return cachedPuppetEntity;
     }
 
     public void setMissileSourceType(int missileSourceType) {
@@ -312,10 +325,15 @@ public class LogicalMissile {
                 }
                 // If in world, and puppet is despawned, then respawn
                 else if(!getPuppetEntity().isPresent()) {
-                    EntityMissile newPuppet = new EntityMissile(((ItemMissile) this.missileItem.get()).getMissileEntity().get(), this.level, uuid -> {
-                        this.puppetEntityUUID = Optional.of(uuid);
-                        return Optional.of(this);
-                    }, this.missileItem, getLogicalUUID());
+                    EntityMissile newPuppet = new EntityMissile(
+                        ((ItemMissile) this.missileItem.get()).getMissileEntity().get(),
+                        this.level,
+                        (puppetEntityUUID, cachedPuppetEntity, logicalMissileUUID) -> {
+                            this.puppetEntityUUID = Optional.of(puppetEntityUUID);
+                            return Optional.of(this);
+                        },
+                        Optional.empty() // Unused in our lambda so don't need to give a real value here - finding real value would take O(n) to reverse-lookup our UUID
+                    );
                     newPuppet.updatePuppetToMatchLogical();
                     level.addFreshEntity(newPuppet);
                 }
@@ -404,10 +422,12 @@ public class LogicalMissile {
         xRot = compound.getFloat("xRot");
 
         updatePathFunctions();
+        getPuppetEntity().ifPresent(EntityMissile::updatePuppetToMatchLogical);
 
     }
 
-    public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType) {
+    public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType, Optional<EntityMissile> cachedPuppetEntity) {
+        this.cachedPuppetEntity = cachedPuppetEntity;
         if(sourcePos != null) this.sourcePos = sourcePos;
         if(destPos != null) this.destPos = destPos;
         if(peakHeight != null) this.peakHeight = peakHeight;

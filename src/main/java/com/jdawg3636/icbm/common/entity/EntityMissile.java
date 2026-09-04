@@ -8,6 +8,7 @@ import com.jdawg3636.icbm.common.capability.missiledirector.LogicalMissile;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileLaunchPhase;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileSourceType;
 import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
+import com.jdawg3636.icbm.common.reg.ItemReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -40,6 +41,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -48,11 +50,11 @@ import java.util.stream.Stream;
 
 public class EntityMissile extends Entity {
 
-    public static final DataParameter<Integer>  MISSILE_SOURCE_TYPE  = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
-    public static final DataParameter<Integer>  MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
+    public static final DataParameter<ItemStack> MISSILE_ITEM         = EntityDataManager.defineId(EntityMissile.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<Integer>   MISSILE_SOURCE_TYPE  = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
+    public static final DataParameter<Integer>   MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
 
     private UUID simulatedMissileUUID = null;
-    public RegistryObject<Item> missileItem;
     public Optional<ChunkPos> forcedChunkPos = Optional.empty();
 
     private int lerpSteps;
@@ -67,27 +69,36 @@ public class EntityMissile extends Entity {
         T construct(EntityType<?> entityTypeIn, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem);
     }
 
+    @FunctionalInterface
+    public interface LogicalMissileProvider {
+        Optional<LogicalMissile> apply(UUID puppetEntityUUID, EntityMissile cachedPuppetEntity, Optional<UUID> logicalMissileUUID);
+    }
+
     public EntityMissile(EntityType<?> entityTypeIn, World worldIn, RegistryObject<BlastEventRegistryEntry> blastEventProvider, RegistryObject<Item> missileItem) {
-        this(entityTypeIn, worldIn, uuid1 -> Optional.of(worldIn).filter(ServerWorld.class::isInstance).map(ServerWorld.class::cast).map(serverWorld -> new LogicalMissile(
+        this(entityTypeIn, worldIn, (UUID puppetEntityUUID, EntityMissile cachedPuppetEntity, Optional<UUID> logicalMissileUUID) -> Optional.of(worldIn).filter(ServerWorld.class::isInstance).map(ServerWorld.class::cast).map(serverWorld -> new LogicalMissile(
             blastEventProvider,
             missileItem,
             MissileSourceType.LAUNCHER_PLATFORM,
             MissileLaunchPhase.STATIONARY,
             BlockPos.ZERO,
             BlockPos.ZERO.offset(100, 0, 0),
-            worldIn.getMaxBuildHeight(),
+            (double)worldIn.getMaxBuildHeight(),
             3000,
-            Optional.of(uuid1),
-            serverWorld
-        )), missileItem, Optional.empty());
+            Optional.of(puppetEntityUUID),
+            Optional.of(cachedPuppetEntity),
+            serverWorld,
+            logicalMissileUUID
+        )), Optional.empty());
     }
 
-    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, Function<UUID, Optional<LogicalMissile>> logicalMissileConstructor, RegistryObject<Item> missileItem, Optional<UUID> logicalUUID) {
+    public EntityMissile(EntityType<?> entityTypeIn, World worldIn, LogicalMissileProvider logicalMissileGetter, Optional<UUID> logicalUUID) {
         super(entityTypeIn, worldIn);
-        // Construct and register logical missile
-        this.getMissileDirector().ifPresent(md -> logicalMissileConstructor.apply(this.uuid).ifPresent(lm -> this.simulatedMissileUUID = md.registerMissile(lm, logicalUUID)));
-        this.missileItem = missileItem;
         yRot = -90F;
+        // Get logical missile and set puppet UUID to point to this entity.
+        // If this getter is a constructor, then it will have the side effect of registering the logical missile with the missile director capability.
+        Optional<LogicalMissile> logicalMissile = logicalMissileGetter.apply(this.uuid, this, logicalUUID);
+        this.simulatedMissileUUID = logicalMissile.map(lm -> lm.getLogicalUUID().orElseThrow(RuntimeException::new)).orElse(null);
+        this.updatePuppetToMatchLogical();
     }
 
     public LazyOptional<IMissileDirectorCapability> getMissileDirector() {
@@ -100,7 +111,7 @@ public class EntityMissile extends Entity {
 
     public boolean launchMissile() {
         // Set launch phase (this will cause the tick function to simulate flight)
-        entityData.set(MISSILE_LAUNCH_PHASE, MissileLaunchPhase.LAUNCHED.ordinal());
+        this.getLogicalMissile().ifPresent(logicalMissile -> logicalMissile.setMissileLaunchPhase(MissileLaunchPhase.LAUNCHED.ordinal()));
         return true;
     }
 
@@ -235,35 +246,25 @@ public class EntityMissile extends Entity {
     @Override
     protected void readAdditionalSaveData(CompoundNBT compound) {
         if(compound.contains("SimulatedMissileUUID")) {
-            simulatedMissileUUID = compound.getUUID("SimulatedMissileUUID");
-            this.updatePuppetToMatchLogical();
+            UUID simulatedMissileUUID = compound.getUUID("SimulatedMissileUUID");
+            if (!Objects.equals(this.simulatedMissileUUID, simulatedMissileUUID)) {
+                // Constructor always makes a new LogicalMissile. If we deserialize and realize one already existed, then we need to drop the old one. Not a perfect fix, but GC should clean it up.
+                this.getMissileDirector().ifPresent(missileDirector -> missileDirector.unregisterMissile(this.simulatedMissileUUID));
+                this.simulatedMissileUUID = simulatedMissileUUID;
+                this.updatePuppetToMatchLogical();
+            }
         }
     }
 
     @Override
     protected void defineSynchedData() {
+        entityData.define(MISSILE_ITEM, ItemReg.MISSILE_MODULE.get().getDefaultInstance());
         entityData.define(MISSILE_SOURCE_TYPE, MissileSourceType.LAUNCHER_PLATFORM.ordinal());
         entityData.define(MISSILE_LAUNCH_PHASE, MissileLaunchPhase.STATIONARY.ordinal());
     }
 
-    @Override
-    public void onSyncedDataUpdated(DataParameter<?> dataParameter) {
-        getLogicalMissile().ifPresent(lm -> {
-            if(MISSILE_SOURCE_TYPE.equals(dataParameter)) {
-                lm.missileSourceType = MissileSourceType.values()[entityData.get(MISSILE_SOURCE_TYPE)];
-            }
-            if(MISSILE_LAUNCH_PHASE.equals(dataParameter)) {
-                lm.missileLaunchPhase = MissileLaunchPhase.values()[entityData.get(MISSILE_LAUNCH_PHASE)];
-            }
-        });
-    }
-
     public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType) {
-        this.getLogicalMissile().ifPresent(lm -> lm.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, missileSourceType));
-        // The source type needs to be set on the entity so that it is synced with the client. The above call will
-        // attempt to do this indirectly, but will fail if the missile hasn't been added to the level yet since it
-        // can only find the entity by looking up its UUID in the level. Setting it directly here to work around.
-        this.getEntityData().set(MISSILE_SOURCE_TYPE, missileSourceType.ordinal());
+        this.getLogicalMissile().ifPresent(lm -> lm.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, missileSourceType, Optional.of(this)));
     }
 
     @Override
@@ -278,7 +279,7 @@ public class EntityMissile extends Entity {
 
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
-        return this.missileItem.get().getDefaultInstance();
+        return this.getEntityData().get(MISSILE_ITEM).copy();
     }
 
     public void spawnParticles(double motionX, double motionY, double motionZ) {
@@ -363,6 +364,7 @@ public class EntityMissile extends Entity {
         this.getLogicalMissile().ifPresent(lm -> {
             this.setPos(lm.x, lm.y, lm.z);
             this.setRot(lm.yRot, lm.xRot);
+            this.getEntityData().set(MISSILE_ITEM, lm.missileItem.get().getDefaultInstance());
             this.getEntityData().set(MISSILE_SOURCE_TYPE, lm.missileSourceType.ordinal());
             this.getEntityData().set(MISSILE_LAUNCH_PHASE, lm.missileLaunchPhase.ordinal());
         });
@@ -380,7 +382,10 @@ public class EntityMissile extends Entity {
     }
 
     public void killPuppet() {
-        if(!this.removed && level != null && !level.isClientSide()) getLogicalMissile().ifPresent(lm -> lm.puppetEntityUUID = Optional.empty());
+        if(!this.removed && level != null && !level.isClientSide()) getLogicalMissile().ifPresent(lm -> {
+            lm.puppetEntityUUID = Optional.empty();
+            lm.cachedPuppetEntity = Optional.empty();
+        });
         unforceChunk();
         super.kill();
     }

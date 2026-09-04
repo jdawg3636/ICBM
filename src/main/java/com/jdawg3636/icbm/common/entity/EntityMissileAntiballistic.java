@@ -1,6 +1,5 @@
 package com.jdawg3636.icbm.common.entity;
 
-import com.jdawg3636.icbm.common.capability.missiledirector.LogicalMissile;
 import com.jdawg3636.icbm.common.capability.missiledirector.MissileLaunchPhase;
 import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import com.jdawg3636.icbm.common.reg.ItemReg;
@@ -13,7 +12,6 @@ import net.minecraftforge.fml.RegistryObject;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
 
 public class EntityMissileAntiballistic extends EntityMissile {
 
@@ -25,8 +23,8 @@ public class EntityMissileAntiballistic extends EntityMissile {
         super(entityTypeIn, worldIn, blastEventProvider, missileItem);
     }
 
-    public EntityMissileAntiballistic(EntityType<?> entityTypeIn, World worldIn, Function<UUID, Optional<LogicalMissile>> logicalMissileConstructor, RegistryObject<Item> missileItem, Optional<UUID> logicalUUID) {
-        super(entityTypeIn, worldIn, logicalMissileConstructor, missileItem, logicalUUID);
+    public EntityMissileAntiballistic(EntityType<?> entityTypeIn, World worldIn, LogicalMissileProvider logicalMissileGetter, Optional<UUID> logicalUUID) {
+        super(entityTypeIn, worldIn, logicalMissileGetter, logicalUUID);
     }
 
     @Override

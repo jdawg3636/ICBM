@@ -14,6 +14,8 @@ public interface IMissileDirectorCapability {
 
     UUID registerMissile(LogicalMissile logicalMissile, Optional<UUID> forceLogicalUUID);
 
+    void unregisterMissile(UUID missileID);
+
     Set<UUID> getLogicalMissileIDList();
 
     HashMap<UUID, LogicalMissile> getLogicalMissiles();

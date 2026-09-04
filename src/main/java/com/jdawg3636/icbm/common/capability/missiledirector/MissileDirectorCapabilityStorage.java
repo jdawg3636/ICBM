@@ -6,7 +6,6 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 import java.util.UUID;
 
 public class MissileDirectorCapabilityStorage implements Capability.IStorage<IMissileDirectorCapability> {
@@ -33,8 +32,11 @@ public class MissileDirectorCapabilityStorage implements Capability.IStorage<IMi
         instance.deleteAllMissiles();
         logicalMissilesNBT.getAllKeys().forEach(uuidString -> {
             UUID uuid = UUID.fromString(uuidString);
-            LogicalMissile logicalMissile = new LogicalMissile(instance.getLevel(), logicalMissilesNBT.getCompound(uuidString));
-            instance.registerMissile(logicalMissile, Optional.of(uuid));
+            // Within this constructor, the missile registers ITSELF to the missile director capability. This is done to make
+            // sure that registration occurs prior to deserializing NBT (otherwise puppet entity won't be able to look up
+            // its logical counterpart during any of those calls). Alternative would be constructor returning an uninitialized shell,
+            // which would be bad.
+            new LogicalMissile(instance.getLevel(), logicalMissilesNBT.getCompound(uuidString), uuid);
         });
     }
 

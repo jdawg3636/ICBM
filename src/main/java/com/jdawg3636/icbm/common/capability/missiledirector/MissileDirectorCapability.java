@@ -31,6 +31,11 @@ public class MissileDirectorCapability implements IMissileDirectorCapability {
     }
 
     @Override
+    public void unregisterMissile(UUID missileID) {
+        logicalMissiles.remove(missileID);
+    }
+
+    @Override
     public Set<UUID> getLogicalMissileIDList() {
         return new HashMap<>(logicalMissiles).keySet();
     }
