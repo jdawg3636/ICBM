@@ -4,6 +4,22 @@
     "icbm:hazmat_mask",
     "icbm:hazmat_jacket",
     "icbm:hazmat_pants",
-    "icbm:hazmat_boots"
+    "icbm:hazmat_boots",
+    { "id": "mekanism:hazmat_mask", "required": false },
+    { "id": "mekanism:hazmat_gown", "required": false },
+    { "id": "mekanism:hazmat_pants", "required": false },
+    { "id": "mekanism:hazmat_boots", "required": false },
+    { "id": "nuclearscience:hazmathelmet", "required": false },
+    { "id": "nuclearscience:hazmatplate", "required": false },
+    { "id": "nuclearscience:hazmatlegs", "required": false },
+    { "id": "nuclearscience:hazmatboots", "required": false },
+    { "id": "nuclearscience:reinforcedhazmathelmet", "required": false },
+    { "id": "nuclearscience:reinforcedhazmatplate", "required": false },
+    { "id": "nuclearscience:reinforcedhazmatlegs", "required": false },
+    { "id": "nuclearscience:reinforcedhazmatboots", "required": false },
+    { "id": "marbledsarsenal:hazmat_armor_helmet", "required": false },
+    { "id": "marbledsarsenal:hazmat_armor_chestplate", "required": false },
+    { "id": "marbledsarsenal:hazmat_armor_leggings", "required": false },
+    { "id": "marbledsarsenal:hazmat_armor_boots", "required": false }
   ]
 }
