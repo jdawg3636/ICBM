@@ -3,6 +3,9 @@
   "values": [
     "icbm:concrete_slab",
     "icbm:concrete_compact_slab",
-    "icbm:concrete_reinforced_slab"
+    "icbm:concrete_reinforced_slab",
+    "icbm:concrete_glass_slab",
+    "icbm:compact_glass_slab",
+    "icbm:reinforced_glass_slab"
   ]
 }

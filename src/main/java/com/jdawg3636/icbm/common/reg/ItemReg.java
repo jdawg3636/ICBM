@@ -31,7 +31,12 @@ public class ItemReg {
     public static final RegistryObject<Item> CONCRETE_SLAB                  = ITEMS.register("concrete_slab",                   () -> new BlockItem(BlockReg.CONCRETE_SLAB.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CONCRETE_COMPACT_SLAB          = ITEMS.register("concrete_compact_slab",           () -> new BlockItem(BlockReg.CONCRETE_COMPACT_SLAB.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CONCRETE_REINFORCED_SLAB       = ITEMS.register("concrete_reinforced_slab",        () -> new BlockItem(BlockReg.CONCRETE_REINFORCED_SLAB.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> CONCRETE_GLASS                 = ITEMS.register("concrete_glass",                  () -> new BlockItem(BlockReg.CONCRETE_GLASS.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> COMPACT_GLASS                  = ITEMS.register("compact_glass",                   () -> new BlockItem(BlockReg.COMPACT_GLASS.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> REINFORCED_GLASS               = ITEMS.register("reinforced_glass",                () -> new BlockItem(BlockReg.REINFORCED_GLASS.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> CONCRETE_GLASS_SLAB            = ITEMS.register("concrete_glass_slab",             () -> new BlockItem(BlockReg.CONCRETE_GLASS_SLAB.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> COMPACT_GLASS_SLAB             = ITEMS.register("compact_glass_slab",              () -> new BlockItem(BlockReg.COMPACT_GLASS_SLAB.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> REINFORCED_GLASS_SLAB          = ITEMS.register("reinforced_glass_slab",           () -> new BlockItem(BlockReg.REINFORCED_GLASS_SLAB.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> RADIOACTIVE_MATERIAL           = ITEMS.register("radioactive_material",            () -> new BlockItem(BlockReg.RADIOACTIVE_MATERIAL.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Ores

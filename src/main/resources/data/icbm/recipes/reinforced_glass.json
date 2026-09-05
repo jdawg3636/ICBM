@@ -1,20 +1,11 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ABA",
-    "BAB",
-    "ABA"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "icbm:concrete_reinforced" },
+    { "tag": "forge:glass/colorless" }
   ],
-  "key": {
-    "A": {
-      "tag": "forge:ingots/iron"
-    },
-    "B": {
-      "item": "minecraft:glass"
-    }
-  },
   "result": {
     "item": "icbm:reinforced_glass",
-    "count": 8
+    "count": 1
   }
 }

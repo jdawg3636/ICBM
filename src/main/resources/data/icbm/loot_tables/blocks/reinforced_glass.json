@@ -1,14 +1,14 @@
 {
-    "type": "minecraft:block",
-    "pools": [
-      {
-        "rolls": 1,
-        "entries": [
-          {
-            "type": "minecraft:item",
-            "name": "icbm:reinforced_glass"
-          }
-        ],
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "icbm:reinforced_glass"
+        }
+      ],
         "conditions": [
           {
             "condition": "minecraft:match_tool",
@@ -16,14 +16,12 @@
               "enchantments": [
                 {
                   "enchantment": "minecraft:silk_touch",
-                  "levels": {
-                    "min": 1
-                  }
+                  "levels": { "min": 1 }
                 }
               ]
             }
           }
         ]
-      }
-    ]
-  }
+    }
+  ]
+}

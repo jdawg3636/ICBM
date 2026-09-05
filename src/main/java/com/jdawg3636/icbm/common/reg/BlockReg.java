@@ -42,14 +42,19 @@ public class BlockReg {
     public static final WoodType RUBBER_WOOD_TYPE = WoodType.create(ICBMReference.MODID + ":rubber_wood");
 
     // Basic Blocks
-    public static final RegistryObject<Block> CONCRETE                      = BLOCKS.register("concrete",                       () -> new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(50.0F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteBasic())));
-    public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(50.0F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteCompact())));
-    public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(50.0F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteReinforced())));
+    public static final RegistryObject<Block> CONCRETE                      = BLOCKS.register("concrete",                       () -> new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(03.0F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteBasic())));
+    public static final RegistryObject<Block> CONCRETE_COMPACT              = BLOCKS.register("concrete_compact",               () -> new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(05.0F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteCompact())));
+    public static final RegistryObject<Block> CONCRETE_REINFORCED           = BLOCKS.register("concrete_reinforced",            () -> new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(25.0F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteReinforced())));
     public static final RegistryObject<Block> CONCRETE_SLAB                 = BLOCKS.register("concrete_slab",                  () -> new SlabBlock(AbstractBlock.Properties.copy(CONCRETE.get())));
     public static final RegistryObject<Block> CONCRETE_COMPACT_SLAB         = BLOCKS.register("concrete_compact_slab",          () -> new SlabBlock(AbstractBlock.Properties.copy(CONCRETE_COMPACT.get())));
     public static final RegistryObject<Block> CONCRETE_REINFORCED_SLAB      = BLOCKS.register("concrete_reinforced_slab",       () -> new SlabBlock(AbstractBlock.Properties.copy(CONCRETE_REINFORCED.get())));
+    public static final RegistryObject<Block> CONCRETE_GLASS                = BLOCKS.register("concrete_glass",                 () -> new BlockModdedGlass(03.0F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteBasic(), false));
+    public static final RegistryObject<Block> COMPACT_GLASS                 = BLOCKS.register("compact_glass",                  () -> new BlockModdedGlass(05.0F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteCompact(), false));
+    public static final RegistryObject<Block> REINFORCED_GLASS              = BLOCKS.register("reinforced_glass",               () -> new BlockModdedGlass(25.0F, ICBMReference.COMMON_CONFIG.getBlastResistanceConcreteReinforced(), false));
+    public static final RegistryObject<Block> CONCRETE_GLASS_SLAB           = BLOCKS.register("concrete_glass_slab",            () -> new BlockModdedGlassSlab(AbstractBlock.Properties.copy(CONCRETE_GLASS.get())));
+    public static final RegistryObject<Block> COMPACT_GLASS_SLAB            = BLOCKS.register("compact_glass_slab",             () -> new BlockModdedGlassSlab(AbstractBlock.Properties.copy(COMPACT_GLASS.get())));
+    public static final RegistryObject<Block> REINFORCED_GLASS_SLAB         = BLOCKS.register("reinforced_glass_slab",          () -> new BlockModdedGlassSlab(AbstractBlock.Properties.copy(REINFORCED_GLASS.get())));
     public static final RegistryObject<Block> RADIOACTIVE_MATERIAL          = BLOCKS.register("radioactive_material",           () -> new BlockRadioactiveMaterial(AbstractBlock.Properties.of(Material.GRASS).randomTicks().harvestTool(ToolType.SHOVEL).strength(0.6F, 6F).sound(SoundType.GRASS)));
-    public static final RegistryObject<Block> REINFORCED_GLASS              = BLOCKS.register("reinforced_glass",               () -> new BlockModdedGlass(2F, 48F, false));
 
     // Ores
     public static final RegistryObject<Block> ORE_COPPER                    = BLOCKS.register("ore_copper",                     () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));

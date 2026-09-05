@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###"],
+  "key": { "#": { "item": "icbm:reinforced_glass" } },
+  "result": { "item": "icbm:reinforced_glass_slab", "count": 6 }
+}

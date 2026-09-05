@@ -107,7 +107,12 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(BlockReg.LAUNCHER_SUPPORT_FRAME_T3.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.METALLURGIC_LEACHING_CHAMBER.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.OIL_REFINERY.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.CONCRETE_GLASS.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.COMPACT_GLASS.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_GLASS.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.CONCRETE_GLASS_SLAB.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.COMPACT_GLASS_SLAB.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_GLASS_SLAB.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.REINFORCED_RAIL.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockReg.RUBBER_LEAVES.get(), RenderType.cutoutMipped());
         RenderTypeLookup.setRenderLayer(BlockReg.RUBBER_SAPLING.get(), RenderType.cutout());

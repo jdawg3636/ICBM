@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "icbm:block/compact_glass_slab" },
+    "type=double": { "model": "icbm:block/compact_glass" },
+    "type=top": { "model": "icbm:block/compact_glass_slab_top" }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "icbm:block/reinforced_glass",
+    "side": "icbm:block/reinforced_glass",
+    "top": "icbm:block/reinforced_glass"
+  }
+}

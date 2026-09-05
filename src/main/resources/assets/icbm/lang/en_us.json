@@ -492,7 +492,12 @@
   "block.icbm.concrete_slab": "Concrete Slab",
   "block.icbm.concrete_compact_slab": "Compact Concrete Slab",
   "block.icbm.concrete_reinforced_slab": "Reinforced Concrete Slab",
+  "block.icbm.concrete_glass": "Concrete Glass",
+  "block.icbm.compact_glass": "Compact Glass",
   "block.icbm.reinforced_glass": "Reinforced Glass",
+  "block.icbm.concrete_glass_slab": "Concrete Glass Slab",
+  "block.icbm.compact_glass_slab": "Compact Glass Slab",
+  "block.icbm.reinforced_glass_slab": "Reinforced Glass Slab",
   "block.icbm.radioactive_material": "Radioactive Material",
 
   "block.icbm.ore_copper": "Copper Ore",
