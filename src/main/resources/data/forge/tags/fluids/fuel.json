@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "icbm:fuel",
-    "icbm:flowing_fuel"
+    "icbm:flowing_fuel",
+    { "id": "boss_tools:fuel", "required": false },
+    { "id": "boss_tools:flowing_fuel", "required": false }
   ]
 }
