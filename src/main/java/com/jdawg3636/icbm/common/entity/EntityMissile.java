@@ -53,6 +53,9 @@ public class EntityMissile extends Entity {
     public static final DataParameter<ItemStack> MISSILE_ITEM         = EntityDataManager.defineId(EntityMissile.class, DataSerializers.ITEM_STACK);
     public static final DataParameter<Integer>   MISSILE_SOURCE_TYPE  = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
     public static final DataParameter<Integer>   MISSILE_LAUNCH_PHASE = EntityDataManager.defineId(EntityMissile.class, DataSerializers.INT);
+    // Vanilla movement packets encode angles as bytes (1.40625 degrees per step).
+    private static final DataParameter<Float> MISSILE_YAW = EntityDataManager.defineId(EntityMissile.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> MISSILE_PITCH = EntityDataManager.defineId(EntityMissile.class, DataSerializers.FLOAT);
 
     private UUID simulatedMissileUUID = null;
     public Optional<ChunkPos> forcedChunkPos = Optional.empty();
@@ -61,8 +64,6 @@ public class EntityMissile extends Entity {
     private double lerpY;
     private double lerpX;
     private double lerpZ;
-    private double lerpYRot;
-    private double lerpXRot;
 
     @FunctionalInterface
     public interface Constructor<T extends EntityMissile> {
@@ -147,6 +148,10 @@ public class EntityMissile extends Entity {
         super.tick();
         if(level.isClientSide() && this.getMissileLaunchPhase() == MissileLaunchPhase.LAUNCHED) {
             tickLerp();
+            // Read precise rotation every tick, independently of position-only packets.
+            // Keep yaw continuous across +/-180 so frame interpolation takes the short path.
+            this.yRot += MathHelper.wrapDegrees(entityData.get(MISSILE_YAW) - this.yRot);
+            this.xRot = entityData.get(MISSILE_PITCH);
             Vector3d viewVector = getViewVector(0F);
             spawnParticles(-viewVector.x, -viewVector.y, -viewVector.z);
         }
@@ -168,12 +173,8 @@ public class EntityMissile extends Entity {
             double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
             double d1 = this.getY() + (this.lerpY - this.getY()) / (double)this.lerpSteps;
             double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double)this.lerpSteps;
-            double d3 = MathHelper.wrapDegrees(this.lerpYRot - (double)this.yRot);
-            this.yRot = (float)((double)this.yRot + d3 / (double)this.lerpSteps);
-            this.xRot = (float)((double)this.xRot + (this.lerpXRot - (double)this.xRot) / (double)this.lerpSteps);
             --this.lerpSteps;
             this.setPos(d0, d1, d2);
-            this.setRot(this.yRot, this.xRot);
         }
     }
 
@@ -261,6 +262,8 @@ public class EntityMissile extends Entity {
         entityData.define(MISSILE_ITEM, ItemReg.MISSILE_MODULE.get().getDefaultInstance());
         entityData.define(MISSILE_SOURCE_TYPE, MissileSourceType.LAUNCHER_PLATFORM.ordinal());
         entityData.define(MISSILE_LAUNCH_PHASE, MissileLaunchPhase.STATIONARY.ordinal());
+        entityData.define(MISSILE_YAW, 0F);
+        entityData.define(MISSILE_PITCH, 0F);
     }
 
     public void updateMissileData(BlockPos sourcePos, BlockPos destPos, Float peakHeight, Integer totalFlightTicks, MissileSourceType missileSourceType) {
@@ -342,21 +345,24 @@ public class EntityMissile extends Entity {
     @Override
     public void setRot(float yRot, float xRot) {
         super.setRot(yRot, xRot);
+        if (!level.isClientSide()) {
+            entityData.set(MISSILE_YAW, this.yRot);
+            entityData.set(MISSILE_PITCH, this.xRot);
+        }
         this.getLogicalMissile().ifPresent(lm -> {
             lm.yRot = yRot;
             lm.xRot = xRot;
         });
     }
 
-    // Copied from vanilla BoatEntity, MC 1.16.5
+    // Position interpolation from vanilla BoatEntity, MC 1.16.5.
+    // Rotation comes from full-precision entity data, never the packet's byte angles.
     @OnlyIn(Dist.CLIENT)
     @Override
     public void lerpTo(double x, double y, double z, float yRot, float xRot, int posRotationIncrements, boolean teleport) {
         this.lerpX = x;
         this.lerpY = y;
         this.lerpZ = z;
-        this.lerpYRot = yRot;
-        this.lerpXRot = xRot;
         this.lerpSteps = 10;
     }
 
