@@ -1,11 +1,9 @@
 package com.jdawg3636.icbm.common.effect;
 
-import com.jdawg3636.icbm.ICBMReference;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -13,7 +11,6 @@ public class EffectRadiation extends Effect {
 
     public static final float RADIATION_DAMAGE_PER_TICK = 1F;
     public static final DamageSource RADIATION_DAMAGE_SOURCE = (new DamageSource("icbm.radiation")).bypassArmor();
-    public static final ResourceLocation RADIATION_PROTECTIVE_TAG = new ResourceLocation(ICBMReference.MODID, "radiation_protective");
 
     public EffectRadiation() {
         this(EffectType.HARMFUL, 0x9da629);

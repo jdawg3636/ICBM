@@ -1,8 +1,8 @@
 package com.jdawg3636.icbm.common.entity;
 
 import com.jdawg3636.icbm.ICBMReference;
-import com.jdawg3636.icbm.common.effect.EffectRadiation;
 import com.jdawg3636.icbm.common.reg.EffectReg;
+import com.jdawg3636.icbm.common.reg.ICBMTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -31,7 +31,7 @@ public class EntityBlastRadiation extends EntityBlastLingering {
             if(!ICBMReference.entityIsAPlayerInCreativeOrSpectatorMode(livingEntity) && livingEntity.isAffectedByPotions()) {
                 AtomicReference<Float> percentageDamageReduction = new AtomicReference<>(0F);
                 livingEntity.getArmorSlots().forEach((itemStack) -> {
-                    if(itemStack.getItem().getTags().contains(EffectRadiation.RADIATION_PROTECTIVE_TAG)) {
+                    if(itemStack.getItem().getTags().contains(ICBMTags.Items.RADIATION_PROTECTIVE.getName())) {
                         percentageDamageReduction.updateAndGet(value -> value + .25F);
                     }
                 });
