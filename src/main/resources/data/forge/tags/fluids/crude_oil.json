@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "icbm:oil",
-    "icbm:flowing_oil"
+    "icbm:flowing_oil",
+    { "id": "#boss_tools:oil", "required": false }
   ]
 }

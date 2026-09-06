@@ -31,7 +31,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
     public boolean test(FluidStack fluidStack) {
         if(fluidStack.getAmount() < this.amount) return false;
         if(this.ingredientType == Type.TAG) {
-            return fluidStack.getFluid().is(FluidTags.createOptional(resourceLocation));
+            return FluidTags.getAllTags().getTagOrEmpty(resourceLocation).contains(fluidStack.getFluid());
         }
         return fluidStack.getFluid().equals(ForgeRegistries.FLUIDS.getValue(this.resourceLocation));
     }
