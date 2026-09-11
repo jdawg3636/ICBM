@@ -121,6 +121,7 @@ public class ICBMConfig {
         private final ForgeConfigSpec.DoubleValue proximityDetectorRadiusMaximum;
 
         private final ForgeConfigSpec.IntValue metallurgicLeachingChamberEnergyUsagePerTick;
+        private final ForgeConfigSpec.IntValue centrifugalDepositionUnitEnergyUsagePerTick;
         private final ForgeConfigSpec.IntValue oilRefineryEnergyUsagePerTick;
         private final ForgeConfigSpec.IntValue thermochemicalMixerEnergyUsagePerTick;
 
@@ -456,6 +457,10 @@ public class ICBMConfig {
                     .comment("",
                             "Defines the amount of Forge Energy (FE) consumed per tick by a metallurgic leaching chamber while it is active.")
                     .defineInRange("metallurgicLeachingChamberEnergyUsagePerTick", 30, 0, Integer.MAX_VALUE);
+            this.centrifugalDepositionUnitEnergyUsagePerTick = builder
+                    .comment("",
+                            "Defines the amount of Forge Energy (FE) consumed per tick by a centrifugal deposition unit while it is active.")
+                    .defineInRange("centrifugalDepositionUnitEnergyUsagePerTick", 30, 0, Integer.MAX_VALUE);
             this.oilRefineryEnergyUsagePerTick = builder
                     .comment("",
                             "Defines the amount of Forge Energy (FE) consumed per tick by an oil refinery while it is active.")
@@ -781,6 +786,10 @@ public class ICBMConfig {
 
         public int getMetallurgicLeachingChamberEnergyUsagePerTick() {
             return metallurgicLeachingChamberEnergyUsagePerTick.get();
+        }
+
+        public int getCentrifugalDepositionUnitEnergyUsagePerTick() {
+            return centrifugalDepositionUnitEnergyUsagePerTick.get();
         }
 
         public int getOilRefineryEnergyUsagePerTick() {

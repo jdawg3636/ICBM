@@ -2,13 +2,22 @@ package com.jdawg3636.icbm.common.block.centrifugal_deposition_unit;
 
 import com.jdawg3636.icbm.common.block.machine.ContainerMachine;
 import com.jdawg3636.icbm.common.block.machine.ScreenMachine;
+import com.jdawg3636.icbm.common.block.machine.WidgetFluidTank;
+import com.jdawg3636.icbm.common.block.machine.WidgetProgressBar;
+import com.jdawg3636.icbm.common.capability.energystorage.ICBMEnergyStorage;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class ScreenCentrifugalDepositionUnit extends ScreenMachine<ContainerMachine> {
 
     public final TileCentrifugalDepositionUnit TILE_ENTITY;
+    public WidgetProgressBar forgeEnergyStorageBar;
+    public WidgetFluidTank inputTankView;
+    public WidgetProgressBar progressBar;
 
     public ScreenCentrifugalDepositionUnit(ContainerMachine container, PlayerInventory inventory, ITextComponent name) {
         super(container, inventory, name);
@@ -22,7 +31,40 @@ public class ScreenCentrifugalDepositionUnit extends ScreenMachine<ContainerMach
 
     @Override
     protected void init() {
+
         super.init();
+
+        int relX = (this.getWidth() - this.getImageWidth()) / 2;
+        int relY = (this.getHeight() - this.getImageHeight()) / 2;
+
+        Vector3f forgeEnergyStorageBarColor = new Vector3f(29/255f, 194/255f, 68/255f);
+        this.forgeEnergyStorageBar = new WidgetProgressBar(
+                relX + 151, relY + 45, 18, 65, false, this,
+                () -> forgeEnergyStorageBarColor,
+                () -> TILE_ENTITY.energyStorageLazyOptional.map((energyStorage) -> energyStorage.getEnergyStored() / (float)energyStorage.getMaxEnergyStored()).orElse(0f),
+                () -> TILE_ENTITY.energyStorageLazyOptional.map((energyStorage) ->
+                        ((ICBMEnergyStorage)energyStorage).getEnergyStoredFormatted(3, true)).orElse(new StringTextComponent("ERROR!"))
+        );
+        addButton(this.forgeEnergyStorageBar);
+
+        this.inputTankView = new WidgetFluidTank(
+                relX + 7, relY + 45, 36, 65, this,
+                () -> TILE_ENTITY.fluidTanks.get(0).map(fluidTank -> {
+                    return new TranslationTextComponent(fluidTank.getFluid().getTranslationKey()).append(": " + fluidTank.getFluidAmount() + " / " + fluidTank.getCapacity());
+                }).orElse(new StringTextComponent("Error!")),
+                TILE_ENTITY.fluidTanks.get(0)
+        );
+        addButton(this.inputTankView);
+
+        Vector3f progressBarColor = new Vector3f(1f, 1f, 1f);
+        this.progressBar = new WidgetProgressBar(
+                relX + 59 + 18, relY + 70, 22, 15, true, this,
+                () -> progressBarColor,
+                () -> (float) TILE_ENTITY.getProcessingPercentage(),
+                null
+        );
+        addButton(this.progressBar);
+
     }
 
 }
