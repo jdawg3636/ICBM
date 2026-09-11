@@ -43,11 +43,11 @@ public class TileCentrifugalDepositionUnit extends TileMachineProcessing<Centrif
         BATTERY(152, 22, ICBMItemStackHandler.SlotTag.BATTERY, (stack, level) -> {
             return stack.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::canExtract).orElse(false);
         }),
-        FLUID_INPUT(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, (stack, level) -> {
+        FLUID_INPUT(152 - (6 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, (stack, level) -> {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
         }),
-        ITEM_OUTPUT_A(152 - (2 * 18) - 10, 22 + 24 + 10, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, level) -> false),
-        ITEM_OUTPUT_B(152 - (2 * 18) - 10, 22 + 24 + 37, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, level) -> false);
+        ITEM_OUTPUT_A(152 - (2 * 18), 22 + 24 + 10, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, level) -> false),
+        ITEM_OUTPUT_B(152 - (2 * 18), 22 + 24 + 37, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, level) -> false);
 
         final int xPos;
         final int yPos;
