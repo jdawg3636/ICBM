@@ -2,7 +2,7 @@
   "type": "icbm:centrifugal_deposition",
   "input_fluid": {
     "tag": "forge:uranium_hexafluoride",
-    "amount": 25000
+    "amount": 5000
   },
   "result_a": {
     "item": "icbm:uranium_235",

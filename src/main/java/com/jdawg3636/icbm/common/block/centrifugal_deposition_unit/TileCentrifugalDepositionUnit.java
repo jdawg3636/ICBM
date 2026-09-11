@@ -71,7 +71,7 @@ public class TileCentrifugalDepositionUnit extends TileMachineProcessing<Centrif
 
     public TileCentrifugalDepositionUnit(TileEntityType<?> tileEntityType, ITextComponent name) {
         super(tileEntityType, ContainerReg.CENTRIFUGAL_DEPOSITION_UNIT::get, true, 9_000, 9_000, 0, new ArrayList<>(2), name);
-        this.inputTank = new ICBMFluidTank(100_000, fluidStack -> true, this::onInputTankContentsChanged, true);
+        this.inputTank = new ICBMFluidTank(20_000, fluidStack -> true, this::onInputTankContentsChanged, true);
         this.fluidTanks.add(LazyOptional.of(() -> inputTank));
         Arrays.stream(MachineSlots.values()).forEach(slot -> this.itemHandlerLazyOptional.orElse(null).addSlot(slot.xPos, slot.yPos, slot.tag));
     }
