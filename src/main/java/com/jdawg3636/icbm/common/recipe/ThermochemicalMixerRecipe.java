@@ -55,7 +55,19 @@ public class ThermochemicalMixerRecipe implements IProcessingRecipe {
     }
 
     public boolean matchesCustom(FluidStack inputFluid, ItemStack inputItemA, ItemStack inputItemB) {
-        return this.inputFluid.test(inputFluid) && this.inputItemA.test(inputItemA) && this.inputItemB.test(inputItemB);
+        return this.inputFluid.test(inputFluid) && matchesItems(inputItemA, inputItemB);
+    }
+
+    public boolean matchesItems(ItemStack inputItemA, ItemStack inputItemB) {
+        return matchesItemsInRecipeOrder(inputItemA, inputItemB) || matchesItemsInRecipeOrder(inputItemB, inputItemA);
+    }
+
+    public boolean matchesItemsInRecipeOrder(ItemStack inputItemA, ItemStack inputItemB) {
+        return this.inputItemA.test(inputItemA) && this.inputItemB.test(inputItemB);
+    }
+
+    public boolean isAnIngredient(ItemStack inputItem) {
+        return this.inputItemA.getSingleIngredient().test(inputItem) || this.inputItemB.getSingleIngredient().test(inputItem);
     }
 
     @Override

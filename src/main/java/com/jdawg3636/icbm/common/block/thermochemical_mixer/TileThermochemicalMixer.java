@@ -14,11 +14,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,32 +39,32 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.thermochemical_mixer");
 
     public static enum MachineSlots {
-        BATTERY(152, 22, ICBMItemStackHandler.SlotTag.BATTERY, (stack, level) -> {
+        BATTERY(152, 22, ICBMItemStackHandler.SlotTag.BATTERY, (stack, tile, self) -> {
             return stack.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::canExtract).orElse(false);
         }),
-        FLUID_INPUT(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, (stack, level) -> {
+        FLUID_INPUT(152 - (7 * 18) - 9, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, (stack, tile, self) -> {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
         }),
-        ITEM_INPUT_A(152 - (5 * 18) - 10, 22 + 24 + 10, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, level) -> {
-            return ThermochemicalMixerRecipe.getAllRecipes(ICBMRecipeTypes.THERMOCHEMICAL_MIXER, level).anyMatch(recipe -> recipe.getInputItemA().getSingleIngredient().test(stack));
+        ITEM_INPUT_A(152 - (5 * 18) - 10, 22 + 24 + 10, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, tile, self) -> {
+            return tile.isItemStackValidForInputSlot(stack, self);
         }),
-        ITEM_INPUT_B(152 - (5 * 18) - 10, 22 + 24 + 37, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, level) -> {
-            return ThermochemicalMixerRecipe.getAllRecipes(ICBMRecipeTypes.THERMOCHEMICAL_MIXER, level).anyMatch(recipe -> recipe.getInputItemB().getSingleIngredient().test(stack));
+        ITEM_INPUT_B(152 - (5 * 18) - 10, 22 + 24 + 37, ICBMItemStackHandler.SlotTag.INVENTORY_MACHINE, (stack, tile, self) -> {
+            return tile.isItemStackValidForInputSlot(stack, self);
         }),
-        FLUID_OUTPUT(152 - 34, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, (stack, level) -> {
+        FLUID_OUTPUT(152 - 34, 22, ICBMItemStackHandler.SlotTag.FLUID_ITEM, (stack, tile, self) -> {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
         });
 
         final int xPos;
         final int yPos;
         final ICBMItemStackHandler.SlotTag tag;
-        final BiPredicate<ItemStack, World> itemStackValidityPredicate;
+        final BiPredicate<ItemStack, TileThermochemicalMixer> itemStackValidityPredicate;
 
-        MachineSlots(int xPos, int yPos, ICBMItemStackHandler.SlotTag tag, BiPredicate<ItemStack, World> itemStackValidityPredicate) {
+        MachineSlots(int xPos, int yPos, ICBMItemStackHandler.SlotTag tag, TriPredicate<ItemStack, TileThermochemicalMixer, MachineSlots> itemStackValidityPredicate) {
             this.xPos = xPos;
             this.yPos = yPos;
             this.tag = tag;
-            this.itemStackValidityPredicate = itemStackValidityPredicate;
+            this.itemStackValidityPredicate = (stack, tile) -> itemStackValidityPredicate.test(stack, tile, this);
         }
 
     }
@@ -81,6 +81,13 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
         Arrays.stream(TileThermochemicalMixer.MachineSlots.values()).forEach(slot -> this.itemHandlerLazyOptional.orElse(null).addSlot(slot.xPos, slot.yPos, slot.tag));
         this.fluidTanks.add(LazyOptional.of(() -> inputTank));
         this.fluidTanks.add(LazyOptional.of(() -> outputTank));
+    }
+
+    public boolean isItemStackValidForInputSlot(ItemStack stack, MachineSlots slot) {
+        if(this.level == null) return false;
+        MachineSlots otherSlot = slot == MachineSlots.ITEM_INPUT_A ? MachineSlots.ITEM_INPUT_B : MachineSlots.ITEM_INPUT_A;
+        ItemStack otherInput = this.itemHandlerLazyOptional.map(itemHandler -> itemHandler.getStackInSlot(otherSlot.ordinal())).orElse(ItemStack.EMPTY);
+        return !stack.sameItem(otherInput) && ThermochemicalMixerRecipe.getAllRecipes(ICBMRecipeTypes.THERMOCHEMICAL_MIXER, this.level).anyMatch(recipe -> recipe.isAnIngredient(stack));
     }
 
     @Override
@@ -144,18 +151,19 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
             boolean consumedAllItems = this.itemHandlerLazyOptional.map(ish -> {
                 // Item A
                 ItemStack stackInInputSlotA = ish.getStackInSlot(MachineSlots.ITEM_INPUT_A.ordinal());
-                boolean isCorrectItemA = ar.getInputItemA().test(stackInInputSlotA);
-                if(isCorrectItemA) {
-                    stackInInputSlotA.shrink(ar.getInputItemA().getCount());
-                }
                 // Item B
                 ItemStack stackInInputSlotB = ish.getStackInSlot(MachineSlots.ITEM_INPUT_B.ordinal());
-                boolean isCorrectItemB = ar.getInputItemB().test(stackInInputSlotB);
-                if(isCorrectItemB) {
+                boolean inputsInRecipeOrder = ar.matchesItemsInRecipeOrder(stackInInputSlotA, stackInInputSlotB);
+                boolean inputsInSwappedOrder = ar.matchesItemsInRecipeOrder(stackInInputSlotB, stackInInputSlotA);
+                if(inputsInRecipeOrder) {
+                    stackInInputSlotA.shrink(ar.getInputItemA().getCount());
                     stackInInputSlotB.shrink(ar.getInputItemB().getCount());
                 }
-                // Merge Items
-                return isCorrectItemA && isCorrectItemB;
+                else if(inputsInSwappedOrder) {
+                    stackInInputSlotA.shrink(ar.getInputItemB().getCount());
+                    stackInInputSlotB.shrink(ar.getInputItemA().getCount());
+                }
+                return inputsInRecipeOrder || inputsInSwappedOrder;
             }).orElse(false);
             // Merge Fluid + Items
             return drainedEnoughFluid && consumedAllItems;
@@ -230,7 +238,7 @@ public class TileThermochemicalMixer extends TileMachineProcessing<Thermochemica
     @Override
     public boolean isInventoryItemValid(int slot, @Nonnull ItemStack stack) {
         if(level != null && slot < MachineSlots.values().length) {
-            return MachineSlots.values()[slot].itemStackValidityPredicate.test(stack, this.level);
+            return MachineSlots.values()[slot].itemStackValidityPredicate.test(stack, this);
         }
         return false;
     }
