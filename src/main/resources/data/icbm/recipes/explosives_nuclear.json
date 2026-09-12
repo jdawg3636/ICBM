@@ -7,7 +7,7 @@
     ],
     "key": {
       "A": {
-        "tag": "forge:ingots/uranium"
+        "tag": "forge:pellets/uranium235"
       },
       "B": {
         "item": "icbm:explosives_thermobaric"
@@ -17,4 +17,4 @@
       "item": "icbm:explosives_nuclear",
       "count": 1
     }
-  }
+}
