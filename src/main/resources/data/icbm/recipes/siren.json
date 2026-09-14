@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "ABA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:plates/bronze"
+    },
+    "B": {
+      "item": "minecraft:note_block"
+    }
+  },
+  "result": {
+    "item": "icbm:siren",
+    "count": 1
+  }
+}
