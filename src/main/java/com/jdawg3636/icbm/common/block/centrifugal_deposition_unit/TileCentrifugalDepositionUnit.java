@@ -63,6 +63,9 @@ public class TileCentrifugalDepositionUnit extends TileMachineProcessing<Centrif
 
     }
 
+    // "Real" ticksProcessing is synced to the client, but timing over network isn't consistent enough for the animation look
+    // good when interpolation using partialTicks is enabled. This variable exists as a smoothed copy calculated client-side.
+    private int clientTicksProcessing = 0;
     private final ICBMFluidTank inputTank;
 
     public TileCentrifugalDepositionUnit(TileEntityType<?> tileEntityType) {
@@ -71,9 +74,16 @@ public class TileCentrifugalDepositionUnit extends TileMachineProcessing<Centrif
 
     public TileCentrifugalDepositionUnit(TileEntityType<?> tileEntityType, ITextComponent name) {
         super(tileEntityType, ContainerReg.CENTRIFUGAL_DEPOSITION_UNIT::get, true, 9_000, 9_000, 0, new ArrayList<>(2), name);
-        this.inputTank = new ICBMFluidTank(20_000, fluidStack -> true, this::onInputTankContentsChanged, true);
+        this.inputTank = new ICBMFluidTank(5_000, fluidStack -> true, this::onInputTankContentsChanged, true, 25);
         this.fluidTanks.add(LazyOptional.of(() -> inputTank));
         Arrays.stream(MachineSlots.values()).forEach(slot -> this.itemHandlerLazyOptional.orElse(null).addSlot(slot.xPos, slot.yPos, slot.tag));
+    }
+
+    public double getClientProcessingPercentage(float partialTicks) {
+        if(this.clientTicksProcessing == 0) {
+            return 0.0;
+        }
+        return (this.clientTicksProcessing + partialTicks) / (double)clientProcessingTime;
     }
 
     @Override
@@ -160,18 +170,27 @@ public class TileCentrifugalDepositionUnit extends TileMachineProcessing<Centrif
     public void tick() {
         super.tick();
         assert level != null;
-        if(level.isClientSide()) return;
-        itemHandlerLazyOptional.ifPresent(itemHandler -> {
-            getEnergyStorageOfItemInSlot(MachineSlots.BATTERY.ordinal()).ifPresent(battery -> tryReceiveEnergy(battery, battery.getEnergyStored()));
-            ItemStack fluidContainer = itemHandler.getStackInSlot(MachineSlots.FLUID_INPUT.ordinal());
-            fluidContainer.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fluidHandler -> {
-                FluidStack canExtract = fluidHandler.drain(inputTank.getSpace(), IFluidHandler.FluidAction.SIMULATE);
-                int amountFilled = inputTank.fill(canExtract, IFluidHandler.FluidAction.EXECUTE);
-                fluidHandler.drain(amountFilled, IFluidHandler.FluidAction.EXECUTE);
-                itemHandler.extractItem(MachineSlots.FLUID_INPUT.ordinal(), fluidContainer.getCount(), false);
-                itemHandler.insertItem(MachineSlots.FLUID_INPUT.ordinal(), fluidHandler.getContainer(), false);
+        if(level.isClientSide()) {
+            if(this.ticksProcessing > 0) {
+                this.clientTicksProcessing += 1;
+            }
+            else {
+                this.clientTicksProcessing = 0;
+            }
+        }
+        else {
+            itemHandlerLazyOptional.ifPresent(itemHandler -> {
+                getEnergyStorageOfItemInSlot(MachineSlots.BATTERY.ordinal()).ifPresent(battery -> tryReceiveEnergy(battery, battery.getEnergyStored()));
+                ItemStack fluidContainer = itemHandler.getStackInSlot(MachineSlots.FLUID_INPUT.ordinal());
+                fluidContainer.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fluidHandler -> {
+                    FluidStack canExtract = fluidHandler.drain(inputTank.getSpace(), IFluidHandler.FluidAction.SIMULATE);
+                    int amountFilled = inputTank.fill(canExtract, IFluidHandler.FluidAction.EXECUTE);
+                    fluidHandler.drain(amountFilled, IFluidHandler.FluidAction.EXECUTE);
+                    itemHandler.extractItem(MachineSlots.FLUID_INPUT.ordinal(), fluidContainer.getCount(), false);
+                    itemHandler.insertItem(MachineSlots.FLUID_INPUT.ordinal(), fluidHandler.getContainer(), false);
+                });
             });
-        });
+        }
     }
 
     @Override

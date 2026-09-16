@@ -9,14 +9,28 @@ import java.util.function.Predicate;
 
 public class ICBMFluidTank extends FluidTank {
 
-    private Consumer<ICBMFluidTank> onContentsChanged;
-    private boolean canDrain;
+    private final Consumer<ICBMFluidTank> onContentsChanged;
+    private final int fillLimitPerTick;
+
     private boolean bypassValidator = false;
+    private boolean canDrain;
+    private int realCapacity;
 
     public ICBMFluidTank(int capacity, Predicate<FluidStack> validator, Consumer<ICBMFluidTank> onContentsChanged, boolean canDrain) {
+        this(capacity, validator, onContentsChanged, canDrain, capacity);
+    }
+
+    public ICBMFluidTank(int capacity, Predicate<FluidStack> validator, Consumer<ICBMFluidTank> onContentsChanged, boolean canDrain, int fillLimitPerTick) {
         super(capacity, validator);
         this.onContentsChanged = onContentsChanged;
         this.canDrain = canDrain;
+        this.realCapacity = capacity;
+        this.capacity = fillLimitPerTick;
+        this.fillLimitPerTick = fillLimitPerTick;
+    }
+
+    private void updateFakeCapacity() {
+        this.capacity = Math.min(this.realCapacity, this.fluid.getAmount() + this.fillLimitPerTick);
     }
 
     @Override
@@ -25,8 +39,15 @@ public class ICBMFluidTank extends FluidTank {
     }
 
     @Override
+    public void setFluid(FluidStack stack) {
+        super.setFluid(stack);
+        this.updateFakeCapacity();
+    }
+
+    @Override
     public void onContentsChanged() {
         this.onContentsChanged.accept(this);
+        this.updateFakeCapacity();
     }
 
     @Override
@@ -69,6 +90,17 @@ public class ICBMFluidTank extends FluidTank {
         FluidStack result = this.drain(maxDrain, action);
         this.canDrain = canDrain;
         return result;
+    }
+
+    @Override
+    public FluidTank setCapacity(int capacity) {
+        this.realCapacity = capacity;
+        return this;
+    }
+
+    @Override
+    public int getCapacity() {
+        return this.realCapacity;
     }
 
 }

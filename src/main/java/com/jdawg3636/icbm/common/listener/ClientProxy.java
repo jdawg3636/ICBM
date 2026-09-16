@@ -66,7 +66,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientProxy extends CommonProxy {
 
     // BlockEntity Models
-    public static final ResourceLocation MODEL_CENTRIFUGAL_DEPOSITION_UNIT  = new ResourceLocation(ICBMReference.MODID + ":block/centrifugal_deposition_unit");
+    public static final ResourceLocation MODEL_CENTRIFUGAL_DEPOSITION_UNIT_SPINNING = new ResourceLocation(ICBMReference.MODID + ":block/centrifugal_deposition_unit_spinning");
+    public static final ResourceLocation MODEL_CENTRIFUGAL_DEPOSITION_UNIT_STATIC   = new ResourceLocation(ICBMReference.MODID + ":block/centrifugal_deposition_unit_static");
     public static final ResourceLocation MODEL_CRUISE_LAUNCHER_DYNAMIC      = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_dynamic");
     public static final ResourceLocation MODEL_CRUISE_LAUNCHER_STATIC       = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_static");
     public static final ResourceLocation MODEL_EMP_TOWER_CLOCKWISE          = new ResourceLocation(ICBMReference.MODID + ":block/emp_tower_clockwise");
@@ -297,7 +298,8 @@ public class ClientProxy extends CommonProxy {
     public void onModelRegistryEvent(final ModelRegistryEvent event) {
 
         // BlockEntity Models
-        ModelLoader.addSpecialModel(MODEL_CENTRIFUGAL_DEPOSITION_UNIT);
+        ModelLoader.addSpecialModel(MODEL_CENTRIFUGAL_DEPOSITION_UNIT_SPINNING);
+        ModelLoader.addSpecialModel(MODEL_CENTRIFUGAL_DEPOSITION_UNIT_STATIC);
         ModelLoader.addSpecialModel(MODEL_CRUISE_LAUNCHER_DYNAMIC);
         ModelLoader.addSpecialModel(MODEL_CRUISE_LAUNCHER_STATIC);
         ModelLoader.addSpecialModel(MODEL_EMP_TOWER_CLOCKWISE);
