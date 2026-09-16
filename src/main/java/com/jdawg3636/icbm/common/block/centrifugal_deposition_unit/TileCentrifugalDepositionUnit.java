@@ -83,7 +83,7 @@ public class TileCentrifugalDepositionUnit extends TileMachineProcessing<Centrif
         if(this.clientTicksProcessing == 0) {
             return 0.0;
         }
-        return (this.clientTicksProcessing + partialTicks) / (double)clientProcessingTime;
+        return Math.min(1.0, (this.clientTicksProcessing + partialTicks) / (double)clientProcessingTime);
     }
 
     @Override
