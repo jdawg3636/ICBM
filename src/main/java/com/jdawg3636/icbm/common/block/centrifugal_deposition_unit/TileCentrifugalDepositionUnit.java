@@ -151,12 +151,18 @@ public class TileCentrifugalDepositionUnit extends TileMachineProcessing<Centrif
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if(energyStorageLazyOptional.isPresent() && cap.equals(CapabilityEnergy.ENERGY)) {
+            return energyStorageLazyOptional.cast();
+        }
         return LazyOptional.empty();
     }
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapabilityViaProxy(@Nonnull Capability<T> cap, @Nullable Direction side, BlockState proxyState) {
+        if(BlockCentrifugalDepositionUnit.isBottomBlock(proxyState) && cap.equals(CapabilityEnergy.ENERGY)) {
+            return energyStorageLazyOptional.cast();
+        }
         if(AbstractBlockMulti.doesStateMatchPosition(proxyState, BlockCentrifugalDepositionUnit.LIQUID_INLET_POSITION) && cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
             return fluidTanks.get(0).cast();
         }

@@ -21,8 +21,14 @@ public class BlockCentrifugalDepositionUnit extends AbstractBlockMultiTile {
     public static final Vector3i LIQUID_INLET_POSITION = new Vector3i(-1,0,0);
 
     private static final Vector3i[] MULTIBLOCK_PASSTHROUGH_TILE_POSITIONS = {
+            new Vector3i(-1, 0, -1),
+            LIQUID_INLET_POSITION,
+            new Vector3i(-1, 0, 1),
             ITEM_OUTLET_POSITION,
-            LIQUID_INLET_POSITION
+            new Vector3i(0, 0, 1),
+            new Vector3i(1, 0, -1),
+            new Vector3i(1, 0, 0),
+            new Vector3i(1, 0, 1)
     };
 
     private static final Vector3i[] MULTIBLOCK_POSITIONS = {
@@ -107,6 +113,10 @@ public class BlockCentrifugalDepositionUnit extends AbstractBlockMultiTile {
     @Override
     public Vector3i[] getMutiblockOffsetsWhichHavePassthroughTileEntity() {
         return MULTIBLOCK_PASSTHROUGH_TILE_POSITIONS;
+    }
+
+    public static boolean isBottomBlock(BlockState state) {
+        return getMultiblockOffsetsFromBlockState(state).getY() == 0;
     }
 
     @Override
