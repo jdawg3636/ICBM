@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PGP",
+    "PCP",
+    "HMH"
+  ],
+  "key": {
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "G": {
+      "item": "icbm:reinforced_glass"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "M": {
+      "item": "icbm:electric_motor"
+    }
+  },
+  "result": {
+    "item": "icbm:thermochemical_mixer",
+    "count": 1
+  }
+}

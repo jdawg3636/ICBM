@@ -7,7 +7,7 @@
     ],
     "key": {
       "A": {
-        "tag": "minecraft:wool"
+        "tag": "forge:plastic"
       },
       "B": {
         "item": "minecraft:leather_helmet"

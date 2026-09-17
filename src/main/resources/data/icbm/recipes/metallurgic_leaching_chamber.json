@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GCG",
+    "GAG",
+    "PMP"
+  ],
+  "key": {
+    "G": {
+      "item": "icbm:reinforced_glass"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "A": {
+      "item": "minecraft:cauldron"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "M": {
+      "item": "icbm:electric_motor"
+    }
+  },
+  "result": {
+    "item": "icbm:metallurgic_leaching_chamber",
+    "count": 1
+  }
+}

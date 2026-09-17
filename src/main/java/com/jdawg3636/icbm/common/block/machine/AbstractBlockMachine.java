@@ -30,6 +30,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 
@@ -62,6 +63,8 @@ public abstract class AbstractBlockMachine extends Block implements IWaterLoggab
      */
     public static AbstractBlock.Properties getMultiblockMachineBlockProperties() {
         return AbstractBlock.Properties.of(Material.STONE, MaterialColor.METAL)
+                .harvestTool(ToolType.PICKAXE)
+                .harvestLevel(2)
                 .requiresCorrectToolForDrops()
                 .strength(5.0F, 6.0F)
                 .noOcclusion()

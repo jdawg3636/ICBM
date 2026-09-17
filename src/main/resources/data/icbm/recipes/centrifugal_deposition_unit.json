@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PAP",
+    "GMG",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "A": {
+      "item": "minecraft:cauldron"
+    },
+    "G": {
+      "item": "icbm:reinforced_glass"
+    },
+    "M": {
+      "item": "icbm:electric_motor"
+    },
+    "C": {
+      "tag": "forge:circuits/elite"
+    }
+  },
+  "result": {
+    "item": "icbm:centrifugal_deposition_unit",
+    "count": 1
+  }
+}
