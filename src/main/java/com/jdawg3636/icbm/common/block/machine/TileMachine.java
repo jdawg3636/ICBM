@@ -295,6 +295,9 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     }
 
     public boolean tryConsumeEnergy(int energyToConsume) {
+        if(energyToConsume == 0) {
+            return true;
+        }
         ICBMEnergyStorage energyStorage = (ICBMEnergyStorage)energyStorageLazyOptional.orElse(null);
         int energyWouldBeConsumed = energyStorage.extractEnergyUnchecked(energyToConsume, true);
         if(energyWouldBeConsumed >= energyToConsume) {
