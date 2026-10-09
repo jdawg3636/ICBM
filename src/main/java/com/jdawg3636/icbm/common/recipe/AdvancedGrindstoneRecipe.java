@@ -65,8 +65,8 @@ public class AdvancedGrindstoneRecipe implements IProcessingRecipe {
     public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<AdvancedGrindstoneRecipe> {
         @Override
         public AdvancedGrindstoneRecipe fromJson(ResourceLocation id, JsonObject json) {
-            Ingredient input = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "input"));
-            Ingredient abrasive = json.has("abrasive") ? Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "abrasive")) : Ingredient.EMPTY;
+            Ingredient input = Ingredient.fromJson(json.get("input"));
+            Ingredient abrasive = json.has("abrasive") ? Ingredient.fromJson(json.get("abrasive")) : Ingredient.EMPTY;
             ItemStack result = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
             return new AdvancedGrindstoneRecipe(id, input, abrasive, result::copy);
         }
