@@ -1,0 +1,14 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "thermal:nickel_dust" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "tag": "forge:ores/nickel" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "thermal:nickel_dust", "count": 2 }
+      }
+    }
+  ]
+}

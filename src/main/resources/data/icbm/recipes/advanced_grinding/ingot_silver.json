@@ -1,0 +1,14 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "thermal:silver_dust" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "tag": "forge:ingots/silver" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "thermal:silver_dust", "count": 1 }
+      }
+    }
+  ]
+}

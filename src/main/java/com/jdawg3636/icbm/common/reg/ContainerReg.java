@@ -24,6 +24,7 @@ public class ContainerReg {
     public static final RegistryObject<ContainerType<ContainerMachine>> LAUNCHER_PLATFORM_T3 = registerContainer(() -> ContainerReg.LAUNCHER_PLATFORM_T3, BlockReg.LAUNCHER_PLATFORM_T3, ContainerMachine::new, 8, 84);
 
     // Other Machinery
+    public static final RegistryObject<ContainerType<ContainerMachine>> ADVANCED_GRINDSTONE = registerContainer(() -> ContainerReg.ADVANCED_GRINDSTONE, BlockReg.ADVANCED_GRINDSTONE, ContainerMachine::new);
     public static final RegistryObject<ContainerType<ContainerMachine>> CENTRIFUGAL_DEPOSITION_UNIT = registerContainer(() -> ContainerReg.CENTRIFUGAL_DEPOSITION_UNIT, BlockReg.CENTRIFUGAL_DEPOSITION_UNIT, ContainerMachine::new);
     public static final RegistryObject<ContainerType<ContainerMachine>> COAL_GENERATOR = registerContainer(() -> ContainerReg.COAL_GENERATOR, BlockReg.COAL_GENERATOR, ContainerMachine::new, 8, 84);
     public static final RegistryObject<ContainerType<ContainerMachine>> CRUISE_LAUNCHER = registerContainer(() -> ContainerReg.CRUISE_LAUNCHER, BlockReg.CRUISE_LAUNCHER, ContainerMachine::new, 8, 84);

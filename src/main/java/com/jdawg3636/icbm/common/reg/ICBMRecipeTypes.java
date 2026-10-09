@@ -9,15 +9,17 @@ import net.minecraft.util.registry.Registry;
 
 public class ICBMRecipeTypes {
 
-    public static IRecipeType<MetallurgicLeachingRecipe> METALLURGIC_LEACHING;
+    public static IRecipeType<AdvancedGrindstoneRecipe> ADVANCED_GRINDSTONE;
     public static IRecipeType<CentrifugalDepositionRecipe> CENTRIFUGAL_DEPOSITION;
+    public static IRecipeType<MetallurgicLeachingRecipe> METALLURGIC_LEACHING;
     public static IRecipeType<ParticleAcceleratorRecipe> PARTICLE_ACCELERATOR;
     public static IRecipeType<RefineryRecipe> REFINERY;
     public static IRecipeType<ThermochemicalMixerRecipe> THERMOCHEMICAL_MIXER;
 
     public static void registerAll() {
-        METALLURGIC_LEACHING = register("metallurgic_leaching");
+        ADVANCED_GRINDSTONE = register("advanced_grinding");
         CENTRIFUGAL_DEPOSITION = register("centrifugal_deposition");
+        METALLURGIC_LEACHING = register("metallurgic_leaching");
         PARTICLE_ACCELERATOR = register("particle_accelerator");
         REFINERY = register("refinery");
         THERMOCHEMICAL_MIXER = register("thermochemical_mixing");

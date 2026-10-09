@@ -196,6 +196,7 @@ public class ItemReg {
     public static final RegistryObject<Item> LAUNCHER_SUPPORT_FRAME_T3      = ITEMS.register("launcher_support_frame_t3",       () -> new BlockItem(BlockReg.LAUNCHER_SUPPORT_FRAME_T3.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
 
     // Other Machinery
+    public static final RegistryObject<Item> ADVANCED_GRINDSTONE            = ITEMS.register("advanced_grindstone",             () -> new BlockItem(BlockReg.ADVANCED_GRINDSTONE.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CENTRIFUGAL_DEPOSITION_UNIT    = ITEMS.register("centrifugal_deposition_unit",     () -> new BlockItem(BlockReg.CENTRIFUGAL_DEPOSITION_UNIT.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> COAL_GENERATOR                 = ITEMS.register("coal_generator",                  () -> new BlockItem(BlockReg.COAL_GENERATOR.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CRUISE_LAUNCHER                = ITEMS.register("cruise_launcher",                 () -> new BlockItem(BlockReg.CRUISE_LAUNCHER.get(), new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
@@ -240,7 +241,14 @@ public class ItemReg {
     public static final RegistryObject<Item> CIRCUIT_ADVANCED               = ITEMS.register("circuit_advanced",                () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> CIRCUIT_ELITE                  = ITEMS.register("circuit_elite",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> DUST_BRONZE                    = ITEMS.register("dust_bronze",                     () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> DUST_CHARCOAL                  = ITEMS.register("dust_charcoal",                   () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> DUST_COAL                      = ITEMS.register("dust_coal",                       () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> DUST_COPPER                    = ITEMS.register("dust_copper",                     () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> DUST_GOLD                      = ITEMS.register("dust_gold",                       () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> DUST_IRON                      = ITEMS.register("dust_iron",                       () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> DUST_STEEL                     = ITEMS.register("dust_steel",                      () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> DUST_TIN                       = ITEMS.register("dust_tin",                        () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
+    public static final RegistryObject<Item> DUST_URANIUM                   = ITEMS.register("dust_uranium",                    () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> ELECTRIC_MOTOR                 = ITEMS.register("electric_motor",                  () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> INGOT_BRONZE                   = ITEMS.register("ingot_bronze",                    () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));
     public static final RegistryObject<Item> INGOT_COPPER                   = ITEMS.register("ingot_copper",                    () -> new Item(new Item.Properties().tab(ICBMReference.CREATIVE_TAB)));

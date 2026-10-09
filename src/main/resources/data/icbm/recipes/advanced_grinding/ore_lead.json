@@ -1,0 +1,23 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "thermal:lead_dust" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "tag": "forge:ores/lead" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "thermal:lead_dust", "count": 2 }
+      }
+    },
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "mekanism:dust_lead" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "tag": "forge:ores/lead" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "mekanism:dust_lead", "count": 2 }
+      }
+    }
+  ]
+}

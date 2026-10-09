@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" A ", "BCB", "DDD"],
+  "key": {
+    "A": { "tag": "forge:ingots/iron" },
+    "B": { "item": "minecraft:cobblestone" },
+    "C": { "item": "minecraft:grindstone" },
+    "D": { "item": "minecraft:smooth_stone" }
+  },
+  "result": { "item": "icbm:advanced_grindstone" }
+}

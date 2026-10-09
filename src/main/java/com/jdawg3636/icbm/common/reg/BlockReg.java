@@ -2,6 +2,7 @@ package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
 import com.jdawg3636.icbm.common.block.*;
+import com.jdawg3636.icbm.common.block.advanced_grindstone.BlockAdvancedGrindstone;
 import com.jdawg3636.icbm.common.block.camouflage.BlockCamouflage;
 import com.jdawg3636.icbm.common.block.centrifugal_deposition_unit.BlockCentrifugalDepositionUnit;
 import com.jdawg3636.icbm.common.block.coal_generator.BlockCoalGenerator;
@@ -155,6 +156,7 @@ public class BlockReg {
     public static final RegistryObject<Block> LAUNCHER_SUPPORT_FRAME_T3     = BLOCKS.register("launcher_support_frame_t3",      () -> new BlockLauncherSupportFrame(3));
 
     // Other Machinery
+    public static final RegistryObject<Block> ADVANCED_GRINDSTONE           = BLOCKS.register("advanced_grindstone",            () -> new BlockAdvancedGrindstone(TileReg.ADVANCED_GRINDSTONE));
     public static final RegistryObject<Block> CENTRIFUGAL_DEPOSITION_UNIT   = BLOCKS.register("centrifugal_deposition_unit",    () -> new BlockCentrifugalDepositionUnit(TileReg.CENTRIFUGAL_DEPOSITION_UNIT));
     public static final RegistryObject<Block> COAL_GENERATOR                = BLOCKS.register("coal_generator",                 () -> new BlockCoalGenerator(TileReg.COAL_GENERATOR));
     public static final RegistryObject<Block> CRUISE_LAUNCHER               = BLOCKS.register("cruise_launcher",                () -> new BlockCruiseLauncher(TileReg.CRUISE_LAUNCHER));

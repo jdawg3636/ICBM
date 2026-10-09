@@ -737,6 +737,16 @@
 
   # Units
   "energy.icbm.forge": "Forge Energy",
-  "energy.icbm.forge.short": "FE"
+  "energy.icbm.forge.short": "FE",
+
+  "block.icbm.advanced_grindstone": "Advanced Grindstone",
+  "gui.icbm.advanced_grindstone": "Advanced Grindstone",
+  "item.icbm.dust_copper": "Copper Dust",
+  "item.icbm.dust_coal": "Coal Dust",
+  "item.icbm.dust_charcoal": "Charcoal Dust",
+  "item.icbm.dust_gold": "Gold Dust",
+  "item.icbm.dust_iron": "Iron Dust",
+  "item.icbm.dust_tin": "Tin Dust",
+  "item.icbm.dust_uranium": "Uranium Dust"
 
 }

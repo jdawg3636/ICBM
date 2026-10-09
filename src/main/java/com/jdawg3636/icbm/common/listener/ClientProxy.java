@@ -1,6 +1,9 @@
 package com.jdawg3636.icbm.common.listener;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.advanced_grindstone.ScreenAdvancedGrindstone;
+import com.jdawg3636.icbm.common.block.advanced_grindstone.TERAdvancedGrindstone;
+import com.jdawg3636.icbm.common.block.advanced_grindstone.TileAdvancedGrindstone;
 import com.jdawg3636.icbm.common.block.camouflage.BlockCamouflage;
 import com.jdawg3636.icbm.common.block.camouflage.DynamicBakedModelCamouflage;
 import com.jdawg3636.icbm.common.block.camouflage.TileCamouflage;
@@ -66,6 +69,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientProxy extends CommonProxy {
 
     // BlockEntity Models
+    public static final ResourceLocation MODEL_ADVANCED_GRINDSTONE          = new ResourceLocation(ICBMReference.MODID + ":block/advanced_grindstone");
+    public static final ResourceLocation MODEL_ADVANCED_GRINDSTONE_STATIC   = new ResourceLocation(ICBMReference.MODID + ":block/advanced_grindstone_static");
+    public static final ResourceLocation MODEL_ADVANCED_GRINDSTONE_DYNAMIC  = new ResourceLocation(ICBMReference.MODID + ":block/advanced_grindstone_dynamic");
     public static final ResourceLocation MODEL_CENTRIFUGAL_DEPOSITION_UNIT_SPINNING = new ResourceLocation(ICBMReference.MODID + ":block/centrifugal_deposition_unit_spinning");
     public static final ResourceLocation MODEL_CENTRIFUGAL_DEPOSITION_UNIT_STATIC   = new ResourceLocation(ICBMReference.MODID + ":block/centrifugal_deposition_unit_static");
     public static final ResourceLocation MODEL_CRUISE_LAUNCHER_DYNAMIC      = new ResourceLocation(ICBMReference.MODID + ":block/cruise_launcher_dynamic");
@@ -128,6 +134,7 @@ public class ClientProxy extends CommonProxy {
 
         // Register Container Screens
         //noinspection RedundantTypeArguments
+        ScreenManager.<ContainerMachine, ScreenAdvancedGrindstone>register(ContainerReg.ADVANCED_GRINDSTONE.get(), ScreenAdvancedGrindstone::new);
         ScreenManager.<ContainerMachine, ScreenCentrifugalDepositionUnit>register(ContainerReg.CENTRIFUGAL_DEPOSITION_UNIT.get(), ScreenCentrifugalDepositionUnit::new);
         ScreenManager.<ContainerMachine, ScreenCoalGenerator>register(ContainerReg.COAL_GENERATOR.get(), ScreenCoalGenerator::new);
         ScreenManager.<ContainerMachine, ScreenCruiseLauncher>register(ContainerReg.CRUISE_LAUNCHER.get(), ScreenCruiseLauncher::new);
@@ -260,6 +267,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityReg.SHRAPNEL.get(), EntityShrapnelRenderer::new);
 
         // Register Tile Entity Renderers
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileAdvancedGrindstone>) TileReg.ADVANCED_GRINDSTONE.get(), TERAdvancedGrindstone::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCentrifugalDepositionUnit>) TileReg.CENTRIFUGAL_DEPOSITION_UNIT.get(), TERCentrifugalDepositionUnit::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileCruiseLauncher>) TileReg.CRUISE_LAUNCHER.get(), TERCruiseLauncher::new);
         ClientRegistry.bindTileEntityRenderer((TileEntityType<? extends TileEMPTower>) TileReg.EMP_TOWER.get(), TEREMPTower::new);
@@ -298,6 +306,9 @@ public class ClientProxy extends CommonProxy {
     public void onModelRegistryEvent(final ModelRegistryEvent event) {
 
         // BlockEntity Models
+        ModelLoader.addSpecialModel(MODEL_ADVANCED_GRINDSTONE);
+        ModelLoader.addSpecialModel(MODEL_ADVANCED_GRINDSTONE_STATIC);
+        ModelLoader.addSpecialModel(MODEL_ADVANCED_GRINDSTONE_DYNAMIC);
         ModelLoader.addSpecialModel(MODEL_CENTRIFUGAL_DEPOSITION_UNIT_SPINNING);
         ModelLoader.addSpecialModel(MODEL_CENTRIFUGAL_DEPOSITION_UNIT_STATIC);
         ModelLoader.addSpecialModel(MODEL_CRUISE_LAUNCHER_DYNAMIC);

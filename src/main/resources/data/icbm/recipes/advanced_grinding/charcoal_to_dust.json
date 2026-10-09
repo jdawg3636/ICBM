@@ -1,0 +1,6 @@
+{
+  "type": "icbm:advanced_grinding",
+  "input": { "item": "minecraft:charcoal" },
+  "abrasive": { "tag": "icbm:abrasive" },
+  "result": { "item": "icbm:dust_charcoal" }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "immersiveengineering:dust_aluminum" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "tag": "forge:ores/aluminum" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "immersiveengineering:dust_aluminum", "count": 2 }
+      }
+    }
+  ]
+}

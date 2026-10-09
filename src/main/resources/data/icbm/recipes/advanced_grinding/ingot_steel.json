@@ -1,0 +1,1 @@
+{ "type": "icbm:advanced_grinding", "input": { "tag": "forge:ingots/steel" }, "abrasive": { "tag": "icbm:abrasive" }, "result": { "item": "icbm:dust_steel" } }

@@ -1,0 +1,23 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "appliedenergistics2:sky_dust" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "item": "appliedenergistics2:sky_stone_block" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "appliedenergistics2:sky_dust" }
+      }
+    },
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "ae2:sky_dust" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "item": "ae2:sky_stone_block" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "ae2:sky_dust" }
+      }
+    }
+  ]
+}

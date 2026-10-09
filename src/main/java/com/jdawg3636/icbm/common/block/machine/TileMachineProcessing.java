@@ -52,8 +52,8 @@ public abstract class TileMachineProcessing<T extends IProcessingRecipe> extends
     }
 
     public void setChanged() {
-        super.setChanged();
         this.updateActiveRecipe();
+        super.setChanged();
     }
 
     public double getProcessingPercentage() {

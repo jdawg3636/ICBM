@@ -1,0 +1,6 @@
+{
+  "type": "icbm:advanced_grinding",
+  "input": { "tag": "forge:ingots/uranium" },
+  "abrasive": { "tag": "icbm:abrasive" },
+  "result": { "item": "icbm:dust_uranium", "count": 1 }
+}

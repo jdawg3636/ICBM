@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.reg;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.block.advanced_grindstone.TileAdvancedGrindstone;
 import com.jdawg3636.icbm.common.block.camouflage.TileCamouflage;
 import com.jdawg3636.icbm.common.block.centrifugal_deposition_unit.TileCentrifugalDepositionUnit;
 import com.jdawg3636.icbm.common.block.coal_generator.TileCoalGenerator;
@@ -64,6 +65,7 @@ public class TileReg {
     );
 
     // Other Machinery
+    public static final RegistryObject<TileEntityType<? extends TileEntity>> ADVANCED_GRINDSTONE            = TILES.register(BlockReg.ADVANCED_GRINDSTONE.getId().getPath(),          () -> TileEntityType.Builder.of(() -> new TileAdvancedGrindstone(TileReg.ADVANCED_GRINDSTONE.get()),                  BlockReg.ADVANCED_GRINDSTONE.get()          ).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> CENTRIFUGAL_DEPOSITION_UNIT    = TILES.register(BlockReg.CENTRIFUGAL_DEPOSITION_UNIT.getId().getPath(),  () -> TileEntityType.Builder.of(() -> new TileCentrifugalDepositionUnit(TileReg.CENTRIFUGAL_DEPOSITION_UNIT.get()),   BlockReg.CENTRIFUGAL_DEPOSITION_UNIT.get()  ).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> COAL_GENERATOR                 = TILES.register(BlockReg.COAL_GENERATOR.getId().getPath(),               () -> TileEntityType.Builder.of(() -> new TileCoalGenerator(TileReg.COAL_GENERATOR.get()),                            BlockReg.COAL_GENERATOR.get()               ).build(null));
     public static final RegistryObject<TileEntityType<? extends TileEntity>> CRUISE_LAUNCHER                = TILES.register(BlockReg.CRUISE_LAUNCHER.getId().getPath(),              () -> TileEntityType.Builder.of(() -> new TileCruiseLauncher(TileReg.CRUISE_LAUNCHER.get()),                          BlockReg.CRUISE_LAUNCHER.get()              ).build(null));

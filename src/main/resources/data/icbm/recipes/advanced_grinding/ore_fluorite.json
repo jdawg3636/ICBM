@@ -1,0 +1,6 @@
+{
+  "type": "icbm:advanced_grinding",
+  "input": { "tag": "forge:ores/fluorite" },
+  "abrasive": { "tag": "icbm:abrasive" },
+  "result": { "item": "icbm:fluorite_crystal", "count": 2 }
+}

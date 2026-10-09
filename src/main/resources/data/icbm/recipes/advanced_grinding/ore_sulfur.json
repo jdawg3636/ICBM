@@ -1,0 +1,6 @@
+{
+  "type": "icbm:advanced_grinding",
+  "input": { "tag": "forge:ores/sulfur" },
+  "abrasive": { "tag": "icbm:abrasive" },
+  "result": { "item": "icbm:sulfur", "count": 2 }
+}

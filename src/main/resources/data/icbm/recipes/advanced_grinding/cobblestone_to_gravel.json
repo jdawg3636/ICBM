@@ -1,0 +1,5 @@
+{
+  "type": "icbm:advanced_grinding",
+  "input": { "item": "minecraft:cobblestone" },
+  "result": { "item": "minecraft:gravel", "count": 1 }
+}

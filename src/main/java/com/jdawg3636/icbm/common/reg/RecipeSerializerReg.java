@@ -11,8 +11,9 @@ public class RecipeSerializerReg {
 
     public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ICBMReference.MODID);
 
-    public static final RegistryObject<IRecipeSerializer<?>> METALLURGIC_LEACHING = RECIPE_SERIALIZERS.register("metallurgic_leaching", MetallurgicLeachingRecipe.Serializer::new);
+    public static final RegistryObject<IRecipeSerializer<?>> ADVANCED_GRINDSTONE = RECIPE_SERIALIZERS.register("advanced_grinding", AdvancedGrindstoneRecipe.Serializer::new);
     public static final RegistryObject<IRecipeSerializer<?>> CENTRIFUGAL_DEPOSITION = RECIPE_SERIALIZERS.register("centrifugal_deposition", CentrifugalDepositionRecipe.Serializer::new);
+    public static final RegistryObject<IRecipeSerializer<?>> METALLURGIC_LEACHING = RECIPE_SERIALIZERS.register("metallurgic_leaching", MetallurgicLeachingRecipe.Serializer::new);
     public static final RegistryObject<IRecipeSerializer<?>> PARTICLE_ACCELERATOR = RECIPE_SERIALIZERS.register("particle_accelerator", ParticleAcceleratorRecipe.Serializer::new);
     public static final RegistryObject<IRecipeSerializer<?>> REFINERY = RECIPE_SERIALIZERS.register("refinery", RefineryRecipe.Serializer::new);
     public static final RegistryObject<IRecipeSerializer<?>> THERMOCHEMICAL_MIXER = RECIPE_SERIALIZERS.register("thermochemical_mixing", ThermochemicalMixerRecipe.Serializer::new);

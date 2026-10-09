@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "tag": "forge:dusts/iron" },
+    { "tag": "forge:dusts/charcoal" }
+  ],
+  "result": {
+    "item": "icbm:dust_steel",
+    "count": 1
+  }
+}

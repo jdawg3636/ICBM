@@ -1,0 +1,14 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "mekanism:dust_osmium" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "tag": "forge:ingots/osmium" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "mekanism:dust_osmium", "count": 1 }
+      }
+    }
+  ]
+}

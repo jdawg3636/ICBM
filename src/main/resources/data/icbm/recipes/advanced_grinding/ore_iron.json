@@ -1,0 +1,6 @@
+{
+  "type": "icbm:advanced_grinding",
+  "input": { "tag": "forge:ores/iron" },
+  "abrasive": { "tag": "icbm:abrasive" },
+  "result": { "item": "icbm:dust_iron", "count": 2 }
+}

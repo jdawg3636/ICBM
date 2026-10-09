@@ -1,0 +1,6 @@
+{
+  "type": "icbm:advanced_grinding",
+  "input": { "item": "minecraft:bone" },
+  "abrasive": { "tag": "icbm:abrasive" },
+  "result": { "item": "minecraft:bone_meal", "count": 4 }
+}

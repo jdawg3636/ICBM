@@ -40,6 +40,7 @@ public class ICBMTags {
 
         public static void makeSureThisClassIsLoaded() {}
 
+        public static final net.minecraftforge.common.Tags.IOptionalNamedTag<Item> ABRASIVE             = tag("abrasive");
         public static final net.minecraftforge.common.Tags.IOptionalNamedTag<Item> MISSILES             = tag("missiles");
         public static final net.minecraftforge.common.Tags.IOptionalNamedTag<Item> RADIATION_PROTECTIVE = tag("radiation_protective");
 

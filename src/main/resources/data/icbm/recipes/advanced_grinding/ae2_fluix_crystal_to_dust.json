@@ -1,0 +1,23 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "appliedenergistics2:fluix_dust" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "item": "appliedenergistics2:fluix_crystal" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "appliedenergistics2:fluix_dust" }
+      }
+    },
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "ae2:fluix_dust" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "item": "ae2:fluix_crystal" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "ae2:fluix_dust" }
+      }
+    }
+  ]
+}

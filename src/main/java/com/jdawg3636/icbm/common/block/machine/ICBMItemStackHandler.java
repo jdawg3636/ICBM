@@ -39,11 +39,13 @@ public class ICBMItemStackHandler extends ItemStackHandler {
         public final int xPos;
         public final int yPos;
         public final SlotTag slotTag;
+        public final int stackLimit;
 
-        private SlotMeta(int xPos, int yPos, SlotTag slotTag) {
+        private SlotMeta(int xPos, int yPos, SlotTag slotTag, int stackLimit) {
             this.xPos = xPos;
             this.yPos = yPos;
             this.slotTag = slotTag;
+            this.stackLimit = stackLimit;
         }
 
     }
@@ -62,8 +64,17 @@ public class ICBMItemStackHandler extends ItemStackHandler {
     }
 
     public void addSlot(int xPos, int yPos, SlotTag slotTag) {
-        slotMetas.add(new SlotMeta(xPos, yPos, slotTag));
+        addSlot(xPos, yPos, slotTag, 64);
+    }
+
+    public void addSlot(int xPos, int yPos, SlotTag slotTag, int stackLimit) {
+        slotMetas.add(new SlotMeta(xPos, yPos, slotTag, stackLimit));
         this.setSize(slotMetas.size());
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return slot >= 0 && slot < slotMetas.size() ? slotMetas.get(slot).stackLimit : super.getSlotLimit(slot);
     }
 
     public ArrayList<SlotMeta> getSlotMetas() {

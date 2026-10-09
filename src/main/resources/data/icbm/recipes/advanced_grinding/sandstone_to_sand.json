@@ -1,0 +1,9 @@
+{
+  "type": "icbm:advanced_grinding",
+  "input": [
+    { "item": "minecraft:sandstone" },
+    { "item": "minecraft:chiseled_sandstone" },
+    { "item": "minecraft:cut_sandstone" }
+  ],
+  "result": { "item": "minecraft:sand", "count": 4 }
+}

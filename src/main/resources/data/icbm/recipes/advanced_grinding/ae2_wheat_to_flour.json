@@ -1,0 +1,14 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [{ "type": "forge:item_exists", "item": "appliedenergistics2:flour" }],
+      "recipe": {
+        "type": "icbm:advanced_grinding",
+        "input": { "tag": "forge:crops/wheat" },
+        "abrasive": { "tag": "icbm:abrasive" },
+        "result": { "item": "appliedenergistics2:flour" }
+      }
+    }
+  ]
+}
