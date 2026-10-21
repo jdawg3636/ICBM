@@ -17,7 +17,7 @@ public class EventBlastContagion extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition());
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(this, getBlastPosition());
         // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
         if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
             return true;
@@ -27,6 +27,7 @@ public class EventBlastContagion extends AbstractBlastEvent {
             entity.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
             entity.ticksRemaining = ICBMReference.COMMON_CONFIG.getContagionBlastLingerDuration();
             entity.blastType = getBlastType();
+            entity.setOwner(getOwner());
             getBlastWorld().addFreshEntity(entity);
             return true;
         }

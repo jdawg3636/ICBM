@@ -248,7 +248,7 @@ public class BlockExplosives extends Block {
     @Override
     public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!worldIn.isClientSide() && !player.isCreative() && state.getValue(UNSTABLE))
-            catchFire(state, worldIn, pos, null, null);
+            catchFire(state, worldIn, pos, null, player);
         super.playerWillDestroy(worldIn, pos, state, player);
     }
 

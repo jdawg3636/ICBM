@@ -42,6 +42,7 @@ public class EventBlastNuclear extends AbstractBlastEvent {
         }
 
         NuclearBlastManagerThread blastManagerThread = (NuclearBlastManagerThread) abstractBlastManagerThread;
+        blastManagerThread.setOwner(getOwner());
         blastManagerThread.explosionCenterPosX = this.getBlastPosition().getX() + 0.5;
         blastManagerThread.explosionCenterPosY = this.getBlastPosition().getY() + 0.5;
         blastManagerThread.explosionCenterPosZ = this.getBlastPosition().getZ() + 0.5;

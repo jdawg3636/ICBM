@@ -14,7 +14,7 @@ public class EventBlastFragmentation extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition());
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(this, getBlastPosition());
 
         // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
         if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {
@@ -27,6 +27,7 @@ public class EventBlastFragmentation extends AbstractBlastEvent {
                 if(i * i + j * j > 0.5 * 0.5) continue; // Circle, not a square.
                 EntityShrapnel shrapnelEntity = new EntityShrapnel(getBlastWorld(), getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5, true, getBlastType());
                 shrapnelEntity.setDeltaMovement(i, getBlastWorld().random.nextFloat(), j);
+                shrapnelEntity.setOwner(getOwner());
                 getBlastWorld().addFreshEntity(shrapnelEntity);
             }
         }

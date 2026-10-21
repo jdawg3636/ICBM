@@ -27,6 +27,7 @@ public class EventBlastChemical extends AbstractBlastEvent {
             entity.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
             entity.ticksRemaining = ICBMReference.COMMON_CONFIG.getChemicalBlastLingerDuration();
             entity.blastType = getBlastType();
+            entity.setOwner(getOwner());
             getBlastWorld().addFreshEntity(entity);
             return true;
         }

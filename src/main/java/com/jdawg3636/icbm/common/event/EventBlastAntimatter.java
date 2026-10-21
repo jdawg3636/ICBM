@@ -7,12 +7,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.server.ServerWorld;
 
 public class EventBlastAntimatter extends AbstractBlastEvent {
@@ -47,7 +45,7 @@ public class EventBlastAntimatter extends AbstractBlastEvent {
                 // If living, deal explosion damage
                 if(targetEntity instanceof LivingEntity) {
                     LivingEntity livingEntity = (LivingEntity) targetEntity;
-                    livingEntity.hurt(DamageSource.explosion((Explosion) null /* todo - chain of blame */), Float.MAX_VALUE);
+                    livingEntity.hurt(getDamageSource(), Float.MAX_VALUE);
                 }
                 // Otherwise, just kill
                 else {

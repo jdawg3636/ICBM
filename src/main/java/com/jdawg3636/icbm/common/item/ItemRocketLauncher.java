@@ -63,6 +63,7 @@ public class ItemRocketLauncher extends ShootableItem {
                 entity.updateMissileData(new BlockPos(sourcePosX, sourcePosY, sourcePosZ), new BlockPos(destPosX, destPosY, destPosZ), null, totalFlightTicks, MissileSourceType.ROCKET_LAUNCHER);
                 final Vector3d initialPosition = entity.getPathFunction().apply(1);
                 final Vector3d initialRotation = entity.getGradientFunction().apply(initialPosition);
+                entity.setOwner(player);
                 entity.addEntityToLevel(initialPosition, initialRotation);
                 boolean successfulLaunch = entity.launchMissile();
 

@@ -122,6 +122,7 @@ public class SonicBlastManagerThread extends AbstractBlastManagerThread {
     // Deserialization
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
+        super.deserializeNBT(nbt);
         explosionCenterPosX   = nbt.getDouble("explosion_center_pos_x");
         explosionCenterPosY   = nbt.getDouble("explosion_center_pos_y");
         explosionCenterPosZ   = nbt.getDouble("explosion_center_pos_z");

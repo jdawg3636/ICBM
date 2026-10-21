@@ -43,6 +43,7 @@ public class EventBlastSonic extends AbstractBlastEvent {
         }
 
         SonicBlastManagerThread blastManagerThread = (SonicBlastManagerThread) abstractBlastManagerThread;
+        blastManagerThread.setOwner(getOwner());
         blastManagerThread.explosionCenterPosX = getBlastPosition().getX() + 0.5;
         blastManagerThread.explosionCenterPosY = getBlastPosition().getY() + 0.5;
         blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ() + 0.5;

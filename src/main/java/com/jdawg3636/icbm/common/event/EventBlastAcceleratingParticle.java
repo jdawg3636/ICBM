@@ -68,7 +68,7 @@ public class EventBlastAcceleratingParticle extends AbstractBlastEvent {
                 getParticleAccelerator().tryProduceResult(recipe.getResultItem());
             }
         });
-        ICBMBlastEventUtil.doVanillaExplosion(getBlastWorld(), getBlastPosition(), 1F);
+        ICBMBlastEventUtil.doVanillaExplosion(this, 1F);
         return true;
     }
 

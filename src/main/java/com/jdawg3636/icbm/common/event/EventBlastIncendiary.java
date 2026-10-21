@@ -20,7 +20,7 @@ public class EventBlastIncendiary extends AbstractBlastEvent {
     public boolean executeBlast() {
 
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition());
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(this, getBlastPosition());
 
         // Early return if the explosion epicenter is inside an explosion-resistant fluid (ex. lava, water)
         if(getBlastWorld().getBlockState(getBlastPosition()).getFluidState().getExplosionResistance() > 0) {

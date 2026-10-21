@@ -6,6 +6,7 @@ import com.jdawg3636.icbm.common.block.launcher_platform.TileLauncherPlatform;
 import com.jdawg3636.icbm.common.block.machine.AbstractBlockMachine;
 import com.jdawg3636.icbm.common.block.multiblock.AbstractBlockMulti;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -67,7 +68,7 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
         return this.getBlockPos();
     }
 
-    public boolean launchMissile() {
+    public boolean launchMissile(@Nullable LivingEntity owner) {
         if(level == null) return false;
         // Find Launcher Platform pos/state/tile
         Vector3i offsetFromPanelToPlatform = getBlockState().getValue(BlockLauncherControlPanel.FACING).getOpposite().getNormal();
@@ -104,6 +105,7 @@ public abstract class TileLauncherControlPanel extends TileEntity implements ITi
         );
         // Perform launch
         return ((TileLauncherPlatform)platformTile).launchMissile(
+                owner,
                 platformPos,
                 targetPos,
                 Math.max(level.getHeight() * 1.5F, getBlockPos().getY() + 128F),

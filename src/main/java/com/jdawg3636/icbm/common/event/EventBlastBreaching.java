@@ -31,7 +31,7 @@ public class EventBlastBreaching extends AbstractBlastEvent {
             if(getBlastWorld().getBlockState(currentPos).getBlock().getExplosionResistance() > Blocks.OBSIDIAN.getExplosionResistance()) {
                 break;
             }
-            ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), currentPos, 2.5F);
+            ICBMBlastEventUtil.doVanillaExplosionServerOnly(this, currentPos, 2.5F);
             currentPos = currentPos.offset(getBlastDirection().getNormal());
             --depth;
         }

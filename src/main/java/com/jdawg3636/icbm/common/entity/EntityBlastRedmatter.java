@@ -16,7 +16,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -195,7 +194,7 @@ public class EntityBlastRedmatter extends EntityBlastLingering {
     public void killEntityInCenter(Entity entity) {
         if(entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) entity;
-            livingEntity.hurt(DamageSource.explosion((Explosion) null /* todo - chain of blame */), 20F);
+            livingEntity.hurt(DamageSource.explosion(getOwner()), 20F);
         }
         else {
             entity.kill();

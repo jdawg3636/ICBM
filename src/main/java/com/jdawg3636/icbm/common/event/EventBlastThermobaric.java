@@ -14,7 +14,7 @@ public class EventBlastThermobaric extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition(), (float)ICBMReference.COMMON_CONFIG.getBlastRadiusThermobaric());
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(this, getBlastPosition(), (float)ICBMReference.COMMON_CONFIG.getBlastRadiusThermobaric());
         return true;
     }
 

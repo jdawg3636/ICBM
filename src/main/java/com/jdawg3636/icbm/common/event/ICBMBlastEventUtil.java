@@ -67,23 +67,18 @@ public class ICBMBlastEventUtil {
     }
 
     public static void doVanillaExplosion(AbstractBlastEvent event, float explosionPower) {
-        doVanillaExplosion(event.getBlastWorld(), event.getBlastPosition().getX() + 0.5, event.getBlastPosition().getY() + 0.5, event.getBlastPosition().getZ() + 0.5, explosionPower);
+        event.getBlastWorld().explode(event.getBlastSource(), event.getDamageSource(), null, event.getBlastPosition().getX() + 0.5, event.getBlastPosition().getY() + 0.5, event.getBlastPosition().getZ() + 0.5, explosionPower, false, Explosion.Mode.BREAK);
     }
 
-    public static void doVanillaExplosion(ServerWorld level, BlockPos blockPos, float explosionPower) {
-        level.explode(null, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, explosionPower, Explosion.Mode.BREAK);
+    public static void doVanillaExplosionServerOnly(AbstractBlastEvent event, BlockPos blockPos, float explosionPower) {
+        Explosion explosion = new Explosion(event.getBlastWorld(), event.getBlastSource(), event.getDamageSource(), null, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, explosionPower, false, Explosion.Mode.BREAK);
+        if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(event.getBlastWorld(), explosion)) return;
+        explosion.explode();
+        explosion.finalizeExplosion(false);
     }
 
-    public static void doVanillaExplosion(ServerWorld level, double posX, double posY, double posZ, float explosionPower) {
-        level.explode(null, posX, posY, posZ, explosionPower, Explosion.Mode.BREAK);
-    }
-
-    public static void doVanillaExplosionServerOnly(ServerWorld level, BlockPos blockPos) {
-        doVanillaExplosionServerOnly(level, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, 4.0F);
-    }
-
-    public static void doVanillaExplosionServerOnly(ServerWorld level, BlockPos blockPos, float explosionPower) {
-        doVanillaExplosionServerOnly(level, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, explosionPower);
+    public static void doVanillaExplosionServerOnly(AbstractBlastEvent event, BlockPos blockPos) {
+        doVanillaExplosionServerOnly(event, blockPos, 4.0F);
     }
 
     public static void doVanillaExplosionServerOnly(ServerWorld level, double posX, double posY, double posZ, float explosionPower) {
@@ -93,10 +88,6 @@ public class ICBMBlastEventUtil {
         }
         explosion.explode();
         explosion.finalizeExplosion(false);
-    }
-
-    public static void doVanillaExplosionParticlesAndSound(ServerWorld level, double x, double y, double z) {
-        doVanillaExplosionParticlesAndSound(level, x, y, z, 1.0F);
     }
 
     public static void doVanillaExplosionParticlesAndSound(ServerWorld level, double x, double y, double z, float volume) {
@@ -143,7 +134,7 @@ public class ICBMBlastEventUtil {
         final double explosionCenterPosX = blastEvent.getBlastPosition().getX() + 0.5;
         final double explosionCenterPosY = blastEvent.getBlastPosition().getY() + 0.5;
         final double explosionCenterPosZ = blastEvent.getBlastPosition().getZ() + 0.5;
-        ICBMBlastEventUtil.doExplosionDamageAndKnockback(blastEvent.getBlastWorld(), new Vector3d(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ), null /* todo: pass specialized DamageSource with LivingEntity to blame */, radius);
+        ICBMBlastEventUtil.doExplosionDamageAndKnockback(blastEvent.getBlastWorld(), new Vector3d(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ), blastEvent.getDamageSource(), radius);
     }
 
     // Adapted from a portion of net.minecraft.world.Explosion::explode (MC 1.16.5, MCP + Parchment Mappings)

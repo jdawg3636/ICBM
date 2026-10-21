@@ -54,8 +54,8 @@ public class ExothermicBlastManagerThread extends RaytracedBlastManagerThread {
                     } catch (Exception ignored) {/* Using try/catch just in case the null-valued explosion parameter causes any issues */}
                 }
 
-                // Run Incendiary Blast Routine (No event firing - call directly)
-                (new EventBlastIncendiary(new BlockPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ), level, AbstractBlastEvent.Type.EXPLOSIVES, Direction.DOWN)).executeBlast();
+                // Run Incendiary Blast Routine
+                AbstractBlastEvent.fire(EventBlastIncendiary::new, AbstractBlastEvent.Type.EXPLOSIVES, level, new BlockPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ), Direction.DOWN, null, getOwner(level));
 
             }
         };

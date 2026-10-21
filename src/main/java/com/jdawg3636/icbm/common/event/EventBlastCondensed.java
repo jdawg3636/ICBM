@@ -14,7 +14,7 @@ public class EventBlastCondensed extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition(), (getBlastType() == AbstractBlastEvent.Type.GRENADE ? 4/(float)7 : 1F) * (float)ICBMReference.COMMON_CONFIG.getBlastRadiusCondensed());
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(this, getBlastPosition(), (getBlastType() == AbstractBlastEvent.Type.GRENADE ? 4/(float)7 : 1F) * (float)ICBMReference.COMMON_CONFIG.getBlastRadiusCondensed());
         return true;
     }
 

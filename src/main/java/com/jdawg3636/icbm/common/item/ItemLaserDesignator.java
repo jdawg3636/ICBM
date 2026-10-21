@@ -79,7 +79,7 @@ public class ItemLaserDesignator extends ItemFrequency {
                 ((ITileLaunchControlPanel)blockEntityInLevel).setTargetX(target.x);
                 ((ITileLaunchControlPanel)blockEntityInLevel).setTargetY(target.y);
                 ((ITileLaunchControlPanel)blockEntityInLevel).setTargetZ(target.z);
-                ITileLaunchControlPanel.MissileRemoteLaunchResult launchResult = ((ITileLaunchControlPanel)blockEntityInLevel).launchMissileUsingFrequency(itemStackFrequency);
+                ITileLaunchControlPanel.MissileRemoteLaunchResult launchResult = ((ITileLaunchControlPanel)blockEntityInLevel).launchMissileUsingFrequency(itemStackFrequency, player);
                 BlockPos blockPos = blockEntityInLevel.getBlockPos();
                 switch (launchResult) {
                     case SUCCESSFUL:

@@ -72,7 +72,7 @@ public class ItemRemoteDetonator extends ItemFrequency {
         player.sendMessage(new TranslationTextComponent("message." + ICBMReference.MODID + ".remote_detonator.launched", itemStackFrequency).withStyle(TextFormatting.GRAY).withStyle(TextFormatting.ITALIC), Util.NIL_UUID);
         for (TileEntity blockEntityInLevel : level.blockEntityList) {
             if(blockEntityInLevel instanceof ITileLaunchControlPanel && ((ITileLaunchControlPanel)blockEntityInLevel).getRadioFrequency() == itemStackFrequency) {
-                ITileLaunchControlPanel.MissileRemoteLaunchResult launchResult = ((ITileLaunchControlPanel)blockEntityInLevel).launchMissileUsingFrequency(itemStackFrequency);
+                ITileLaunchControlPanel.MissileRemoteLaunchResult launchResult = ((ITileLaunchControlPanel)blockEntityInLevel).launchMissileUsingFrequency(itemStackFrequency, player);
                 BlockPos blockPos = blockEntityInLevel.getBlockPos();
                 switch (launchResult) {
                     case SUCCESSFUL:

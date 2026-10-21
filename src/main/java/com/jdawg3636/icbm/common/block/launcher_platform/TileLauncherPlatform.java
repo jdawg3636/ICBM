@@ -10,6 +10,7 @@ import com.jdawg3636.icbm.common.item.ItemMissile;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
@@ -98,6 +99,10 @@ public class TileLauncherPlatform extends TileMachine {
     }
 
     public boolean launchMissile(BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
+        return launchMissile(null, sourcePos, destPos, peakHeight, totalFlightTicks);
+    }
+
+    public boolean launchMissile(@Nullable LivingEntity owner, BlockPos sourcePos, BlockPos destPos, float peakHeight, int totalFlightTicks) {
         return removeMissileItemWithAction((itemStack, entity) -> {
             assert level != null;
             if(entity == null) return false;
@@ -108,6 +113,7 @@ public class TileLauncherPlatform extends TileMachine {
                     .orElse(false);
             if(!hasEnoughFuel) return false;
             entity.updateMissileData(sourcePos, destPos, peakHeight, totalFlightTicks, getMissileSourceType());
+            entity.setOwner(owner);
             if(entity.launchMissile()) {
                 this.level.playSound((PlayerEntity) null, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), SoundEventReg.EFFECT_MISSILE_LAUNCH.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
                 ICBMReference.logger().printf(Level.INFO, "Launching Missile '%s' from (%s, %s, %s) to (%s, %s, %s) with peak height '%s' and '%s' ticks of flight time.", entity.getName().getString(), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), destPos.getX(), destPos.getY(), destPos.getZ(), peakHeight, totalFlightTicks);

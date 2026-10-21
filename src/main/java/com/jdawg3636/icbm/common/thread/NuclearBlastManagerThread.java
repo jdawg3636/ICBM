@@ -34,6 +34,7 @@ public class NuclearBlastManagerThread extends RaytracedBlastManagerThread {
                 entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
                 entity.ticksRemaining = ICBMReference.COMMON_CONFIG.getNuclearBlastRadiationLingerDuration();
                 entity.radius = radius;
+                entity.setOwner(getOwner(level));
                 level.addFreshEntity(entity);
             }
         };

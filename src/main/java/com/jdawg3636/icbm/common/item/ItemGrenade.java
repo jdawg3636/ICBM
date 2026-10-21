@@ -50,6 +50,7 @@ public class ItemGrenade extends Item {
             if(grenade != null) {
                 grenade.moveTo(entityLiving.getX(), entityLiving.getY() + entityLiving.getEyeHeight() * 0.8, entityLiving.getZ(), entityLiving.getRotationVector().y, entityLiving.getRotationVector().x);
                 grenade.shootFromRotation(entityLiving, entityLiving.getRotationVector().x - 20, entityLiving.getRotationVector().y, 0.0F, throwEnergy, 1.0F);
+                grenade.setOwner(entityLiving);
                 world.addFreshEntity(grenade);
                 if (!(entityLiving instanceof PlayerEntity && ((PlayerEntity) entityLiving).isCreative())) {
                     itemStack.shrink(1);

@@ -13,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -108,6 +109,10 @@ public class EntityMissile extends Entity {
 
     public Optional<LogicalMissile> getLogicalMissile() {
         return this.getMissileDirector().resolve().flatMap(md -> md.lookupLogicalMissile(this.simulatedMissileUUID));
+    }
+
+    public void setOwner(@Nullable LivingEntity owner) {
+        getLogicalMissile().ifPresent(missile -> missile.setOwner(owner));
     }
 
     public boolean launchMissile() {

@@ -30,6 +30,7 @@ public class EventBlastEnder extends AbstractBlastEvent {
         );
         entityLingeringBlast.blastType = getBlastType();
         entityLingeringBlast.setPos(getBlastPosition().getX() + 0.5, getBlastPosition().getY() + 0.5, getBlastPosition().getZ() + 0.5);
+        entityLingeringBlast.setOwner(getOwner());
         getBlastWorld().addFreshEntity(entityLingeringBlast);
         return true;
     }

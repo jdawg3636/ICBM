@@ -27,6 +27,7 @@ public class EventBlastRedmatter extends AbstractBlastEvent {
         if(entity != null) {
             entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
             // Spawn Entity
+            entity.setOwner(getOwner());
             level.addFreshEntity(entity);
         }
 

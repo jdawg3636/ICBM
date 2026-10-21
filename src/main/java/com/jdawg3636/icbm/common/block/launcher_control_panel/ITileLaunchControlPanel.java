@@ -2,10 +2,13 @@ package com.jdawg3636.icbm.common.block.launcher_control_panel;
 
 import com.jdawg3636.icbm.common.block.ITileHasRadioFrequency;
 import com.jdawg3636.icbm.common.item.ItemSignalDisruptor;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public interface ITileLaunchControlPanel extends ITileHasRadioFrequency {
 
@@ -31,10 +34,16 @@ public interface ITileLaunchControlPanel extends ITileHasRadioFrequency {
     // Have to use different name, otherwise implementation gets remapped and the interface doesn't, causing java.lang.AbstractMethodError at runtime
     BlockPos deobf$getBlockPos();
 
-    boolean launchMissile();
+    default boolean launchMissile() { return launchMissile(null); }
+
+    boolean launchMissile(@Nullable LivingEntity owner);
 
     // Don't want to use an abstract class so can't mark this as protected.
     default MissileRemoteLaunchResult launchMissileUsingFrequency(int frequency) {
+        return launchMissileUsingFrequency(frequency, null);
+    }
+
+    default MissileRemoteLaunchResult launchMissileUsingFrequency(int frequency, @Nullable LivingEntity owner) {
         // Check Supported
         if(this.getRadioFrequency() == 0) {
             return MissileRemoteLaunchResult.UNSUPPORTED;
@@ -54,7 +63,7 @@ public interface ITileLaunchControlPanel extends ITileHasRadioFrequency {
             return MissileRemoteLaunchResult.DISRUPTED;
         }
         // Launch missile
-        boolean successful = this.launchMissile();
+        boolean successful = this.launchMissile(owner);
         return successful ? MissileRemoteLaunchResult.SUCCESSFUL : MissileRemoteLaunchResult.FAILED_LAUNCH;
     }
 

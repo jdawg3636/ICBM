@@ -2,6 +2,8 @@ package com.jdawg3636.icbm.common.event;
 
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -36,7 +38,9 @@ public abstract class AbstractBlastEvent extends Event {
     private final AbstractBlastEvent.Type blastType;
     private final Direction blastDirection;
     @Nullable
-    private final Entity blastSource;
+    private Entity blastSource;
+    @Nullable
+    private LivingEntity owner;
     private final Supplier<SoundEvent> soundEvent;
     private final float soundEventRangeMultiplier; // 1.0F = Radius of 16 blocks
 
@@ -62,7 +66,7 @@ public abstract class AbstractBlastEvent extends Event {
         this.blastWorld = blastWorld;
         this.blastType = blastType;
         this.blastDirection = blastDirection;
-        this.blastSource = null; // TODO use this!
+        this.blastSource = null;
         this.soundEvent = soundEvent;
         this.soundEventRangeMultiplier = soundEventRangeMultiplier;
     }
@@ -75,7 +79,13 @@ public abstract class AbstractBlastEvent extends Event {
      */
     @SuppressWarnings("UnusedReturnValue")
     public static boolean fire(BlastEventProvider blastEventProvider, AbstractBlastEvent.Type blastType, ServerWorld blastWorld, BlockPos blastPosition, Direction blastDirection) {
+        return fire(blastEventProvider, blastType, blastWorld, blastPosition, blastDirection, null, null);
+    }
+
+    public static boolean fire(BlastEventProvider blastEventProvider, Type blastType, ServerWorld blastWorld, BlockPos blastPosition, Direction blastDirection, @Nullable Entity source, @Nullable LivingEntity owner) {
         AbstractBlastEvent blastEvent = blastEventProvider.getBlastEvent(blastPosition, blastWorld, blastType, blastDirection);
+        blastEvent.blastSource = source;
+        blastEvent.owner = owner;
         boolean eventCancelled = MinecraftForge.EVENT_BUS.post(blastEvent);
         boolean success = false;
         if(!eventCancelled) {
@@ -109,6 +119,16 @@ public abstract class AbstractBlastEvent extends Event {
         return blastDirection;
     }
 
+    @Nullable
+    public LivingEntity getOwner() {
+        return owner;
+    }
+
+    public DamageSource getDamageSource() {
+        return DamageSource.explosion(owner);
+    }
+
+    @Nullable
     public Entity getBlastSource() {
         return blastSource;
     }

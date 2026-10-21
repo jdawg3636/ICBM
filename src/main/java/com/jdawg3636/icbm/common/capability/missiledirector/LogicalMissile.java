@@ -9,6 +9,8 @@ import com.jdawg3636.icbm.common.item.ItemMissile;
 import com.jdawg3636.icbm.common.reg.BlastEventReg;
 import com.jdawg3636.icbm.common.reg.ItemReg;
 import com.jdawg3636.icbm.common.reg.SoundEventReg;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -25,6 +27,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.RegistryObject;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -41,6 +44,26 @@ public class LogicalMissile {
     public int totalFlightTicks;
     public Function<Integer, Vector3d> pathFunction = null;
     public Function<Vector3d, Vector3d> gradientFunction = null;
+
+    @Nullable
+    private UUID ownerUUID;
+    @Nullable
+    private LivingEntity owner;
+
+    public void setOwner(@Nullable LivingEntity owner) {
+        this.owner = owner;
+        this.ownerUUID = owner == null ? null : owner.getUUID();
+    }
+
+    @Nullable
+    public LivingEntity getOwner() {
+        if (owner == null && ownerUUID != null) {
+            Entity entity = level.getEntity(ownerUUID);
+            if (entity == null) entity = level.getServer().getPlayerList().getPlayer(ownerUUID);
+            if (entity instanceof LivingEntity) owner = (LivingEntity) entity;
+        }
+        return owner;
+    }
 
     public int ticksSinceLaunch = 0;
     public boolean shouldExplode = false;
@@ -355,12 +378,13 @@ public class LogicalMissile {
     }
 
     public void explode(ServerWorld level) {
-        AbstractBlastEvent.fire(blastEventProvider.get(), missileSourceType.getResultantBlastType(), level, blockPosition(), getDirection());
+        AbstractBlastEvent.fire(blastEventProvider.get(), missileSourceType.getResultantBlastType(), level, blockPosition(), getDirection(), getPuppetEntity().orElse(null), getOwner());
         this.kill();
     }
 
     public CompoundNBT save(CompoundNBT compound) {
 
+        if (ownerUUID != null) compound.putUUID("Owner", ownerUUID);
         compound.putString("BlastEvent", blastEventProvider.getId().toString());
         compound.putString("MissileItem", missileItem.getId().toString());
 
@@ -393,6 +417,8 @@ public class LogicalMissile {
 
     public void load(CompoundNBT compound) {
 
+        ownerUUID = compound.hasUUID("Owner") ? compound.getUUID("Owner") : null;
+        owner = null;
         this.blastEventProvider = BlastEventReg.getRegistryObjectFromResourceLocation(new ResourceLocation(compound.getString("BlastEvent")));
         this.missileItem = ItemReg.getRegistryObjectFromResourceLocation(new ResourceLocation(compound.getString("MissileItem")));
 

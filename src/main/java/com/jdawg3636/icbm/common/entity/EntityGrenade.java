@@ -4,6 +4,7 @@ import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.Item;
@@ -51,7 +52,7 @@ public class EntityGrenade extends ThrowableEntity implements IRendersAsItem {
         if (fuse <= 0) {
             remove();
             if(!level.isClientSide()) {
-                AbstractBlastEvent.fire(blastEventProvider.get(), AbstractBlastEvent.Type.GRENADE, (ServerWorld) level, blockPosition(), getDirection());
+                AbstractBlastEvent.fire(blastEventProvider.get(), AbstractBlastEvent.Type.GRENADE, (ServerWorld) level, blockPosition(), getDirection(), this, getOwner() instanceof LivingEntity ? (LivingEntity) getOwner() : null);
             }
         } else {
             updateInWaterStateAndDoFluidPushing();
@@ -64,11 +65,13 @@ public class EntityGrenade extends ThrowableEntity implements IRendersAsItem {
 
     @Override
     protected void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putInt("Fuse", fuse);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         fuse = compound.getInt("Fuse");
     }
 

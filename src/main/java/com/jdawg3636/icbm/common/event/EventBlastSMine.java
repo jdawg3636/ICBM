@@ -14,7 +14,7 @@ public class EventBlastSMine extends AbstractBlastEvent {
     @Override
     public boolean executeBlast() {
         ICBMBlastEventUtil.doBlastSoundAndParticles(this);
-        ICBMBlastEventUtil.doVanillaExplosionServerOnly(getBlastWorld(), getBlastPosition(), (float)ICBMReference.COMMON_CONFIG.getBlastRadiusSMine());
+        ICBMBlastEventUtil.doVanillaExplosionServerOnly(this, getBlastPosition(), (float)ICBMReference.COMMON_CONFIG.getBlastRadiusSMine());
         return true;
     }
 

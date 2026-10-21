@@ -29,6 +29,7 @@ public class EventBlastNightmare extends AbstractBlastEvent {
         EntityBlastNightmare entity = EntityReg.BLAST_NIGHTMARE.get().create(level);
         if(entity != null) {
             entity.setPos(explosionCenterPosX, explosionCenterPosY, explosionCenterPosZ);
+            entity.setOwner(getOwner());
             level.addFreshEntity(entity);
         }
 

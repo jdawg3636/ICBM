@@ -3,11 +3,13 @@ package com.jdawg3636.icbm.common.entity;
 import com.jdawg3636.icbm.common.event.AbstractBlastEvent;
 import com.jdawg3636.icbm.common.event.BlastEventRegistryEntry;
 import com.jdawg3636.icbm.mixin.accessors.ITNTEntityAccessor;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.RayTraceResult;
@@ -18,6 +20,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class EntityPrimedExplosives extends TNTEntity {
 
@@ -49,8 +52,42 @@ public class EntityPrimedExplosives extends TNTEntity {
     @Override
     protected void explode() {
         if(!level.isClientSide()) {
-            AbstractBlastEvent.fire(blastEventProvider.get(), AbstractBlastEvent.Type.EXPLOSIVES, (ServerWorld) level, blockPosition(), blastDirection);
+            AbstractBlastEvent.fire(blastEventProvider.get(), AbstractBlastEvent.Type.EXPLOSIVES, (ServerWorld) level, blockPosition(), blastDirection, this, getOwner());
         }
+    }
+
+    @Nullable
+    private UUID ownerUUID;
+
+    @Override
+    @Nullable
+    public LivingEntity getOwner() {
+        LivingEntity owner = super.getOwner();
+        if (owner == null && ownerUUID != null && level instanceof ServerWorld) {
+            Entity entity = ((ServerWorld) level).getEntity(ownerUUID);
+            if (entity == null) entity = ((ServerWorld) level).getServer().getPlayerList().getPlayer(ownerUUID);
+            if (entity instanceof LivingEntity) {
+                owner = (LivingEntity) entity;
+                ((ITNTEntityAccessor) this).setOwner(owner);
+            }
+        }
+        return owner;
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundNBT nbt) {
+        super.addAdditionalSaveData(nbt);
+        LivingEntity owner = getOwner();
+        if (owner != null) ownerUUID = owner.getUUID();
+        if (ownerUUID != null) nbt.putUUID("Owner", ownerUUID);
+        nbt.putInt("BlastDirection", blastDirection.get3DDataValue());
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundNBT nbt) {
+        super.readAdditionalSaveData(nbt);
+        ownerUUID = nbt.hasUUID("Owner") ? nbt.getUUID("Owner") : null;
+        blastDirection = Direction.from3DDataValue(nbt.getInt("BlastDirection"));
     }
 
     @Nonnull

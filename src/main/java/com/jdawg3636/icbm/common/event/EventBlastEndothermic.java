@@ -42,6 +42,7 @@ public class EventBlastEndothermic extends AbstractBlastEvent {
         }
 
         EndothermicBlastManagerThread blastManagerThread = (EndothermicBlastManagerThread) abstractBlastManagerThread;
+        blastManagerThread.setOwner(getOwner());
         blastManagerThread.explosionCenterPosX = getBlastPosition().getX() + 0.5;
         blastManagerThread.explosionCenterPosY = getBlastPosition().getY() + 0.5;
         blastManagerThread.explosionCenterPosZ = getBlastPosition().getZ() + 0.5;
