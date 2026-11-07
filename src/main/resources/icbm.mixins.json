@@ -24,7 +24,8 @@
     "MixinCommonBoatItem",
     "MixinCommonCustomizableFluidFlowDirections",
     "MixinCommonEntityAcceleratingParticleCollisionHook",
-    "MixinCommonEntityMissileCollisionHook"
+    "MixinCommonEntityMissileCollisionHook",
+    "MixinCommonPistonDuplicationPatch"
   ],
   "client": [
     "MixinClientForceOfflineSocialInteractions",

@@ -54,6 +54,7 @@ public class ICBMBlastEventUtil {
             event.getBlastWorld().playSound((PlayerEntity) null, event.getBlastPosition().getX() + 0.5, event.getBlastPosition().getY() + 0.5, event.getBlastPosition().getZ() + 0.5, soundEvent.get(), SoundCategory.BLOCKS, event.getSoundEventRangeMultiplier(), 1.0F);
         }
     }
+
     public static void doBlastParticles(AbstractBlastEvent event) {
         // Loosely Based on net.minecraft.world.Explosion::finalizeExplosion (MCP Class Names and Package Structure, Official Method/Field Mappings, Minecraft 1.16.5)
         if (!event.getBlastWorld().isClientSide) {

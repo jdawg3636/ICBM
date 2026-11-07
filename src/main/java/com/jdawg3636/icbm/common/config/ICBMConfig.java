@@ -4,6 +4,14 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ICBMConfig {
 
+    public enum TNTDuplicationPatchMode {
+        UNPATCHED,
+        FULLY_PATCHED,
+        NON_VANILLA_ONLY,
+        BALLISTIC_REDUX_ONLY
+    }
+
+
     /**
      * Client specific configuration - only loaded clientside
      * CURRENTLY UNUSED - NEED TO UNCOMMENT REGISTRATION IN MOD CLASS CONSTRUCTOR BEFORE USE!
@@ -136,8 +144,20 @@ public class ICBMConfig {
 
         private final ForgeConfigSpec.BooleanValue camouflageFlammable;
 
+        private final ForgeConfigSpec.EnumValue<TNTDuplicationPatchMode> tntDuplicationPatchMode;
+
+        public TNTDuplicationPatchMode getTntDuplicationPatchMode() {
+            return tntDuplicationPatchMode.get();
+        }
+
         public Common() {
             ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+            this.tntDuplicationPatchMode = builder
+                    .comment("Prevents piston TNT duplication by removing protected source blocks before piston updates.",
+                            "UNPATCHED: vanilla behavior. FULLY_PATCHED: protect all blocks.",
+                            "NON_VANILLA_ONLY: protect blocks outside the minecraft namespace (default).",
+                            "BALLISTIC_REDUX_ONLY: protect only Ballistic Redux explosive blocks.")
+                    .defineEnum("tntDuplicationPatchMode", TNTDuplicationPatchMode.NON_VANILLA_ONLY);
             this.maxBlastManagerThreadCountPerLevel = builder
                     .comment("",
                             "Defines the maximum number of blast manager threads that can be simultaneously active per ",
