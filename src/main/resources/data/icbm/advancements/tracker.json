@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:tracker"
+    },
+    "title": {
+      "translate": "advancements.icbm.tracker.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.tracker.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tracker": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:tracker"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "tracker"
+    ]
+  ]
+}

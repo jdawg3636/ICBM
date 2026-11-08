@@ -1,0 +1,57 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:concrete_glass"
+    },
+    "title": {
+      "translate": "advancements.icbm.glass.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.glass.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "concrete_glass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:concrete_glass"
+          }
+        ]
+      }
+    },
+    "compact_glass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:compact_glass"
+          }
+        ]
+      }
+    },
+    "reinforced_glass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:reinforced_glass"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "concrete_glass",
+      "compact_glass",
+      "reinforced_glass"
+    ]
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:raw_rubber"
+    },
+    "title": {
+      "translate": "advancements.icbm.raw_rubber.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.raw_rubber.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "raw_rubber": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:raw_rubber"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "raw_rubber"
+    ]
+  ]
+}

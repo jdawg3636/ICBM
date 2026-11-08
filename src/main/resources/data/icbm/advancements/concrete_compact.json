@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:concrete_compact"
+    },
+    "title": {
+      "translate": "advancements.icbm.concrete_compact.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.concrete_compact.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "concrete_compact": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:concrete_compact"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "concrete_compact"
+    ]
+  ]
+}

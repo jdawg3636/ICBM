@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:radar_station"
+    },
+    "title": {
+      "translate": "advancements.icbm.radar_station.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.radar_station.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "radar_station": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:radar_station"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "radar_station"
+    ]
+  ]
+}

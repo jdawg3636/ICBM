@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:reinforced_rail"
+    },
+    "title": {
+      "translate": "advancements.icbm.reinforced_rail.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.reinforced_rail.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "reinforced_rail": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:reinforced_rail"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "reinforced_rail"
+    ]
+  ]
+}

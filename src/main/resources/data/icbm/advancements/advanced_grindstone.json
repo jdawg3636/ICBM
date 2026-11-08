@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:advanced_grindstone"
+    },
+    "title": {
+      "translate": "advancements.icbm.advanced_grindstone.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.advanced_grindstone.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "advanced_grindstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:advanced_grindstone"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "advanced_grindstone"
+    ]
+  ]
+}

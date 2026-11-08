@@ -1,0 +1,288 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:minecart_explosive"
+    },
+    "title": {
+      "translate": "advancements.icbm.i_like_trains.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.i_like_trains.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "minecart_explosive": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_explosive"
+          }
+        ]
+      }
+    },
+    "minecart_shrapnel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_shrapnel"
+          }
+        ]
+      }
+    },
+    "minecart_incendiary": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_incendiary"
+          }
+        ]
+      }
+    },
+    "minecart_debilitation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_debilitation"
+          }
+        ]
+      }
+    },
+    "minecart_chemical": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_chemical"
+          }
+        ]
+      }
+    },
+    "minecart_anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_anvil"
+          }
+        ]
+      }
+    },
+    "minecart_repulsive": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_repulsive"
+          }
+        ]
+      }
+    },
+    "minecart_attractive": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_attractive"
+          }
+        ]
+      }
+    },
+    "minecart_fragmentation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_fragmentation"
+          }
+        ]
+      }
+    },
+    "minecart_contagion": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_contagion"
+          }
+        ]
+      }
+    },
+    "minecart_sonic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_sonic"
+          }
+        ]
+      }
+    },
+    "minecart_breaching": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_breaching"
+          }
+        ]
+      }
+    },
+    "minecart_rejuvenation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_rejuvenation"
+          }
+        ]
+      }
+    },
+    "minecart_thermobaric": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_thermobaric"
+          }
+        ]
+      }
+    },
+    "minecart_nuclear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_nuclear"
+          }
+        ]
+      }
+    },
+    "minecart_emp": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_emp"
+          }
+        ]
+      }
+    },
+    "minecart_exothermic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_exothermic"
+          }
+        ]
+      }
+    },
+    "minecart_endothermic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_endothermic"
+          }
+        ]
+      }
+    },
+    "minecart_antigravitational": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_antigravitational"
+          }
+        ]
+      }
+    },
+    "minecart_ender": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_ender"
+          }
+        ]
+      }
+    },
+    "minecart_hypersonic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_hypersonic"
+          }
+        ]
+      }
+    },
+    "minecart_antimatter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_antimatter"
+          }
+        ]
+      }
+    },
+    "minecart_redmatter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_redmatter"
+          }
+        ]
+      }
+    },
+    "minecart_nightmare": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:minecart_nightmare"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "minecart_explosive",
+      "minecart_shrapnel",
+      "minecart_incendiary",
+      "minecart_debilitation",
+      "minecart_chemical",
+      "minecart_anvil",
+      "minecart_repulsive",
+      "minecart_attractive",
+      "minecart_fragmentation",
+      "minecart_contagion",
+      "minecart_sonic",
+      "minecart_breaching",
+      "minecart_rejuvenation",
+      "minecart_thermobaric",
+      "minecart_nuclear",
+      "minecart_emp",
+      "minecart_exothermic",
+      "minecart_endothermic",
+      "minecart_antigravitational",
+      "minecart_ender",
+      "minecart_hypersonic",
+      "minecart_antimatter",
+      "minecart_redmatter",
+      "minecart_nightmare"
+    ]
+  ]
+}

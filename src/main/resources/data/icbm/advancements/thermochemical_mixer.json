@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:thermochemical_mixer"
+    },
+    "title": {
+      "translate": "advancements.icbm.thermochemical_mixer.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.thermochemical_mixer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "thermochemical_mixer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:thermochemical_mixer"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "thermochemical_mixer"
+    ]
+  ]
+}

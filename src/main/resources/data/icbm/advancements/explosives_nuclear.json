@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:explosives_nuclear"
+    },
+    "title": {
+      "translate": "advancements.icbm.explosives_nuclear.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.explosives_nuclear.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "explosives_nuclear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:explosives_nuclear"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "explosives_nuclear"
+    ]
+  ]
+}

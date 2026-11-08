@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:uranium_235"
+    },
+    "title": {
+      "translate": "advancements.icbm.uranium_235.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.uranium_235.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "uranium_235": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:uranium_235"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "uranium_235"
+    ]
+  ]
+}

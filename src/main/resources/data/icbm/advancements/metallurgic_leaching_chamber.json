@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:metallurgic_leaching_chamber"
+    },
+    "title": {
+      "translate": "advancements.icbm.metallurgic_leaching_chamber.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.metallurgic_leaching_chamber.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "metallurgic_leaching_chamber": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:metallurgic_leaching_chamber"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "metallurgic_leaching_chamber"
+    ]
+  ]
+}

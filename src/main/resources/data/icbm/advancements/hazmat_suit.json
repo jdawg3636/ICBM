@@ -1,0 +1,68 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:hazmat_mask"
+    },
+    "title": {
+      "translate": "advancements.icbm.hazmat_suit.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.hazmat_suit.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "hazmat_mask": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:hazmat_mask"
+          }
+        ]
+      }
+    },
+    "hazmat_jacket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:hazmat_jacket"
+          }
+        ]
+      }
+    },
+    "hazmat_pants": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:hazmat_pants"
+          }
+        ]
+      }
+    },
+    "hazmat_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:hazmat_boots"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "hazmat_mask",
+      "hazmat_jacket",
+      "hazmat_pants",
+      "hazmat_boots"
+    ]
+  ]
+}

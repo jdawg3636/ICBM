@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:explosives_antigravitational"
+    },
+    "title": {
+      "translate": "advancements.icbm.explosives_antigravitational.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.explosives_antigravitational.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "explosives_antigravitational": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:explosives_antigravitational"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "explosives_antigravitational"
+    ]
+  ]
+}

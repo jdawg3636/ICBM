@@ -1,0 +1,46 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:antimatter_cell"
+    },
+    "title": {
+      "translate": "advancements.icbm.antimatter.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.antimatter.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "antimatter_cell": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:antimatter_cell"
+          }
+        ]
+      }
+    },
+    "antimatter_cell_concentrated": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:antimatter_cell_concentrated"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "antimatter_cell",
+      "antimatter_cell_concentrated"
+    ]
+  ]
+}

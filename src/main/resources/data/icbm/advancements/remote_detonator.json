@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:remote_detonator"
+    },
+    "title": {
+      "translate": "advancements.icbm.remote_detonator.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.remote_detonator.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "remote_detonator": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:remote_detonator"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "remote_detonator"
+    ]
+  ]
+}

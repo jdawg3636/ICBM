@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:ingot_steel"
+    },
+    "title": {
+      "translate": "advancements.icbm.ingot_steel.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.ingot_steel.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "ingot_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:ingot_steel"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "ingot_steel"
+    ]
+  ]
+}

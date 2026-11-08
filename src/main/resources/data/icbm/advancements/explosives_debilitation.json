@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:explosives_debilitation"
+    },
+    "title": {
+      "translate": "advancements.icbm.explosives_debilitation.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.explosives_debilitation.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "explosives_debilitation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:explosives_debilitation"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "explosives_debilitation"
+    ]
+  ]
+}

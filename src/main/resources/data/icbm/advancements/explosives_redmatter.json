@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:explosives_redmatter"
+    },
+    "title": {
+      "translate": "advancements.icbm.explosives_redmatter.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.explosives_redmatter.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "explosives_redmatter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:explosives_redmatter"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "explosives_redmatter"
+    ]
+  ]
+}

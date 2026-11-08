@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:redmatter_cell"
+    },
+    "title": {
+      "translate": "advancements.icbm.redmatter_cell.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.redmatter_cell.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "redmatter_cell": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:redmatter_cell"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "redmatter_cell"
+    ]
+  ]
+}

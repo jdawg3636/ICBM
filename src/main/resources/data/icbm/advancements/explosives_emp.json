@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:explosives_emp"
+    },
+    "title": {
+      "translate": "advancements.icbm.explosives_emp.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.explosives_emp.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "explosives_emp": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:explosives_emp"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "explosives_emp"
+    ]
+  ]
+}

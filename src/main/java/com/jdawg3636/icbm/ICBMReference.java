@@ -5,6 +5,7 @@ import com.jdawg3636.icbm.common.listener.ClientProxy;
 import com.jdawg3636.icbm.common.listener.CommonProxy;
 import com.jdawg3636.icbm.common.reg.ItemReg;
 import com.jdawg3636.icbm.common.reg.ParticleTypeReg;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -77,6 +78,17 @@ public final class ICBMReference {
 
     @CapabilityInject(IEnergyStorage.class)
     public static Capability<IEnergyStorage> FORGE_ENERGY_CAPABILITY;
+
+    public static void awardAdvancement(PlayerEntity player, String id) {
+        if (player instanceof ServerPlayerEntity) {
+            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+            Advancement advancement = serverPlayer.getServer().getAdvancements().getAdvancement(new ResourceLocation(ICBMReference.MODID, id));
+            // Respect datapacks that remove or replace these advancements.
+            if (advancement != null) {
+                serverPlayer.getAdvancements().award(advancement, "completed");
+            }
+        }
+    }
 
     public static void broadcastToChat(IWorldReader level, String message) {
         if (level instanceof ServerWorld) {

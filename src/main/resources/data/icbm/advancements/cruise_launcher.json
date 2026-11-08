@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:cruise_launcher"
+    },
+    "title": {
+      "translate": "advancements.icbm.cruise_launcher.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.cruise_launcher.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "cruise_launcher": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:cruise_launcher"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "cruise_launcher"
+    ]
+  ]
+}

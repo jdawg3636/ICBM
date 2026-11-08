@@ -1,0 +1,57 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:spikes"
+    },
+    "title": {
+      "translate": "advancements.icbm.spikes.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.spikes.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "spikes": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:spikes"
+          }
+        ]
+      }
+    },
+    "spikes_poison": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:spikes_poison"
+          }
+        ]
+      }
+    },
+    "spikes_fire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:spikes_fire"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "spikes",
+      "spikes_poison",
+      "spikes_fire"
+    ]
+  ]
+}

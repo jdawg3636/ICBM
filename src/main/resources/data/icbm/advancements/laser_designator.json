@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:laser_designator"
+    },
+    "title": {
+      "translate": "advancements.icbm.laser_designator.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.laser_designator.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "laser_designator": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:laser_designator"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "laser_designator"
+    ]
+  ]
+}

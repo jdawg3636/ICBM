@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:radar_gun"
+    },
+    "title": {
+      "translate": "advancements.icbm.radar_gun.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.radar_gun.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "radar_gun": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:radar_gun"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "radar_gun"
+    ]
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:launcher_platform_t2"
+    },
+    "title": {
+      "translate": "advancements.icbm.launcher_platform_t2.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.launcher_platform_t2.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "launcher_platform_t2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:launcher_platform_t2"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "launcher_platform_t2"
+    ]
+  ]
+}

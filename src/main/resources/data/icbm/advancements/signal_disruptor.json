@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:signal_disruptor"
+    },
+    "title": {
+      "translate": "advancements.icbm.signal_disruptor.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.signal_disruptor.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "signal_disruptor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:signal_disruptor"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "signal_disruptor"
+    ]
+  ]
+}

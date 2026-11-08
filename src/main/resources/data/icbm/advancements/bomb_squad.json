@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:defuser"
+    },
+    "title": {
+      "translate": "advancements.icbm.bomb_squad.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.bomb_squad.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "completed": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "icbm:root"
+}

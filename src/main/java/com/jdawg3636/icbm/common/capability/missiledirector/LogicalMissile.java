@@ -379,6 +379,13 @@ public class LogicalMissile {
 
     public void explode(ServerWorld level) {
         AbstractBlastEvent.fire(blastEventProvider.get(), missileSourceType.getResultantBlastType(), level, blockPosition(), getDirection(), getPuppetEntity().orElse(null), getOwner());
+        getPuppetEntity().ifPresent(puppet -> {
+            for (Entity passenger : puppet.getPassengers()) {
+                if (passenger instanceof PlayerEntity) {
+                    ICBMReference.awardAdvancement((PlayerEntity) passenger, "down_with_the_ship");
+                }
+            }
+        });
         this.kill();
     }
 

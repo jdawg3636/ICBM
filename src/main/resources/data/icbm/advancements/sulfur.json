@@ -1,0 +1,46 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:ore_sulfur"
+    },
+    "title": {
+      "translate": "advancements.icbm.sulfur.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.sulfur.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "sulfur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:sulfur"
+          }
+        ]
+      }
+    },
+    "ore_sulfur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:ore_sulfur"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "sulfur",
+      "ore_sulfur"
+    ]
+  ]
+}

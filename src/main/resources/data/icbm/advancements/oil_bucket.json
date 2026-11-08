@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:oil_bucket"
+    },
+    "title": {
+      "translate": "advancements.icbm.oil_bucket.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.oil_bucket.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "oil_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:oil_bucket"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "oil_bucket"
+    ]
+  ]
+}

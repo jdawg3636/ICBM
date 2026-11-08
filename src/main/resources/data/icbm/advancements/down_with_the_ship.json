@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:missile_module"
+    },
+    "title": {
+      "translate": "advancements.icbm.down_with_the_ship.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.down_with_the_ship.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "completed": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "icbm:root"
+}

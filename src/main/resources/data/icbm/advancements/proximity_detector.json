@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:proximity_detector"
+    },
+    "title": {
+      "translate": "advancements.icbm.proximity_detector.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.proximity_detector.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "proximity_detector": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:proximity_detector"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "proximity_detector"
+    ]
+  ]
+}

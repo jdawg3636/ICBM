@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:emp_tower"
+    },
+    "title": {
+      "translate": "advancements.icbm.emp_tower.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.emp_tower.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "emp_tower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:emp_tower"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "emp_tower"
+    ]
+  ]
+}

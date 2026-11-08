@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:explosives_incendiary"
+    },
+    "title": {
+      "translate": "advancements.icbm.explosives_incendiary.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.explosives_incendiary.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "explosives_incendiary": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:explosives_incendiary"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "explosives_incendiary"
+    ]
+  ]
+}

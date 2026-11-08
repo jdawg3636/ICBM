@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:rocket_launcher"
+    },
+    "title": {
+      "translate": "advancements.icbm.fire_in_the_hole.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.fire_in_the_hole.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "completed": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "icbm:root"
+}

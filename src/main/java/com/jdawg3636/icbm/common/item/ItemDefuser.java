@@ -54,6 +54,7 @@ public class ItemDefuser extends ItemEnergy {
                     }
                     event.getTarget().spawnAtLocation(toDrop);
                     event.getTarget().kill();
+                    ICBMReference.awardAdvancement(event.getPlayer(), "bomb_squad");
                     event.setCancellationResult(ActionResultType.SUCCESS);
                 }
                 else {

@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:particle_accelerator"
+    },
+    "title": {
+      "translate": "advancements.icbm.particle_accelerator.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.particle_accelerator.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "particle_accelerator": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:particle_accelerator"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "particle_accelerator"
+    ]
+  ]
+}

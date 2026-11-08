@@ -1,0 +1,112 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:grenade_conventional"
+    },
+    "title": {
+      "translate": "advancements.icbm.man_portable.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.man_portable.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "grenade_conventional": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:grenade_conventional"
+          }
+        ]
+      }
+    },
+    "grenade_shrapnel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:grenade_shrapnel"
+          }
+        ]
+      }
+    },
+    "grenade_incendiary": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:grenade_incendiary"
+          }
+        ]
+      }
+    },
+    "grenade_debilitation": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:grenade_debilitation"
+          }
+        ]
+      }
+    },
+    "grenade_chemical": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:grenade_chemical"
+          }
+        ]
+      }
+    },
+    "grenade_anvil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:grenade_anvil"
+          }
+        ]
+      }
+    },
+    "grenade_repulsive": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:grenade_repulsive"
+          }
+        ]
+      }
+    },
+    "grenade_attractive": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:grenade_attractive"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "grenade_conventional",
+      "grenade_shrapnel",
+      "grenade_incendiary",
+      "grenade_debilitation",
+      "grenade_chemical",
+      "grenade_anvil",
+      "grenade_repulsive",
+      "grenade_attractive"
+    ]
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:rocket_launcher"
+    },
+    "title": {
+      "translate": "advancements.icbm.rocket_launcher.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.rocket_launcher.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "rocket_launcher": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:rocket_launcher"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "rocket_launcher"
+    ]
+  ]
+}

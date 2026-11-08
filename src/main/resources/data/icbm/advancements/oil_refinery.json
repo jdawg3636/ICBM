@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:oil_refinery"
+    },
+    "title": {
+      "translate": "advancements.icbm.oil_refinery.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.oil_refinery.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "oil_refinery": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:oil_refinery"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "oil_refinery"
+    ]
+  ]
+}

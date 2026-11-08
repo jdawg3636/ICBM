@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.listener;
 
 import com.jdawg3636.icbm.ICBMReference;
+import com.jdawg3636.icbm.common.advancement.ModIdItemPredicate;
 import com.jdawg3636.icbm.common.block.launcher_control_panel.TileLauncherControlPanel;
 import com.jdawg3636.icbm.common.capability.ICBMCapabilities;
 import com.jdawg3636.icbm.common.capability.blastcontroller.BlastControllerCapabilityProvider;
@@ -67,6 +68,7 @@ public class CommonProxy {
         ICBMNetworking.init();
         ICBMCapabilities.register();
         event.enqueueWork(ICBMRecipeTypes::registerAll);
+        event.enqueueWork(() -> { ModIdItemPredicate.register(); });
 
         // Add mod's sign blocks to the list of valid blocks for the vanilla sign's tileentity so we don't need our own
         event.enqueueWork(() -> {

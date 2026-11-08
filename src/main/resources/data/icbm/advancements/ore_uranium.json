@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:ore_uranium"
+    },
+    "title": {
+      "translate": "advancements.icbm.ore_uranium.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.ore_uranium.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "ore_uranium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:ore_uranium"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "ore_uranium"
+    ]
+  ]
+}

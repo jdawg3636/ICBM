@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "icbm:explosives_thermobaric"
+    },
+    "title": {
+      "translate": "advancements.icbm.explosives_thermobaric.title"
+    },
+    "description": {
+      "translate": "advancements.icbm.explosives_thermobaric.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "explosives_thermobaric": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "icbm:explosives_thermobaric"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "icbm:root",
+  "requirements": [
+    [
+      "explosives_thermobaric"
+    ]
+  ]
+}
