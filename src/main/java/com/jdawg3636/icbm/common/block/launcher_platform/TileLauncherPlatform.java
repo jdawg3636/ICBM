@@ -27,6 +27,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.Level;
 
@@ -41,6 +42,14 @@ import java.util.function.Supplier;
 public class TileLauncherPlatform extends TileMachine {
 
     public static final ITextComponent DEFAULT_NAME = new TranslationTextComponent("gui.icbm.launcher_platform");
+
+    // Rather than hand out the missile ItemStack's LazyOptional for the fluid capability, we want to create our own
+    // LazyOptional that directly references the ItemStack's underlying IFluidHandler. This gives us control over capability
+    // lifecycle and allows us to invalidate the LazyOptional when appropriate, such as when the missile item is swapped.
+    // This prevents cached capabilities (such as fluid pipes connected to our block) from retaining phantom connections
+    // to a missile that is no longer on the platform.
+    private LazyOptional<IFluidHandler> missileFluidCapability = LazyOptional.empty();
+
     public UUID missileEntityID = null;
     public final int tier;
 
@@ -126,6 +135,10 @@ public class TileLauncherPlatform extends TileMachine {
     @Override
     protected void onInventorySlotChanged(int slot, boolean isBeingDestroyed) {
         super.onInventorySlotChanged(slot, isBeingDestroyed);
+
+        // Disconnect fluid capability passthrough
+        replaceAndInvalidateFluidPassthroughCapability();
+
         itemHandlerLazyOptional.ifPresent((itemHandlerUncast) -> {
             ItemStackHandler itemHandler = (ItemStackHandler)itemHandlerUncast;
             if(level != null && !level.isClientSide()) {
@@ -162,21 +175,38 @@ public class TileLauncherPlatform extends TileMachine {
         return super.isInventoryItemValid(slot, stack) && (stack.getItem() instanceof ItemMissile) && (((ItemMissile)stack.getItem()).tier <= this.tier);
     }
 
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        missileFluidCapability.invalidate();
+    }
+
+    private void replaceAndInvalidateFluidPassthroughCapability() {
+        LazyOptional<IFluidHandler> previousFluidCapability = missileFluidCapability;
+        missileFluidCapability = LazyOptional.empty();
+        previousFluidCapability.invalidate();
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if(cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
-            return itemHandlerLazyOptional
-                    .map(handler -> handler.getStackInSlot(0))
-                    .filter(stack -> stack.getItem() instanceof ItemMissile)
-                    .map(stack -> (LazyOptional<T>) stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY))
-                    .orElse(super.getCapability(cap, side));
+        if(cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) && itemHandlerLazyOptional.isPresent()) {
+            if (!missileFluidCapability.isPresent()) {
+                missileFluidCapability = itemHandlerLazyOptional
+                        .map(handler -> handler.getStackInSlot(0))
+                        .filter(stack -> stack.getItem() instanceof ItemMissile)
+                        .flatMap(stack -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).<IFluidHandler>cast().resolve())
+                        .map(handler -> LazyOptional.of(() -> handler))
+                        .orElse(LazyOptional.empty());
+            }
+            if (missileFluidCapability.isPresent()) return missileFluidCapability.cast();
         }
         return super.getCapability(cap, side);
     }
 
     @Override
     public void load(BlockState state, CompoundNBT tag) {
+        replaceAndInvalidateFluidPassthroughCapability();
         missileEntityID = null;
         try {
             missileEntityID = UUID.fromString(tag.getString("missileEntity"));

@@ -104,6 +104,14 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         return true;
     }
 
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        itemHandlerLazyOptional.invalidate();
+        energyStorageLazyOptional.invalidate();
+        fluidTanks.forEach(LazyOptional::invalidate);
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
