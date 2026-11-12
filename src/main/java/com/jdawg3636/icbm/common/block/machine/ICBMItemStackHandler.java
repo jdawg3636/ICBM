@@ -1,6 +1,7 @@
 package com.jdawg3636.icbm.common.block.machine;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -50,6 +51,70 @@ public class ICBMItemStackHandler extends ItemStackHandler {
 
     }
 
+    public static class PartialView implements IItemHandler {
+
+        private final ICBMItemStackHandler handler;
+        public final int[] slots;
+
+        private PartialView(ICBMItemStackHandler handler, int... slots) {
+            this.handler = handler;
+            this.slots = slots;
+        }
+
+        public boolean isSlotInvalid(int slot) {
+            return slot < 0 || slot >= this.getSlots();
+        }
+
+        @Override
+        public int getSlots() {
+            return this.slots.length;
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            if(isSlotInvalid(slot)) {
+                return ItemStack.EMPTY;
+            }
+            return this.handler.getStackInSlot(this.slots[slot]);
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+            if(isSlotInvalid(slot)) {
+                return ItemStack.EMPTY;
+            }
+            return this.handler.insertItem(this.slots[slot], stack, simulate);
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if(isSlotInvalid(slot)) {
+                return ItemStack.EMPTY;
+            }
+            return this.handler.extractItem(this.slots[slot], amount, simulate);
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            if(isSlotInvalid(slot)) {
+                return 0;
+            }
+            return this.handler.getSlotLimit(this.slots[slot]);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            if(isSlotInvalid(slot)) {
+                return false;
+            }
+            return this.handler.isItemValid(this.slots[slot], stack);
+        }
+
+    }
+
     private boolean doCheckItemValidity = true;
     private boolean isBeingDestroyed = false;
     BiConsumer<Integer, Boolean> onInventorySlotChanged = (slot, isBeingDestroyed) -> {};
@@ -70,6 +135,10 @@ public class ICBMItemStackHandler extends ItemStackHandler {
     public void addSlot(int xPos, int yPos, SlotTag slotTag, int stackLimit) {
         slotMetas.add(new SlotMeta(xPos, yPos, slotTag, stackLimit));
         this.setSize(slotMetas.size());
+    }
+
+    public PartialView getPartialView(int... slots) {
+        return new PartialView(this, slots);
     }
 
     @Override

@@ -11,12 +11,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -77,6 +83,23 @@ public class TileParticleAccelerator extends TileMachine implements ITickableTil
                 }
             }
         }
+    }
+
+    public boolean usesPerFaceCapabilities() {
+        return true;
+    }
+
+    protected <T> LazyOptional<T> cacheCapabilityForFace(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if(cap.equals(CapabilityEnergy.ENERGY)) return energyStorageLazyOptional.cast();
+        if(cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) {
+            if(side == Direction.DOWN) {
+                return LazyOptional.of(() -> getItemHandler().orElse(null).getPartialView(2)).cast();
+            }
+            else {
+                return LazyOptional.of(() -> getItemHandler().orElse(null).getPartialView(0, 1)).cast();
+            }
+        }
+        return LazyOptional.empty();
     }
 
     public boolean tryProduceResult(ItemStack result) {

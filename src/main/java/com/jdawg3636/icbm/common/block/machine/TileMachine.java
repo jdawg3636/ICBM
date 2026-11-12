@@ -34,6 +34,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -47,6 +49,11 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
     private final ICBMEnergyStorage energyStorage;
     public final LazyOptional<IEnergyStorage> energyStorageLazyOptional;
     public final ArrayList<LazyOptional<FluidTank>> fluidTanks;
+    public final EnumMap<Direction, HashMap<Capability<?>, LazyOptional<?>>> perFaceCapabilityCache;
+
+    public static enum NonableDirection extends Direction {
+
+    }
 
     public TileMachine(TileEntityType<?> tileEntityTypeIn, Supplier<ContainerType<? extends ContainerMachine>> containerType, boolean hasItemStackHandler, int forgeEnergyCapacity, int forgeEnergyPerTickIn, int forgeEnergyPerTickOut, ArrayList<LazyOptional<FluidTank>> fluidTanks, ITextComponent defaultName) {
         super(tileEntityTypeIn);
@@ -71,8 +78,8 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         }
 
         this.fluidTanks = fluidTanks;
-
         this.defaultName = defaultName;
+        this.perFaceCapabilityCache = new EnumMap<>(Direction.class);
 
     }
 
@@ -110,14 +117,40 @@ public class TileMachine extends TileEntity implements INamedContainerProvider, 
         itemHandlerLazyOptional.invalidate();
         energyStorageLazyOptional.invalidate();
         fluidTanks.forEach(LazyOptional::invalidate);
+        for(HashMap<Capability<?>, LazyOptional<?>> mapForFace : perFaceCapabilityCache.values()) {
+            for(LazyOptional<?> lazyOptional : mapForFace.values()) {
+                lazyOptional.invalidate();
+            }
+        }
+    }
+
+    public boolean usesPerFaceCapabilities() {
+        return false;
+    }
+
+    protected <T> LazyOptional<T> cacheCapabilityForFace(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        return LazyOptional.empty();
     }
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if(this.usesPerFaceCapabilities()) {
+            // Lookup side/face
+            if(!perFaceCapabilityCache.containsKey(side)) {
+                perFaceCapabilityCache.put(side, new HashMap<>());
+            }
+            final HashMap<Capability<?>, LazyOptional<?>> mapForFace = perFaceCapabilityCache.get(side);
+            // Lookup capability
+            if(!mapForFace.containsKey(cap)) {
+                mapForFace.put(cap, cacheCapabilityForFace(cap, side));
+            }
+            // Return
+            return mapForFace.get(cap).cast();
+        }
         if(itemHandlerLazyOptional.isPresent() && cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) return itemHandlerLazyOptional.cast();
         if(energyStorageLazyOptional.isPresent() && cap.equals(CapabilityEnergy.ENERGY)) return energyStorageLazyOptional.cast();
-        if(!fluidTanks.isEmpty() && cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) return fluidTanks.get(0).cast(); // TODO: if a future machine requires it, support multiple tanks.
+        if(!fluidTanks.isEmpty() && cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) return fluidTanks.get(0).cast();
         return LazyOptional.empty();
     }
 
